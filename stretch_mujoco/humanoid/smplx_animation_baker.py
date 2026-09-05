@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
 import click
 import numpy as np
+
+from stretch_mujoco.npc.animation.graph import OFFICE_CLIPS
 
 from .smplx_converter import (
     SmplxAssetError,
@@ -19,8 +22,66 @@ from .smplx_converter import (
     find_model_file,
 )
 
-
 MATERIAL_GROUPS = ("body",)
+
+
+def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str, Any]:
+    """Write the distributable contract for already baked, locally licensed frames."""
+    texture_name = "smplx_employee_diffuse.png"
+    clip_files = {
+        clip_name: [
+            path.name for path in sorted(output_dir.glob(f"humanoid_{clip_name}_*_body.obj"))
+        ]
+        for clip_name in OFFICE_CLIPS
+    }
+    missing = [clip_name for clip_name, paths in clip_files.items() if not paths]
+    if not (output_dir / texture_name).is_file():
+        missing.append(texture_name)
+    if missing:
+        raise SmplxAssetError(f"Cannot build NPC manifest; missing: {', '.join(missing)}")
+    referenced_files = [texture_name, *(path for paths in clip_files.values() for path in paths)]
+    manifest: dict[str, Any] = {
+        "schema_version": 1,
+        "generated_from": "licensed_smplx_parameters",
+        "bundles": {
+            "smplx_office_neutral_v1": {
+                "format": "mesh_sequence",
+                "topology_id": "smplx-neutral-10475-v1",
+                "coordinate_system": "mujoco_z_up",
+                "unit": "meter",
+                "height_m": target_height,
+                "material_slots": list(MATERIAL_GROUPS),
+                "asset_quality": "production",
+                "appearances": {
+                    "employee_default_v1": {
+                        "textures": {"body": texture_name},
+                        "texture_topology_id": "smplx-neutral-10475-v1",
+                    }
+                },
+                "clips": {
+                    clip_name: {
+                        "fps": 8.0,
+                        "loop": OFFICE_CLIPS[clip_name].loop,
+                        "root_motion": "in_place",
+                        "frames": paths,
+                        "markers": [
+                            {"name": name, "phase": phase}
+                            for name, phase in OFFICE_CLIPS[clip_name].markers
+                        ],
+                    }
+                    for clip_name, paths in clip_files.items()
+                },
+                "sha256": {
+                    filename: hashlib.sha256((output_dir / filename).read_bytes()).hexdigest()
+                    for filename in referenced_files
+                },
+            }
+        },
+    }
+    (output_dir / "manifest.json").write_text(
+        json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+    )
+    return manifest
 
 
 def _pose_clips(torch: Any) -> dict[str, list[Any]]:
@@ -226,17 +287,9 @@ def bake_smplx_animations(
         texture_faces,
         face_groups,
     )
-    manifest: dict[str, Any] = {
-        "source_model": str(model_file),
-        "height_m": target_height,
-        "fps": 8,
-        "materials": list(MATERIAL_GROUPS),
-        "clips": {},
-    }
     mesh_elements = []
 
     for clip_name, poses in clips.items():
-        clip_frames = []
         for frame_index, body_pose in enumerate(poses):
             with torch.no_grad():
                 result = model(body_pose=body_pose, return_verts=True)
@@ -252,18 +305,13 @@ def bake_smplx_animations(
                 texture_coordinates,
                 texture_faces,
             )
-            frame_meshes = {"body": mesh_name}
             mesh_elements.append(f'    <mesh name="{mesh_name}" file="{asset_prefix}/{filename}"/>')
-            clip_frames.append({"meshes": frame_meshes})
-        manifest["clips"][clip_name] = clip_frames
-
     include_xml.parent.mkdir(parents=True, exist_ok=True)
     include_xml.write_text(
         "\n".join(["<mujoco>", "  <asset>", *mesh_elements, "  </asset>", "</mujoco>", ""]),
         encoding="utf-8",
     )
-    (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    return manifest
+    return write_npc_asset_manifest(output_dir, target_height)
 
 
 @click.command()
@@ -286,7 +334,8 @@ def main(model_root: Path, gender: str, height: float, output_dir: Path, include
         manifest = bake_smplx_animations(model_root, output_dir, include_xml, gender, height)
     except SmplxAssetError as error:
         raise click.ClickException(str(error)) from error
-    frame_count = sum(len(frames) for frames in manifest["clips"].values())
+    bundle = manifest["bundles"]["smplx_office_neutral_v1"]
+    frame_count = sum(len(clip["frames"]) for clip in bundle["clips"].values())
     click.echo(f"Baked {frame_count} SMPL-X frames into {output_dir}.")
 
 

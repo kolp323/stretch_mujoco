@@ -5,15 +5,18 @@ from pathlib import Path
 
 import click
 
-from stretch_mujoco.agents import OfficeAgentRuntime
+from stretch_mujoco.agents import MockRobotExecutor, OfficeAgentRuntime
 from stretch_mujoco.semantics import SemanticWorld
-
 
 MODELS_PATH = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
 
 
 @click.command()
-@click.option("--complete-task", is_flag=True, help="Mark the generated robot task successful.")
+@click.option(
+    "--complete-task",
+    is_flag=True,
+    help="Let the deterministic mock robot complete the generated task.",
+)
 def main(complete_task: bool) -> None:
     """Validate and execute the documented request_robot command."""
     world = SemanticWorld.from_json(MODELS_PATH / "office_semantics.json")
@@ -36,7 +39,7 @@ def main(complete_task: bool) -> None:
     events = runtime.tick(1.0)
     tasks = runtime.pending_robot_tasks()
     if complete_task and tasks:
-        runtime.complete_robot_task(tasks[0].task_id, success=True)
+        MockRobotExecutor().tick(runtime, 1.0)
         events += runtime.drain_events()
 
     output = {

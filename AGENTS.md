@@ -35,9 +35,35 @@ Use 4-space indentation, type hints, `snake_case` for functions/modules, `Pascal
 
 Add or update pytest tests for behavior changes. Run focused tests while iterating, then run `uv run pytest -q`. Simulator, rendering, asset, and optional-model tests may require headless execution, extra dependencies, or local assets; state requirements and results in the PR. No separate coverage threshold is configured.
 
+## Current Implementation Record Maintenance Protocol
+
+Treat `aaa_workspace/docs/current.md` as the maintained implementation record for the ongoing NPC-system migration. Read the relevant sections before changing NPC schemas, assets, animation, attachment, interactions, agent execution, simulator transport, recording, or compatibility paths, and update the document in the same change when behavior or migration status changes.
+
+- Keep the document evidence-based. Describe what the repository actually implements, why the chosen boundary exists, and which limitations remain; do not present declared protocols, adapters, or planned work as completed physical behavior.
+- Record material additions by owning module and explain their contract, data flow, completion condition, failure behavior, and compatibility effect. Include public API, schema, semantic-ID, XML/site, asset-generation, or recording-format changes when applicable.
+- Preserve the system ownership rules documented there: Agents own intent, `NpcController` owns per-NPC execution and animation state, MuJoCo owns observed pose and attachment state, and `SemanticWorld` receives effects only after successful physical receipts and verification.
+- Keep configuration and generated assets explicit. Production NPC assets must be manifest-backed and validated; preview assets must remain labeled preview. Never commit private SMPL-X inputs or ignored generated derivatives, and never silently substitute preview assets for production assets.
+- Maintain one authoritative animation-graph definition for baker and runtime behavior. Missing clips must remain observable through fallback events, and marker- or attachment-dependent actions must not be converted back to duration-only success.
+- Preserve command idempotency, per-NPC sequencing, deadlines, terminal receipts, cross-NPC attachment claims, ordered interaction barriers, and semantic-commit idempotency when extending the protocol.
+- Treat legacy APIs as migration adapters only. Do not add new behavior to the `set_humanoid_*`, legacy naming, schema-v1, or snapshot-v1 paths. Before deleting an adapter, migrate repository callers, add equivalent tests, and document the compatibility break.
+- Update existing statements instead of merely appending contradictory status. Historical milestones may remain when clearly labeled as historical; the newest section must identify superseded claims and the current source of truth.
+- Report exact verification commands and observed results. Distinguish focused tests from the full `tests/` suite, note required environment workarounds such as `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`, and state baseline or dependency failures without claiming they passed.
+- Never place credentials, private asset locations, machine-specific secrets, generated recordings, or restricted asset contents in `current.md`. Repository-relative paths and reproducible commands are preferred.
+- At handoff, ensure the document's completed work, remaining work, and recommended next step agree with the code and tests in the worktree.
+
 ## Commit & Pull Request Guidelines
 
 Recent commits use prefixes such as `feat:`, `fix:`, and `chore:`, although older history is mixed; use one focused subject. PRs should describe scope, verification commands/results, asset regeneration, and any XML, site, semantic-ID, or public API changes. Include screenshots or reproduction steps for viewer, scene, or visual changes, and request review from the relevant module owner.
+
+### Git Hygiene and PR Workflow
+
+- Configure and retain this repository's commit identity as `kolp323 <1317416016@qq.com>`.
+- Develop each independently reviewable change on a focused feature branch (for example, `feat/npc-system`); do not commit directly to the integration branch.
+- Keep each commit focused and independently understandable. Use conventional prefixes such as `feat(npc):`, `fix(npc):`, `test(npc):`, and `docs(npc):`; separate code, asset/XML, test, and documentation changes when that improves reviewability.
+- Before staging, inspect `git status` and `git diff`. Stage explicit paths rather than using `git add .`, and do not include unrelated changes, local task files, generated outputs, recordings, or diagnostic artifacts. The repository ignores `/aaa_workspace/task/`, `/outputs/`, and `/stretch_mujoco/recording/` for this reason.
+- Before opening or updating a PR, rebase the feature branch onto its target branch, resolve conflicts locally, and run the focused tests for the changed behavior. Run the full suite and pre-commit when practical; otherwise state exactly which checks were run and why broader checks were not run.
+- Review the final PR diff against the target branch. The PR description must state scope, non-goals, verification commands and results, compatibility or public-interface changes, asset/XML regeneration details, and screenshots or reproduction steps for scene or viewer changes.
+- After a rebase of an already-pushed feature branch, use `git push --force-with-lease`, never an unguarded force push.
 
 ## Security & Configuration Tips
 

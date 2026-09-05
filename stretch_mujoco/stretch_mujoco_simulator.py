@@ -1,26 +1,19 @@
 import atexit
-from multiprocessing import Lock, Manager, Process
-
 import multiprocessing
 import platform
 import signal
 import sys
 import threading
 import time
+import uuid
+import warnings
+from multiprocessing import Lock, Manager, Process
 
 import click
 import numpy as np
 from mujoco._structs import MjModel
 
-from stretch_mujoco.datamodels.status_stretch_camera import StatusStretchCameras
-from stretch_mujoco.datamodels.status_stretch_joints import StatusStretchJoints
-from stretch_mujoco.datamodels.status_stretch_sensors import StatusStretchSensors
-from stretch_mujoco.enums.actuators import Actuators
-from stretch_mujoco.enums.stretch_cameras import StretchCameras
-from stretch_mujoco.mujoco_server import MujocoServer, MujocoServerProxies
-from stretch_mujoco.mujoco_server_managed import MujocoServerManaged
-from stretch_mujoco.mujoco_server_passive import MujocoServerPassive
-from stretch_mujoco.semantics import SemanticWorld
+import stretch_mujoco.utils as utils
 from stretch_mujoco.agents import OfficeAgentRuntime
 from stretch_mujoco.datamodels.status_command import (
     CommandBaseVelocity,
@@ -29,8 +22,17 @@ from stretch_mujoco.datamodels.status_command import (
     CommandMove,
     StatusCommand,
 )
-import stretch_mujoco.utils as utils
-from stretch_mujoco.utils import require_connection, block_until_check_succeeds
+from stretch_mujoco.datamodels.status_stretch_camera import StatusStretchCameras
+from stretch_mujoco.datamodels.status_stretch_joints import StatusStretchJoints
+from stretch_mujoco.datamodels.status_stretch_sensors import StatusStretchSensors
+from stretch_mujoco.enums.actuators import Actuators
+from stretch_mujoco.enums.stretch_cameras import StretchCameras
+from stretch_mujoco.mujoco_server import MujocoServer, MujocoServerProxies
+from stretch_mujoco.mujoco_server_managed import MujocoServerManaged
+from stretch_mujoco.mujoco_server_passive import MujocoServerPassive
+from stretch_mujoco.npc import NpcCommand, NpcCommandKind, NpcCommandReceipt, NpcRuntimeState
+from stretch_mujoco.semantics import SemanticWorld
+from stretch_mujoco.utils import block_until_check_succeeds, require_connection
 
 
 class StretchMujocoSimulator:
@@ -76,6 +78,11 @@ class StretchMujocoSimulator:
         self.data_proxies = MujocoServerProxies.default(self._manager)
 
         self._command_lock = Lock()
+        self._npc_sequences: dict[str, int] = {}
+        self._npc_command_ids: set[str] = set()
+        self._legacy_humanoid_sit_target = "chair_right_sit"
+        self._legacy_humanoid_navigation_target = ""
+        self._legacy_humanoid_playback_speed = 1.0
 
     def start(
         self, show_viewer_ui: bool = False, headless: bool = False, use_passive_viewer: bool = True
@@ -218,12 +225,28 @@ class StretchMujocoSimulator:
         self.wait_while_is_moving(Actuators.wrist_pitch)
 
     def set_humanoid_animation(self, animation: str) -> None:
-        """Select a pre-baked office NPC animation clip."""
+        """Select a clip for the default NPC (deprecated compatibility API)."""
         available_animations = {"eat", "idle", "sit", "walk", "work"}
         if animation not in available_animations:
             available = ", ".join(sorted(available_animations))
             raise ValueError(f"Unknown humanoid animation '{animation}'. Available: {available}")
-        self.data_proxies.set_humanoid_animation(animation)
+        warnings.warn(
+            "set_humanoid_animation() is deprecated; use submit_npc_command()",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if animation in {"sit", "work"}:
+            self._submit_legacy_move(self._legacy_humanoid_sit_target, arrival_clip=animation)
+        elif animation == "walk" and self._legacy_humanoid_navigation_target:
+            self._submit_legacy_move(self._legacy_humanoid_navigation_target)
+        else:
+            self.submit_npc_command(
+                self._new_npc_command(
+                    "employee_01",
+                    NpcCommandKind.PLAY_ANIMATION,
+                    {"clip": animation},
+                )
+            )
 
     def set_humanoid_sit_target(self, chair: str) -> None:
         """Choose which office chair the NPC uses for the sit animation."""
@@ -234,7 +257,7 @@ class StretchMujocoSimulator:
                 sorted(target.removesuffix("_sit") for target in available_targets)
             )
             raise ValueError(f"Unknown office chair '{chair}'. Available: {available}")
-        self.data_proxies.set_humanoid_sit_target(site_name)
+        self._legacy_humanoid_sit_target = site_name
 
     def set_humanoid_navigation_target(self, target: str) -> None:
         """Choose an office interaction site for the NPC walk root motion."""
@@ -255,13 +278,84 @@ class StretchMujocoSimulator:
             raise ValueError(
                 f"Unknown humanoid navigation target '{target}'. Available: {available}"
             )
-        self.data_proxies.set_humanoid_navigation_target(site_name)
+        self._legacy_humanoid_navigation_target = site_name
+
+    def submit_npc_command(self, command: NpcCommand) -> str:
+        """Submit an ordered NPC command and return its idempotency key."""
+        with self._command_lock:
+            if command.command_id in self._npc_command_ids:
+                return command.command_id
+            last_sequence = self._npc_sequences.get(command.npc_id, -1)
+            if command.sequence <= last_sequence:
+                raise ValueError(
+                    f"NPC command sequence {command.sequence} is not newer than {last_sequence}"
+                )
+            self._npc_sequences[command.npc_id] = command.sequence
+            self._npc_command_ids.add(command.command_id)
+            self.data_proxies.submit_npc_command(command)
+        return command.command_id
+
+    def cancel_npc_command(self, npc_id: str, command_id: str) -> None:
+        """Cancel an active command through the same ordered transport."""
+        command = self._new_npc_command(
+            npc_id,
+            NpcCommandKind.CANCEL,
+            {"command_id": command_id},
+        )
+        self.submit_npc_command(command)
+
+    def pull_npc_states(self) -> dict[str, NpcRuntimeState]:
+        """Return the latest observed per-NPC simulation states."""
+        return {
+            npc_id: NpcRuntimeState.from_dict(payload)
+            for npc_id, payload in self.data_proxies.get_npc_states().items()
+        }
+
+    def pull_npc_receipts(self) -> tuple[NpcCommandReceipt, ...]:
+        """Drain command lifecycle receipts emitted by the simulator process."""
+        return tuple(
+            NpcCommandReceipt.from_dict(payload)
+            for payload in self.data_proxies.drain_npc_receipts()
+        )
+
+    def _new_npc_command(
+        self,
+        npc_id: str,
+        kind: NpcCommandKind,
+        payload: dict[str, object],
+        *,
+        deadline: float | None = None,
+    ) -> NpcCommand:
+        sequence = self._npc_sequences.get(npc_id, -1) + 1
+        issued_at = float(self.pull_status().time)
+        return NpcCommand(
+            command_id=f"npc_{uuid.uuid4().hex}",
+            sequence=sequence,
+            npc_id=npc_id,
+            kind=kind,
+            payload=payload,
+            issued_at=issued_at,
+            deadline=deadline,
+        )
+
+    def _submit_legacy_move(self, site: str, *, arrival_clip: str = "idle") -> str:
+        return self.submit_npc_command(
+            self._new_npc_command(
+                "employee_01",
+                NpcCommandKind.MOVE_TO,
+                {
+                    "site": site,
+                    "speed": self._legacy_humanoid_playback_speed,
+                    "arrival_clip": arrival_clip,
+                },
+            )
+        )
 
     def set_humanoid_playback_speed(self, speed: float) -> None:
         """Scale NPC root motion and baked animation playback together."""
         if speed <= 0:
             raise ValueError("Humanoid playback speed must be positive")
-        self.data_proxies.set_humanoid_playback_speed(speed)
+        self._legacy_humanoid_playback_speed = float(speed)
 
     def set_object_visibility(self, object_id: str, visible: bool) -> None:
         """Show or hide an object body and enable or disable its collisions."""
@@ -311,6 +405,7 @@ class StretchMujocoSimulator:
         *,
         seed: int | None = None,
         auto_plan: bool = True,
+        embodied: bool = False,
     ) -> OfficeAgentRuntime:
         """Create the deterministic employee runtime for this semantic scene."""
         if self.semantic_world is None:
@@ -319,11 +414,17 @@ class StretchMujocoSimulator:
             if self.semantic_world.source_path is None:
                 raise ValueError("Cannot infer the office agent configuration path")
             config_path = str(self.semantic_world.source_path.with_name("office_agents.json"))
+        action_driver = None
+        if embodied:
+            from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
+
+            action_driver = create_mujoco_action_driver(self)
         self.agent_runtime = OfficeAgentRuntime.from_json(
             self.semantic_world,
             config_path,
             seed=seed,
             auto_plan=auto_plan,
+            action_driver=action_driver,
         )
         return self.agent_runtime
 

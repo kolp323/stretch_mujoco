@@ -3,12 +3,12 @@ from pathlib import Path
 from stretch_mujoco.agents import (
     ActionCommand,
     ActionType,
+    MockRobotExecutor,
     OfficeAgentRuntime,
     ReservationManager,
     RobotTaskStatus,
 )
 from stretch_mujoco.semantics import RelationType, SemanticWorld
-
 
 MODELS_PATH = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
 
@@ -85,6 +85,65 @@ def test_robot_request_creates_verified_task_and_updates_world() -> None:
     assert task.status == RobotTaskStatus.SUCCEEDED
     assert runtime.world.location_of("document_report").object_id == "workstation_right"
     assert runtime.reservations.owner("document_report") is None
+
+
+def test_mock_robot_completes_a_request_without_bypassing_runtime_state() -> None:
+    runtime = load_runtime()
+    result = runtime.submit_action(
+        {
+            "agent_id": "employee_01",
+            "action": "request_robot",
+            "target": "stretch_3",
+            "parameters": {
+                "task": "deliver",
+                "object": "document_report",
+                "destination": "workstation_right",
+            },
+        }
+    )
+    runtime.tick(1.0)
+    task = runtime.pending_robot_tasks()[0]
+    mock_robot = MockRobotExecutor(completion_delay_minutes=2.0)
+
+    assert result.valid
+    assert mock_robot.tick(runtime, 1.0) == ()
+    assert task.status == RobotTaskStatus.RUNNING
+    assert mock_robot.tick(runtime, 1.0) == (task.task_id,)
+    assert task.status == RobotTaskStatus.SUCCEEDED
+    assert runtime.world.location_of("document_report").object_id == "workstation_right"
+
+
+def test_mock_robot_failure_releases_the_reserved_object() -> None:
+    runtime = load_runtime()
+    runtime.submit_action(
+        ActionCommand(
+            "employee_01",
+            ActionType.REQUEST_ROBOT,
+            "stretch_3",
+            {"task": "deliver", "object": "document_report", "destination": "workstation_right"},
+        )
+    )
+    runtime.tick(1.0)
+    task = runtime.pending_robot_tasks()[0]
+
+    MockRobotExecutor(0.1, {task.task_id}).tick(runtime, 0.1)
+
+    assert task.status == RobotTaskStatus.FAILED
+    assert runtime.reservations.owner("document_report") is None
+    assert "Mock robot reported" in task.error
+
+
+def test_failed_action_records_recovery_state() -> None:
+    runtime = load_runtime()
+    agent = runtime.agents["employee_01"]
+
+    result = runtime.submit_action(ActionCommand("employee_01", ActionType.SIT, "chair_right"))
+
+    assert not result.valid
+    assert agent.state.availability == "available"
+    assert agent.state.animation_state == "idle"
+    assert agent.state.blocked_reason is not None
+    assert "not at required location" in agent.state.last_failure
 
 
 def test_robot_result_can_be_verified_against_physical_snapshot() -> None:

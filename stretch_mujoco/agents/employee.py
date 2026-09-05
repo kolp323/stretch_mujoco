@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from stretch_mujoco.semantics import ObjectType, RelationType, SemanticWorld
 
@@ -18,6 +18,9 @@ from .models import (
     ScheduleItem,
 )
 from .utility import UtilityGoal, UtilityScore, UtilitySystem
+
+if TYPE_CHECKING:
+    from stretch_mujoco.npc.schema import NpcDefinition
 
 
 @dataclass(frozen=True)
@@ -226,7 +229,21 @@ class EmployeeAgent:
     executor: ActionExecution = field(default_factory=ActionExecution)
 
     @classmethod
+    def from_definition(cls, definition: "NpcDefinition") -> "EmployeeAgent":
+        """Build the behavior projection of an already validated NPC definition."""
+        state = EmployeeState(location=definition.spawn.location)
+        state.sync_needs(definition.needs)
+        return cls(
+            agent_id=definition.npc_id,
+            profile=definition.profile,
+            needs=definition.needs,
+            schedule=definition.schedule,
+            state=state,
+        )
+
+    @classmethod
     def from_dict(cls, agent_id: str, payload: dict[str, Any]) -> "EmployeeAgent":
+        """Load the legacy schema-v1 employee shape."""
         profile_data = payload["profile"]
         needs_data = payload.get("needs", {})
         needs = EmployeeNeeds(
