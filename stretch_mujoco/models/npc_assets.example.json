@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "bundles": {
+    "cesium_man_preview_v1": {
+      "format": "mesh_sequence",
+      "topology_id": "cesium-man-preview-v1",
+      "coordinate_system": "mujoco_z_up",
+      "unit": "meter",
+      "height_m": 1.8,
+      "material_slots": ["body"],
+      "asset_quality": "preview",
+      "appearances": {
+        "cesium_default_v1": {
+          "textures": {
+            "body": "assets/humanoid/cesium_man.png"
+          },
+          "texture_topology_id": "cesium-man-preview-v1"
+        }
+      },
+      "clips": {
+        "idle": {
+          "fps": 1.0,
+          "loop": true,
+          "root_motion": "in_place",
+          "frames": ["assets/humanoid/cesium_man_idle.obj"],
+          "markers": []
+        }
+      },
+      "sha256": {
+        "assets/humanoid/cesium_man.png": "b5fd1a750f05056a68d9fc7fa5f7c5a1c0f2cf6d3c2faf41fbb4c846a7ecd0aa",
+        "assets/humanoid/cesium_man_idle.obj": "9bcfbad0064691e9f7b77b8e667597b717ee72ad28dc2b930d132161b417c85a"
+      }
+    }
+  }
+}

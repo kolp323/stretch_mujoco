@@ -1,0 +1,174 @@
+"""Generate deterministic MJCF from a validated NPC population."""
+
+from __future__ import annotations
+
+import hashlib
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+import mujoco
+
+from .assets import NpcAssetManifest
+from .naming import body_name, collision_geom_name, frame_geom_name, interaction_site_name
+from .schema import NpcPopulation
+
+
+def build_npc_scene(
+    population_path: str | Path,
+    output_path: str | Path,
+    *,
+    include_base_scene: bool = False,
+) -> Path:
+    """Build a standalone, includable MJCF containing canonical per-NPC bodies.
+
+    ``include_base_scene`` is available for callers that write beside a portable
+    base scene. The default artifact is independently compilable and can be
+    included by the owning scene without copying its relative asset rules.
+    """
+    population = NpcPopulation.from_json(population_path)
+    manifest_path = population.resolve_path(population.asset_manifest)
+    manifest = NpcAssetManifest.from_json(manifest_path)
+    manifest.validate_population(population)
+    destination = Path(output_path).resolve()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    scene_path = population.resolve_path(population.scene)
+    source_model = mujoco.MjModel.from_xml_path(str(scene_path))
+    source_data = mujoco.MjData(source_model)
+    mujoco.mj_forward(source_model, source_data)
+
+    root = ET.Element("mujoco", {"model": "generated_npc_population"})
+    source_hash = hashlib.sha256(
+        Path(population_path).read_bytes() + manifest_path.read_bytes()
+    ).hexdigest()
+    root.append(ET.Comment(f" source_hash={source_hash} "))
+    if include_base_scene:
+        ET.SubElement(root, "include", {"file": str(scene_path)})
+    asset = ET.SubElement(root, "asset")
+    worldbody = ET.SubElement(root, "worldbody")
+
+    mesh_names: dict[tuple[str, float, str, int], str] = {}
+    material_names: dict[tuple[str, str], str] = {}
+    for npc_id, definition in population.npcs.items():
+        bundle = manifest.bundles[definition.embodiment.bundle]
+        appearance = bundle.appearances[definition.embodiment.appearance]
+        material_key = (bundle.bundle_id, definition.embodiment.appearance)
+        if material_key not in material_names:
+            texture_path = appearance.textures.get(bundle.material_slots[0])
+            material_name = f"npc_material__{bundle.bundle_id}__{definition.embodiment.appearance}"
+            if texture_path is not None:
+                texture_name = (
+                    f"npc_texture__{bundle.bundle_id}__{definition.embodiment.appearance}"
+                )
+                ET.SubElement(
+                    asset,
+                    "texture",
+                    {
+                        "name": texture_name,
+                        "type": "2d",
+                        "file": str((manifest_path.parent / texture_path).resolve()),
+                    },
+                )
+                ET.SubElement(
+                    asset,
+                    "material",
+                    {"name": material_name, "texture": texture_name},
+                )
+            else:
+                ET.SubElement(asset, "material", {"name": material_name, "rgba": "1 1 1 1"})
+            material_names[material_key] = material_name
+
+        site_id = mujoco.mj_name2id(source_model, mujoco.mjtObj.mjOBJ_SITE, definition.spawn.site)
+        if site_id < 0:
+            raise ValueError(
+                f"NPC '{npc_id}' spawn site '{definition.spawn.site}' is missing from "
+                f"'{scene_path}'"
+            )
+        position = source_data.site_xpos[site_id]
+        root_position = (float(position[0]), float(position[1]), 0.0)
+        body = ET.SubElement(
+            worldbody,
+            "body",
+            {
+                "name": body_name(npc_id),
+                "mocap": "true",
+                "pos": " ".join(f"{value:.9g}" for value in root_position),
+                "euler": f"0 0 {definition.spawn.yaw:.9g}",
+            },
+        )
+        first_geom = True
+        for clip_id, clip in bundle.clips.items():
+            for frame_index, frame_path in enumerate(clip.frames):
+                mesh_key = (bundle.bundle_id, definition.embodiment.scale, clip_id, frame_index)
+                mesh_name = mesh_names.get(mesh_key)
+                if mesh_name is None:
+                    mesh_name = (
+                        f"npc_mesh__{bundle.bundle_id}__scale__{definition.embodiment.scale:g}"
+                        f"__clip__{clip_id}__frame__{frame_index:03d}"
+                    )
+                    ET.SubElement(
+                        asset,
+                        "mesh",
+                        {
+                            "name": mesh_name,
+                            "file": str((manifest_path.parent / frame_path).resolve()),
+                            "scale": " ".join([f"{definition.embodiment.scale:g}"] * 3),
+                        },
+                    )
+                    mesh_names[mesh_key] = mesh_name
+                for slot in bundle.material_slots:
+                    ET.SubElement(
+                        body,
+                        "geom",
+                        {
+                            "name": frame_geom_name(npc_id, clip_id, frame_index, slot),
+                            "type": "mesh",
+                            "mesh": mesh_name,
+                            "material": material_names[material_key],
+                            "mass": "0",
+                            "contype": "0",
+                            "conaffinity": "0",
+                            "group": "2",
+                            "rgba": "1 1 1 1" if first_geom else "1 1 1 0",
+                        },
+                    )
+                    first_geom = False
+        ET.SubElement(
+            body,
+            "geom",
+            {
+                "name": collision_geom_name(npc_id, "torso"),
+                "type": "capsule",
+                "fromto": "0 0 0.72 0 0 1.38",
+                "size": "0.16",
+                "rgba": "0 0 0 0",
+            },
+        )
+        ET.SubElement(
+            body,
+            "site",
+            {
+                "name": interaction_site_name(npc_id, "handover"),
+                "pos": "0 -0.42 1.02",
+                "size": "0.025",
+                "rgba": "0 0 0 0",
+            },
+        )
+
+    ET.indent(root, space="  ")
+    tree = ET.ElementTree(root)
+    tree.write(destination, encoding="unicode", xml_declaration=False)
+    with destination.open("a", encoding="utf-8") as file:
+        file.write("\n")
+    return destination
+
+
+def main() -> None:
+    """Console entry point for deterministic scene generation."""
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--population", required=True)
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+    print(build_npc_scene(args.population, args.output))

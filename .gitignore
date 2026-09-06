@@ -45,6 +45,13 @@ MUJOCO_LOG.TXT
 
 # Local diagnostic dumps and generated recordings.
 /yjw@*
+/outputs/
+/stretch_mujoco/recording/*.jsonl
+/stretch_mujoco/recording/*.mp4
+/stretch_mujoco/recording/recording_manifest.json
+
+# Local task tracking files; do not include them in feature PRs.
+/aaa_workspace/task/
 
 # Temp runtime XML 
 stretch_temp_abs.xml

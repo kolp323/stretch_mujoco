@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import uuid
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
-import uuid
 
 
 class ActionType(str, Enum):
@@ -30,6 +30,8 @@ class ExecutionStatus(str, Enum):
     RUNNING = "running"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
+    CANCELLED = "cancelled"
+    TIMED_OUT = "timed_out"
 
 
 class RobotTaskStatus(str, Enum):
@@ -77,8 +79,13 @@ class ValidationResult:
 
 @dataclass
 class ActionExecution:
+    execution_id: str = field(default_factory=lambda: f"exec_{uuid.uuid4().hex}")
     command: ActionCommand | None = None
     status: ExecutionStatus = ExecutionStatus.IDLE
+    phase: str = "idle"
+    started_at: float = 0.0
+    deadline: float | None = None
+    driver_handle: str | None = None
     remaining_minutes: float = 0.0
     error: str | None = None
 

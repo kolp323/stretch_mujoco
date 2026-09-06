@@ -1,0 +1,56 @@
+{
+  "schema_version": 2,
+  "scene": "office_scene.xml",
+  "asset_manifest": "assets/humanoid/generated/animations/manifest.json",
+  "clock": {"start": "09:00", "minutes_per_second": 1.0},
+  "npcs": {
+    "employee_01": {
+      "profile": {
+        "display_name": "Alex Chen",
+        "role": "Operations Specialist",
+        "department": "Operations",
+        "personality": {"conscientiousness": 0.85, "sociability": 0.62},
+        "preferences": {"chair": "chair_left", "workstation": "workstation_left"}
+      },
+      "embodiment": {
+        "bundle": "smplx_office_neutral_v1",
+        "appearance": "alex_warm_v1",
+        "animation_graph": "office_humanoid_v1",
+        "collision_profile": "adult_humanoid_v1",
+        "scale": 1.0
+      },
+      "spawn": {
+        "location": "workstation_left",
+        "site": "desk_left_work_site",
+        "yaw": 3.1415926
+      },
+      "capabilities": ["locomotion", "sit", "object_handover", "use_computer"],
+      "needs": {"hunger": 0.22, "thirst": 0.3, "fatigue": 0.18},
+      "schedule": []
+    },
+    "employee_02": {
+      "profile": {
+        "display_name": "Morgan Lee",
+        "role": "Product Manager",
+        "department": "Product",
+        "personality": {"conscientiousness": 0.75, "sociability": 0.88},
+        "preferences": {"chair": "chair_right", "workstation": "workstation_right"}
+      },
+      "embodiment": {
+        "bundle": "smplx_office_neutral_v1",
+        "appearance": "employee_default_v1",
+        "animation_graph": "office_humanoid_v1",
+        "collision_profile": "adult_humanoid_v1",
+        "scale": 1.0
+      },
+      "spawn": {
+        "location": "workstation_right",
+        "site": "desk_right_work_site",
+        "yaw": 3.1415926
+      },
+      "capabilities": ["locomotion", "sit", "object_handover", "use_computer"],
+      "needs": {"hunger": 0.35, "thirst": 0.25, "fatigue": 0.3},
+      "schedule": []
+    }
+  }
+}

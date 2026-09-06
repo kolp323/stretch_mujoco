@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import math
 from pathlib import Path
 from typing import Any
@@ -26,7 +26,6 @@ from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
 from .llm_config import LLMProviderConfig
 from .llm_provider import OpenAICompatibleProvider
 from .models import EmployeeSchedule, MemoryEntry, ScheduleItem
-
 
 ACTION_DURATIONS_MINUTES = {
     ActionType.IDLE: 1.0,
@@ -97,6 +96,7 @@ class OfficeAgentRuntime:
         llm_daily_budget: int = 30,
         daily_events: bool = True,
         llm_provider_config: LLMProviderConfig | None = None,
+        action_driver: object | None = None,
     ) -> None:
         if state_machine_hz <= 0 or needs_hz <= 0:
             raise ValueError("Agent update frequencies must be positive")
@@ -121,6 +121,7 @@ class OfficeAgentRuntime:
         self.events: list[RuntimeEvent] = []
         self.llm = EventDrivenLLMGateway(llm_daily_budget)
         self.llm_provider_config = llm_provider_config
+        self.action_driver = action_driver
         self.office_event_generator = DailyOfficeEventGenerator(seed)
         self.daily_events_enabled = daily_events
         self.daily_office_events: list[DailyOfficeEvent] = []
@@ -129,6 +130,7 @@ class OfficeAgentRuntime:
         self._utility_seconds_remaining = 0.0
         self._utility_decision_count = 0
         self._consecutive_failures: dict[str, int] = {}
+        self._committed_execution_ids: set[str] = set()
         for agent in self.agents.values():
             agent.validate_identity(world)
             world.object(agent.state.location)
@@ -142,6 +144,7 @@ class OfficeAgentRuntime:
         *,
         seed: int | None = None,
         auto_plan: bool = True,
+        action_driver: object | None = None,
     ) -> "OfficeAgentRuntime":
         source_path = Path(path).resolve()
         payload = json.loads(source_path.read_text(encoding="utf-8"))
@@ -149,10 +152,29 @@ class OfficeAgentRuntime:
         frequencies = payload.get("frequencies", {})
         utility_interval = frequencies.get("utility_interval_seconds", [5.0, 15.0])
         start_hour, start_minute = (int(part) for part in clock.get("start", "09:00").split(":"))
-        agents = {
-            agent_id: EmployeeAgent.from_dict(agent_id, definition)
-            for agent_id, definition in payload.get("employees", {}).items()
-        }
+        version = payload.get("schema_version")
+        if version == 2:
+            from stretch_mujoco.npc.schema import NpcPopulation
+
+            population = NpcPopulation.from_dict(
+                payload,
+                source_path=source_path,
+                locations=set(world.objects),
+                sites={point.site for point in world.interaction_points.values()},
+            )
+            agents = {
+                npc_id: EmployeeAgent.from_definition(definition)
+                for npc_id, definition in population.npcs.items()
+            }
+        elif version == 1:
+            agents = {
+                agent_id: EmployeeAgent.from_dict(agent_id, definition)
+                for agent_id, definition in payload.get("employees", {}).items()
+            }
+        else:
+            raise ValueError(
+                f"Unsupported office agent schema_version {version!r}; expected 1 or 2"
+            )
         llm_provider_config = None
         llm_config_name = payload.get("llm_config")
         if llm_config_name:
@@ -175,6 +197,7 @@ class OfficeAgentRuntime:
             llm_daily_budget=int(payload.get("llm_daily_budget", 30)),
             daily_events=bool(payload.get("daily_events", True)),
             llm_provider_config=llm_provider_config,
+            action_driver=action_driver,
         )
 
     def llm_config_summary(self) -> dict[str, Any]:
@@ -210,7 +233,9 @@ class OfficeAgentRuntime:
             self._require_target(target, errors)
         elif command.action == ActionType.SIT:
             self._require_type(target, ObjectType.CHAIR, errors)
-            self._require_location(agent, target, errors)
+            supported = getattr(self.action_driver, "supported_actions", frozenset())
+            if self.action_driver is None or ActionType.SIT not in supported:
+                self._require_location(agent, target, errors)
             self._require_available(target, command.agent_id, errors)
         elif command.action == ActionType.WORK:
             self._require_type(target, ObjectType.WORKSTATION, errors)
@@ -253,11 +278,16 @@ class OfficeAgentRuntime:
     def submit_action(self, command: ActionCommand | dict[str, Any]) -> ValidationResult:
         if isinstance(command, dict):
             command = ActionCommand.from_dict(command)
+        parameters = dict(command.parameters)
+        if command.action in {ActionType.PUT_DOWN, ActionType.HANDOVER}:
+            held_object = self.agents.get(command.agent_id)
+            if held_object is not None and held_object.state.held_object is not None:
+                parameters.setdefault("object", held_object.state.held_object)
         normalized = ActionCommand(
             command.agent_id,
             command.action,
             self._normalize_target(command.target),
-            command.parameters,
+            parameters,
         )
         validation = self.validate_action(normalized)
         if not validation.valid:
@@ -278,14 +308,37 @@ class OfficeAgentRuntime:
         agent.executor = ActionExecution(
             command=normalized,
             status=ExecutionStatus.RUNNING,
+            phase="start",
+            started_at=self.elapsed_minutes,
             remaining_minutes=ACTION_DURATIONS_MINUTES[normalized.action],
         )
         agent.state.current_action = normalized.action.value
+        agent.state.animation_state = normalized.action.value
+        agent.state.availability = "busy"
+        agent.state.attention_target = normalized.target
+        agent.state.blocked_reason = None
         self._emit(
             "action_started",
             normalized.agent_id,
-            {"action": normalized.action.value, "target": normalized.target},
+            {
+                "action": normalized.action.value,
+                "target": normalized.target,
+                "execution_id": agent.executor.execution_id,
+            },
         )
+        supported = getattr(self.action_driver, "supported_actions", frozenset())
+        if self.action_driver is not None and normalized.action in supported:
+            result = self.action_driver.start(agent.executor)
+            agent.executor.status = result.status
+            agent.executor.phase = result.phase
+            agent.executor.driver_handle = result.handle
+            agent.executor.error = result.error
+            if result.status in {
+                ExecutionStatus.FAILED,
+                ExecutionStatus.CANCELLED,
+                ExecutionStatus.TIMED_OUT,
+            }:
+                self._fail_action(agent, result.error or result.status.value)
         return validation
 
     def tick(
@@ -576,41 +629,82 @@ class OfficeAgentRuntime:
         command = agent.executor.command
         if command is None:
             return
+        if agent.executor.execution_id in self._committed_execution_ids:
+            return
         try:
             self._apply_action_effect(agent, command)
             self._verify_action_effect(agent, command)
         except (KeyError, ValueError) as error:
-            agent.executor.status = ExecutionStatus.FAILED
-            agent.executor.error = str(error)
-            self._record_failure(
-                agent.agent_id,
-                {"action": command.action.value, "error": str(error)},
-            )
-            self._release_failed_action(command)
-            self._remember(
-                agent,
-                "action_failed",
-                {"action": command.action.value, "error": str(error)},
-            )
-            self._emit(
-                "action_failed",
-                agent.agent_id,
-                {"action": command.action.value, "error": str(error)},
-            )
+            self._fail_action(agent, str(error))
+            return
         else:
+            self._committed_execution_ids.add(agent.executor.execution_id)
             agent.executor.status = ExecutionStatus.SUCCEEDED
             self._consecutive_failures[agent.agent_id] = 0
             self._remember(
                 agent,
                 "action_succeeded",
-                {"action": command.action.value, "target": command.target},
+                {
+                    "action": command.action.value,
+                    "target": command.target,
+                    "execution_id": agent.executor.execution_id,
+                },
             )
             self._emit(
                 "action_succeeded",
                 agent.agent_id,
-                {"action": command.action.value, "target": command.target},
+                {
+                    "action": command.action.value,
+                    "target": command.target,
+                    "execution_id": agent.executor.execution_id,
+                },
+            )
+            self._emit(
+                "semantic_commit",
+                agent.agent_id,
+                {
+                    "action": command.action.value,
+                    "execution_id": agent.executor.execution_id,
+                },
             )
         agent.state.current_action = "idle"
+        agent.state.animation_state = "idle"
+        agent.state.availability = "available"
+        agent.state.attention_target = None
+
+    def _fail_action(self, agent: EmployeeAgent, error: str) -> None:
+        command = agent.executor.command
+        if command is None:
+            return
+        if agent.executor.status not in {
+            ExecutionStatus.CANCELLED,
+            ExecutionStatus.TIMED_OUT,
+        }:
+            agent.executor.status = ExecutionStatus.FAILED
+        agent.executor.error = error
+        self._record_failure(
+            agent.agent_id,
+            {"action": command.action.value, "error": error},
+        )
+        self._release_failed_action(command)
+        self._remember(
+            agent,
+            "action_failed",
+            {"action": command.action.value, "error": error},
+        )
+        self._emit(
+            "action_failed",
+            agent.agent_id,
+            {
+                "action": command.action.value,
+                "error": error,
+                "execution_id": agent.executor.execution_id,
+            },
+        )
+        agent.state.current_action = "idle"
+        agent.state.animation_state = "idle"
+        agent.state.availability = "available"
+        agent.state.attention_target = None
 
     def _apply_action_effect(self, agent: EmployeeAgent, command: ActionCommand) -> None:
         action = command.action
@@ -619,6 +713,8 @@ class OfficeAgentRuntime:
             self._leave_occupied_location(agent)
             agent.state.location = target
         elif action == ActionType.SIT:
+            self._leave_occupied_location(agent)
+            agent.state.location = target
             self.world.replace_relation(target, RelationType.OCCUPIED_BY, agent.agent_id)
         elif action == ActionType.REST:
             agent.needs.fatigue = max(0.0, agent.needs.fatigue - 0.35)
@@ -663,11 +759,15 @@ class OfficeAgentRuntime:
             self.world.add_relation(target, RelationType.HOLDS, held_object)
             self.reservations.transfer(held_object, agent.agent_id, target)
             agent.state.held_object = None
+            if target in self.agents:
+                self.agents[target].state.held_object = held_object
         agent.state.sync_needs(agent.needs)
 
     def _verify_action_effect(self, agent: EmployeeAgent, command: ActionCommand) -> None:
         if command.action == ActionType.MOVE_TO and agent.state.location != command.target:
             raise ValueError("Location update verification failed")
+        if command.action == ActionType.SIT and agent.state.location != command.target:
+            raise ValueError("Seat occupancy location verification failed")
         if command.action == ActionType.PICK_UP:
             if agent.state.held_object != command.target or not self.world.find_relations(
                 subject=agent.agent_id,
@@ -682,6 +782,12 @@ class OfficeAgentRuntime:
             for task in self.robot_tasks.values()
         ):
             raise ValueError("Robot request verification failed")
+        if command.action == ActionType.HANDOVER:
+            receiver = self.agents.get(str(command.target))
+            if receiver is not None and receiver.state.held_object != command.parameters.get(
+                "object"
+            ):
+                raise ValueError("Handover result verification failed")
 
     def _consume_held_object(self, agent: EmployeeAgent, object_id: str | None) -> None:
         self.world.remove_relation(agent.agent_id, RelationType.HOLDS, object_id)
@@ -754,9 +860,30 @@ class OfficeAgentRuntime:
     def _state_machine_step(self, elapsed_minutes: float) -> None:
         for agent in self.agents.values():
             if agent.executor.is_busy:
-                agent.executor.remaining_minutes -= elapsed_minutes
-                if agent.executor.remaining_minutes <= 0.0:
-                    self._complete_action(agent)
+                supported = getattr(self.action_driver, "supported_actions", frozenset())
+                if (
+                    self.action_driver is not None
+                    and agent.executor.command is not None
+                    and agent.executor.command.action in supported
+                ):
+                    result = self.action_driver.poll(agent.executor)
+                    agent.executor.status = result.status
+                    agent.executor.phase = result.phase
+                    if result.handle is not None:
+                        agent.executor.driver_handle = result.handle
+                    agent.executor.error = result.error
+                    if result.status == ExecutionStatus.SUCCEEDED:
+                        self._complete_action(agent)
+                    elif result.status in {
+                        ExecutionStatus.FAILED,
+                        ExecutionStatus.CANCELLED,
+                        ExecutionStatus.TIMED_OUT,
+                    }:
+                        self._fail_action(agent, result.error or result.status.value)
+                else:
+                    agent.executor.remaining_minutes -= elapsed_minutes
+                    if agent.executor.remaining_minutes <= 0.0:
+                        self._complete_action(agent)
             if not agent.executor.is_busy and agent.planner.action_queue:
                 command = agent.planner.pop_action()
                 if command is not None:
@@ -877,6 +1004,11 @@ class OfficeAgentRuntime:
         return {object_type: sorted(object_ids) for object_type, object_ids in catalog.items()}
 
     def _record_failure(self, agent_id: str, context: dict[str, Any]) -> None:
+        agent = self.agents.get(agent_id)
+        if agent is not None:
+            reason = context.get("error") or "; ".join(context.get("errors", ()))
+            agent.state.last_failure = str(reason) if reason else "Action validation failed"
+            agent.state.blocked_reason = agent.state.last_failure
         failures = self._consecutive_failures.get(agent_id, 0) + 1
         self._consecutive_failures[agent_id] = failures
         if failures >= 3:

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import hashlib
 import random
+from dataclasses import dataclass, field
 from typing import Any
 
 
@@ -135,6 +135,11 @@ class EmployeeState:
     current_goal: str = "follow_schedule"
     schedule_item: str = ""
     mood: float = 1.0
+    availability: str = "available"
+    attention_target: str | None = None
+    blocked_reason: str | None = None
+    last_failure: str | None = None
+    animation_state: str = "idle"
 
     def sync_needs(self, needs: EmployeeNeeds) -> None:
         self.hunger = needs.hunger

@@ -34,6 +34,10 @@ launch_sim = "stretch_mujoco.launch_sim:main"
 [project.scripts]
 prepare_smplx_npc = "stretch_mujoco.humanoid.smplx_converter:main"
 bake_smplx_animations = "stretch_mujoco.humanoid.smplx_animation_baker:main"
+validate_npc_assets = "stretch_mujoco.npc.assets:main"
+build_npc_scene = "stretch_mujoco.npc.scene_builder:main"
+bake_npc_appearance = "stretch_mujoco.npc.appearance_pipeline.bake:main"
+make_npc_flat_layers = "stretch_mujoco.npc.appearance_pipeline.flat_layers:main"
 
 [build-system]
 requires = ["uv_build>=0.8.9,<0.9.0"]

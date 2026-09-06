@@ -1,36 +1,37 @@
 import contextlib
-from dataclasses import dataclass
-from multiprocessing.managers import DictProxy, SyncManager
 import os
+import queue
 import signal
 import threading
 import time
+from dataclasses import dataclass
+from multiprocessing.managers import DictProxy, SyncManager
 from typing import Callable
 
 import click
 import mujoco
-import mujoco._functions
 import mujoco._enums
+import mujoco._functions
 import numpy as np
 from mujoco._structs import MjData, MjModel
-import mujoco._enums
 
+import stretch_mujoco.config as config
+import stretch_mujoco.utils as utils
+from stretch_mujoco.datamodels.status_command import CommandBaseVelocity, CommandMove, StatusCommand
 from stretch_mujoco.datamodels.status_stretch_camera import StatusStretchCameras
 from stretch_mujoco.datamodels.status_stretch_joints import StatusStretchJoints
 from stretch_mujoco.datamodels.status_stretch_sensors import StatusStretchSensors
 from stretch_mujoco.enums.actuators import Actuators
 from stretch_mujoco.enums.stretch_cameras import StretchCameras
-import stretch_mujoco.config as config
 from stretch_mujoco.enums.stretch_sensors import StretchSensors
-from stretch_mujoco.humanoid.mesh_animator import HumanoidMeshAnimator
-from stretch_mujoco.semantics import SemanticWorld
 from stretch_mujoco.mujoco_server_camera_manager import (
-    MujocoServerCameraManagerThreaded,
     MujocoServerCameraManagerSync,
+    MujocoServerCameraManagerThreaded,
 )
-from stretch_mujoco.datamodels.status_command import CommandBaseVelocity, CommandMove, StatusCommand
 from stretch_mujoco.mujoco_server_sensor_manager import MujocoServerSensorManagerThreaded
-import stretch_mujoco.utils as utils
+from stretch_mujoco.npc import NpcCommand
+from stretch_mujoco.npc.system import NpcSystem
+from stretch_mujoco.semantics import SemanticWorld
 from stretch_mujoco.utils import FpsCounter
 
 
@@ -41,16 +42,15 @@ class MujocoServerProxies:
     _cameras: "DictProxy[str, StatusStretchCameras]"
     _sensors: "DictProxy[str, StatusStretchSensors]"
     _joint_limits: "DictProxy[str, dict[Actuators, tuple[float, float]]]"
-    _humanoid_animation: "DictProxy[str, str]"
-    _humanoid_sit_target: "DictProxy[str, str]"
-    _humanoid_navigation_target: "DictProxy[str, str]"
-    _humanoid_playback_speed: "DictProxy[str, float]"
     _object_visibility: "DictProxy[str, dict[str, bool]]"
     _grasped_object: "DictProxy[str, str]"
     _grasp_validation_target: "DictProxy[str, str]"
     _grasp_metrics: "DictProxy[str, dict]"
     _robot_motion_speed: "DictProxy[str, float]"
     _semantic_state: "DictProxy[str, dict]"
+    _npc_command_queue: object
+    _npc_states: "DictProxy[str, dict]"
+    _npc_receipt_queue: object
 
     def __setattr__(self, name: str, value) -> None:
         try:
@@ -91,30 +91,6 @@ class MujocoServerProxies:
 
         self._joint_limits["val"] = limits
 
-    def get_humanoid_animation(self) -> str:
-        return self._humanoid_animation["val"]
-
-    def set_humanoid_animation(self, animation: str) -> None:
-        self._humanoid_animation["val"] = animation
-
-    def get_humanoid_sit_target(self) -> str:
-        return self._humanoid_sit_target["val"]
-
-    def set_humanoid_sit_target(self, site_name: str) -> None:
-        self._humanoid_sit_target["val"] = site_name
-
-    def get_humanoid_navigation_target(self) -> str:
-        return self._humanoid_navigation_target["val"]
-
-    def set_humanoid_navigation_target(self, site_name: str) -> None:
-        self._humanoid_navigation_target["val"] = site_name
-
-    def get_humanoid_playback_speed(self) -> float:
-        return float(self._humanoid_playback_speed["val"])
-
-    def set_humanoid_playback_speed(self, speed: float) -> None:
-        self._humanoid_playback_speed["val"] = float(speed)
-
     def get_object_visibility(self) -> dict[str, bool]:
         return dict(self._object_visibility["val"])
 
@@ -153,6 +129,32 @@ class MujocoServerProxies:
     def set_semantic_state(self, state: dict) -> None:
         self._semantic_state["val"] = state
 
+    def submit_npc_command(self, command: NpcCommand) -> None:
+        self._npc_command_queue.put(command.to_dict())
+
+    def get_pending_npc_command(self) -> dict | None:
+        try:
+            return self._npc_command_queue.get_nowait()
+        except queue.Empty:
+            return None
+
+    def set_npc_states(self, states: dict[str, dict]) -> None:
+        self._npc_states["val"] = states
+
+    def get_npc_states(self) -> dict[str, dict]:
+        return dict(self._npc_states["val"])
+
+    def push_npc_receipt(self, receipt: dict) -> None:
+        self._npc_receipt_queue.put(receipt)
+
+    def drain_npc_receipts(self) -> tuple[dict, ...]:
+        receipts = []
+        while True:
+            try:
+                receipts.append(self._npc_receipt_queue.get_nowait())
+            except queue.Empty:
+                return tuple(receipts)
+
     @staticmethod
     def default(manager: SyncManager) -> "MujocoServerProxies":
         return MujocoServerProxies(
@@ -161,10 +163,6 @@ class MujocoServerProxies:
             _cameras=manager.dict({"val": StatusStretchCameras.default()}),
             _sensors=manager.dict({"val": StatusStretchSensors.default()}),
             _joint_limits=manager.dict({"val": {}}),
-            _humanoid_animation=manager.dict({"val": "idle"}),
-            _humanoid_sit_target=manager.dict({"val": "chair_right_sit"}),
-            _humanoid_navigation_target=manager.dict({"val": ""}),
-            _humanoid_playback_speed=manager.dict({"val": 1.0}),
             _object_visibility=manager.dict({"val": {}}),
             _grasped_object=manager.dict({"val": ""}),
             _grasp_validation_target=manager.dict({"val": ""}),
@@ -173,11 +171,13 @@ class MujocoServerProxies:
             _semantic_state=manager.dict(
                 {"val": {"time": 0.0, "objects": {}, "interaction_points": {}}}
             ),
+            _npc_command_queue=manager.Queue(),
+            _npc_states=manager.dict({"val": {}}),
+            _npc_receipt_queue=manager.Queue(),
         )
 
 
 class BaseController:
-
     def __init__(self, mujoco_server: "MujocoServer") -> None:
         self.mujoco_server = mujoco_server
         self.last_command: CommandMove | CommandBaseVelocity | None = None
@@ -366,7 +366,7 @@ class MujocoServer:
             self.mjmodel.actuator_ctrlrange[actuator_id] = (-40.0, 40.0)
 
         self.mjdata = MjData(self.mjmodel)
-        self.humanoid_animator = HumanoidMeshAnimator(self.mjmodel)
+        self.npc_system = NpcSystem.from_model(self.mjmodel)
         self._object_visibility_state: dict[str, bool] = {}
         self._object_geom_defaults: dict[int, tuple[float, int, int]] = {}
         self._grasp_attachment_object = ""
@@ -481,6 +481,9 @@ class MujocoServer:
         """
         Clean up C++ resources
         """
+        self.npc_system.fail_active_commands(float(self.mjdata.time), "simulator_restarted")
+        for receipt in self.npc_system.drain_receipts():
+            self.data_proxies.push_npc_receipt(receipt.to_dict())
         self.request_to_stop()
 
         if isinstance(self.camera_manager, MujocoServerCameraManagerThreaded):
@@ -591,14 +594,17 @@ class MujocoServer:
 
         self.physics_fps_counter.tick(sim_time=data.time)
         self._apply_robot_motion_speed()
-        self.humanoid_animator.update(
-            sim_time=data.time,
-            clip=self.data_proxies.get_humanoid_animation(),
-            data=data,
-            sit_target_site=self.data_proxies.get_humanoid_sit_target(),
-            navigation_target_site=self.data_proxies.get_humanoid_navigation_target(),
-            speed_scale=self.data_proxies.get_humanoid_playback_speed(),
+        while True:
+            command_payload = self.data_proxies.get_pending_npc_command()
+            if command_payload is None:
+                break
+            self.npc_system.submit(NpcCommand.from_dict(command_payload))
+        self.npc_system.step(model, data, float(data.time))
+        self.data_proxies.set_npc_states(
+            {npc_id: state.to_dict() for npc_id, state in self.npc_system.states(data).items()}
         )
+        for receipt in self.npc_system.drain_receipts():
+            self.data_proxies.push_npc_receipt(receipt.to_dict())
         self._apply_grasp_attachment(data)
         self._update_grasp_metrics(data)
         self._apply_object_visibility()
