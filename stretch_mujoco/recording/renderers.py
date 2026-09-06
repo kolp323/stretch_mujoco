@@ -35,56 +35,46 @@ def event_lines(snapshot: dict[str, Any]) -> list[str]:
 
 
 def annotate_3d_frame(rgb: np.ndarray, snapshot: dict[str, Any]) -> np.ndarray:
-    """Add a readable inspection HUD without changing simulation state."""
+    """Add a compact top status strip without changing simulation state."""
     frame = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
     height, width = frame.shape[:2]
-    panel_width = min(330, width // 3)
+    strip_height = min(104, max(52, height // 6))
     overlay = frame.copy()
-    cv2.rectangle(overlay, (0, 0), (panel_width, height), (17, 25, 35), thickness=-1)
-    cv2.addWeighted(overlay, 0.82, frame, 0.18, 0, frame)
+    cv2.rectangle(overlay, (0, 0), (width, strip_height), (17, 25, 35), thickness=-1)
+    cv2.addWeighted(overlay, 0.68, frame, 0.32, 0, frame)
     cv2.putText(
         frame,
-        "OFFICE NPC / 3D PLAYBACK",
-        (24, 34),
+        "OFFICE NPC",
+        (14, 22),
         cv2.FONT_HERSHEY_SIMPLEX,
-        0.62,
+        0.42,
         (240, 244, 248),
-        2,
+        1,
         cv2.LINE_AA,
     )
     cv2.putText(
         frame,
         format_clock(float(snapshot.get("minute_of_day", 0.0))),
-        (24, 69),
+        (14, 45),
         cv2.FONT_HERSHEY_SIMPLEX,
-        0.92,
+        0.58,
         (99, 210, 255),
-        2,
-        cv2.LINE_AA,
-    )
-    cv2.putText(
-        frame,
-        "NPC STATUS",
-        (24, 108),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.48,
-        (163, 184, 203),
         1,
         cv2.LINE_AA,
     )
-    y = 140
-    for agent_id, state in sorted(snapshot["agents"].items()):
+    agents = sorted(snapshot["agents"].items())
+    status_x = min(170, width // 3)
+    status_width = max(1, (width - status_x - 8) // max(1, len(agents)))
+    for index, (agent_id, state) in enumerate(agents):
         action = str(state.get("action", "idle")).replace("_", " ").upper()
-        location = str(state.get("location", "unknown")).replace("_", " ")
-        target = state.get("target")
         display_name = agent_id.replace("employee_", "NPC ").replace("_", " ")
-        cv2.rectangle(frame, (18, y - 22), (panel_width - 18, y + 39), (38, 55, 70), thickness=-1)
+        x = status_x + index * status_width
         cv2.putText(
             frame,
             display_name,
-            (30, y),
+            (x, 23),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.54,
+            0.42,
             (245, 247, 250),
             1,
             cv2.LINE_AA,
@@ -92,69 +82,25 @@ def annotate_3d_frame(rgb: np.ndarray, snapshot: dict[str, Any]) -> np.ndarray:
         cv2.putText(
             frame,
             action,
-            (30, y + 21),
+            (x, 45),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.45,
+            0.38,
             (115, 222, 172),
             1,
             cv2.LINE_AA,
         )
-        detail = f"at {location}" + (f" -> {str(target).replace('_', ' ')}" if target else "")
+    latest_event = event_lines(snapshot)
+    if latest_event and strip_height >= 70:
         cv2.putText(
             frame,
-            detail,
-            (30, y + 38),
+            latest_event[-1],
+            (14, strip_height - 10),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.38,
-            (194, 207, 220),
+            0.34,
+            (215, 225, 232),
             1,
             cv2.LINE_AA,
         )
-        y += 76
-    cv2.putText(
-        frame,
-        "ROBOT TASKS",
-        (24, y + 2),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.48,
-        (163, 184, 203),
-        1,
-        cv2.LINE_AA,
-    )
-    robot_tasks = snapshot.get("robot_tasks", [])
-    if not robot_tasks:
-        cv2.putText(
-            frame,
-            "No robot task in this clip",
-            (30, y + 25),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.38,
-            (194, 207, 220),
-            1,
-            cv2.LINE_AA,
-        )
-    else:
-        for task in robot_tasks[-2:]:
-            status = str(task.get("status", "unknown")).upper()
-            object_id = str(task.get("object", "item")).replace("_", " ")
-            destination = str(task.get("destination", "destination")).replace("_", " ")
-            cv2.putText(
-                frame,
-                f"{status}: {object_id} -> {destination}",
-                (30, y + 25),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.38,
-                (115, 222, 172) if status == "SUCCEEDED" else (255, 212, 112),
-                1,
-                cv2.LINE_AA,
-            )
-            y += 20
-    y = height - 18
-    for line in reversed(event_lines(snapshot)[-4:]):
-        cv2.putText(
-            frame, line, (24, y), cv2.FONT_HERSHEY_SIMPLEX, 0.38, (215, 225, 232), 1, cv2.LINE_AA
-        )
-        y -= 19
     return frame
 
 
@@ -207,17 +153,15 @@ class MujocoSnapshotRenderer:
         self.camera = mujoco.MjvCamera()
         self.camera.type = mujoco.mjtCamera.mjCAMERA_FREE
         self.camera.lookat[:] = (0.0, 0.0, 0.8)
-        if Path(scene_path).name.startswith("native_office_"):
-            overview_id = mujoco.mj_name2id(
-                self.model, mujoco.mjtObj.mjOBJ_CAMERA, "office_overview"
-            )
-            if overview_id >= 0:
-                self.camera.type = mujoco.mjtCamera.mjCAMERA_FIXED
-                self.camera.fixedcamid = overview_id
-            else:
-                self.camera.distance = 9.5
-                self.camera.azimuth = 45.0
-                self.camera.elevation = -26.0
+        overview_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_CAMERA, "office_overview")
+        if overview_id >= 0:
+            # Keep the full office inside a close, steep free-camera view.  The
+            # authored overview camera is outside the room and its low angle is
+            # frequently occluded by walls in offline recordings.
+            self.camera.lookat[:] = (0.0, 0.15, 0.75)
+            self.camera.distance = 6.4
+            self.camera.azimuth = 90.0
+            self.camera.elevation = -63.0
         else:
             self.camera.distance = 19.0
             self.camera.azimuth = 45.0
