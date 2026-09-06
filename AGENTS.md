@@ -51,19 +51,149 @@ Treat `aaa_workspace/docs/current.md` as the maintained implementation record fo
 - Never place credentials, private asset locations, machine-specific secrets, generated recordings, or restricted asset contents in `current.md`. Repository-relative paths and reproducible commands are preferred.
 - At handoff, ensure the document's completed work, remaining work, and recommended next step agree with the code and tests in the worktree.
 
-## Commit & Pull Request Guidelines
+## Agent Git Isolation, Commits, and Pull Requests
 
-Recent commits use prefixes such as `feat:`, `fix:`, and `chore:`, although older history is mixed; use one focused subject. PRs should describe scope, verification commands/results, asset regeneration, and any XML, site, semantic-ID, or public API changes. Include screenshots or reproduction steps for viewer, scene, or visual changes, and request review from the relevant module owner.
+Every agent-authored change must be developed as an independently reviewable
+unit. A change task is complete only when it ends in at least one verified local
+commit on a dedicated task branch, not as an uncommitted patch in a shared
+worktree. These rules apply to code, tests, documentation, XML, and assets.
 
-### Git Hygiene and PR Workflow
+### Branch topology and ownership
 
-- Configure and retain this repository's commit identity as `kolp323 <1317416016@qq.com>`.
-- Develop each independently reviewable change on a focused feature branch (for example, `feat/npc-system`); do not commit directly to the integration branch.
-- Keep each commit focused and independently understandable. Use conventional prefixes such as `feat(npc):`, `fix(npc):`, `test(npc):`, and `docs(npc):`; separate code, asset/XML, test, and documentation changes when that improves reviewability.
-- Before staging, inspect `git status` and `git diff`. Stage explicit paths rather than using `git add .`, and do not include unrelated changes, local task files, generated outputs, recordings, or diagnostic artifacts. The repository ignores `/aaa_workspace/task/`, `/outputs/`, and `/stretch_mujoco/recording/` for this reason.
-- Before opening or updating a PR, rebase the feature branch onto its target branch, resolve conflicts locally, and run the focused tests for the changed behavior. Run the full suite and pre-commit when practical; otherwise state exactly which checks were run and why broader checks were not run.
-- Review the final PR diff against the target branch. The PR description must state scope, non-goals, verification commands and results, compatibility or public-interface changes, asset/XML regeneration details, and screenshots or reproduction steps for scene or viewer changes.
-- After a rebase of an already-pushed feature branch, use `git push --force-with-lease`, never an unguarded force push.
+- `main` is the original-project baseline. Never commit or push directly to it.
+- `feat/npc-system` is the NPC integration branch and its final PR targets
+  `main`. Only the designated integration owner may update this branch.
+- Each task branches from `origin/feat/npc-system` as
+  `feat/npc/<scope>`, `fix/npc/<scope>`, `test/npc/<scope>`, or
+  `docs/npc/<scope>` and opens a task PR back to `feat/npc-system`.
+- One agent owns one task branch and one worktree. Never share a task worktree,
+  commit on another agent's branch, or mix independently reviewable tasks on a
+  single branch.
+- Configure only this repository's local commit identity as
+  `kolp323 <1317416016@qq.com>`; never change the global Git identity.
+
+### Start every task in an isolated worktree
+
+Before editing, inspect the launching worktree:
+
+```bash
+git status --short
+git diff --name-only
+git branch --show-current
+git fetch origin --prune
+```
+
+Treat every pre-existing modification and untracked file as user-owned. Do not
+stash, reset, clean, overwrite, move, or include it in a task. A dirty launching
+worktree must remain untouched, but it does not block creating a new sibling
+worktree from the remote integration baseline:
+
+```bash
+task_type=feat
+task_scope=short-unique-scope
+git worktree add "../stretch_mujoco-npc-${task_scope}" \
+  -b "${task_type}/npc/${task_scope}" origin/feat/npc-system
+cd "../stretch_mujoco-npc-${task_scope}"
+git status --short
+git branch --show-current
+```
+
+The new task worktree must begin clean and on the intended task branch. If the
+branch or worktree path already exists, choose a unique scope; do not reuse,
+delete, or take ownership of an existing worktree. If isolation cannot be
+established, stop before editing and report the exact conflict.
+
+Before implementation, define the task boundary in working notes: one
+objective, the expected files or owning modules, explicit non-goals, and the
+focused verification command. Expand that boundary only when required for
+correctness, and report why. Do not opportunistically fix unrelated issues.
+
+### Produce atomic, reviewable commits
+
+An agent may create local commits without another prompt when working on its
+dedicated task branch. Each commit must represent one coherent change, be
+independently understandable, and leave the branch in a usable state. Keep
+implementation and its directly supporting tests together when they form one
+behavioral unit; split unrelated documentation, generated assets/XML, or
+mechanical changes when separate review or rollback would be clearer.
+
+Use Conventional Commit subjects such as `feat(npc):`, `fix(npc):`,
+`test(npc):`, and `docs(npc):`. Before every commit:
+
+```bash
+git config --local user.name
+git config --local user.email
+git status --short
+git diff -- <task-paths>
+# Run the focused checks defined for this task.
+git add <explicit-path-1> <explicit-path-2>
+git diff --cached --check
+git diff --cached --name-status
+git diff --cached
+git commit -m "<type>(npc): concise task summary"
+git status --short
+```
+
+The identity must be `kolp323 <1317416016@qq.com>`. Stage explicit paths only;
+never use `git add .`, `git add -A`, or `git commit -a`. Before committing,
+confirm every staged path is inside the declared task boundary and every
+staged hunk is necessary. Do not stage `.env`, `*.local.json`, private SMPL-X
+inputs, unmanifested generated assets, checkpoints, datasets, recordings,
+`outputs/`, `aaa_workspace/task/`, diagnostic dumps, or unrelated user work.
+Ignored files are still user-owned and are never disposable by default.
+
+Run focused checks that exercise the changed behavior before committing. Run
+the full suite and pre-commit when practical. A known or environment-dependent
+failure may be committed only when the task change itself is complete, the
+failure is not caused or hidden by the change, and the exact command and output
+are recorded for handoff and the PR. Never claim an unrun check passed.
+
+After the final commit, the task worktree should be clean. Any intentional
+uncommitted file must be within task scope and explicitly reported; unrelated
+or unexplained residue means the task is not ready for PR.
+
+### Prepare a clean task PR
+
+Synchronize and review only from a clean task worktree:
+
+```bash
+git status --short  # Must be empty before rebasing.
+git fetch origin --prune
+git rebase origin/feat/npc-system
+# Rerun the relevant checks after rebasing.
+git diff --check origin/feat/npc-system...HEAD
+git diff --name-status origin/feat/npc-system...HEAD
+git log --oneline origin/feat/npc-system..HEAD
+git status --short
+git push -u origin HEAD
+```
+
+Review the complete range diff, not only the last commit. It must contain only
+the declared task, with no merge commits, unrelated formatting, local files,
+or generated artifacts. After rebasing an already-pushed task branch, use
+`git push --force-with-lease`; never use an unguarded force push. Task agents
+never push directly to `main` or `feat/npc-system`.
+
+Every task PR targets `feat/npc-system` and states scope, non-goals, commit
+breakdown, exact checks and results, known failures or risks, compatibility and
+public-interface impact, and any asset/XML/schema/semantic-ID regeneration.
+Include screenshots, video, or reproduction steps for scene or viewer changes.
+Agents may create or update the task PR when GitHub access is available;
+otherwise leave the verified local commits intact and report the exact push and
+PR commands required.
+
+When NPC integration is ready, its owner rebases `feat/npc-system` onto
+`origin/main`, runs the agreed integration checks, reviews the full integration
+diff, pushes with `--force-with-lease` when history changed, and opens the final
+PR to `main`.
+
+### Required handoff
+
+Every agent reports the task branch and worktree, base and target branches,
+commit SHA(s), `git status --short`, checks run with observed results, and
+remaining risks or PR steps. Disclose uncommitted work, failed checks,
+conflicts, and inability to push; never imply that an uncommitted patch is a
+completed isolated task.
 
 ## Security & Configuration Tips
 
