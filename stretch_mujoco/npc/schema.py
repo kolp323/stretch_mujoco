@@ -54,6 +54,8 @@ class NpcEmbodiment:
     animation_graph: str
     collision_profile: str
     scale: float = 1.0
+    visual_identity: str | None = None
+    accessories: tuple[str, ...] = ()
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "NpcEmbodiment":
@@ -65,12 +67,25 @@ class NpcEmbodiment:
         scale = float(payload.get("scale", 1.0))
         if not 0.1 <= scale <= 10.0:
             raise ValueError("NPC embodiment scale must be between 0.1 and 10.0")
+        raw_accessories = payload.get("accessories", [])
+        if (
+            not isinstance(raw_accessories, list)
+            or not all(isinstance(item, str) and item for item in raw_accessories)
+            or len(set(raw_accessories)) != len(raw_accessories)
+        ):
+            raise ValueError("NPC embodiment accessories must be unique non-empty string IDs")
         return cls(
             bundle=str(payload["bundle"]),
             appearance=str(payload["appearance"]),
             animation_graph=str(payload["animation_graph"]),
             collision_profile=str(payload["collision_profile"]),
             scale=scale,
+            visual_identity=(
+                str(payload["visual_identity"])
+                if payload.get("visual_identity") is not None
+                else None
+            ),
+            accessories=tuple(raw_accessories),
         )
 
 
@@ -183,6 +198,7 @@ class NpcPopulation:
     asset_manifest: str
     npcs: dict[str, NpcDefinition]
     clock: dict[str, Any]
+    appearance_catalog: str | None = None
     source_path: Path | None = None
 
     @classmethod
@@ -213,11 +229,32 @@ class NpcPopulation:
             )
             for npc_id, definition in npc_payloads.items()
         }
+        appearance_catalog = (
+            str(payload["appearance_catalog"])
+            if payload.get("appearance_catalog") is not None
+            else None
+        )
+        if appearance_catalog is not None:
+            if source_path is None:
+                raise ValueError("Population appearance_catalog requires a source path")
+            from .appearance_pipeline.catalog import AppearanceCatalog
+
+            catalog_path = source_path.parent / appearance_catalog
+            catalog = AppearanceCatalog.from_json(catalog_path)
+            for definition in npcs.values():
+                identity_id = definition.embodiment.visual_identity
+                if identity_id is None:
+                    raise ValueError(
+                        f"NPC '{definition.npc_id}' must define visual_identity when "
+                        "appearance_catalog is configured"
+                    )
+                catalog.identity_for_appearance(identity_id, definition.embodiment.appearance)
         return cls(
             scene=str(payload["scene"]),
             asset_manifest=str(payload["asset_manifest"]),
             npcs=npcs,
             clock=dict(_require_mapping(payload["clock"], "Population clock")),
+            appearance_catalog=appearance_catalog,
             source_path=source_path,
         )
 

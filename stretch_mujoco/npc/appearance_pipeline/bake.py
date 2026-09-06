@@ -45,8 +45,29 @@ def bake_appearance(recipe_path: str | Path, output_dir: str | Path) -> BakedApp
     manifest are projections and should be regenerated instead of hand-edited.
     """
     source = Path(recipe_path).resolve()
-    output = Path(output_dir).resolve()
     recipe = _read_recipe(source)
+    return bake_appearance_definition(
+        recipe,
+        source.parent,
+        output_dir,
+        recipe_sha=_sha256(source),
+    )
+
+
+def bake_appearance_definition(
+    recipe: Mapping[str, Any],
+    source_root: str | Path,
+    output_dir: str | Path,
+    *,
+    recipe_sha: str,
+) -> BakedAppearance:
+    """Bake a validated in-memory recipe rooted at ``source_root``.
+
+    ``recipe_sha`` identifies the immutable catalog or recipe source used for
+    the projection and is persisted in the generated sidecar manifest.
+    """
+    root = Path(source_root).resolve()
+    output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
 
     appearance_id = _required_string(recipe, "appearance_id", "Bake recipe")
@@ -60,7 +81,7 @@ def bake_appearance(recipe_path: str | Path, output_dir: str | Path) -> BakedApp
     for slot, raw_texture in textures.items():
         slot_name = str(slot)
         texture = _mapping(raw_texture, f"Texture slot '{slot_name}'")
-        image = _bake_texture(source.parent, texture, slot_name)
+        image = _bake_texture(root, texture, slot_name)
         filename = str(texture.get("output", f"{slot_name}.png"))
         destination = (output / filename).resolve()
         if output not in destination.parents:
@@ -83,7 +104,7 @@ def bake_appearance(recipe_path: str | Path, output_dir: str | Path) -> BakedApp
             str(path.name if path.parent == output else path.relative_to(output)): digests[slot]
             for slot, path in written.items()
         },
-        "recipe_sha256": _sha256(source),
+        "recipe_sha256": recipe_sha,
     }
     _write_json(sidecar, sidecar_payload)
     return BakedAppearance(appearance_id, topology_id, written, digests, sidecar)

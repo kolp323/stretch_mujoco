@@ -2,6 +2,7 @@
   "schema_version": 2,
   "scene": "office_scene.xml",
   "asset_manifest": "assets/humanoid/generated/animations/manifest.json",
+  "appearance_catalog": "assets/humanoid/generated/animations/appearance_catalog.json",
   "clock": {"start": "09:00", "minutes_per_second": 1.0},
   "npcs": {
     "employee_01": {
@@ -14,7 +15,9 @@
       },
       "embodiment": {
         "bundle": "smplx_office_neutral_v1",
-        "appearance": "alex_warm_v1",
+        "appearance": "office_warm_glasses_chin_beard_v1",
+        "visual_identity": "office_warm_glasses_chin_beard_v1",
+        "accessories": ["cap_simple_v1"],
         "animation_graph": "office_humanoid_v1",
         "collision_profile": "adult_humanoid_v1",
         "scale": 1.0
@@ -38,7 +41,8 @@
       },
       "embodiment": {
         "bundle": "smplx_office_neutral_v1",
-        "appearance": "employee_default_v1",
+        "appearance": "office_short_brown_freckles_v1",
+        "visual_identity": "office_short_brown_freckles_v1",
         "animation_graph": "office_humanoid_v1",
         "collision_profile": "adult_humanoid_v1",
         "scale": 1.0

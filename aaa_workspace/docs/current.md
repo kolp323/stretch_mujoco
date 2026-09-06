@@ -92,14 +92,52 @@ recipe 的最小形式如下（路径相对 recipe 文件）：
 
 `slots.py` 只保留 `body/hair/top/bottom/shoes` 的命名占位和明确失败接口，尚不生成 mesh 或 geom。这是刻意限制：当前的单人体 mesh 若复制成多个重叠 geom 再分别赋材质，会产生重叠渲染及不正确的碰撞。只有正式资产已经按这些区域权威拆分为独立 mesh 后，才应扩展该模块来装配分槽几何；在此之前一律使用烘焙纹理。
 
-对于当前由 `_write_material_texture()` 生成的 SMPL-X 平色 atlas，另有 `flat_layers.py`。它只识别生成器定义的 skin/shirt/pants/shoes RGB 区域，并生成透明、UV 对齐的编辑层；它不是通用的人体语义分割器。示例 `alex_warm_v1` 的 layer spec 和 recipe 位于 `assets/humanoid/generated/animations/appearance_sources/alex_warm_v1/`，可依序运行：
+对于当前由 `_write_material_texture()` 生成的 SMPL-X 平色 atlas，另有 `flat_layers.py`。它只识别生成器定义的 skin/shirt/pants/shoes RGB 区域，并生成透明、UV 对齐的编辑层；它不是通用的人体语义分割器。示例 `office_warm_base_v1` 的 layer spec 和 recipe 位于 `assets/humanoid/generated/animations/appearance_sources/office_warm_base_v1/`，可依序运行：
 
 ```bash
-uv run make_npc_flat_layers --spec .../alex_warm_v1/layers.json --output-dir .../alex_warm_v1/layers
-uv run bake_npc_appearance --recipe .../alex_warm_v1/recipe.json \
-  --output-dir .../appearances/alex_warm_v1 \
+uv run make_npc_flat_layers --spec .../office_warm_base_v1/layers.json --output-dir .../office_warm_base_v1/layers
+uv run bake_npc_appearance --recipe .../office_warm_base_v1/recipe.json \
+  --output-dir .../appearances/office_warm_base_v1 \
   --asset-manifest .../animations/manifest.json --bundle smplx_office_neutral_v1
 ```
+
+`hair_layers.py` 复用已烘焙 idle OBJ 的顶点与 UV，只栅格化高于设定 head height 的头部面，生成短发发帽层。它当前提供 `employee_short_black_v1`、`employee_short_brown_v1`、`employee_short_dark_blonde_v1` 和 `employee_short_auburn_v1` 四种可登记 appearance；示例 spec 位于 `appearance_sources/short_hair_v1/hair.json`。这四个外观只改变同一短发覆盖区域的颜色，不能增加发丝、长发轮廓或物理摆动。生成与登记命令为：
+
+```bash
+uv run make_npc_short_hair_layers --spec .../short_hair_v1/hair.json --output-dir .../short_hair_v1/layers
+uv run bake_npc_appearance --recipe .../employee_short_black_v1.recipe.json \
+  --output-dir .../appearances/employee_short_black_v1 \
+  --asset-manifest .../animations/manifest.json --bundle smplx_office_neutral_v1
+```
+
+### 3.0.1 可组合身份 catalog（当前事实源）
+
+文件：`stretch_mujoco/npc/appearance_pipeline/catalog.py`
+
+外观的权威输入不再是人口配置中散落的最终 PNG 路径，而是 versioned appearance catalog。catalog 只拥有四类事实：base atlas 及其 SHA-256、可重用 layer 的 category/path/SHA-256、稳定 visual identity，以及 identity 对应的最终 `appearance_id`。layer 可以被多个 identity 共用，identity 则固定列出 layer 顺序和可审计 traits；生成的 `body.png`、sidecar 和 MJCF material 都是可删除投影。
+
+```text
+catalog identity + layer hashes
+    -> bake_npc_identity
+    -> content-addressed recipe receipt / final body.png
+    -> NPC asset manifest appearance
+    -> MuJoCo scene material
+```
+
+`NpcEmbodiment` 仍保留 `appearance` 以兼容现有 scene builder 和 runtime，但在 population 设置 `appearance_catalog` 后必须额外设置 `visual_identity`。解析会加载 catalog，并拒绝 identity 不存在、layer/base 被篡改，或 identity 产生的 `appearance_id` 与 embodiment 不一致的配置。这样 agent profile 的姓名/岗位与可渲染身份解耦，而 visual identity 在重建时仍是确定的。
+
+本地生产示例 catalog 位于 `assets/humanoid/generated/animations/appearance_catalog.json`，当前包含 Alex 的暖肤色办公装、Morgan 的棕色短发、黑色/深金/赤褐色短发，以及雀斑、眉毛/胡须、2D 圆框眼镜 identity。该 catalog 与派生 PNG 一样位于被忽略的本地 SMPL-X 输出目录，不能作为可再分发资产提交；应从受许可的输入和 recipe 重新生成。
+
+```bash
+uv run bake_npc_identity \
+  --catalog stretch_mujoco/models/assets/humanoid/generated/animations/appearance_catalog.json \
+  --identity office_warm_base_v1 \
+  --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_warm_base_v1 \
+  --asset-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
+  --bundle smplx_office_neutral_v1
+```
+
+当前 catalog 支持任意顺序的同 UV 2D layers（例如 skin、freckles、face_detail、hair、top、bottom、shoes）；它不承诺防止两个绘制者选择语义冲突的 layer。该类组合策略由内容制作约束管理。2D 眼镜只是脸部贴花，长发、真实镜框、帽子和背包仍属于未来 `slots.py` 的独立 mesh 工作。
 
 ### 3.1 Population schema
 
@@ -310,6 +348,12 @@ pull_npc_receipts() -> tuple[NpcCommandReceipt, ...]
 v1 JSONL 默认仍可原样读取，避免破坏历史录制；调用 `read_snapshots(..., upgrade_v1=True)` 或 `adapt_snapshot_v1()` 可以得到最小 v2 投影。
 
 离线 3-D renderer 使用 snapshot 中记录的 animation phase 选择帧，不再始终按输出视频的全局 frame index 取模。
+
+包含 `office_overview` camera 的原生办公室录制场景使用近距离、陡俯视的 free camera（lookat `(0, 0.15, 0.75)`、distance `6.4`、azimuth `90`、elevation `-63`），而不使用场景中位于室外的低角度 `office_overview` fixed camera。场景开口在南侧；在入口正视的 `azimuth=180` 基础上，相机围绕场景中心逆时针旋转 90° 至 `azimuth=90`。该调整只改变水平朝向，保持距离和高度不变，并避免墙面遮挡；不改变 MuJoCo 世界状态或 snapshot 位姿。
+
+3-D renderer 的录制信息从整列左侧状态栏改为顶部半透明窄条：它显示时间、每个 NPC 的 ID/动作和最新事件。这样状态信息仍可检查，但不再遮挡画面左侧或在底部叠加多行字幕。
+
+验证：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MUJOCO_GL=egl uv run pytest -q tests/test_recording.py` 通过（5 passed）；直接运行 pytest 会被环境自动发现的 ROS `launch_testing` 插件阻塞，原因是该环境缺少 `lark`，并非此渲染器测试失败。
 
 原 `.gitignore` 曾将整个 `/stretch_mujoco/recording/` 目录忽略，这会连 Python 源码一起排除。本次将规则收窄为仅忽略该目录中的 JSONL、MP4 和 recording manifest，使录制模块源码可以进入版本控制。
 
@@ -607,3 +651,85 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q tests
 ```
 
 对本次暂存文件执行 `uv run pre-commit run` 时，large-file、Black、isort、mdformat 和 codespell 均通过；flake8 仍被 `stretch_mujoco/mujoco_server.py` 与 `stretch_mujoco/stretch_mujoco_simulator.py` 中原项目已有的 unused import、bare except、无占位符 f-string、布尔比较和超长行阻断。新增文件中的 flake8 问题已修正，没有为了通过检查而修改这些与 NPC 改造无关的历史代码。
+
+## 11. 外观组合与身份 catalog（第四轮，进行中）
+
+本轮在 `appearance_pipeline/catalog.py` 建立了“一个事实源、多个投影”的外观边界。`AppearanceCatalog` 对 base atlas、每个可组合 layer 和 visual identity 都记录并验证 SHA-256；identity 以稳定 ID、ordered layer IDs、traits 和最终 `appearance_id` 表示。`bake_npc_identity` 依据 catalog 生成最终 `body.png`，再复用既有资产 manifest 登记流程；它不会修改 MuJoCo runtime 的材质数据，也不会允许未校验的磁盘文件在运行时热加载。
+
+population schema v2 兼容保留 `embodiment.appearance`，新增可选 `visual_identity` 与顶层 `appearance_catalog`。一旦声明 catalog，每个 NPC 必须声明 identity，且解析会确认该 identity 正好生成该 NPC 的 `appearance`；这使旧 population 无需迁移即可继续运行，而生产配置可以把人名/岗位和可审计的 visual identity 关联起来。当前 catalog 只保留 Alex 的暖色办公装基础、细框眼镜身份和 Morgan 的短发雀斑身份；先前方向错误的短发和面部贴图 identity 已清除，不能再被选用。
+
+当前可组合的 category 是内容元数据而不是渲染 slot：`skin`、`top`、`bottom`、`shoes`、`hair` 均仍合成为单一 `body` 纹理。catalog 允许将 future `freckles`、`face_detail` 等同 UV layer 加入 identity；它不会把长发、眼镜或帽子错误宣称为可实现的轮廓变化，那些仍要求未来的 mesh `slots.py`。
+
+本轮实际验证使用当前本地 `.venv`，因为 `uv` 重建项目包时需要从 PyPI 下载 `uv-build`，但当前网络连接被重置：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -q \
+  tests/test_npc_appearance_catalog.py tests/test_npc_schema.py \
+  tests/test_npc_appearance_bake.py tests/test_npc_hair_layers.py \
+  tests/test_npc_flat_layers.py tests/test_npc_assets.py tests/test_npc_scene_builder.py
+18 passed in 1.68s
+
+.venv/bin/mypy --ignore-missing-imports stretch_mujoco/npc/appearance_pipeline stretch_mujoco/npc/schema.py
+Success: no issues found in 7 source files
+
+catalog bake + production population/asset validation + generated MJCF compilation
+baked=alex_warm_v1 identities=5 mocap_bodies=2
+```
+
+`mdformat`、`codespell` 和 `git diff --check` 也通过。本轮没有将本地受限 SMPL-X 派生 atlas、catalog 或 PNG 提交；它们仍在 ignored `generated/` 下，必须从已获许可的源资产生成。完整 `tests/` suite 在本轮未作为完成证据，因为工具窗口没有返回该长运行进程的终态；上述 focused tests 覆盖新增边界。
+
+## 12. 正式语义 mask 与面部身份细节（第五轮，进行中）
+
+`appearance_pipeline/semantic_masks.py` 将生成器的平色 atlas 和已烘焙 idle OBJ 转换为正式、独立的 `skin.png`、`top.png`、`pants.png`、`shoes.png`、`hair_cap.png` 和 `face.png`。它同时写入 `semantic_masks.json`，记录 topology、base/mesh 来源与每个 mask 的 SHA-256。catalog 现在可声明该 manifest 及其 SHA-256，并逐项复验 mask 文件；因此被篡改的 mask、与 catalog 不同 topology 的 mask 或缺失 mask 都会在烘焙前失败。
+
+`face.png` 仅代表由 head height、半径、前向位置和 outward normal 推导的 face surface，并非人工美术标注的通用人脸分割。`face_details.py` 所有输出都被这个 mask 裁剪；当前保留可重复生成的 `freckles_light_v4`、`brows_soft_brown_v4`、`beard_chin_brown_v4` 和 `glasses_thin_round_v4` layer。最后一项被明确标为 `accessory_2d`：它是无轮廓的贴图视觉效果，不参与碰撞，也不替代未来的独立眼镜 mesh。
+
+```bash
+uv run make_npc_semantic_masks --spec .../semantic_masks_v2/spec.json \
+  --output-dir .../semantic_masks_v2/masks
+uv run make_npc_face_details --spec .../face_details_v4/spec.json \
+  --output-dir .../face_details_v4/layers
+uv run bake_npc_identity --catalog .../appearance_catalog.json \
+  --identity office_warm_glasses_chin_beard_v1 --output-dir .../appearances/office_warm_glasses_chin_beard_v1 \
+  --asset-manifest .../manifest.json --bundle smplx_office_neutral_v1
+```
+
+当前已烘焙的细节组合为 `office_warm_glasses_chin_beard_v1` 和 `office_short_brown_freckles_v1`。当前仍未实现 facial-photo projection、真人身份复刻或 3D 配饰；内容作者需要在统一 UV 上制作受许可 layer，并为需要轮廓的配饰等待 geometry slot。
+
+本轮验证使用本地 `.venv`（`uv` 的网络重建限制仍见第 11 节）：20 个外观、catalog、schema、asset 和 scene-builder 相关测试通过；`mypy --ignore-missing-imports stretch_mujoco/npc/appearance_pipeline stretch_mujoco/npc/schema.py` 通过；production population 和 manifest 校验通过，生成场景可被 MuJoCo 编译，结果为 `identities=8 masks=6 detail_identities=3 mocap_bodies=2`。`mdformat`、`codespell` 和 `git diff --check` 通过。
+
+## 13. 现有人设的配饰组合与离屏复核（第六轮，进行中）
+
+production population 现在选择两个可追溯的组合：Alex Chen 使用 `office_warm_glasses_chin_beard_v1`，Morgan Lee 使用 `office_short_brown_freckles_v1`。人物名称只归属 profile；identity、appearance 和 layer 名称只描述可复用的外观组合，因此任一 NPC 都可选择任一组合。没有在运行时修改材质，也没有覆盖旧输出。
+
+`face_details.py` 现在按 face mask 的每个实质性、不连通 UV 岛分别绘制细节。先前将多个岛合并为一个边界框，会把眼镜等图案画进透明 UV 接缝；新测试确保双岛 mask 的两侧都获得贴图内容。局部离屏审查使用新增的 `tools/render_npc_personas.py`：它先通过 `NpcPopulation`、catalog 与 asset manifest 验证，再在临时的 standalone MJCF 中加入仅供审查的灯光和地面，输出 H.264 MP4；它不修改生产 scene。
+
+复现命令：
+
+```bash
+MUJOCO_GL=egl .venv/bin/python tools/render_npc_personas.py \
+  --population stretch_mujoco/models/office_population.production.example.json \
+  --output outputs/npc_persona_accessories.mp4
+```
+
+首次审查发现旧 face mask 把局部正脸方向反选为 `Y >= 0`，配饰落在头后；旧短发只按高度选择，覆盖了鼻子和耳朵。该输出不再作为推荐身份：新增 face mask v2 使用 `Y <= -0.02` 且 outward normal 的 Y 分量不大于 `-0.35` 选择正脸；短发 v3 额外要求 upward normal，且将最低高度提高到 `1.67m`。重新生成、烘焙并离屏复核后，Alex 的眼镜、眉毛和胡须在正脸，Morgan 的发帽止于额头上方。雀斑是低不透明度贴图，当前审查灯光下较淡。
+
+第二次审查又收窄了 facial decal：仅向不小于主 face island 一半面积的岛绘制，避免把胡须和眼镜重复到 neck/seam island；胡须从口部下移为下巴短胡须，镜圈缩小为细框，并加入贴图式鼻梁和镜腿线。正脸复核中嘴唇不再被胡须覆盖。镜腿在正视时天然不明显，且仍仅为 UV 像素，不会形成侧面可见的实体镜架或碰撞形状。需要可见轮廓、物理碰撞或更精细发型时，仍应引入独立 geometry slot，而不是把 UV decal 宣称为 3D 配饰。
+
+在用户明确要求清理后，所有经渲染证明无效或只绑定旧人物名称的 appearance、face detail、short hair 和 semantic mask v1–v3 资源已从本机的 ignored `generated/` 目录移入系统回收站。catalog 与 manifest 同步收缩：保留 `employee_default_v1`、`office_warm_base_v1`、`office_warm_glasses_chin_beard_v1`、`office_short_brown_freckles_v1` 四个 appearance，以及 `semantic_masks_v2`、`short_hair_v3`、`face_details_v4` 的来源。删除的是可重新生成的本地派生文件，不影响版本库中受跟踪的代码或基础资产。
+
+## 14. 独立 OBJ 配饰（第七轮，进行中）
+
+`NpcEmbodiment.accessories` 现在接受通用 accessory ID。asset manifest 的 bundle 可声明每个 accessory 的 OBJ 与逐 clip/逐 frame anchor JSON；二者都由 SHA-256 校验。scene builder 为人体每个 clip frame 同时生成同名帧的 accessory geom，`MeshSequenceBackend` 因而会在切换 idle、walk、sit 帧时同步切换人体和配饰，不会把眼镜固定在 mocap 根节点。
+
+首个本地 manifest-backed demo 现为 `cap_simple_v1`。先前的 `glasses_thin_round_v1` 已被移入系统回收站。`tools/generate_cap_accessory.py` 从已验证的每帧人体 OBJ 推导头顶 anchor，并生成 OBJ 与 anchor JSON；`employee_01` 通过 `accessories: ["cap_simple_v1"]` 选择它。以下命令渲染 idle、walk、sit 三段近景验收：
+
+```bash
+MUJOCO_GL=egl .venv/bin/python tools/render_npc_personas.py \
+  --population stretch_mujoco/models/office_population.production.example.json \
+  --output outputs/npc_cap_obj_demo.mp4
+```
+
+审查首版后，矩形帽冠和帽檐已替换为更简单的 `12` 边圆形帽檐（半径 `0.095m`）与低多边形圆顶帽冠（半径 `0.078m`、高度 `0.052m`）。逐帧 anchor 维持头顶最大高度下方 `0.01m`：MuJoCo 会重心化 OBJ 的局部 bounds，先前把 anchor 上抬 `0.025m` 的做法会让帽子明显悬空；这一微小 inset 则让帽檐在 idle、walk、sit 可见帧均贴合头顶，且无可见头皮穿透。每次重新生成后必须同步更新 manifest 中 OBJ 和 anchor 的 SHA-256，否则 asset validation 会拒绝场景构建。
+
+当前 OBJ 是可验证的低多边形 demo，只有渲染 geom、无碰撞和物理交互；它不等同已完成艺术资产。后续正式配饰应替换 OBJ、重新生成每帧 anchor 并更新 manifest hash。

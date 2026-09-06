@@ -38,6 +38,10 @@ validate_npc_assets = "stretch_mujoco.npc.assets:main"
 build_npc_scene = "stretch_mujoco.npc.scene_builder:main"
 bake_npc_appearance = "stretch_mujoco.npc.appearance_pipeline.bake:main"
 make_npc_flat_layers = "stretch_mujoco.npc.appearance_pipeline.flat_layers:main"
+make_npc_short_hair_layers = "stretch_mujoco.npc.appearance_pipeline.hair_layers:main"
+bake_npc_identity = "stretch_mujoco.npc.appearance_pipeline.catalog:main"
+make_npc_semantic_masks = "stretch_mujoco.npc.appearance_pipeline.semantic_masks:main"
+make_npc_face_details = "stretch_mujoco.npc.appearance_pipeline.face_details:main"
 
 [build-system]
 requires = ["uv_build>=0.8.9,<0.9.0"]
