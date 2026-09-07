@@ -51,7 +51,7 @@ Treat `aaa_workspace/docs/current.md` as the maintained implementation record fo
 - Never place credentials, private asset locations, machine-specific secrets, generated recordings, or restricted asset contents in `current.md`. Repository-relative paths and reproducible commands are preferred.
 - At handoff, ensure the document's completed work, remaining work, and recommended next step agree with the code and tests in the worktree.
 
-## Agent Git Isolation, Commits, and Pull Requests
+## Agent Git Isolation and Local Commits
 
 Every agent-authored change must be developed as an independently reviewable
 unit. A change task is complete only when it ends in at least one verified local
@@ -65,7 +65,8 @@ worktree. These rules apply to code, tests, documentation, XML, and assets.
   `main`. Only the designated integration owner may update this branch.
 - Each task branches from `origin/feat/npc-system` as
   `feat/npc/<scope>`, `fix/npc/<scope>`, `test/npc/<scope>`, or
-  `docs/npc/<scope>` and opens a task PR back to `feat/npc-system`.
+  `docs/npc/<scope>`. Task branches are local delivery units; they do not open
+  task PRs.
 - One agent owns one task branch and one worktree. Never share a task worktree,
   commit on another agent's branch, or mix independently reviewable tasks on a
   single branch.
@@ -146,13 +147,13 @@ Run focused checks that exercise the changed behavior before committing. Run
 the full suite and pre-commit when practical. A known or environment-dependent
 failure may be committed only when the task change itself is complete, the
 failure is not caused or hidden by the change, and the exact command and output
-are recorded for handoff and the PR. Never claim an unrun check passed.
+are recorded for handoff. Never claim an unrun check passed.
 
 After the final commit, the task worktree should be clean. Any intentional
 uncommitted file must be within task scope and explicitly reported; unrelated
-or unexplained residue means the task is not ready for PR.
+or unexplained residue means the task is not ready for integration handoff.
 
-### Prepare a clean task PR
+### Prepare a clean local handoff
 
 Synchronize and review only from a clean task worktree:
 
@@ -165,33 +166,32 @@ git diff --check origin/feat/npc-system...HEAD
 git diff --name-status origin/feat/npc-system...HEAD
 git log --oneline origin/feat/npc-system..HEAD
 git status --short
-git push -u origin HEAD
 ```
 
 Review the complete range diff, not only the last commit. It must contain only
 the declared task, with no merge commits, unrelated formatting, local files,
-or generated artifacts. After rebasing an already-pushed task branch, use
-`git push --force-with-lease`; never use an unguarded force push. Task agents
-never push directly to `main` or `feat/npc-system`.
+or generated artifacts. A completed task remains as verified local commits for
+the integration owner to review and integrate.
 
-Every task PR targets `feat/npc-system` and states scope, non-goals, commit
-breakdown, exact checks and results, known failures or risks, compatibility and
-public-interface impact, and any asset/XML/schema/semantic-ID regeneration.
-Include screenshots, video, or reproduction steps for scene or viewer changes.
-Agents may create or update the task PR when GitHub access is available;
-otherwise leave the verified local commits intact and report the exact push and
-PR commands required.
+Task agents must not push branches or create, update, close, or otherwise
+operate on pull requests. They must not use GitHub APIs or other remote mutation
+mechanisms unless a human explicitly requests the exact remote action. GitHub
+access being available is not authorization. Do not report a push or PR command
+as a required next step for an ordinary task handoff.
 
-When NPC integration is ready, its owner rebases `feat/npc-system` onto
-`origin/main`, runs the agreed integration checks, reviews the full integration
-diff, pushes with `--force-with-lease` when history changed, and opens the final
-PR to `main`.
+There are no task PRs. A PR may be created only after the entire NPC module is
+ready for integration and a human explicitly requests it. At that point, only
+the integration owner may rebase `feat/npc-system` onto `origin/main`, run the
+agreed integration checks, review the full integration diff, push with
+`--force-with-lease` when history changed, and open the single final PR to
+`main`. Without that explicit human request, leave all remote refs and PR state
+unchanged.
 
 ### Required handoff
 
 Every agent reports the task branch and worktree, base and target branches,
 commit SHA(s), `git status --short`, checks run with observed results, and
-remaining risks or PR steps. Disclose uncommitted work, failed checks,
+remaining risks or integration steps. Disclose uncommitted work, failed checks,
 conflicts, and inability to push; never imply that an uncommitted patch is a
 completed isolated task.
 
