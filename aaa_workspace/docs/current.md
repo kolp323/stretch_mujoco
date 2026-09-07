@@ -137,7 +137,23 @@ uv run bake_npc_identity \
   --bundle smplx_office_neutral_v1
 ```
 
-当前 catalog 支持任意顺序的同 UV 2D layers（例如 skin、freckles、face_detail、hair、top、bottom、shoes）；它不承诺防止两个绘制者选择语义冲突的 layer。该类组合策略由内容制作约束管理。2D 眼镜只是脸部贴花，长发、真实镜框、帽子和背包仍属于未来 `slots.py` 的独立 mesh 工作。
+当前 catalog 支持任意顺序的同 UV 2D layers（例如 skin、freckles、face_detail、hair、top、bottom、shoes）；它不承诺防止两个绘制者选择语义冲突的 layer。该类组合策略由内容制作约束管理。2D 眼镜只是脸部贴花；帽子、背包等独立 OBJ 则走 manifest-backed `accessories` 加逐帧 anchor 的路径。
+
+### 3.0.2 外部 OBJ 配饰预处理（preview）
+
+文件：`tools/prepare_obj_accessory.py`
+
+`prepare_obj_accessory.py` 是一个可复现的本地预处理工具：它从来源归档解出 OBJ，规范化为 MuJoCo 的 metre/Z-up 网格，按每段动画的头顶顶点生成 anchor，并输出 mesh、anchor 与 SHA-256 receipt。当前来源 cap 的输入约定是嵌套归档的 `source/cap.zip` 与其中的 `cap.obj`；工具采用 centimetre/Y-up 到 metre/Z-up 的转换，输出网格将水平包围盒居中且最低点置为局部 `z=0`，逐帧 anchor 才是实际头顶位置。原始归档及其派生网格均属本地 preview 资产，不提交、也不会自动进入生产 manifest。
+
+```bash
+uv run python tools/prepare_obj_accessory.py \
+  --source-archive aaa_workspace/raw_resources/objs/cap.zip \
+  --manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
+  --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/accessories \
+  --accessory-id cap_source_v1
+```
+
+要启用该 preview，必须在副本 manifest 的 `accessories.cap_source_v1` 中显式写入 mesh、anchors 和对应 SHA-256，然后让 NPC `appearance_config.accessories` 与 `embodiment.accessories` 同时引用它；缺少 hash、文件或某 clip/frame anchor 均会被 preflight 或 scene build 拒绝。验收使用 `tools/render_npc_personas.py` 的每 NPC `front`/`side`/`sit` plan；其切帧函数只显示同一 clip/frame 的 body 与 accessory geoms，避免相邻透明帧叠加或闪烁。视频是观察证据，此外必须用 manifest 校验确认无缺失资源，并检查三视图中的头皮/脸/耳部遮挡和颜色稳定性。
 
 ### 3.1 Population schema
 
