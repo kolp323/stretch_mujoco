@@ -27,6 +27,8 @@ class BakedAppearance:
     textures: dict[str, Path]
     sha256: dict[str, str]
     manifest_path: Path
+    seed: int
+    thumbnail_path: Path
 
     def manifest_fragment(self, *, relative_to: Path) -> dict[str, object]:
         """Return the fragment accepted by ``NpcAssetManifest.appearances``."""
@@ -72,6 +74,7 @@ def bake_appearance_definition(
 
     appearance_id = _required_string(recipe, "appearance_id", "Bake recipe")
     topology_id = _required_string(recipe, "texture_topology_id", "Bake recipe")
+    seed = _seed(recipe.get("seed", 0), "Bake recipe seed")
     textures = _mapping(recipe.get("textures"), "Bake recipe textures")
     if not textures:
         raise ValueError("Bake recipe must define at least one texture slot")
@@ -91,6 +94,9 @@ def bake_appearance_definition(
         written[slot_name] = destination
         digests[slot_name] = _sha256(destination)
 
+    thumbnail_path = output / f"{appearance_id}.thumbnail.png"
+    thumbnail_source = written.get("body", next(iter(written.values())))
+    _write_thumbnail(thumbnail_path, _read_rgba(thumbnail_source, "Baked appearance thumbnail"))
     sidecar = output / f"{appearance_id}.appearance.json"
     sidecar_payload = {
         "schema_version": BAKE_RECIPE_SCHEMA_VERSION,
@@ -105,9 +111,16 @@ def bake_appearance_definition(
             for slot, path in written.items()
         },
         "recipe_sha256": recipe_sha,
+        "seed": seed,
+        "artifacts": {
+            "thumbnail": thumbnail_path.name,
+            "thumbnail_sha256": _sha256(thumbnail_path),
+        },
     }
     _write_json(sidecar, sidecar_payload)
-    return BakedAppearance(appearance_id, topology_id, written, digests, sidecar)
+    return BakedAppearance(
+        appearance_id, topology_id, written, digests, sidecar, seed, thumbnail_path
+    )
 
 
 def register_baked_appearance(
@@ -235,6 +248,17 @@ def _write_png(path: Path, image: np.ndarray) -> None:
     os.replace(temporary, path)
 
 
+def _write_thumbnail(path: Path, image: np.ndarray) -> None:
+    height, width = image.shape[:2]
+    scale = min(128 / max(width, 1), 128 / max(height, 1), 1.0)
+    thumbnail = cv2.resize(
+        image,
+        (max(1, round(width * scale)), max(1, round(height * scale))),
+        interpolation=cv2.INTER_AREA,
+    )
+    _write_png(path, thumbnail)
+
+
 def _write_json(path: Path, payload: object) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -261,6 +285,12 @@ def _required_string(payload: Mapping[str, Any], key: str, context: str) -> str:
     value = payload.get(key)
     if not isinstance(value, str) or not value:
         raise ValueError(f"{context} must define non-empty string '{key}'")
+    return value
+
+
+def _seed(value: object, context: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value < 2**32:
+        raise ValueError(f"{context} must be an unsigned 32-bit integer")
     return value
 
 

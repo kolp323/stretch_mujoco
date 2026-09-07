@@ -28,6 +28,7 @@ class VisualIdentity:
     appearance_id: str
     layers: tuple[str, ...]
     traits: dict[str, str]
+    seed: int
 
 
 @dataclass(frozen=True)
@@ -82,6 +83,18 @@ class AppearanceCatalog:
                 ),
                 layers=selected,
                 traits={str(key): str(value) for key, value in traits.items()},
+                seed=_seed(
+                    item.get(
+                        "seed",
+                        int(
+                            hashlib.sha256(
+                                source.read_bytes() + str(identity_id).encode("utf-8")
+                            ).hexdigest()[:8],
+                            16,
+                        ),
+                    ),
+                    f"Visual identity '{identity_id}' seed",
+                ),
             )
         semantic_mask_manifest = payload.get("semantic_mask_manifest")
         semantic_mask_manifest_sha256 = payload.get("semantic_mask_manifest_sha256")
@@ -162,6 +175,7 @@ class AppearanceCatalog:
         return {
             "schema_version": 1,
             "appearance_id": identity.appearance_id,
+            "seed": identity.seed,
             "texture_topology_id": self.topology_id,
             "textures": {
                 "body": {
@@ -192,6 +206,21 @@ class AppearanceCatalog:
                 f"not '{appearance_id}'"
             )
 
+    def validate_appearance_slots(self, identity_id: str, appearance: object) -> None:
+        """Require explicit JSON slots to select the catalog identity's layers."""
+        identity = self.identities.get(identity_id)
+        if identity is None:
+            raise ValueError(f"Unknown visual identity '{identity_id}'")
+        for category in ("skin", "hair", "top", "bottom", "shoes"):
+            layer_id = getattr(appearance, category, None)
+            if not isinstance(layer_id, str):
+                raise ValueError(f"NPC appearance is missing {category} layer selection")
+            layer = self.layers.get(layer_id)
+            if layer is None or layer_id not in identity.layers or layer.category != category:
+                raise ValueError(
+                    f"Visual identity '{identity_id}' does not select {category} layer '{layer_id}'"
+                )
+
 
 def _mapping(value: object, context: str) -> Mapping[str, Any]:
     if not isinstance(value, Mapping):
@@ -210,6 +239,12 @@ def _sha256_value(value: object, context: str) -> str:
     if len(result) != 64 or any(character not in "0123456789abcdef" for character in result):
         raise ValueError(f"{context} must be a lowercase SHA-256 hex digest")
     return result
+
+
+def _seed(value: object, context: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value < 2**32:
+        raise ValueError(f"{context} must be an unsigned 32-bit integer")
+    return value
 
 
 def _validate_file_hash(path: Path, expected: str, context: str) -> None:

@@ -7,6 +7,7 @@ import argparse
 import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass
 from pathlib import Path
 
 import cv2
@@ -16,6 +17,22 @@ import numpy as np
 from stretch_mujoco.npc.naming import body_name, parse_frame_geom_name
 from stretch_mujoco.npc.scene_builder import build_npc_scene
 from stretch_mujoco.npc.schema import NpcPopulation
+
+
+@dataclass(frozen=True)
+class ReviewShot:
+    npc_id: str
+    view: str
+    clip: str
+
+
+def review_shots(npc_ids: tuple[str, ...]) -> tuple[ReviewShot, ...]:
+    """Return front, side and seated acceptance shots for every configured NPC."""
+    return tuple(
+        ReviewShot(npc_id, view, clip)
+        for npc_id in npc_ids
+        for view, clip in (("front", "idle"), ("side", "idle"), ("sit", "sit"))
+    )
 
 
 def _add_presentation_environment(scene_path: Path) -> None:
@@ -34,23 +51,16 @@ def _add_presentation_environment(scene_path: Path) -> None:
     ET.ElementTree(root).write(scene_path, encoding="unicode", xml_declaration=False)
 
 
-def _shot_camera(
-    camera: mujoco.MjvCamera,
-    targets: list[np.ndarray],
-    frame_index: int,
-    frame_count: int,
-) -> tuple[int, str]:
-    """Select two close identity shots followed by an overview shot."""
-    fraction = frame_index / max(frame_count - 1, 1)
-    shot, label = 0, "Alex Chen — OBJ cap follows head"
-    distance, azimuth = 1.0, 90.0
-    target = targets[shot].copy()
+def _shot_camera(camera: mujoco.MjvCamera, target: np.ndarray, shot: ReviewShot) -> str:
+    """Set a stable front/side/seated acceptance camera for one NPC."""
+    azimuth = {"front": 90.0, "side": 0.0, "sit": 90.0}[shot.view]
+    target = target.copy()
     target[2] += 0.35
     camera.lookat[:] = target
-    camera.distance = distance
-    camera.azimuth = azimuth + 8.0 * np.sin(fraction * np.pi * 4.0)
+    camera.distance = 1.0
+    camera.azimuth = azimuth
     camera.elevation = -12.0
-    return shot, label
+    return f"{shot.npc_id} — {shot.view} — {shot.clip}"
 
 
 def _annotate(image: np.ndarray, label: str) -> np.ndarray:
@@ -60,27 +70,36 @@ def _annotate(image: np.ndarray, label: str) -> np.ndarray:
     return annotated
 
 
-def _sample_primary_clip(
-    model: mujoco.MjModel, npc_id: str, frame_index: int, frame_count: int
-) -> str:
-    clips = ("idle", "walk", "sit")
-    clip = clips[min(frame_index * len(clips) // frame_count, len(clips) - 1)]
+def frame_visibility(
+    geom_names: tuple[str, ...], npc_id: str, clip: str, frame_index: int
+) -> dict[str, bool]:
+    """Select one body-and-accessory frame without alpha overlap or flicker."""
     frames: dict[int, list[int]] = {}
-    all_ids: list[int] = []
-    for geom_id in range(model.ngeom):
-        parsed = parse_frame_geom_name(
-            mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or ""
-        )
+    for geom_id, name in enumerate(geom_names):
+        parsed = parse_frame_geom_name(name)
         if parsed is not None and parsed[0] == npc_id:
-            all_ids.append(geom_id)
             if parsed[1] == clip:
                 frames.setdefault(parsed[2], []).append(geom_id)
-    for geom_id in all_ids:
-        model.geom_rgba[geom_id, 3] = 0.0
+    if not frames:
+        raise ValueError(f"NPC '{npc_id}' has no '{clip}' review frames")
     selected = sorted(frames)[frame_index % len(frames)]
-    for geom_id in frames[selected]:
-        model.geom_rgba[geom_id, 3] = 1.0
-    return clip
+    selected_ids = set(frames[selected])
+    return {
+        name: geom_id in selected_ids
+        for geom_id, name in enumerate(geom_names)
+        if (parsed := parse_frame_geom_name(name)) is not None and parsed[0] == npc_id
+    }
+
+
+def _sample_npc_clip(model: mujoco.MjModel, npc_id: str, clip: str, frame_index: int) -> None:
+    names = tuple(
+        mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or ""
+        for geom_id in range(model.ngeom)
+    )
+    visible = frame_visibility(names, npc_id, clip, frame_index)
+    for geom_id, name in enumerate(names):
+        if name in visible:
+            model.geom_rgba[geom_id, 3] = float(visible[name])
 
 
 def _transcode_h264(source: Path, destination: Path) -> None:
@@ -127,14 +146,15 @@ def render_persona_video(
         model.vis.global_.offheight = max(model.vis.global_.offheight, height)
         data = mujoco.MjData(model)
         mujoco.mj_forward(model, data)
-        targets: list[np.ndarray] = []
+        targets: dict[str, np.ndarray] = {}
         for npc_id in population.npcs:
             identifier = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body_name(npc_id))
             if identifier < 0:
                 raise RuntimeError(f"Generated scene is missing NPC body '{npc_id}'")
             target = data.xpos[identifier].copy()
             target[2] = 1.25
-            targets.append(target)
+            targets[npc_id] = target
+        plan = review_shots(tuple(population.npcs))
         renderer = mujoco.Renderer(model, width=width, height=height)
         camera = mujoco.MjvCamera()
         camera.type = mujoco.mjtCamera.mjCAMERA_FREE
@@ -148,11 +168,9 @@ def render_persona_video(
             raise RuntimeError(f"Could not open video writer for '{output_path}'")
         try:
             for frame_index in range(frame_count):
-                _, label = _shot_camera(camera, targets, frame_index, frame_count)
-                clip = _sample_primary_clip(
-                    model, next(iter(population.npcs)), frame_index, frame_count
-                )
-                label = f"{label} — {clip}"
+                shot = plan[min(frame_index * len(plan) // frame_count, len(plan) - 1)]
+                label = _shot_camera(camera, targets[shot.npc_id], shot)
+                _sample_npc_clip(model, shot.npc_id, shot.clip, frame_index)
                 renderer.update_scene(data, camera=camera)
                 writer.write(_annotate(renderer.render(), label))
         finally:

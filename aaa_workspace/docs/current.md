@@ -733,3 +733,13 @@ MUJOCO_GL=egl .venv/bin/python tools/render_npc_personas.py \
 审查首版后，矩形帽冠和帽檐已替换为更简单的 `12` 边圆形帽檐（半径 `0.095m`）与低多边形圆顶帽冠（半径 `0.078m`、高度 `0.052m`）。逐帧 anchor 维持头顶最大高度下方 `0.01m`：MuJoCo 会重心化 OBJ 的局部 bounds，先前把 anchor 上抬 `0.025m` 的做法会让帽子明显悬空；这一微小 inset 则让帽檐在 idle、walk、sit 可见帧均贴合头顶，且无可见头皮穿透。每次重新生成后必须同步更新 manifest 中 OBJ 和 anchor 的 SHA-256，否则 asset validation 会拒绝场景构建。
 
 当前 OBJ 是可验证的低多边形 demo，只有渲染 geom、无碰撞和物理交互；它不等同已完成艺术资产。后续正式配饰应替换 OBJ、重新生成每帧 anchor 并更新 manifest hash。
+
+## 15. 显式外观配置与验收闭环（第八轮，进行中）
+
+`NpcAppearance` 是 JSON 中绑定到 `NpcDefinition.agent_id`（未填写时等于 `npc_id`）的显式配置，固定选择 `skin`、`hair`、`top`、`bottom`、`shoes`、`accessories` 和 `scale`。它作为 `embodiment.appearance_config` 与既有 `appearance`/`visual_identity` 并存：旧 population 可继续加载；声明 catalog 的新配置会验证每个语义 slot 是该 identity 已选择、且 category 相符的 layer。运行时仍将这些 layer 烘焙为单一 body atlas，因此这不是 split-mesh material 已完成的声明。
+
+烘焙 recipe 现接受 32-bit `seed`（默认 `0`），catalog identity 未声明 seed 时从 catalog 字节和 identity ID 稳定导出。每次烘焙在原有 hash sidecar 中写入 seed、recipe hash、thumbnail 名称与 thumbnail hash，并生成不大于 `128px` 的 PNG 缩略图；这份 `*.appearance.json` 是统一的可再现 metadata receipt。PNG/OBJ/缩略图是本地派生物，仍不提交。
+
+`render_npc_personas.py` 现为 population 中每个 NPC 排入 front/idle、side/idle、sit/sit 三个验收镜头。frame visibility 以解析后的 frame geom 名称为事实源，每次只显示同一 clip/frame 的 body 和 accessory geom；alpha 回归测试验证不会同时暴露相邻帧，避免透明帧切换闪烁。实际离屏渲染仍要求本地已验证的 SMPL-X 生成资产。
+
+本轮验证：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -q tests/test_npc_schema.py tests/test_npc_appearance_catalog.py tests/test_npc_persona_review.py tests/test_npc_face_details.py tests/test_npc_hair_layers.py tests/test_npc_semantic_masks.py` 得到 `18 passed`；对 schema、bake、catalog 和 renderer 的 mypy 检查通过。以本地 production population 运行 `MUJOCO_GL=egl .venv/bin/python tools/render_npc_personas.py ...` 成功生成 120 帧 acceptance MP4，并抽查 Alex 的侧面和两个 NPC 的坐姿段。完整 tests/ 未在本轮运行。
