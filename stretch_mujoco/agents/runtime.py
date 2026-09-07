@@ -21,6 +21,14 @@ from .actions import (
     ValidationResult,
 )
 from .employee import EmployeeAgent
+from .conversation import (
+    ConversationCoordinator,
+    ConversationIntent,
+    ConversationSession,
+    ConversationTurn,
+    InterruptPolicy,
+    SpatialPose,
+)
 from .events import DailyOfficeEvent, DailyOfficeEventGenerator
 from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
 from .llm_config import LLMProviderConfig
@@ -124,6 +132,8 @@ class OfficeAgentRuntime:
         self.utility_interval_seconds = utility_interval_seconds
         self.reservations = ReservationManager()
         self.robot_tasks: dict[str, RobotTask] = {}
+        self.conversations = ConversationCoordinator()
+        self._conversation_locks: dict[str, dict[str, tuple[str | None, str, str]]] = {}
         self.events: list[RuntimeEvent] = []
         self.llm = EventDrivenLLMGateway(llm_daily_budget)
         self.llm_provider_config = llm_provider_config
@@ -405,6 +415,9 @@ class OfficeAgentRuntime:
         minutes = seconds * self.minutes_per_second
         self._advance_clock(minutes)
 
+        for session in self.conversations.expire(self.elapsed_minutes):
+            self._close_conversation(session, "conversation_timed_out")
+
         for agent in self.agents.values():
             agent.perception.update(agent.agent_id, semantic_snapshot)
 
@@ -460,6 +473,22 @@ class OfficeAgentRuntime:
         """Apply a schedule draft or closed action after normal validation."""
         agent = self.agents[request.agent_id]
         errors: list[str] = []
+        if request.trigger == LLMTrigger.DIALOGUE and "session_id" in request.context:
+            try:
+                entry = self.record_conversation_candidate(
+                    str(request.context["session_id"]),
+                    request.agent_id,
+                    response.get("intent", "acknowledge"),
+                    response.get("text", response.get("dialogue")),
+                )
+            except (KeyError, TypeError, ValueError) as error:
+                return ValidationResult(False, (f"Invalid dialogue candidate: {error}",))
+            self._remember(
+                agent,
+                "conversation_candidate_applied",
+                {"session_id": request.context["session_id"], "turn": entry.intent.value},
+            )
+            return ValidationResult(True)
         if "schedule" in response:
             try:
                 items = tuple(ScheduleItem.from_dict(item) for item in response["schedule"])
@@ -520,6 +549,158 @@ class OfficeAgentRuntime:
             LLMTrigger.DIALOGUE,
             agent_id,
             {"partner": partner, "topic": topic},
+        )
+
+    def start_conversation(
+        self,
+        initiator: str,
+        participant: str,
+        topic: str,
+        semantic_snapshot: dict[str, Any],
+        *,
+        timeout: float = 2.0,
+        interrupt_policy: InterruptPolicy = InterruptPolicy.REJECT,
+    ) -> ConversationSession:
+        """Start a spatially valid dialogue and pause involved NPC plans.
+
+        The snapshot is runtime observation, never LLM output.  Both participants
+        must provide a position and yaw so the runtime can reject implausible speech.
+        """
+        if initiator not in self.agents:
+            raise KeyError(f"Unknown NPC initiator '{initiator}'")
+        if participant not in self.agents and participant not in self.world.objects:
+            raise KeyError(f"Unknown conversation participant '{participant}'")
+        if (
+            participant not in self.agents
+            and self.world.object(participant).object_type != ObjectType.STRETCH_ROBOT
+        ):
+            raise ValueError("Conversation participant must be an NPC or Stretch robot")
+        agent_participants = tuple(
+            agent_id for agent_id in (initiator, participant) if agent_id in self.agents
+        )
+        if interrupt_policy == InterruptPolicy.REJECT and any(
+            self.agents[agent_id].executor.is_busy for agent_id in agent_participants
+        ):
+            raise ValueError("Cannot interrupt a busy NPC conversation plan")
+        if any(
+            self.agents[agent_id].state.availability == "in_conversation"
+            for agent_id in agent_participants
+        ):
+            raise ValueError("An NPC may only participate in one active conversation")
+        session = self.conversations.start(
+            (initiator, participant),
+            topic,
+            self.elapsed_minutes,
+            self._conversation_poses(semantic_snapshot, (initiator, participant)),
+            timeout=timeout,
+            interrupt_policy=interrupt_policy,
+        )
+        locks: dict[str, tuple[str | None, str, str]] = {}
+        for agent_id in agent_participants:
+            agent = self.agents[agent_id]
+            locks[agent_id] = (
+                agent.state.attention_target,
+                agent.state.availability,
+                agent.state.current_goal,
+            )
+            agent.state.attention_target = participant if agent_id == initiator else initiator
+            agent.state.availability = "in_conversation"
+            self._remember(agent, "conversation_started", {"session_id": session.session_id})
+            self._emit(
+                "conversation_started",
+                agent_id,
+                {"session_id": session.session_id, "topic": session.topic},
+            )
+        self._conversation_locks[session.session_id] = locks
+        return session
+
+    def record_conversation_candidate(
+        self,
+        session_id: str,
+        speaker: str,
+        intent: ConversationIntent | str,
+        text: str | None,
+    ) -> ConversationTurn:
+        session = self.conversations.sessions.get(session_id)
+        if session is None:
+            raise KeyError(f"Unknown conversation '{session_id}'")
+        entry = self.conversations.record_candidate(
+            session_id,
+            speaker,
+            intent,
+            text,
+            self.elapsed_minutes,
+            includes_robot=any(
+                participant not in self.agents for participant in session.participants
+            ),
+        )
+        for participant in session.participants:
+            agent = self.agents.get(participant)
+            if agent is not None:
+                self._remember(
+                    agent,
+                    "conversation_turn",
+                    {
+                        "session_id": session_id,
+                        "speaker": speaker,
+                        "intent": entry.intent.value,
+                        "used_fallback": entry.used_fallback,
+                    },
+                )
+        self._emit(
+            "conversation_turn",
+            speaker,
+            {
+                "session_id": session_id,
+                "intent": entry.intent.value,
+                "used_fallback": entry.used_fallback,
+            },
+        )
+        return entry
+
+    def complete_conversation(self, session_id: str) -> ConversationSession:
+        session = self.conversations.complete(session_id)
+        self._close_conversation(session, "conversation_completed")
+        return session
+
+    def queue_conversation_candidate(self, session_id: str, speaker: str) -> bool:
+        """Queue one LLM candidate; acceptance remains in ``record_conversation_candidate``."""
+        session = self.conversations.sessions.get(session_id)
+        if session is None:
+            raise KeyError(f"Unknown conversation '{session_id}'")
+        if speaker not in self.agents:
+            raise ValueError("Only an NPC can request an LLM conversation candidate")
+        if speaker not in session.participants:
+            raise ValueError(f"Speaker '{speaker}' is not in the conversation")
+        partner = next(
+            participant for participant in session.participants if participant != speaker
+        )
+        return self.queue_llm_event(
+            LLMTrigger.DIALOGUE,
+            speaker,
+            {
+                "session_id": session_id,
+                "partner": partner,
+                "topic": session.topic,
+                "allowed_intents": sorted(
+                    intent.value
+                    for intent in (
+                        {
+                            ConversationIntent.REQUEST,
+                            ConversationIntent.CLARIFY,
+                            ConversationIntent.ACKNOWLEDGE,
+                            ConversationIntent.HANDOVER_CONFIRM,
+                        }
+                        if partner not in self.agents
+                        else {
+                            ConversationIntent.GREETING,
+                            ConversationIntent.PROGRESS_INQUIRY,
+                            ConversationIntent.MEETING_INVITATION,
+                            ConversationIntent.CONFLICT_RESOLUTION,
+                        }
+                    )
+                ),
+            },
         )
 
     def report_unexpected_change(self, agent_id: str, description: str) -> bool:
@@ -923,6 +1104,8 @@ class OfficeAgentRuntime:
 
     def _state_machine_step(self, elapsed_minutes: float) -> None:
         for agent in self.agents.values():
+            if agent.state.availability == "in_conversation":
+                continue
             if agent.executor.is_busy:
                 supported = getattr(self.action_driver, "supported_actions", frozenset())
                 if (
@@ -959,6 +1142,7 @@ class OfficeAgentRuntime:
         for agent in self.agents.values():
             if (
                 agent.executor.is_busy
+                or agent.state.availability == "in_conversation"
                 or agent.planner.action_queue
                 or self._has_active_robot_task(agent.agent_id)
             ):
@@ -1082,6 +1266,48 @@ class OfficeAgentRuntime:
                 {"failures": failures, **context},
             )
             self._consecutive_failures[agent_id] = 0
+
+    def _conversation_poses(
+        self, semantic_snapshot: dict[str, Any], participants: tuple[str, str]
+    ) -> dict[str, SpatialPose]:
+        objects = semantic_snapshot.get("objects", {})
+        poses: dict[str, SpatialPose] = {}
+        for participant in participants:
+            payload = objects.get(participant)
+            if not isinstance(payload, dict):
+                raise ValueError(f"Semantic snapshot is missing participant '{participant}'")
+            position = payload.get("position")
+            yaw = payload.get("yaw")
+            if (
+                not isinstance(position, (list, tuple))
+                or len(position) != 3
+                or not all(isinstance(value, (int, float)) for value in position)
+                or not isinstance(yaw, (int, float))
+            ):
+                raise ValueError(f"Semantic snapshot has no valid position/yaw for '{participant}'")
+            poses[participant] = SpatialPose(
+                (float(position[0]), float(position[1]), float(position[2])), float(yaw)
+            )
+        return poses
+
+    def _close_conversation(self, session: ConversationSession, event: str) -> None:
+        locks = self._conversation_locks.pop(session.session_id, {})
+        for agent_id, (attention_target, availability, current_goal) in locks.items():
+            agent = self.agents[agent_id]
+            if agent.state.availability == "in_conversation":
+                agent.state.attention_target = attention_target
+                agent.state.availability = availability
+                agent.state.current_goal = current_goal
+            self._remember(
+                agent,
+                event,
+                {"session_id": session.session_id, "status": session.status.value},
+            )
+            self._emit(
+                event,
+                agent_id,
+                {"session_id": session.session_id, "status": session.status.value},
+            )
 
     def _remember(self, agent: EmployeeAgent, event: str, details: dict[str, Any]) -> None:
         agent.memory.remember(MemoryEntry(self.elapsed_minutes, event, details))
