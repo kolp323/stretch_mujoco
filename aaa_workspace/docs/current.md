@@ -157,6 +157,26 @@ uv run python tools/prepare_obj_accessory.py \
 
 当独立 OBJ 在不同动画 clip 中出现相对漂移时，使用 `tools/fuse_obj_accessory.py` 生成每帧的 `body + accessory` OBJ，而不是继续调 anchor。该工具以 body frame、规范化 accessory mesh 和逐帧 anchor 为输入，以 `idle/0` 的头部顶点为参考，对每个同拓扑 body frame 做 Kabsch 刚体头部对齐（平移和旋转），然后写入融合 frame。输出是只含融合 frame 路径的 preview manifest；运行时必须从人口配置中移除该 accessory，避免再创建第二个独立 geom。融合网格是该 preview 的唯一运行时投影，因此 body 和帽子同受 MuJoCo 的同一 mesh 中心化与 alpha 切帧，并且随头部的坐姿、站姿和行走变换共同运动。原始 body UV 保持不变；当前 cap face 使用一个固定 atlas UV，专用帽子 atlas 仍是后续美术资产工作。
 
+### 3.0.3 融合 OBJ 配饰 recipe（当前事实源）
+
+文件：`stretch_mujoco/npc/appearance_pipeline/accessory_recipe.py`、`tools/build_npc_fused_accessory.py`
+
+融合 OBJ 的可编辑事实源是 schema-v1 recipe，而不是 `*.receipt.json`。recipe 固定 `accessory_id`、`attachment_mode: head_follow_fused`、`mesh_scale`、`head_clearance_m`、`back_offset_m` 和 `back_tilt_degrees`；仓库只提供无私有来源路径的 `models/accessories/cap_source_v1.recipe.example.json` 模板。调用方显式传入本地来源归档、源 manifest 与源 population，builder 才生成 accessory、逐帧 head-follow fused OBJ、receipt、fused manifest 和 runtime population projection。
+
+```bash
+uv run python tools/build_npc_fused_accessory.py \
+  --recipe stretch_mujoco/models/accessories/cap_source_v1.recipe.local.json \
+  --source-archive aaa_workspace/raw_resources/objs/cap.zip \
+  --source-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
+  --source-population stretch_mujoco/models/office_population.production.example.json \
+  --npc-id employee_01 \
+  --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/fused/cap_source_v1 \
+  --output-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.cap_source_v1.preview.json \
+  --output-population stretch_mujoco/models/office_population.cap_source_v1.preview.json
+```
+
+Builder 将 recipe SHA、receipt SHA 和融合模式写入输出 manifest，并从 target NPC 的 `embodiment.accessories`（及出现时的 `appearance_config.accessories`）移除该 `accessory_id`。随后严格 manifest/population preflight 必须通过；因此运行时只能加载融合帧，既不能静默复用旧 anchor，也不能再次创建独立帽子 geom。receipt 的 pose 字段由 builder 在写出时与 recipe 精确比对；手工修改 receipt 不会改变 runtime projection，下一次 build 会重新覆盖它。
+
 ### 3.1 Population schema
 
 文件：`stretch_mujoco/npc/schema.py`

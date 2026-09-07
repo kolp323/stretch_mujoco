@@ -11,6 +11,7 @@ from .bake import (
     bake_appearance_definition,
     register_baked_appearance,
 )
+from .accessory_recipe import FusedAccessoryRecipe, recipe_sha256
 from .catalog import AppearanceCatalog, VisualIdentity
 from .face_details import generate_face_detail_layers
 from .flat_layers import generate_flat_layers
@@ -19,6 +20,7 @@ from .semantic_masks import SemanticMaskSet, generate_semantic_masks
 
 __all__ = [
     "BakedAppearance",
+    "FusedAccessoryRecipe",
     "AppearanceCatalog",
     "VisualIdentity",
     "SemanticMaskSet",
@@ -29,4 +31,5 @@ __all__ = [
     "generate_short_hair_layers",
     "generate_semantic_masks",
     "register_baked_appearance",
+    "recipe_sha256",
 ]
