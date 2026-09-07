@@ -67,15 +67,15 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
         manifest,
         tmp_path / "output",
         "cap_source_v1",
-        head_clearance_m=0.025,
-        back_offset_m=0.03,
+        head_clearance_m=0.005,
+        back_offset_m=0.07,
     )
     receipt = json.loads(Path(paths["receipt"]).read_text())
 
     assert receipt["asset_quality"] == "preview"
-    assert receipt["head_clearance_m"] == 0.025
-    assert receipt["back_offset_m"] == 0.03
-    assert captured == {"head_clearance_m": 0.025, "back_offset_m": 0.03}
+    assert receipt["head_clearance_m"] == 0.005
+    assert receipt["back_offset_m"] == 0.07
+    assert captured == {"head_clearance_m": 0.005, "back_offset_m": 0.07}
     assert receipt["outputs"]["mesh"] == "cap_source_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
