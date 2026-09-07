@@ -177,6 +177,17 @@ uv run python tools/build_npc_fused_accessory.py \
 
 Builder 将 recipe SHA、receipt SHA 和融合模式写入输出 manifest，并从 target NPC 的 `embodiment.accessories`（及出现时的 `appearance_config.accessories`）移除该 `accessory_id`。随后严格 manifest/population preflight 必须通过；因此运行时只能加载融合帧，既不能静默复用旧 anchor，也不能再次创建独立帽子 geom。receipt 的 pose 字段由 builder 在写出时与 recipe 精确比对；手工修改 receipt 不会改变 runtime projection，下一次 build 会重新覆盖它。
 
+运行时场景组合必须使用 `tools/build_npc_scene.py --accessory-runtime-config`，而不是把旧的 fused manifest 直接传给 `build_npc_scene()`。runtime config 将可编辑 recipe、原始归档、基线 manifest/population 和派生输出位置集中在同一份本地 JSON；每次调用都会无条件重新生成 OBJ、anchors、逐帧融合 OBJ、receipt、manifest 和 runtime population，随后才组合 MuJoCo 场景。它没有 receipt/mtime/cache 快路径：receipt 仅为本轮投影的审计证据，不能成为运行时输入。配置路径相对 runtime config 文件解析；示例 `models/accessories/cap_source_v1.runtime.example.json` 不包含私有资源且仅作本地配置模板。
+
+```bash
+uv run python tools/build_npc_scene.py \
+  --accessory-runtime-config stretch_mujoco/models/accessories/cap_source_v1.runtime.local.json \
+  --output stretch_mujoco/models/.office_npc_runtime.xml \
+  --include-base-scene
+```
+
+该 CLI 是 recipe-bound OBJ 配饰的唯一受支持运行入口。`--population` 保留给没有 recipe-bound OBJ 配饰的既有兼容场景；它不会猜测来源归档或从 receipt 重建资产。任何 recipe、来源或严格预检错误都会在 MuJoCo 加载之前终止，避免静默复用旧模型。
+
 ### 3.1 Population schema
 
 文件：`stretch_mujoco/npc/schema.py`

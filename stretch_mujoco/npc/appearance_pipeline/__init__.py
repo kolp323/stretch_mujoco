@@ -11,7 +11,7 @@ from .bake import (
     bake_appearance_definition,
     register_baked_appearance,
 )
-from .accessory_recipe import FusedAccessoryRecipe, recipe_sha256
+from .accessory_recipe import FusedAccessoryRecipe, FusedAccessoryRuntimeConfig, recipe_sha256
 from .catalog import AppearanceCatalog, VisualIdentity
 from .face_details import generate_face_detail_layers
 from .flat_layers import generate_flat_layers
@@ -21,6 +21,7 @@ from .semantic_masks import SemanticMaskSet, generate_semantic_masks
 __all__ = [
     "BakedAppearance",
     "FusedAccessoryRecipe",
+    "FusedAccessoryRuntimeConfig",
     "AppearanceCatalog",
     "VisualIdentity",
     "SemanticMaskSet",

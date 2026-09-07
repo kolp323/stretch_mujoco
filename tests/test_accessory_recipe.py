@@ -4,7 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from stretch_mujoco.npc.appearance_pipeline.accessory_recipe import FusedAccessoryRecipe
+from stretch_mujoco.npc.appearance_pipeline.accessory_recipe import (
+    FusedAccessoryRecipe,
+    FusedAccessoryRuntimeConfig,
+)
 
 
 def _builder_module():
@@ -86,7 +89,11 @@ def test_recipe_accessory_binding_replaces_stale_manifest_reference(tmp_path: Pa
     mesh.write_text("mesh")
     anchors.write_text("{}")
     manifest_path = tmp_path / "manifest.json"
-    manifest = {"bundles": {"bundle": {"accessories": {"cap": {"mesh": "old", "anchors": "old"}}, "sha256": {}}}}
+    manifest = {
+        "bundles": {
+            "bundle": {"accessories": {"cap": {"mesh": "old", "anchors": "old"}}, "sha256": {}}
+        }
+    }
 
     module.bind_recipe_accessory(
         manifest,
@@ -103,3 +110,77 @@ def test_recipe_accessory_binding_replaces_stale_manifest_reference(tmp_path: Pa
         "anchors": "output/cap.anchors.json",
     }
     assert bound["sha256"]["output/cap.obj"] == module._sha256(mesh)
+
+
+def test_runtime_config_has_exact_paths_and_resolves_from_its_file(tmp_path: Path) -> None:
+    path = tmp_path / "cap.runtime.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "recipe": "look/cap.recipe.json",
+                "source_archive": "source/cap.zip",
+                "source_manifest": "assets/manifest.json",
+                "source_population": "office_population.json",
+                "npc_id": "employee_01",
+                "bundle": "smplx_office_neutral_v1",
+                "output_dir": "generated/cap",
+                "output_manifest": "generated/manifest.json",
+                "output_population": "generated/population.json",
+            }
+        )
+    )
+
+    config = FusedAccessoryRuntimeConfig.from_json(path)
+
+    assert config.resolve_path(path, "recipe") == tmp_path / "look/cap.recipe.json"
+    path.write_text("{}")
+    with pytest.raises(ValueError, match="runtime config fields mismatch"):
+        FusedAccessoryRuntimeConfig.from_json(path)
+
+
+def test_runtime_scene_build_rebuilds_recipe_every_invocation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = tmp_path / "cap.runtime.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "recipe": "cap.recipe.json",
+                "source_archive": "cap.zip",
+                "source_manifest": "manifest.json",
+                "source_population": "population.json",
+                "npc_id": "employee_01",
+                "bundle": "bundle",
+                "output_dir": "generated/cap",
+                "output_manifest": "generated/manifest.json",
+                "output_population": "generated/population.json",
+            }
+        )
+    )
+    scene_module_path = Path(__file__).parents[1] / "tools" / "build_npc_scene.py"
+    spec = importlib.util.spec_from_file_location("build_npc_scene_tool", scene_module_path)
+    assert spec and spec.loader
+    scene_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(scene_module)
+    calls: list[dict[str, object]] = []
+
+    class Builder:
+        @staticmethod
+        def build_fused_accessory(**kwargs: object) -> dict[str, str]:
+            calls.append(kwargs)
+            return {"population": str(tmp_path / "generated/population.json")}
+
+    monkeypatch.setattr(scene_module, "_tool_module", lambda _: Builder)
+    monkeypatch.setattr(
+        scene_module,
+        "build_npc_scene",
+        lambda population, output, include_base_scene=False: Path(output),
+    )
+
+    scene_module.build_scene_from_accessory_runtime_config(path, tmp_path / "one.xml")
+    scene_module.build_scene_from_accessory_runtime_config(path, tmp_path / "two.xml")
+
+    assert len(calls) == 2
+    assert calls[0]["recipe_path"] == tmp_path / "cap.recipe.json"

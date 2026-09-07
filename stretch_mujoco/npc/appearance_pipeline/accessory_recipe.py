@@ -68,3 +68,55 @@ class FusedAccessoryRecipe:
 
 def recipe_sha256(path: str | Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+@dataclass(frozen=True)
+class FusedAccessoryRuntimeConfig:
+    """Declarative inputs and outputs for one recipe-backed runtime build.
+
+    This is deliberately separate from the recipe: the recipe owns pose facts,
+    while this configuration owns machine-local source and generated paths.
+    """
+
+    recipe: str
+    source_archive: str
+    source_manifest: str
+    source_population: str
+    npc_id: str
+    bundle: str
+    output_dir: str
+    output_manifest: str
+    output_population: str
+
+    @classmethod
+    def from_json(cls, path: str | Path) -> "FusedAccessoryRuntimeConfig":
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        required = {
+            "schema_version",
+            "recipe",
+            "source_archive",
+            "source_manifest",
+            "source_population",
+            "npc_id",
+            "bundle",
+            "output_dir",
+            "output_manifest",
+            "output_population",
+        }
+        unknown = set(payload) - required
+        missing = required - set(payload)
+        if unknown or missing:
+            raise ValueError(
+                "Accessory runtime config fields mismatch: "
+                f"missing={sorted(missing)}, unknown={sorted(unknown)}"
+            )
+        if payload["schema_version"] != ACCESSORY_RECIPE_SCHEMA_VERSION:
+            raise ValueError("Unsupported accessory runtime config schema_version")
+        values = {field: payload[field] for field in required - {"schema_version"}}
+        if not all(isinstance(value, str) and value for value in values.values()):
+            raise ValueError("Accessory runtime config fields must be non-empty strings")
+        return cls(**values)
+
+    def resolve_path(self, config_path: str | Path, field: str) -> Path:
+        """Resolve a configured local path relative to its config file."""
+        return (Path(config_path).resolve().parent / getattr(self, field)).resolve()
