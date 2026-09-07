@@ -797,3 +797,34 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
 The wider runtime mypy invocation still reports pre-existing Optional-target and
 untyped-driver errors in `agents/runtime.py`; its relevant behavior is covered by the
 focused tests above, and this reconciliation does not suppress or alter those checks.
+
+## 11. 办公室原生光照验收视频（当前实现）
+
+`tools/render_npc_acceptance_video.py` 是独立的离屏加载和渲染入口。它直接加载指定的办公室 MJCF，不写入临时灯光、地面或替代场景，因此保留场景本身的顶灯、headlight、天空和材质表现。默认针对 `employee_01`，兼容 canonical、旧多 NPC 和旧单 NPC 的帧命名，并把同一 clip/frame 的所有 slot 一起显示；这包含按帧绑定的 OBJ accessory slot，避免只验人体而遗漏配饰。
+
+每次运行固定输出正面 walk、侧面 walk、已落座的 work 三个近景段落。站姿段把 NPC 暂时置于办公室开放审查位置（默认 `-1.5 -0.5 0`，可由 `--standing-position` 指定）以避免办公桌遮住动作；相机相对 NPC 朝向设置，保持完整身体在画面内并允许检查纹理和动作细节。坐姿段将 mocap root 放到所选椅子 site 的实际位置和朝向，并使用已经落座的 work clip，避免把 sit 过渡帧误当作稳定坐姿。脚本关闭 lidar/rangefinder 调试线，但不改动任何场景光照、材质或实体。加载失败（例如缺 OBJ、PNG、anchor 或 XML include）保持 MuJoCo 的原始错误，不会降级成替代人物。
+
+脚本还在 MP4 旁写入 `*.acceptance.json`：逐 shot 记录可见 NPC 像素数并判定遮挡，检查每帧 slot 的 material/RGB 一致性，并核对切帧时只有选中帧为不透明，从而把颜色稳定和透明帧闪烁风险作为明确的验收项。视频与 JSON 均为本地派生验收物，不进入版本控制。
+
+复现命令（需要本机已有被许可证保护的办公室 NPC 派生资产）：
+
+```bash
+MUJOCO_GL=egl .venv/bin/python tools/render_npc_acceptance_video.py \
+  --scene stretch_mujoco/models/office_scene.xml \
+  --output /tmp/npc_office_acceptance.mp4
+```
+
+本次验证结果：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_npc_acceptance_video.py
+4 passed in 0.43s
+
+.venv/bin/python -m black --check tools/render_npc_acceptance_video.py tests/test_npc_acceptance_video.py
+2 files would be left unchanged.
+
+.venv/bin/python -m flake8 tools/render_npc_acceptance_video.py tests/test_npc_acceptance_video.py
+通过
+```
+
+使用本地已验证的 production population 生成包含原办公室的临时 MJCF 后，以 EGL 执行该脚本，输出 6 秒、120 帧 H.264 MP4。报告中 front/walk、side/walk、seated/work 三段的最小目标可见像素分别为 `36752`、`26196`、`19595`，均高于 `11059` 阈值；透明切帧和颜色稳定检查均为空失败列表，最终 `passed: true`。隔离任务分支本身不复制或提交 ignored SMPL-X 派生资产。
