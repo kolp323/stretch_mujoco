@@ -13,13 +13,22 @@ from .actions import (
 from .drivers import ActionDriver, DriverResult, MujocoNpcActionDriver
 from .employee import BehaviorPlan, EmployeeAgent, EmployeePlanner
 from .conversation import (
+    CONVERSATION_SCHEMA_VERSION,
     ConversationCoordinator,
+    ConversationErrorCode,
+    ConversationEvent,
     ConversationIntent,
+    ConversationParticipantKind,
+    ConversationPerception,
+    ConversationPerceptionError,
+    ConversationObservationSource,
     ConversationSession,
     ConversationStatus,
+    ConversationTerminalReason,
     ConversationTurn,
     InterruptPolicy,
     SpatialPose,
+    TurnPolicy,
 )
 from .events import DailyOfficeEvent, DailyOfficeEventGenerator
 from .interactions import InteractionCoordinator, InteractionSession, InteractionStatus
@@ -27,7 +36,14 @@ from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
 from .llm_config import LLMConfigError, LLMProviderConfig
 from .llm_provider import LLMProviderError, OpenAICompatibleProvider
 from .mock_robot import MockRobotExecutor
-from .models import EmployeeProfile, EmployeeSchedule, EmployeeState
+from .models import (
+    AgentAvailability,
+    AgentMemory,
+    EmployeeProfile,
+    EmployeeSchedule,
+    EmployeeState,
+    MemoryEntry,
+)
 from .robot_handover import RobotHandover, RobotToNpcHandoverBridge
 from .runtime import OfficeAgentRuntime, ReservationManager
 from .utility import UtilityGoal, UtilityScore, UtilitySystem
@@ -37,14 +53,24 @@ __all__ = [
     "ActionDriver",
     "ActionExecution",
     "ActionType",
+    "AgentAvailability",
+    "AgentMemory",
     "BehaviorPlan",
     "ConversationCoordinator",
+    "ConversationErrorCode",
+    "ConversationEvent",
     "ConversationIntent",
+    "ConversationParticipantKind",
+    "ConversationPerception",
+    "ConversationPerceptionError",
+    "ConversationObservationSource",
     "ConversationSession",
     "ConversationStatus",
+    "ConversationTerminalReason",
     "ConversationTurn",
     "DailyOfficeEvent",
     "DailyOfficeEventGenerator",
+    "CONVERSATION_SCHEMA_VERSION",
     "EmployeeAgent",
     "EmployeePlanner",
     "EmployeeProfile",
@@ -59,6 +85,7 @@ __all__ = [
     "LLMProviderConfig",
     "LLMProviderError",
     "MockRobotExecutor",
+    "MemoryEntry",
     "MujocoNpcActionDriver",
     "InteractionCoordinator",
     "InteractionSession",
@@ -70,6 +97,7 @@ __all__ = [
     "RobotHandover",
     "RobotToNpcHandoverBridge",
     "SpatialPose",
+    "TurnPolicy",
     "RobotTask",
     "RobotTaskStatus",
     "RuntimeEvent",
