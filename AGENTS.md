@@ -52,6 +52,28 @@ office with a standalone presentation scene or add review-only lights.
   lighting policy, each shot, and any failed check. Generated videos and reports remain local
   review artifacts unless the task explicitly requests committing them.
 
+### Required Rendering Workflow
+
+Use `tools/render_npc_acceptance_video.py` with an office MJCF that already includes the target
+NPC population and its validated assets. For a production NPC or OBJ accessory, pass the composed
+office-and-NPC MJCF rather than a standalone generated NPC-only scene, so that the office's native
+lighting and real furniture are rendered.
+
+```bash
+MUJOCO_GL=egl .venv/bin/python tools/render_npc_acceptance_video.py \
+  --scene path/to/composed_office_npcs.xml \
+  --output /tmp/npc_office_acceptance.mp4 \
+  --npc-id employee_01 \
+  --sit-site chair_left_sit
+```
+
+The default standing review position is the unobstructed office aisle. Use
+`--standing-position X Y Z` only when the target office layout needs a different clear location.
+The script emits the MP4 and a sibling `*.acceptance.json` report. Review
+all three labelled shots and accept only a report with `passed: true`, no transparency or colour
+failures, and `occlusion_passed: true` for every shot. Missing mesh, texture, anchor, or XML
+assets must remain a failing loader error; do not generate a substitute video.
+
 ## Current Implementation Record Maintenance Protocol
 
 Treat `aaa_workspace/docs/current.md` as the maintained implementation record for the ongoing NPC-system migration. Read the relevant sections before changing NPC schemas, assets, animation, attachment, interactions, agent execution, simulator transport, recording, or compatibility paths, and update the document in the same change when behavior or migration status changes.
