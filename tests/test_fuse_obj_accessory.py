@@ -2,6 +2,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import numpy as np
+
 
 def _module():
     path = Path(__file__).parents[1] / "tools" / "fuse_obj_accessory.py"
@@ -26,10 +28,27 @@ def test_fused_obj_keeps_body_and_positions_accessory_in_one_mesh(tmp_path: Path
     assert "f 1/1 2/1 3/1" in fused
 
 
+def test_head_follow_applies_reference_head_rotation_and_translation() -> None:
+    module = _module()
+    reference = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+    target = np.array([[2.0, 3.0, 0.0], [2.0, 4.0, 0.0], [1.0, 3.0, 0.0]])
+    accessory = np.array([[0.0, 0.0, 1.0]])
+
+    followed = module.head_follow_vertices(reference, target, accessory)
+
+    assert np.allclose(followed, [[2.0, 3.0, 1.0]])
+
+
 def test_fuse_manifest_repoints_every_clip_frame(tmp_path: Path) -> None:
     module = _module()
     body = tmp_path / "body.obj"
-    body.write_text("v 0 0 0\nv 1 0 0\nv 0 1 0\nvt 0 0\nf 1/1 2/1 3/1\n")
+    body.write_text(
+        "\n".join(
+            ["v 0 0 2" for _ in range(16)]
+            + ["v 1 0 0", "v 0 1 0", "v 0 0 0", "vt 0 0", "f 17/1 18/1 19/1"]
+        )
+        + "\n"
+    )
     cap = tmp_path / "cap.obj"
     cap.write_text("v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n")
     anchors = tmp_path / "anchors.json"

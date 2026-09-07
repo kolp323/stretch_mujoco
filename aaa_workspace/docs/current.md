@@ -155,7 +155,7 @@ uv run python tools/prepare_obj_accessory.py \
 
 要启用该 preview，必须在副本 manifest 的 `accessories.cap_source_v1` 中显式写入 mesh、anchors 和对应 SHA-256，然后让 NPC `appearance_config.accessories` 与 `embodiment.accessories` 同时引用它；缺少 hash、文件或某 clip/frame anchor 均会被 preflight 或 scene build 拒绝。验收使用 `tools/render_npc_personas.py` 的每 NPC `front`/`side`/`sit` plan；其切帧函数只显示同一 clip/frame 的 body 与 accessory geoms，避免相邻透明帧叠加或闪烁。视频是观察证据，此外必须用 manifest 校验确认无缺失资源，并检查三视图中的头皮/脸/耳部遮挡和颜色稳定性。
 
-当独立 OBJ 在不同动画 clip 中出现相对漂移时，使用 `tools/fuse_obj_accessory.py` 生成每帧的 `body + accessory` OBJ，而不是继续调 anchor。该工具以 body frame、规范化 accessory mesh 和逐帧 anchor 为输入，输出只含融合 frame 路径的 preview manifest；运行时必须从人口配置中移除该 accessory，避免再创建第二个独立 geom。融合网格是该 preview 的唯一运行时投影，因此 body 和帽子同受 MuJoCo 的同一 mesh 中心化与 alpha 切帧，坐姿、站姿和行走之间不会再发生相对漂移。原始 body UV 保持不变；当前 cap face 使用一个固定 atlas UV，专用帽子 atlas 仍是后续美术资产工作。
+当独立 OBJ 在不同动画 clip 中出现相对漂移时，使用 `tools/fuse_obj_accessory.py` 生成每帧的 `body + accessory` OBJ，而不是继续调 anchor。该工具以 body frame、规范化 accessory mesh 和逐帧 anchor 为输入，以 `idle/0` 的头部顶点为参考，对每个同拓扑 body frame 做 Kabsch 刚体头部对齐（平移和旋转），然后写入融合 frame。输出是只含融合 frame 路径的 preview manifest；运行时必须从人口配置中移除该 accessory，避免再创建第二个独立 geom。融合网格是该 preview 的唯一运行时投影，因此 body 和帽子同受 MuJoCo 的同一 mesh 中心化与 alpha 切帧，并且随头部的坐姿、站姿和行走变换共同运动。原始 body UV 保持不变；当前 cap face 使用一个固定 atlas UV，专用帽子 atlas 仍是后续美术资产工作。
 
 ### 3.1 Population schema
 
