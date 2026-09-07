@@ -206,27 +206,13 @@ class NpcAssetManifest:
             )
         if "idle" not in bundle.clips:
             errors.append(f"Bundle '{bundle.bundle_id}' is missing mandatory clip 'idle'")
-        if bundle.asset_quality == "production":
-            missing_clips = {
-                "idle",
-                "walk",
-                "sit_down",
-                "seated_idle",
-                "stand_up",
-                "work",
-                "use_computer",
-                "eat",
-                "pick_up",
-                "place",
-                "give",
-                "receive",
-                "talk",
-                "gesture_wave",
-                "gesture_point",
-            } - bundle.clips.keys()
+        if bundle.asset_quality in {"production", "restricted"}:
+            from .animation.graph import OFFICE_CLIPS
+
+            missing_clips = set(OFFICE_CLIPS) - bundle.clips.keys()
             if missing_clips:
                 errors.append(
-                    f"Bundle '{bundle.bundle_id}' production clips are incomplete: "
+                    f"Bundle '{bundle.bundle_id}' restricted production clips are incomplete: "
                     f"{', '.join(sorted(missing_clips))}"
                 )
         for hash_path, digest in bundle.sha256.items():

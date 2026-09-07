@@ -798,6 +798,63 @@ The wider runtime mypy invocation still reports pre-existing Optional-target and
 untyped-driver errors in `agents/runtime.py`; its relevant behavior is covered by the
 focused tests above, and this reconciliation does not suppress or alter those checks.
 
+### 10.7 Local AMASS motion intake (current state)
+
+`stretch_mujoco/humanoid/amass_intake.py` is the only supported bridge from a
+locally licensed AMASS source to the restricted animation baker. Its `list`
+command safely inspects an NPZ, a directory tree, or a `.tar.bz2` archive
+without extracting it, reporting source ID, frame count, source FPS, duration,
+SMPL-X model type, gender, and why an incompatible sequence was rejected.
+It never enables NumPy pickle loading.
+
+Its `prepare` command accepts an ignored schema-v1 selection JSON. Each entry
+explicitly binds a target clip to one source ID, source-frame crop, target FPS,
+and optional reversal. It reads only `pose_body`, requires finite `(frames, 63)`
+data, an explicit SMPL-X surface model type, and a valid source frame rate, resamples onto the target time grid, and
+writes `<clip>.npz` with a `body_pose` array. It also writes an ignored receipt
+containing the AMASS license reference, source-member hash, crop/resampling
+parameters, SMPL-X metadata, and output hash. Existing output or receipt files
+are never overwritten.
+
+The restricted baker now requires `--motion-root` and rejects any incomplete or
+invalid set of selected clips. It no longer manufactures illustrative poses for
+talk, gestures, object actions, or workstation use. The generated manifest is
+marked `restricted`; both `production` and `restricted` bundles are required to
+contain every canonical `OFFICE_CLIPS` entry. The checked-in selection JSON is
+only a template: source IDs and crop ranges must be locally copied and visually
+reviewed before use. No AMASS data, selected pose input, generated OBJ, receipt,
+or recording is tracked by Git.
+
+Focused verification:
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_amass_intake.py tests/test_npc_assets.py \
+  -k 'amass or smplx_baker or restricted_bundle'
+7 passed, 3 deselected
+
+uv run black --check stretch_mujoco/humanoid/amass_intake.py \
+  stretch_mujoco/humanoid/smplx_animation_baker.py tests/test_amass_intake.py \
+  tests/test_npc_assets.py
+passed
+
+uv run flake8 stretch_mujoco/humanoid/amass_intake.py \
+  stretch_mujoco/humanoid/smplx_animation_baker.py tests/test_amass_intake.py \
+  tests/test_npc_assets.py
+passed
+
+uv run mypy --ignore-missing-imports stretch_mujoco/humanoid/amass_intake.py \
+  stretch_mujoco/humanoid/smplx_animation_baker.py
+Success: no issues found in 2 source files
+```
+
+The locally supplied AMASS Transitions archive was inspected with the new
+`list` command only. It reported 110 compatible SMPL-X neutral stage-II
+sequences and one rejected stage-I neutral file with no `pose_body`; no archive
+member was extracted or converted. In particular, `sit_stand_stageii.npz` is a
+120 FPS, 980-frame candidate, not an approved `sit_down`/`stand_up` output:
+its crop and marker phase still require visual review.
+
 ## 11. 办公室原生光照验收视频（当前实现）
 
 `tools/render_npc_acceptance_video.py` 是独立的离屏加载和渲染入口。它直接加载指定的办公室 MJCF，不写入临时灯光、地面或替代场景，因此保留场景本身的顶灯、headlight、天空和材质表现。默认针对 `employee_01`，兼容 canonical、旧多 NPC 和旧单 NPC 的帧命名，并把同一 clip/frame 的所有 slot 一起显示；这包含按帧绑定的 OBJ accessory slot，避免只验人体而遗漏配饰。

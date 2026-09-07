@@ -16,7 +16,6 @@ from .smplx_converter import (
     SmplxAssetError,
     _load_runtime,
     _load_texture_topology,
-    _relaxed_body_pose,
     _to_mujoco_coordinates,
     _write_obj,
     find_model_file,
@@ -51,7 +50,7 @@ def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str
                 "unit": "meter",
                 "height_m": target_height,
                 "material_slots": list(MATERIAL_GROUPS),
-                "asset_quality": "production",
+                "asset_quality": "restricted",
                 "appearances": {
                     "employee_default_v1": {
                         "textures": {"body": texture_name},
@@ -84,91 +83,30 @@ def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str
     return manifest
 
 
-def _pose_clips(torch: Any) -> dict[str, list[Any]]:
-    base = _relaxed_body_pose(torch).reshape(1, 21, 3)
-    clips: dict[str, list[Any]] = {
-        "idle": [],
-        "walk": [],
-        "sit": [],
-        "work": [],
-        "use_computer": [],
-        "eat": [],
-        "pick_up": [],
-        "place": [],
-        "give": [],
-        "receive": [],
-        "talk": [],
-        "gesture_wave": [],
-        "gesture_point": [],
-    }
-
-    for phase in np.linspace(0, 2 * np.pi, 4, endpoint=False):
-        pose = base.clone()
-        pose[0, 5, 2] = 0.012 * np.sin(phase)
-        pose[0, 8, 2] = 0.018 * np.sin(phase)
-        clips["idle"].append(pose.reshape(1, -1))
-
-    for phase in np.linspace(0, 2 * np.pi, 8, endpoint=False):
-        stride = float(np.sin(phase))
-        pose = base.clone()
-        pose[0, 0, 0] = -0.42 * stride
-        pose[0, 1, 0] = 0.42 * stride
-        pose[0, 3, 0] = 0.52 * max(0.0, stride)
-        pose[0, 4, 0] = 0.52 * max(0.0, -stride)
-        pose[0, 15, 0] = 0.30 * stride
-        pose[0, 16, 0] = -0.30 * stride
-        clips["walk"].append(pose.reshape(1, -1))
-
-    seated = base.clone()
-    seated[0, 0, 0] = -1.35
-    seated[0, 1, 0] = -1.35
-    seated[0, 3, 0] = 1.45
-    seated[0, 4, 0] = 1.45
-    seated[0, 5, 0] = 0.12
-    for phase in np.linspace(0.0, 1.0, 8):
-        blend = float(phase * phase * (3.0 - 2.0 * phase))
-        pose = base + (seated - base) * blend
-        clips["sit"].append(pose.reshape(1, -1))
-
-    for phase in np.linspace(0, 2 * np.pi, 8, endpoint=False):
-        typing = float(np.sin(phase))
-        pose = seated.clone()
-        pose[0, 2, 0] = 0.08
-        pose[0, 5, 0] = 0.10 + 0.015 * typing
-        pose[0, 15, 0] = -0.55 + 0.035 * typing
-        pose[0, 16, 0] = -0.55 - 0.035 * typing
-        pose[0, 15, 2] = -0.78
-        pose[0, 16, 2] = 0.78
-        pose[0, 17, 1] = -1.05 + 0.08 * typing
-        pose[0, 18, 1] = 1.05 + 0.08 * typing
-        clips["work"].append(pose.reshape(1, -1))
-        clips["use_computer"].append(pose.reshape(1, -1))
-
-    for phase in np.linspace(0, 2 * np.pi, 8, endpoint=False):
-        reach = float((1.0 - np.cos(phase)) * 0.5)
-        pose = base.clone()
-        pose[0, 2, 0] = 0.03 * reach
-        pose[0, 16, 0] = -0.85 * reach
-        pose[0, 16, 2] = 1.25 - 0.50 * reach
-        pose[0, 18, 1] = 1.30 * reach
-        pose[0, 18, 2] = 0.22 * reach
-        clips["eat"].append(pose.reshape(1, -1))
-        for name, arm in (("pick_up", -0.9), ("place", -0.55), ("give", -0.75), ("receive", -0.65)):
-            gesture = base.clone()
-            gesture[0, 16, 0] = arm * reach
-            gesture[0, 16, 2] = 0.8 * reach
-            clips[name].append(gesture.reshape(1, -1))
-        talk = base.clone()
-        talk[0, 5, 2] = 0.03 * np.sin(phase)
-        clips["talk"].append(talk.reshape(1, -1))
-        wave = base.clone()
-        wave[0, 16, 0] = -0.7
-        wave[0, 16, 2] = 0.8 * np.sin(phase)
-        clips["gesture_wave"].append(wave.reshape(1, -1))
-        point = base.clone()
-        point[0, 16, 0] = -0.85
-        point[0, 16, 2] = 0.55
-        clips["gesture_point"].append(point.reshape(1, -1))
+def _load_retargeted_body_pose_clips(motion_root: Path, torch: Any) -> dict[str, list[Any]]:
+    """Load all locally selected, provenance-backed baker inputs."""
+    clips: dict[str, list[Any]] = {}
+    missing: list[str] = []
+    for clip_name in OFFICE_CLIPS:
+        path = motion_root / f"{clip_name}.npz"
+        if not path.is_file():
+            missing.append(clip_name)
+            continue
+        with np.load(path, allow_pickle=False) as payload:
+            if "body_pose" not in payload:
+                raise SmplxAssetError(f"Motion clip '{path}' is missing body_pose")
+            poses = np.asarray(payload["body_pose"], dtype=np.float32)
+        if poses.ndim != 2 or poses.shape[0] < 2 or poses.shape[1] != 63:
+            raise SmplxAssetError(
+                f"Motion clip '{path}' body_pose must have shape (frames >= 2, 63)"
+            )
+        if not np.isfinite(poses).all():
+            raise SmplxAssetError(f"Motion clip '{path}' body_pose contains non-finite values")
+        clips[clip_name] = [torch.from_numpy(pose).reshape(1, -1) for pose in poses]
+    if missing:
+        raise SmplxAssetError(
+            "Restricted motion input is incomplete; missing clips: " + ", ".join(missing)
+        )
     return clips
 
 
@@ -280,6 +218,7 @@ def bake_smplx_animations(
     gender: str = "neutral",
     target_height: float = 1.72,
     asset_prefix: str = "humanoid/generated/animations",
+    motion_root: Path | None = None,
 ) -> dict[str, Any]:
     model_file = find_model_file(model_root, "smplx", gender)
     smplx, torch = _load_runtime()
@@ -296,7 +235,9 @@ def bake_smplx_animations(
     if texture_coordinates is None or texture_faces is None:
         raise SmplxAssetError("SMPL-X model does not contain UV topology.")
     face_groups = _face_material_groups(model, faces)
-    clips = _pose_clips(torch)
+    if motion_root is None:
+        raise SmplxAssetError("Restricted production baking requires a local --motion-root")
+    clips = _load_retargeted_body_pose_clips(motion_root, torch)
 
     with torch.no_grad():
         reference = model(body_pose=clips["idle"][0], return_verts=True)
@@ -353,10 +294,25 @@ def bake_smplx_animations(
     type=click.Path(path_type=Path),
     default=Path("stretch_mujoco/models/assets/humanoid/generated/smplx_humanoid_assets.xml"),
 )
-def main(model_root: Path, gender: str, height: float, output_dir: Path, include_xml: Path) -> None:
+@click.option(
+    "--motion-root",
+    type=click.Path(path_type=Path, exists=True, file_okay=False),
+    required=True,
+    help="Directory of local AMASS intake <clip>.npz files.",
+)
+def main(
+    model_root: Path,
+    gender: str,
+    height: float,
+    output_dir: Path,
+    include_xml: Path,
+    motion_root: Path | None,
+) -> None:
     """Bake low-cost office NPC mesh clips from licensed SMPL-X parameters."""
     try:
-        manifest = bake_smplx_animations(model_root, output_dir, include_xml, gender, height)
+        manifest = bake_smplx_animations(
+            model_root, output_dir, include_xml, gender, height, motion_root=motion_root
+        )
     except SmplxAssetError as error:
         raise click.ClickException(str(error)) from error
     bundle = manifest["bundles"]["smplx_office_neutral_v1"]
