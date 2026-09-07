@@ -33,6 +33,7 @@ launch_sim = "stretch_mujoco.launch_sim:main"
 
 [project.scripts]
 prepare_smplx_npc = "stretch_mujoco.humanoid.smplx_converter:main"
+review_amass_npc_motion = "stretch_mujoco.humanoid.amass_motion_review:main"
 bake_smplx_animations = "stretch_mujoco.humanoid.smplx_animation_baker:main"
 prepare_amass_npc_motion = "stretch_mujoco.humanoid.amass_intake:main"
 validate_npc_assets = "stretch_mujoco.npc.assets:main"

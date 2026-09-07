@@ -851,11 +851,45 @@ Success: no issues found in 2 source files
 ```
 
 The locally supplied AMASS Transitions archive was inspected with the new
-`list` command only. It reported 110 compatible SMPL-X neutral stage-II
-sequences and one rejected stage-I neutral file with no `pose_body`; no archive
-member was extracted or converted. In particular, `sit_stand_stageii.npz` is a
-120 FPS, 980-frame candidate, not an approved `sit_down`/`stand_up` output:
-its crop and marker phase still require visual review.
+`list` command. It reported 110 compatible SMPL-X neutral stage-II sequences
+and one rejected stage-I neutral file with no `pose_body`. A later local mesh
+contact-sheet review rejected the complete sequence named `sit_stand_stageii`:
+it displayed ground-level rolling or prone motion rather than an office
+sit-down or stand-up transition. The archive filename and technical
+compatibility are therefore not semantic approval, and no AMASS intake
+selection has been approved from this review.
+
+### 10.8 Local AMASS candidate visual review (current state)
+
+`stretch_mujoco/humanoid/amass_motion_review.py` is the human-review boundary
+between a technically compatible AMASS source and a future intake selection.
+It streams one named NPZ member from an NPZ, directory, or `.tar.bz2` archive;
+it rejects pickle, missing or non-finite `(frames, 63)` `pose_body`, and invalid
+root-pose data. `review_amass_npc_motion` evaluates the crop with the local
+neutral SMPL-X model and writes an ignored mesh contact sheet plus receipt. The
+receipt records source-member SHA-256, crop, sampled frames, FPS, and PNG SHA-256,
+and is always marked `human_review_required`; it is not a baker input or action
+approval.
+
+Two ignored contact sheets were generated and reviewed: a BMLmovi short crop
+and the Transitions sequence above. Both were rejected as ground-level rolling
+or prone motions. The local review ledger has no approved selection. Missing
+`smplx` runtime remains an explicit command failure; the tool does not use a
+preview body or synthesized pose as a rendering fallback.
+
+Focused verification:
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q tests/test_amass_motion_review.py
+3 passed
+
+uv run flake8 stretch_mujoco/humanoid/amass_motion_review.py \
+  tests/test_amass_motion_review.py
+passed
+
+uv run mypy stretch_mujoco/humanoid/amass_motion_review.py
+Success: no issues found in 1 source file
+```
 
 ## 11. 办公室原生光照验收视频（当前实现）
 
