@@ -161,7 +161,7 @@ uv run python tools/prepare_obj_accessory.py \
 
 文件：`stretch_mujoco/npc/appearance_pipeline/accessory_recipe.py`、`tools/build_npc_fused_accessory.py`
 
-融合 OBJ 的可编辑事实源是 schema-v1 recipe，而不是 `*.receipt.json`。正式、Git 跟踪的 `models/accessories/cap_source_v1.recipe.json` 固定 `accessory_id`、`attachment_mode: head_follow_fused`、`mesh_scale`、`head_clearance_m`、`back_offset_m` 和 `back_tilt_degrees`；它是唯一可手工编辑并长期保存的帽子姿态配置。调用方必须通过同目录下也受版本控制的 `cap_source_v1.runtime.json` 绑定该 recipe、源归档、基线 manifest/population、目标 NPC 与派生输出位置，builder 才生成 accessory、逐帧 head-follow fused OBJ、receipt、fused manifest 和 runtime population projection。
+融合 OBJ 的可编辑事实源是 schema-v1 recipe，而不是 `*.receipt.json`。正式、Git 跟踪的 `models/accessories/cap_source_v1.recipe.json` 固定 `accessory_id`、`attachment_mode: head_follow_fused`、`mesh_scale`、`head_clearance_m`、`back_offset_m`、`back_tilt_degrees` 和 `body_occlusion_mode`；它是唯一可手工编辑并长期保存的帽子姿态配置。调用方必须通过同目录下也受版本控制的 `cap_source_v1.runtime.json` 绑定该 recipe、源归档、基线 manifest/population、目标 NPC 与派生输出位置，builder 才生成 accessory、逐帧 head-follow fused OBJ、receipt、fused manifest 和 runtime population projection。
 
 ```bash
 uv run python tools/build_npc_fused_accessory.py \
@@ -176,6 +176,10 @@ uv run python tools/build_npc_fused_accessory.py \
 ```
 
 Builder 将 recipe SHA、receipt SHA 和融合模式写入输出 manifest，并从 target NPC 的 `embodiment.accessories`（及出现时的 `appearance_config.accessories`）移除该 `accessory_id`。随后严格 manifest/population preflight 必须通过；因此运行时只能加载融合帧，既不能静默复用旧 anchor，也不能再次创建独立帽子 geom。receipt 的 pose 字段由 builder 在写出时与 recipe 精确比对；手工修改 receipt 不会改变 runtime projection，下一次 build 会重新覆盖它。
+
+`body_occlusion_mode: cull_covered_head_faces` 为将来闭合帽冠遮挡体保留：融合器会为可遮挡的人体头面建立固定 maskable topology，并在每帧将实际被闭合遮挡体包住的面退化，既避免人体头皮穿过帽壳，也保持所有 clip/frame 的 OBJ 顶点和 face-index topology 一致。该模式拒绝开放或 non-manifold 帽子网格，避免从单一垂直投影猜测可见性而在侧面制造空洞。当前 `cap_source_v1` 有 44 条边界边，是开放薄壳，故 recipe 明确保持 `body_occlusion_mode: preserve`；它仍具备逐帧 rigid head-follow 融合，但不宣称能以几何裁切修复帽冠覆盖不足。要启用裁切，内容制作方必须将帽子源 OBJ 制作为与可见帽冠一致的 watertight 网格，再在新 recipe 中显式选择该模式；独立 `occlusion` OBJ 输入尚未实现。
+
+本轮以 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_accessory_recipe.py tests/test_fuse_obj_accessory.py tests/test_link_npc_shared_assets.py` 验证 recipe、开放壳拒绝、maskable topology 与共享资源链接，结果为 `18 passed`；`.venv/bin/python -m mypy --ignore-missing-imports stretch_mujoco/npc/appearance_pipeline/accessory_recipe.py tools/fuse_obj_accessory.py` 通过。对 `tools/build_npc_fused_accessory.py` 一并运行 mypy 时，现有的 `manifest["bundles"][bundle_id]` 动态 JSON 索引在第 77 行报 `object is not indexable`；该行不属于本轮 diff，未为通过检查而修改。以 `cap_source_v1.runtime.json` 重建办公室场景并运行 `tools/validate_npc_assets.py` 的结果为 `Validated 2 NPC(s) and 1 bundle(s)`；由于该帽子是开放壳，这只是 `preserve` 模式的兼容性验证，不是几何裁切已经通过视觉验收的声明。
 
 运行时场景组合必须使用 `tools/build_npc_scene.py --accessory-runtime-config`，而不是把旧的 fused manifest 直接传给 `build_npc_scene()`。`models/accessories/cap_source_v1.runtime.json` 是正式、受版本控制的 NPC 外观运行配置；它集中绑定 recipe、原始归档、基线 manifest/population 和派生输出位置。每次调用都会无条件重新生成 OBJ、anchors、逐帧融合 OBJ、receipt、manifest 和 runtime population，随后才组合 MuJoCo 场景。它没有 receipt/mtime/cache 快路径：receipt 仅为本轮投影的审计证据，不能成为运行时输入。配置路径相对 runtime config 文件解析；正常运行不依赖 `*.local.json`。
 

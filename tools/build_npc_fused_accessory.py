@@ -132,6 +132,7 @@ def build_fused_accessory(
             "recipe": str(recipe_path.resolve()),
             "recipe_sha256": recipe_sha256(recipe_path),
             "attachment_mode": recipe.attachment_mode,
+            "body_occlusion_mode": recipe.body_occlusion_mode,
         }
     )
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
@@ -142,6 +143,7 @@ def build_fused_accessory(
         output_dir / "frames",
         output_manifest.resolve(),
         bundle_id=bundle_id,
+        body_occlusion_mode=recipe.body_occlusion_mode,
     )
     manifest = json.loads(output_manifest.read_text(encoding="utf-8"))
     bind_recipe_accessory(
@@ -159,6 +161,7 @@ def build_fused_accessory(
             "receipt": str(receipt_path.resolve()),
             "receipt_sha256": _sha256(receipt_path),
             "attachment_mode": recipe.attachment_mode,
+            "body_occlusion_mode": recipe.body_occlusion_mode,
         }
     )
     output_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")

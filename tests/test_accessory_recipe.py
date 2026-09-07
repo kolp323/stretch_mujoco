@@ -31,6 +31,7 @@ def test_recipe_requires_head_follow_fused_and_exact_fields(tmp_path: Path) -> N
                 "head_clearance_m": -0.01,
                 "back_offset_m": 0.1,
                 "back_tilt_degrees": 13,
+                "body_occlusion_mode": "preserve",
             }
         )
     )
@@ -39,6 +40,7 @@ def test_recipe_requires_head_follow_fused_and_exact_fields(tmp_path: Path) -> N
 
     assert parsed.mesh_scale == 1.2
     assert parsed.as_dict()["attachment_mode"] == "head_follow_fused"
+    assert parsed.body_occlusion_mode == "preserve"
     recipe.write_text("{}")
     with pytest.raises(ValueError, match="fields mismatch"):
         FusedAccessoryRecipe.from_json(recipe)
@@ -104,6 +106,7 @@ def test_recipe_accessory_binding_replaces_stale_manifest_reference(tmp_path: Pa
                 "head_clearance_m": 0.0,
                 "back_offset_m": 0.0,
                 "back_tilt_degrees": 0.0,
+                "body_occlusion_mode": "preserve",
             }
         )
     )
@@ -225,6 +228,7 @@ def test_builder_creates_nested_runtime_population_directory(
                 "head_clearance_m": 0.0,
                 "back_offset_m": 0.0,
                 "back_tilt_degrees": 0.0,
+                "body_occlusion_mode": "preserve",
             }
         )
     )
@@ -272,3 +276,4 @@ def test_checked_in_cap_runtime_config_references_the_canonical_recipe() -> None
         "manifest.cap_source_v1.employee_01.runtime.preview.json"
     )
     assert runtime.output_population.endswith("runtime_populations/cap_source_v1/employee_01.json")
+    assert recipe.body_occlusion_mode == "preserve"
