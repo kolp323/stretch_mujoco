@@ -31,6 +31,7 @@ ACTION_DURATIONS_MINUTES = {
     ActionType.IDLE: 1.0,
     ActionType.MOVE_TO: 3.0,
     ActionType.SIT: 0.5,
+    ActionType.STAND_UP: 0.5,
     ActionType.WORK: 15.0,
     ActionType.REST: 10.0,
     ActionType.EAT: 4.0,
@@ -237,6 +238,15 @@ class OfficeAgentRuntime:
             if self.action_driver is None or ActionType.SIT not in supported:
                 self._require_location(agent, target, errors)
             self._require_available(target, command.agent_id, errors)
+        elif command.action == ActionType.STAND_UP:
+            self._require_type(target, ObjectType.CHAIR, errors)
+            self._require_location(agent, target, errors)
+            if not self.world.find_relations(
+                subject=target,
+                relation=RelationType.OCCUPIED_BY,
+                object_id=command.agent_id,
+            ):
+                errors.append("Agent is not occupying the target chair")
         elif command.action == ActionType.WORK:
             self._require_type(target, ObjectType.WORKSTATION, errors)
             self._require_location(agent, target, errors)
@@ -716,6 +726,8 @@ class OfficeAgentRuntime:
             self._leave_occupied_location(agent)
             agent.state.location = target
             self.world.replace_relation(target, RelationType.OCCUPIED_BY, agent.agent_id)
+        elif action == ActionType.STAND_UP:
+            self.world.remove_relation(target, RelationType.OCCUPIED_BY, agent.agent_id)
         elif action == ActionType.REST:
             agent.needs.fatigue = max(0.0, agent.needs.fatigue - 0.35)
         elif action == ActionType.EAT:
@@ -768,6 +780,12 @@ class OfficeAgentRuntime:
             raise ValueError("Location update verification failed")
         if command.action == ActionType.SIT and agent.state.location != command.target:
             raise ValueError("Seat occupancy location verification failed")
+        if command.action == ActionType.STAND_UP and self.world.find_relations(
+            subject=command.target,
+            relation=RelationType.OCCUPIED_BY,
+            object_id=agent.agent_id,
+        ):
+            raise ValueError("Chair occupancy release verification failed")
         if command.action == ActionType.PICK_UP:
             if agent.state.held_object != command.target or not self.world.find_relations(
                 subject=agent.agent_id,

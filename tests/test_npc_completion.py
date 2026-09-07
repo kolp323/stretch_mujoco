@@ -6,11 +6,16 @@ from stretch_mujoco.npc.system import NpcSystem
 
 
 def _model() -> mujoco.MjModel:
-    frames = "\n".join(
-        f'<geom name="npc__employee_01__clip__sit_down__frame__{index:03d}__slot__body" '
-        f'type="sphere" size=".1" rgba="1 1 1 0"/>'
-        for index in range(8)
-    )
+    def frames(clip: str, count: int) -> str:
+        return "\n".join(
+            f'<geom name="npc__employee_01__clip__{clip}__frame__{index:03d}__slot__body" '
+            f'type="sphere" size=".1" rgba="1 1 1 0"/>'
+            for index in range(count)
+        )
+
+    sit_down_frames = frames("sit_down", 8)
+    seated_idle_frames = frames("seated_idle", 4)
+    stand_up_frames = frames("stand_up", 8)
     return mujoco.MjModel.from_xml_string(
         f"""
         <mujoco>
@@ -18,7 +23,9 @@ def _model() -> mujoco.MjModel:
             <body name="npc__employee_01" mocap="true">
               <geom name="npc__employee_01__clip__idle__frame__000__slot__body"
                     type="sphere" size=".1"/>
-              {frames}
+              {sit_down_frames}
+              {seated_idle_frames}
+              {stand_up_frames}
               <site name="npc__employee_01__handover" pos="0 0 1"/>
             </body>
             <body name="npc__employee_02" mocap="true" pos="0 1 0">
@@ -59,7 +66,39 @@ def test_sit_completes_at_animation_marker() -> None:
     state = system.states(data)["employee_01"]
     assert state.last_receipt is not None
     assert state.last_receipt.status == CommandStatus.SUCCEEDED
-    assert state.clip_phase >= 0.875
+    assert state.resolved_clip == "seated_idle"
+
+
+def test_stand_up_marker_returns_to_idle_only_after_completion() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "sit_down", "completion_marker": "seated"},
+            0,
+        )
+    )
+    for index in range(10):
+        system.step(model, data, index * 0.125)
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "stand_up", "completion_marker": "standing"},
+            1,
+        )
+    )
+    for index in range(10, 17):
+        system.step(model, data, index * 0.125)
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+    assert state.resolved_clip == "stand_up"
+    assert state.requested_animation == "idle"
+    system.step(model, data, 2.5)
+    assert system.states(data)["employee_01"].resolved_clip == "idle"
 
 
 def test_attach_and_detach_receipts_follow_physical_state() -> None:

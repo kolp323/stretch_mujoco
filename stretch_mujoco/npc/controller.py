@@ -237,10 +237,16 @@ class NpcController:
         self.attachments.step(data)
         self._last_step_time = sim_time
         if complete:
-            if active is not None and active.command.kind == NpcCommandKind.MOVE_TO:
+            if active is not None:
                 arrival_clip = active.command.payload.get("arrival_clip")
                 if arrival_clip is not None:
                     self.animation.request(str(arrival_clip))
+                elif (
+                    active.command.kind
+                    in {NpcCommandKind.PLAY_ANIMATION, NpcCommandKind.INTERACTION_CUE}
+                    and active.command.payload.get("completion_marker") is not None
+                ):
+                    self.animation.settle_completed_clip()
             return self._finish(CommandStatus.SUCCEEDED, sim_time)
         return running_receipt
 

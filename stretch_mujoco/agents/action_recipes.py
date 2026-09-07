@@ -50,7 +50,7 @@ class ActionRecipe:
 ACTION_RECIPES = {
     ActionType.IDLE: ActionRecipe("idle", "duration"),
     ActionType.MOVE_TO: ActionRecipe("walk", "pose_and_yaw"),
-    ActionType.SIT: ActionRecipe("sit", "seat_pose_and_marker"),
+    ActionType.SIT: ActionRecipe("sit_down", "seat_pose_and_marker"),
     ActionType.STAND_UP: ActionRecipe("stand_up", "standing_marker"),
     ActionType.WORK: ActionRecipe("work", "minimum_duration"),
     ActionType.USE_COMPUTER: ActionRecipe(
@@ -73,8 +73,8 @@ ACTION_RECIPES = {
     ActionType.PUT_DOWN: ActionRecipe("place", "release_and_detachment"),
     ActionType.HANDOVER: ActionRecipe("give", "interaction_markers"),
     ActionType.REQUEST_ROBOT: ActionRecipe("idle", "robot_task_and_session"),
-    ActionType.ATTEND_MEETING: ActionRecipe("sit", "interaction_session"),
-    ActionType.REST: ActionRecipe("sit", "minimum_duration"),
+    ActionType.ATTEND_MEETING: ActionRecipe("sit_down", "interaction_session"),
+    ActionType.REST: ActionRecipe("sit_down", "minimum_duration"),
     ActionType.OPEN_CABINET: ActionRecipe("idle", "cabinet_open"),
 }
 

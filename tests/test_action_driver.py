@@ -10,6 +10,7 @@ from stretch_mujoco.agents import (
     RobotToNpcHandoverBridge,
 )
 from stretch_mujoco.agents.drivers import MujocoNpcActionDriver
+from stretch_mujoco.agents.action_recipes import ACTION_RECIPES
 from stretch_mujoco.npc import CommandStatus, NpcCommandReceipt
 from stretch_mujoco.semantics import SemanticWorld
 
@@ -120,6 +121,8 @@ def test_sit_approaches_aligns_and_marks_seated_before_semantic_commit() -> None
     )
     agent = runtime.agents["employee_01"]
 
+    assert ACTION_RECIPES[ActionType.SIT].animation == "sit_down"
+
     result = runtime.submit_action(ActionCommand("employee_01", ActionType.SIT, "chair_right"))
     assert result.valid
     assert simulator.command.kind.value == "move_to"
@@ -144,6 +147,21 @@ def test_sit_approaches_aligns_and_marks_seated_before_semantic_commit() -> None
 
     assert agent.state.location == "chair_right"
     assert agent.executor.status == ExecutionStatus.SUCCEEDED
+
+    result = runtime.submit_action(ActionCommand("employee_01", ActionType.STAND_UP, "chair_right"))
+    assert result.valid
+    assert simulator.command.kind.value == "play_animation"
+    assert simulator.command.payload == {"clip": "stand_up", "completion_marker": "standing"}
+
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+    )
+    runtime.tick(0.25)
+
+    assert agent.executor.status == ExecutionStatus.SUCCEEDED
+    assert not world.find_relations(
+        subject="chair_right", relation="OCCUPIED_BY", object_id="employee_01"
+    )
 
 
 def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:

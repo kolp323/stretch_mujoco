@@ -750,3 +750,25 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
 
 The two preview-manifest tests remain blocked by the absent declared preview asset
 `assets/humanoid/cesium_man.png`; this work does not alter asset validation.
+
+### 10.6 Canonical seat transitions reconciled (current state)
+
+The action recipe projection now names `sit_down` rather than the retired `sit`
+clip, matching the driver and graph. A successful `seated` marker requests
+`seated_idle`; a successful `standing` marker requests `idle`. The runtime accepts
+and verifies `STAND_UP` only for the agent occupying the target chair, and releases
+`OCCUPIED_BY` only after the terminal physical receipt. The safe-marker interrupt
+contract remains owned by `AnimationController`; no crossfade capability was added.
+
+Focused reconciliation verification:
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_animation_controller.py tests/test_action_driver.py \
+  tests/test_npc_completion.py tests/test_office_agents.py
+29 passed in 0.47s
+```
+
+The wider runtime mypy invocation still reports pre-existing Optional-target and
+untyped-driver errors in `agents/runtime.py`; its relevant behavior is covered by the
+focused tests above, and this reconciliation does not suppress or alter those checks.
