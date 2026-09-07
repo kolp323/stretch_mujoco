@@ -75,7 +75,7 @@ def normalized_obj(source_obj: bytes) -> bytes:
 
 
 def head_top_anchors(
-    manifest_path: Path, *, head_clearance_m: float = 0.045
+    manifest_path: Path, *, head_clearance_m: float = 0.195
 ) -> dict[str, list[dict[str, list[float]]]]:
     """Place the normalized mesh above, rather than inside, the animated crown."""
     if head_clearance_m < 0:
@@ -108,7 +108,7 @@ def prepare(
     output_dir: Path,
     accessory_id: str,
     *,
-    head_clearance_m: float = 0.045,
+    head_clearance_m: float = 0.195,
 ) -> dict[str, str]:
     """Write a normalized OBJ, all-clip anchors, and an auditable receipt."""
     source_obj, provenance = _source_obj(source_archive)
@@ -149,8 +149,8 @@ def main() -> None:
     parser.add_argument(
         "--head-clearance-m",
         type=float,
-        default=0.045,
-        help="Vertical distance above each animated crown (default: 0.045 m)",
+        default=0.195,
+        help="Vertical distance above each animated crown (default: 0.195 m)",
     )
     args = parser.parse_args()
     paths = prepare(

@@ -62,13 +62,13 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
     monkeypatch.setattr(module, "head_top_anchors", anchors)
 
     paths = module.prepare(
-        archive, manifest, tmp_path / "output", "cap_source_v1", head_clearance_m=0.045
+        archive, manifest, tmp_path / "output", "cap_source_v1", head_clearance_m=0.195
     )
     receipt = json.loads(Path(paths["receipt"]).read_text())
 
     assert receipt["asset_quality"] == "preview"
-    assert receipt["head_clearance_m"] == 0.045
-    assert captured["head_clearance_m"] == 0.045
+    assert receipt["head_clearance_m"] == 0.195
+    assert captured["head_clearance_m"] == 0.195
     assert receipt["outputs"]["mesh"] == "cap_source_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
