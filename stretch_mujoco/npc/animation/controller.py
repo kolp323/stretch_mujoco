@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 from .backend import AnimationBackend
 from .graph import OFFICE_ANIMATION_GRAPH, AnimationGraph, ClipDefinition
+from .state import AnimationLifecycle, AnimationState
 
 
 @dataclass(frozen=True)
@@ -41,12 +42,33 @@ class AnimationController:
         self._fallback_request: str | None = None
         self._last_time: float | None = None
         self._pending_reset = False
+        self.lifecycle = AnimationLifecycle.REQUESTED
 
     def request(self, clip: str) -> None:
         if clip != self.requested_clip:
             self._pending_reset = True
             self._fallback_request = None
         self.requested_clip = clip
+        self.lifecycle = AnimationLifecycle.REQUESTED
+
+    @property
+    def state(self) -> AnimationState:
+        definition = self.clips.get(self.resolved_clip, ClipDefinition())
+        return AnimationState(
+            self.resolved_clip,
+            self.phase,
+            definition.speed,
+            definition.loop,
+            upper_body_overlay=self.resolved_clip if definition.upper_body_overlay else None,
+            lifecycle=self.lifecycle,
+        )
+
+    def settle_completed_clip(self) -> str | None:
+        """Request the graph-defined stable pose after a successful marker action."""
+        completion_clip = self.clips.get(self.resolved_clip, ClipDefinition()).completion_clip
+        if completion_clip is not None:
+            self.request(completion_clip)
+        return completion_clip
 
     def step(
         self, sim_time: float, *, locomotion: str = "stationary"
@@ -75,6 +97,7 @@ class AnimationController:
         self._last_time = sim_time
         previous_phase = self.phase
         clip_fps = self.fps if self.fps is not None else self.clips[self.resolved_clip].fps
+        self.lifecycle = AnimationLifecycle.PLAYING
         next_phase = self.phase + dt * clip_fps / max(
             _frame_count(self.backend, self.resolved_clip), 1
         )
