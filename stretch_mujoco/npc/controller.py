@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import mujoco
 
 from .animation import AnimationController, AnimationGraph, MeshSequenceBackend
+from .animation.state import AnimationLifecycle
 from .attachment import AttachmentController
 from .binding import NpcBinding
 from .locomotion import LocomotionController
@@ -64,6 +65,7 @@ class NpcController:
                 site = str(command.payload["site"])
                 speed = _payload_float(command.payload.get("speed", 1.0), "speed")
                 self.locomotion.move_to(site, speed)
+                self.animation.lifecycle = AnimationLifecycle.NAVIGATING
             elif command.kind == NpcCommandKind.PLAY_ANIMATION:
                 self.animation.request(str(command.payload["clip"]))
             elif command.kind == NpcCommandKind.INTERACTION_CUE:
@@ -85,6 +87,7 @@ class NpcController:
                     raise ValueError(f"unknown_detach_site:{detach_site}")
             elif command.kind == NpcCommandKind.ALIGN_TO:
                 _payload_float(command.payload["yaw"], "yaw")
+                self.animation.lifecycle = AnimationLifecycle.ALIGNING
             else:
                 return NpcCommandReceipt(
                     command.command_id,
@@ -198,6 +201,10 @@ class NpcController:
 
         locomotion_state = "walk" if self.locomotion.target_site is not None else "stationary"
         events = self.animation.step(sim_time, locomotion=locomotion_state)
+        if active is not None and active.command.kind == NpcCommandKind.MOVE_TO:
+            self.animation.lifecycle = AnimationLifecycle.NAVIGATING
+        elif active is not None and active.command.kind == NpcCommandKind.ALIGN_TO:
+            self.animation.lifecycle = AnimationLifecycle.ALIGNING
         self._animation_events = tuple(event.name for event in events)
         if active is not None and active.command.kind in {
             NpcCommandKind.PLAY_ANIMATION,
@@ -222,6 +229,11 @@ class NpcController:
         self, status: CommandStatus, sim_time: float, reason: str | None = None
     ) -> NpcCommandReceipt:
         assert self.active_command is not None
+        self.animation.lifecycle = (
+            AnimationLifecycle.COMPLETED
+            if status == CommandStatus.SUCCEEDED
+            else AnimationLifecycle.FAILED
+        )
         receipt = NpcCommandReceipt(
             self.active_command.command.command_id,
             self.binding.npc_id,
@@ -253,6 +265,7 @@ class NpcController:
             requested_animation=self.animation.requested_clip,
             resolved_clip=self.animation.resolved_clip,
             clip_phase=self.animation.phase,
+            animation_lifecycle=self.animation.lifecycle.value,
             transition=self.animation.transition,
             animation_events=self._animation_events,
             held_objects=self.attachments.held_objects,

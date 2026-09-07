@@ -131,6 +131,7 @@ class NpcRuntimeState:
     requested_animation: str
     resolved_clip: str
     clip_phase: float
+    animation_lifecycle: str = "requested"
     transition: str | None = None
     animation_events: tuple[str, ...] = ()
     held_objects: tuple[str, ...] = ()
@@ -169,6 +170,7 @@ class NpcRuntimeState:
             requested_animation=str(payload["requested_animation"]),
             resolved_clip=str(payload["resolved_clip"]),
             clip_phase=float(payload["clip_phase"]),
+            animation_lifecycle=str(payload.get("animation_lifecycle", "requested")),
             transition=None if payload.get("transition") is None else str(payload["transition"]),
             animation_events=tuple(str(value) for value in payload.get("animation_events", ())),
             held_objects=tuple(str(value) for value in payload.get("held_objects", ())),
