@@ -147,7 +147,7 @@ uv run bake_npc_identity \
 
 ```bash
 uv run python tools/prepare_obj_accessory.py \
-  --source-archive aaa_workspace/raw_resources/objs/cap.zip \
+  --source-archive aaa_workspace/raw_resources/npc/accessories/cap_source_v1/cap_source_v1.zip \
   --manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
   --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/accessories \
   --accessory-id cap_source_v1
@@ -161,12 +161,12 @@ uv run python tools/prepare_obj_accessory.py \
 
 文件：`stretch_mujoco/npc/appearance_pipeline/accessory_recipe.py`、`tools/build_npc_fused_accessory.py`
 
-融合 OBJ 的可编辑事实源是 schema-v1 recipe，而不是 `*.receipt.json`。recipe 固定 `accessory_id`、`attachment_mode: head_follow_fused`、`mesh_scale`、`head_clearance_m`、`back_offset_m` 和 `back_tilt_degrees`；仓库只提供无私有来源路径的 `models/accessories/cap_source_v1.recipe.example.json` 模板。调用方显式传入本地来源归档、源 manifest 与源 population，builder 才生成 accessory、逐帧 head-follow fused OBJ、receipt、fused manifest 和 runtime population projection。
+融合 OBJ 的可编辑事实源是 schema-v1 recipe，而不是 `*.receipt.json`。正式、Git 跟踪的 `models/accessories/cap_source_v1.recipe.json` 固定 `accessory_id`、`attachment_mode: head_follow_fused`、`mesh_scale`、`head_clearance_m`、`back_offset_m` 和 `back_tilt_degrees`；它是唯一可手工编辑并长期保存的帽子姿态配置。调用方必须通过同目录下也受版本控制的 `cap_source_v1.runtime.json` 绑定该 recipe、源归档、基线 manifest/population、目标 NPC 与派生输出位置，builder 才生成 accessory、逐帧 head-follow fused OBJ、receipt、fused manifest 和 runtime population projection。
 
 ```bash
 uv run python tools/build_npc_fused_accessory.py \
-  --recipe stretch_mujoco/models/accessories/cap_source_v1.recipe.local.json \
-  --source-archive aaa_workspace/raw_resources/objs/cap.zip \
+  --recipe stretch_mujoco/models/accessories/cap_source_v1.recipe.json \
+  --source-archive aaa_workspace/raw_resources/npc/accessories/cap_source_v1/cap_source_v1.zip \
   --source-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
   --source-population stretch_mujoco/models/office_population.production.example.json \
   --npc-id employee_01 \
@@ -177,16 +177,16 @@ uv run python tools/build_npc_fused_accessory.py \
 
 Builder 将 recipe SHA、receipt SHA 和融合模式写入输出 manifest，并从 target NPC 的 `embodiment.accessories`（及出现时的 `appearance_config.accessories`）移除该 `accessory_id`。随后严格 manifest/population preflight 必须通过；因此运行时只能加载融合帧，既不能静默复用旧 anchor，也不能再次创建独立帽子 geom。receipt 的 pose 字段由 builder 在写出时与 recipe 精确比对；手工修改 receipt 不会改变 runtime projection，下一次 build 会重新覆盖它。
 
-运行时场景组合必须使用 `tools/build_npc_scene.py --accessory-runtime-config`，而不是把旧的 fused manifest 直接传给 `build_npc_scene()`。runtime config 将可编辑 recipe、原始归档、基线 manifest/population 和派生输出位置集中在同一份本地 JSON；每次调用都会无条件重新生成 OBJ、anchors、逐帧融合 OBJ、receipt、manifest 和 runtime population，随后才组合 MuJoCo 场景。它没有 receipt/mtime/cache 快路径：receipt 仅为本轮投影的审计证据，不能成为运行时输入。配置路径相对 runtime config 文件解析；示例 `models/accessories/cap_source_v1.runtime.example.json` 不包含私有资源且仅作本地配置模板。
+运行时场景组合必须使用 `tools/build_npc_scene.py --accessory-runtime-config`，而不是把旧的 fused manifest 直接传给 `build_npc_scene()`。`models/accessories/cap_source_v1.runtime.json` 是正式、受版本控制的 NPC 外观运行配置；它集中绑定 recipe、原始归档、基线 manifest/population 和派生输出位置。每次调用都会无条件重新生成 OBJ、anchors、逐帧融合 OBJ、receipt、manifest 和 runtime population，随后才组合 MuJoCo 场景。它没有 receipt/mtime/cache 快路径：receipt 仅为本轮投影的审计证据，不能成为运行时输入。配置路径相对 runtime config 文件解析；若开发者有未共享的替代来源，可另建被忽略的 `*.local.json` 覆盖文件，但正常运行不依赖它。
 
 ```bash
 uv run python tools/build_npc_scene.py \
-  --accessory-runtime-config stretch_mujoco/models/accessories/cap_source_v1.runtime.local.json \
+  --accessory-runtime-config stretch_mujoco/models/accessories/cap_source_v1.runtime.json \
   --output stretch_mujoco/models/.office_npc_runtime.xml \
   --include-base-scene
 ```
 
-该 CLI 是 recipe-bound OBJ 配饰的唯一受支持运行入口。`--population` 保留给没有 recipe-bound OBJ 配饰的既有兼容场景；它不会猜测来源归档或从 receipt 重建资产。任何 recipe、来源或严格预检错误都会在 MuJoCo 加载之前终止，避免静默复用旧模型。
+该 CLI 是 recipe-bound OBJ 配饰的唯一受支持运行入口。`--population` 保留给没有 recipe-bound OBJ 配饰的既有兼容场景；它不会猜测来源归档或从 receipt 重建资产。任何 recipe、来源或严格预检错误都会在 MuJoCo 加载之前终止，避免静默复用旧模型。原始视觉资产存放在本地、未提交的 `aaa_workspace/raw_resources/npc/<role>/<asset_id>/`；例如 cap 的 archive 为 `npc/accessories/cap_source_v1/cap_source_v1.zip`。它们不是运行时缓存，也不得混入生成 OBJ、receipt 或视频。
 
 ### 3.1 Population schema
 

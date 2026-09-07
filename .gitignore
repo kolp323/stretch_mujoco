@@ -53,6 +53,10 @@ MUJOCO_LOG.TXT
 # Local task tracking files; do not include them in feature PRs.
 /aaa_workspace/task/
 
+# Licensed/raw visual source material is local input, not a repository asset.
+/aaa_workspace/raw_resources/**
+!/aaa_workspace/raw_resources/README.md
+
 # Temp runtime XML 
 stretch_temp_abs.xml
 

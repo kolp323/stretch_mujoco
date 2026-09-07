@@ -184,3 +184,18 @@ def test_runtime_scene_build_rebuilds_recipe_every_invocation(
 
     assert len(calls) == 2
     assert calls[0]["recipe_path"] == tmp_path / "cap.recipe.json"
+
+
+def test_checked_in_cap_runtime_config_references_the_canonical_recipe() -> None:
+    models = Path(__file__).parents[1] / "stretch_mujoco/models/accessories"
+    recipe_path = models / "cap_source_v1.recipe.json"
+    runtime_path = models / "cap_source_v1.runtime.json"
+
+    recipe = FusedAccessoryRecipe.from_json(recipe_path)
+    runtime = FusedAccessoryRuntimeConfig.from_json(runtime_path)
+
+    assert runtime.resolve_path(runtime_path, "recipe") == recipe_path
+    assert recipe.accessory_id == "cap_source_v1"
+    assert runtime.source_archive == (
+        "../../../aaa_workspace/raw_resources/npc/accessories/cap_source_v1/cap_source_v1.zip"
+    )

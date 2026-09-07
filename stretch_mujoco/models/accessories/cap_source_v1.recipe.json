@@ -2,8 +2,8 @@
   "schema_version": 1,
   "accessory_id": "cap_source_v1",
   "attachment_mode": "head_follow_fused",
-  "mesh_scale": 1.35,
-  "head_clearance_m": -0.026,
-  "back_offset_m": 0.148,
+  "mesh_scale": 1.4,
+  "head_clearance_m": -0.033,
+  "back_offset_m": 0.118,
   "back_tilt_degrees": 13.0
 }
