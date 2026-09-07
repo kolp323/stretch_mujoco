@@ -113,6 +113,17 @@ def fuse_manifest(
     source = json.loads(manifest_path.read_text(encoding="utf-8"))
     bundle = source["bundles"][bundle_id]
     anchors = json.loads(anchors_path.read_text(encoding="utf-8"))
+    # The preview manifest retains the source accessory declaration for
+    # provenance even though the population no longer instantiates it. Keep
+    # those hashes current so strict manifest validation cannot be bypassed by
+    # a stale, unused declaration.
+    for accessory in bundle.get("accessories", {}).values():
+        for field, path in (("mesh", accessory_path), ("anchors", anchors_path)):
+            relative = accessory.get(field)
+            if not isinstance(relative, str):
+                continue
+            if (manifest_path.parent / relative).resolve() == path.resolve():
+                bundle["sha256"][relative] = _sha256(path)
     if "idle" not in bundle["clips"] or not bundle["clips"]["idle"]["frames"]:
         raise ValueError("Head-follow fusion requires an idle reference frame")
     reference_relative = bundle["clips"]["idle"]["frames"][0]

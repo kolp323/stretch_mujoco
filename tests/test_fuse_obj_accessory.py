@@ -60,6 +60,7 @@ def test_fuse_manifest_repoints_every_clip_frame(tmp_path: Path) -> None:
                 "bundles": {
                     "bundle": {
                         "clips": {"idle": {"frames": ["body.obj"]}},
+                        "accessories": {"cap": {"mesh": "cap.obj", "anchors": "anchors.json"}},
                         "sha256": {},
                     }
                 }
@@ -77,3 +78,5 @@ def test_fuse_manifest_repoints_every_clip_frame(tmp_path: Path) -> None:
     assert result["clips"]["idle"] == [relative]
     assert (tmp_path / relative).is_file()
     assert relative in generated["bundles"]["bundle"]["sha256"]
+    assert generated["bundles"]["bundle"]["sha256"]["cap.obj"] == module._sha256(cap)
+    assert generated["bundles"]["bundle"]["sha256"]["anchors.json"] == module._sha256(anchors)
