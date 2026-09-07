@@ -45,10 +45,14 @@ def _source_obj(source_archive: Path) -> tuple[bytes, dict[str, str]]:
     }
 
 
-def normalized_obj(source_obj: bytes, *, mesh_scale: float = 1.3) -> bytes:
+def normalized_obj(
+    source_obj: bytes, *, mesh_scale: float = 1.3, back_tilt_degrees: float = 13.0
+) -> bytes:
     """Convert the source cap's centimetre Y-up vertices to metre Z-up OBJ."""
     if not np.isfinite(mesh_scale) or mesh_scale <= 0:
         raise ValueError("mesh_scale must be a positive finite number")
+    if not np.isfinite(back_tilt_degrees):
+        raise ValueError("back_tilt_degrees must be finite")
     lines = source_obj.decode("utf-8").splitlines()
     vertices = np.array(
         [[float(value) for value in line.split()[1:4]] for line in lines if line.startswith("v ")],
@@ -68,6 +72,13 @@ def normalized_obj(source_obj: bytes, *, mesh_scale: float = 1.3) -> bytes:
             vertices[:, 1] - minimum[1],
         )
     ) * (0.01 * mesh_scale)
+    # Local -Y is NPC forward. Negative X rotation carries the crown toward
+    # +Y, yielding a backward cap tilt around the head's lateral axis.
+    angle = -np.deg2rad(back_tilt_degrees)
+    tilt = np.array(
+        ((1.0, 0.0, 0.0), (0.0, np.cos(angle), -np.sin(angle)), (0.0, np.sin(angle), np.cos(angle)))
+    )
+    converted = converted @ tilt.T
     passthrough = [line for line in lines if not line.startswith(("v ", "mtllib ", "usemtl "))]
     return (
         "# Prepared from cap.zip; source centimetres/Y-up -> metres/MuJoCo Z-up.\n"
@@ -77,7 +88,7 @@ def normalized_obj(source_obj: bytes, *, mesh_scale: float = 1.3) -> bytes:
 
 
 def head_top_anchors(
-    manifest_path: Path, *, head_clearance_m: float = -0.003, back_offset_m: float = 0.08
+    manifest_path: Path, *, head_clearance_m: float = -0.011, back_offset_m: float = 0.083
 ) -> dict[str, list[dict[str, list[float]]]]:
     """Place the normalized mesh above and behind the animated crown."""
     if not np.isfinite(head_clearance_m):
@@ -113,15 +124,20 @@ def prepare(
     output_dir: Path,
     accessory_id: str,
     *,
-    head_clearance_m: float = -0.003,
-    back_offset_m: float = 0.08,
+    head_clearance_m: float = -0.011,
+    back_offset_m: float = 0.083,
     mesh_scale: float = 1.3,
+    back_tilt_degrees: float = 13.0,
 ) -> dict[str, str]:
     """Write a normalized OBJ, all-clip anchors, and an auditable receipt."""
     source_obj, provenance = _source_obj(source_archive)
     output_dir.mkdir(parents=True, exist_ok=True)
     mesh_path = output_dir / f"{accessory_id}.obj"
-    mesh_path.write_bytes(normalized_obj(source_obj, mesh_scale=mesh_scale))
+    mesh_path.write_bytes(
+        normalized_obj(
+            source_obj, mesh_scale=mesh_scale, back_tilt_degrees=back_tilt_degrees
+        )
+    )
     anchors_path = output_dir / f"{accessory_id}.anchors.json"
     anchors_path.write_text(
         json.dumps(
@@ -144,6 +160,7 @@ def prepare(
         "head_clearance_m": head_clearance_m,
         "back_offset_m": back_offset_m,
         "mesh_scale": mesh_scale,
+        "back_tilt_degrees": back_tilt_degrees,
         **provenance,
         "outputs": {
             "mesh": mesh_path.name,
@@ -166,17 +183,23 @@ def main() -> None:
     parser.add_argument(
         "--head-clearance-m",
         type=float,
-        default=-0.003,
-        help="Vertical distance above each animated crown (default: -0.003 m)",
+        default=-0.011,
+        help="Vertical distance above each animated crown (default: -0.011 m)",
     )
     parser.add_argument(
         "--back-offset-m",
         type=float,
-        default=0.08,
-        help="Distance behind each animated crown along local +Y (default: 0.08 m)",
+        default=0.083,
+        help="Distance behind each animated crown along local +Y (default: 0.083 m)",
     )
     parser.add_argument(
         "--mesh-scale", type=float, default=1.3, help="Uniform local mesh scale (default: 1.3)"
+    )
+    parser.add_argument(
+        "--back-tilt-degrees",
+        type=float,
+        default=13.0,
+        help="Backward tilt around local X (default: 13 degrees)",
     )
     args = parser.parse_args()
     paths = prepare(
@@ -187,6 +210,7 @@ def main() -> None:
         head_clearance_m=args.head_clearance_m,
         back_offset_m=args.back_offset_m,
         mesh_scale=args.mesh_scale,
+        back_tilt_degrees=args.back_tilt_degrees,
     )
     print(json.dumps(paths, indent=2))
 

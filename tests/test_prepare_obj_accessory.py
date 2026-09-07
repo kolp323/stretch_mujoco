@@ -32,7 +32,7 @@ def test_normalized_source_cap_is_meter_z_up_and_records_nested_provenance(tmp_p
     _nested_cap(archive)
 
     source, provenance = module._source_obj(archive)
-    normalized = module.normalized_obj(source, mesh_scale=1.0).decode("utf-8")
+    normalized = module.normalized_obj(source, mesh_scale=1.0, back_tilt_degrees=0.0).decode("utf-8")
     vertices = np.array(
         [[float(value) for value in line.split()[1:4]] for line in normalized.splitlines() if line.startswith("v ")]
     )
@@ -43,11 +43,16 @@ def test_normalized_source_cap_is_meter_z_up_and_records_nested_provenance(tmp_p
     assert np.isclose(vertices[:, 2].max(), 0.1)
     assert np.isclose(vertices[:, :2].ptp(axis=0)[0], 0.2)
     assert "mtllib" not in normalized
-    scaled = module.normalized_obj(source, mesh_scale=1.3).decode("utf-8")
+    scaled = module.normalized_obj(source, mesh_scale=1.3, back_tilt_degrees=0.0).decode("utf-8")
     scaled_vertices = np.array(
         [[float(value) for value in line.split()[1:4]] for line in scaled.splitlines() if line.startswith("v ")]
     )
     assert np.isclose(scaled_vertices[:, :2].ptp(axis=0)[0], 0.26)
+    tilted = module.normalized_obj(source, mesh_scale=1.3, back_tilt_degrees=13.0).decode("utf-8")
+    tilted_vertices = np.array(
+        [[float(value) for value in line.split()[1:4]] for line in tilted.splitlines() if line.startswith("v ")]
+    )
+    assert not np.allclose(tilted_vertices, scaled_vertices)
 
 
 def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, monkeypatch) -> None:
@@ -72,17 +77,19 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
         manifest,
         tmp_path / "output",
         "cap_source_v1",
-        head_clearance_m=-0.003,
-        back_offset_m=0.08,
+        head_clearance_m=-0.011,
+        back_offset_m=0.083,
         mesh_scale=1.3,
+        back_tilt_degrees=13.0,
     )
     receipt = json.loads(Path(paths["receipt"]).read_text())
 
     assert receipt["asset_quality"] == "preview"
-    assert receipt["head_clearance_m"] == -0.003
-    assert receipt["back_offset_m"] == 0.08
+    assert receipt["head_clearance_m"] == -0.011
+    assert receipt["back_offset_m"] == 0.083
     assert receipt["mesh_scale"] == 1.3
-    assert captured == {"head_clearance_m": -0.003, "back_offset_m": 0.08}
+    assert receipt["back_tilt_degrees"] == 13.0
+    assert captured == {"head_clearance_m": -0.011, "back_offset_m": 0.083}
     assert receipt["outputs"]["mesh"] == "cap_source_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
@@ -99,3 +106,5 @@ def test_head_top_anchors_rejects_invalid_offsets(tmp_path: Path) -> None:
         module.head_top_anchors(manifest, back_offset_m=-0.001)
     with pytest.raises(ValueError, match="positive finite"):
         module.normalized_obj(b"v 0 0 0\nf 1 1 1\n", mesh_scale=0)
+    with pytest.raises(ValueError, match="must be finite"):
+        module.normalized_obj(b"v 0 0 0\nf 1 1 1\n", back_tilt_degrees=float("nan"))
