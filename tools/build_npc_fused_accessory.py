@@ -35,7 +35,12 @@ def _sha256(path: Path) -> str:
 
 
 def runtime_population_payload(
-    payload: dict[str, object], *, npc_id: str, accessory_id: str, manifest_path: Path
+    payload: dict[str, object],
+    *,
+    source_population_path: Path,
+    npc_id: str,
+    accessory_id: str,
+    manifest_path: Path,
 ) -> dict[str, object]:
     """Bind one NPC to fused frames and retire only its duplicate accessory geom."""
     npcs = payload.get("npcs")
@@ -51,6 +56,10 @@ def runtime_population_payload(
     config = embodiment.get("appearance_config")
     if isinstance(config, dict) and isinstance(config.get("accessories"), list):
         config["accessories"] = [item for item in config["accessories"] if item != accessory_id]
+    for field in ("scene", "appearance_catalog"):
+        value = payload.get(field)
+        if isinstance(value, str):
+            payload[field] = str((source_population_path.parent / value).resolve())
     payload["asset_manifest"] = str(manifest_path.resolve())
     return payload
 
@@ -90,6 +99,9 @@ def build_fused_accessory(
 ) -> dict[str, str]:
     """Materialize every derived projection from one immutable pose recipe."""
     recipe = FusedAccessoryRecipe.from_json(recipe_path)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_manifest.parent.mkdir(parents=True, exist_ok=True)
+    output_population.parent.mkdir(parents=True, exist_ok=True)
     prepare = _tool_module("prepare_obj_accessory.py")
     fuse = _tool_module("fuse_obj_accessory.py")
     accessory_dir = output_dir / "accessory"
@@ -152,6 +164,7 @@ def build_fused_accessory(
     output_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     population = runtime_population_payload(
         json.loads(source_population.read_text(encoding="utf-8")),
+        source_population_path=source_population.resolve(),
         npc_id=npc_id,
         accessory_id=recipe.accessory_id,
         manifest_path=output_manifest,

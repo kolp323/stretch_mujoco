@@ -17,7 +17,7 @@
         "bundle": "smplx_office_neutral_v1",
         "appearance": "office_warm_glasses_chin_beard_v1",
         "visual_identity": "office_warm_glasses_chin_beard_v1",
-        "accessories": ["cap_simple_v1"],
+        "accessories": [],
         "animation_graph": "office_humanoid_v1",
         "collision_profile": "adult_humanoid_v1",
         "scale": 1.0

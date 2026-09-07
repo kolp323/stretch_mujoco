@@ -59,12 +59,36 @@ def test_runtime_population_removes_only_fused_accessory() -> None:
     }
 
     result = module.runtime_population_payload(
-        population, npc_id="alex", accessory_id="cap", manifest_path=Path("/tmp/fused.json")
+        population,
+        source_population_path=Path("/tmp/models/office_population.json"),
+        npc_id="alex",
+        accessory_id="cap",
+        manifest_path=Path("/tmp/fused.json"),
     )
 
     embodiment = result["npcs"]["alex"]["embodiment"]
     assert embodiment["accessories"] == ["glasses"]
     assert embodiment["appearance_config"]["accessories"] == ["glasses"]
+
+
+def test_runtime_population_resolves_paths_before_moving_projection() -> None:
+    module = _builder_module()
+    population = {
+        "scene": "office_scene.xml",
+        "appearance_catalog": "assets/appearance_catalog.json",
+        "npcs": {"alex": {"embodiment": {"accessories": []}}},
+    }
+
+    result = module.runtime_population_payload(
+        population,
+        source_population_path=Path("/tmp/models/office_population.json"),
+        npc_id="alex",
+        accessory_id="cap",
+        manifest_path=Path("/tmp/generated/manifest.json"),
+    )
+
+    assert result["scene"] == "/tmp/models/office_scene.xml"
+    assert result["appearance_catalog"] == "/tmp/models/assets/appearance_catalog.json"
 
 
 def test_recipe_accessory_binding_replaces_stale_manifest_reference(tmp_path: Path) -> None:
@@ -186,6 +210,48 @@ def test_runtime_scene_build_rebuilds_recipe_every_invocation(
     assert calls[0]["recipe_path"] == tmp_path / "cap.recipe.json"
 
 
+def test_builder_creates_nested_runtime_population_directory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    module = _builder_module()
+    recipe_path = tmp_path / "recipe.json"
+    recipe_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "accessory_id": "cap",
+                "attachment_mode": "head_follow_fused",
+                "mesh_scale": 1.0,
+                "head_clearance_m": 0.0,
+                "back_offset_m": 0.0,
+                "back_tilt_degrees": 0.0,
+            }
+        )
+    )
+    source_population = tmp_path / "population.json"
+    source_population.write_text("{}")
+    output_population = tmp_path / "runtime_populations/cap/employee.json"
+
+    class StopBuild(Exception):
+        pass
+
+    monkeypatch.setattr(module, "_tool_module", lambda _: (_ for _ in ()).throw(StopBuild()))
+    with pytest.raises(StopBuild):
+        module.build_fused_accessory(
+            recipe_path=recipe_path,
+            source_archive=tmp_path / "source.zip",
+            source_manifest=tmp_path / "manifest.json",
+            source_population=source_population,
+            npc_id="employee",
+            output_dir=tmp_path / "runtime/cap/employee",
+            output_manifest=tmp_path / "manifests/cap.json",
+            output_population=output_population,
+            bundle_id="bundle",
+        )
+
+    assert output_population.parent.is_dir()
+
+
 def test_checked_in_cap_runtime_config_references_the_canonical_recipe() -> None:
     models = Path(__file__).parents[1] / "stretch_mujoco/models/accessories"
     recipe_path = models / "cap_source_v1.recipe.json"
@@ -197,5 +263,12 @@ def test_checked_in_cap_runtime_config_references_the_canonical_recipe() -> None
     assert runtime.resolve_path(runtime_path, "recipe") == recipe_path
     assert recipe.accessory_id == "cap_source_v1"
     assert runtime.source_archive == (
-        "../../../aaa_workspace/raw_resources/npc/accessories/cap_source_v1/cap_source_v1.zip"
+        "../assets/humanoid/sources/npc/accessories/cap_source_v1/cap_source_v1.zip"
     )
+    assert runtime.output_dir.endswith("runtime/cap_source_v1/employee_01")
+    assert runtime.source_manifest == "../assets/humanoid/generated/animations/manifest.json"
+    assert runtime.output_manifest == (
+        "../assets/humanoid/generated/animations/"
+        "manifest.cap_source_v1.employee_01.runtime.preview.json"
+    )
+    assert runtime.output_population.endswith("runtime_populations/cap_source_v1/employee_01.json")

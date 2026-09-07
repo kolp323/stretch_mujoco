@@ -143,11 +143,11 @@ uv run bake_npc_identity \
 
 文件：`tools/prepare_obj_accessory.py`
 
-`prepare_obj_accessory.py` 是一个可复现的本地预处理工具：它从来源归档解出 OBJ，规范化为 MuJoCo 的 metre/Z-up 网格，按每段动画的头顶顶点生成 anchor，并输出 mesh、anchor 与 SHA-256 receipt。当前来源 cap 的输入约定是嵌套归档的 `source/cap.zip` 与其中的 `cap.obj`；工具采用 centimetre/Y-up 到 metre/Z-up 的转换，输出网格将水平包围盒居中且最低点置为局部 `z=0`，逐帧 anchor 才是实际头顶位置。当前 cap preview 默认 `--mesh-scale 1.3 --head-clearance-m -0.026 --back-offset-m 0.098 --back-tilt-degrees 13`：网格等比放大 1.3 倍，最低点相对头顶下移 2.6 cm，沿局部 `+Y`（人物面向为 `-Y`）后移 9.8 cm，并绕局部 X 轴向后倾 13°；这些值会写入 receipt，可按模型实际形状调整。原始归档及其派生网格均属本地 preview 资产，不提交、也不会自动进入生产 manifest。
+`prepare_obj_accessory.py` 是一个可复现的本地预处理工具：它从来源归档解出 OBJ，规范化为 MuJoCo 的 metre/Z-up 网格，按每段动画的头顶顶点生成 anchor，并输出 mesh、anchor 与 SHA-256 receipt。当前来源 cap 的输入约定是嵌套归档的 `source/cap.zip` 与其中的 `cap.obj`；工具采用 centimetre/Y-up 到 metre/Z-up 的转换，输出网格将水平包围盒居中且最低点置为局部 `z=0`，逐帧 anchor 才是实际头顶位置。姿态参数的事实源是版本控制的 recipe，不是此 preview CLI 的默认值。来源归档和派生网格是本机共享资源，不提交、也不会自动进入基线 production manifest。
 
 ```bash
 uv run python tools/prepare_obj_accessory.py \
-  --source-archive aaa_workspace/raw_resources/npc/accessories/cap_source_v1/cap_source_v1.zip \
+  --source-archive stretch_mujoco/models/assets/humanoid/sources/npc/accessories/cap_source_v1/cap_source_v1.zip \
   --manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
   --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/accessories \
   --accessory-id cap_source_v1
@@ -166,18 +166,18 @@ uv run python tools/prepare_obj_accessory.py \
 ```bash
 uv run python tools/build_npc_fused_accessory.py \
   --recipe stretch_mujoco/models/accessories/cap_source_v1.recipe.json \
-  --source-archive aaa_workspace/raw_resources/npc/accessories/cap_source_v1/cap_source_v1.zip \
+  --source-archive stretch_mujoco/models/assets/humanoid/sources/npc/accessories/cap_source_v1/cap_source_v1.zip \
   --source-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json \
   --source-population stretch_mujoco/models/office_population.production.example.json \
   --npc-id employee_01 \
-  --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/fused/cap_source_v1 \
-  --output-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.cap_source_v1.preview.json \
-  --output-population stretch_mujoco/models/office_population.cap_source_v1.preview.json
+  --output-dir stretch_mujoco/models/assets/humanoid/generated/animations/runtime/cap_source_v1/employee_01 \
+  --output-manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.cap_source_v1.employee_01.runtime.preview.json \
+  --output-population stretch_mujoco/models/assets/humanoid/generated/animations/runtime_populations/cap_source_v1/employee_01.json
 ```
 
 Builder 将 recipe SHA、receipt SHA 和融合模式写入输出 manifest，并从 target NPC 的 `embodiment.accessories`（及出现时的 `appearance_config.accessories`）移除该 `accessory_id`。随后严格 manifest/population preflight 必须通过；因此运行时只能加载融合帧，既不能静默复用旧 anchor，也不能再次创建独立帽子 geom。receipt 的 pose 字段由 builder 在写出时与 recipe 精确比对；手工修改 receipt 不会改变 runtime projection，下一次 build 会重新覆盖它。
 
-运行时场景组合必须使用 `tools/build_npc_scene.py --accessory-runtime-config`，而不是把旧的 fused manifest 直接传给 `build_npc_scene()`。`models/accessories/cap_source_v1.runtime.json` 是正式、受版本控制的 NPC 外观运行配置；它集中绑定 recipe、原始归档、基线 manifest/population 和派生输出位置。每次调用都会无条件重新生成 OBJ、anchors、逐帧融合 OBJ、receipt、manifest 和 runtime population，随后才组合 MuJoCo 场景。它没有 receipt/mtime/cache 快路径：receipt 仅为本轮投影的审计证据，不能成为运行时输入。配置路径相对 runtime config 文件解析；若开发者有未共享的替代来源，可另建被忽略的 `*.local.json` 覆盖文件，但正常运行不依赖它。
+运行时场景组合必须使用 `tools/build_npc_scene.py --accessory-runtime-config`，而不是把旧的 fused manifest 直接传给 `build_npc_scene()`。`models/accessories/cap_source_v1.runtime.json` 是正式、受版本控制的 NPC 外观运行配置；它集中绑定 recipe、原始归档、基线 manifest/population 和派生输出位置。每次调用都会无条件重新生成 OBJ、anchors、逐帧融合 OBJ、receipt、manifest 和 runtime population，随后才组合 MuJoCo 场景。它没有 receipt/mtime/cache 快路径：receipt 仅为本轮投影的审计证据，不能成为运行时输入。配置路径相对 runtime config 文件解析；正常运行不依赖 `*.local.json`。
 
 ```bash
 uv run python tools/build_npc_scene.py \
@@ -186,7 +186,7 @@ uv run python tools/build_npc_scene.py \
   --include-base-scene
 ```
 
-该 CLI 是 recipe-bound OBJ 配饰的唯一受支持运行入口。`--population` 保留给没有 recipe-bound OBJ 配饰的既有兼容场景；它不会猜测来源归档或从 receipt 重建资产。任何 recipe、来源或严格预检错误都会在 MuJoCo 加载之前终止，避免静默复用旧模型。原始视觉资产存放在本地、未提交的 `aaa_workspace/raw_resources/npc/<role>/<asset_id>/`；例如 cap 的 archive 为 `npc/accessories/cap_source_v1/cap_source_v1.zip`。它们不是运行时缓存，也不得混入生成 OBJ、receipt 或视频。
+该 CLI 是 recipe-bound OBJ 配饰的唯一受支持运行入口。`--population` 保留给没有 recipe-bound OBJ 配饰的既有兼容场景；它不会猜测来源归档或从 receipt 重建资产。任何 recipe、来源或严格预检错误都会在 MuJoCo 加载之前终止，避免静默复用旧模型。`aaa_workspace/raw_resources/` 只用于导入暂存，运行配置不得引用它。正式、共享的本机资产库是主项目的 `stretch_mujoco/models/assets/humanoid/{sources,generated}/`：`sources/npc/` 存放已确认的本地来源归档，`generated/animations/` 存放基线 `manifest.json`、按身份输出的 manifest、OBJ、anchors、receipt 和融合帧；注册文件与其引用的资源始终在同一共享目录，不存在 worktree 私有副本。使用 `tools/link_npc_shared_assets.py --shared-project-root <main-project-root>` 可让其他 worktree 链接到这两个 payload 子树而不复制大型资源，同时保留 worktree 内受版本控制的 README；该工具还会链接主项目 `models/` 下的本地 PNG/JPG/OBJ/STL/GLB/MTL/MSH payload，保持办公室 XML 与代码文件仍在各 worktree 本地。cap 的融合输出固定在 `generated/animations/runtime/cap_source_v1/employee_01/`，同一 NPC 身份重跑会写入相同文件名并覆盖旧投影。
 
 ### 3.1 Population schema
 

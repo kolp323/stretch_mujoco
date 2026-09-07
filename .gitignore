@@ -57,6 +57,10 @@ MUJOCO_LOG.TXT
 /aaa_workspace/raw_resources/**
 !/aaa_workspace/raw_resources/README.md
 
+# Shared local NPC source archives are provisioned beside runtime assets.
+/stretch_mujoco/models/assets/humanoid/sources/**
+!/stretch_mujoco/models/assets/humanoid/sources/README.md
+
 # Temp runtime XML 
 stretch_temp_abs.xml
 

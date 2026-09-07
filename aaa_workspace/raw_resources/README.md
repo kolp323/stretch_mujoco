@@ -1,8 +1,7 @@
 # NPC raw visual assets
 
-This directory contains local source materials that are not committed with the
-repository. Runtime configuration may refer to these files by repository-relative
-path and must fail explicitly if a required source is unavailable.
+This directory is an import staging area for local source materials that are not
+committed with the repository. Runtime configuration must not refer here.
 
 Keep NPC resources by semantic role:
 
@@ -13,6 +12,7 @@ npc/
   textures/<material-id>/<source-file>
 ```
 
-The source archive for `cap_source_v1` is
-`npc/accessories/cap_source_v1/cap_source_v1.zip`. Do not put generated OBJ,
-anchors, fused frames, receipts, or videos here; those are derived outputs.
+After inspection, move an approved source archive into the shared main-project
+asset store at `stretch_mujoco/models/assets/humanoid/sources/`. Do not put
+generated OBJ, anchors, fused frames, receipts, or videos here; those are
+derived outputs.
