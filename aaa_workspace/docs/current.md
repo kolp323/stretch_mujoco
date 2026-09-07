@@ -143,7 +143,7 @@ uv run bake_npc_identity \
 
 文件：`tools/prepare_obj_accessory.py`
 
-`prepare_obj_accessory.py` 是一个可复现的本地预处理工具：它从来源归档解出 OBJ，规范化为 MuJoCo 的 metre/Z-up 网格，按每段动画的头顶顶点生成 anchor，并输出 mesh、anchor 与 SHA-256 receipt。当前来源 cap 的输入约定是嵌套归档的 `source/cap.zip` 与其中的 `cap.obj`；工具采用 centimetre/Y-up 到 metre/Z-up 的转换，输出网格将水平包围盒居中且最低点置为局部 `z=0`，逐帧 anchor 才是实际头顶位置。当前 cap preview 的默认 `--head-clearance-m 0.195` 会将最低点抬到头顶上方 19.5 cm（在此前 4.5 cm 的基础上额外上移 15 cm）；此值会写入 receipt，可按模型实际形状调整。原始归档及其派生网格均属本地 preview 资产，不提交、也不会自动进入生产 manifest。
+`prepare_obj_accessory.py` 是一个可复现的本地预处理工具：它从来源归档解出 OBJ，规范化为 MuJoCo 的 metre/Z-up 网格，按每段动画的头顶顶点生成 anchor，并输出 mesh、anchor 与 SHA-256 receipt。当前来源 cap 的输入约定是嵌套归档的 `source/cap.zip` 与其中的 `cap.obj`；工具采用 centimetre/Y-up 到 metre/Z-up 的转换，输出网格将水平包围盒居中且最低点置为局部 `z=0`，逐帧 anchor 才是实际头顶位置。默认 `--head-clearance-m 0.045` 会将最低点抬到头顶上方 4.5 cm，以避免深色配饰与头皮相交或完全被遮挡；此值会写入 receipt，可按模型实际形状调整。原始归档及其派生网格均属本地 preview 资产，不提交、也不会自动进入生产 manifest。
 
 ```bash
 uv run python tools/prepare_obj_accessory.py \
