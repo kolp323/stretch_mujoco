@@ -74,7 +74,12 @@ def normalized_obj(source_obj: bytes) -> bytes:
     ).encode("utf-8")
 
 
-def head_top_anchors(manifest_path: Path) -> dict[str, list[dict[str, list[float]]]]:
+def head_top_anchors(
+    manifest_path: Path, *, head_clearance_m: float = 0.045
+) -> dict[str, list[dict[str, list[float]]]]:
+    """Place the normalized mesh above, rather than inside, the animated crown."""
+    if head_clearance_m < 0:
+        raise ValueError("head_clearance_m must not be negative")
     payload = json.loads(manifest_path.read_text(encoding="utf-8"))
     bundle = payload["bundles"]["smplx_office_neutral_v1"]
     anchors: dict[str, list[dict[str, list[float]]]] = {}
@@ -90,27 +95,38 @@ def head_top_anchors(manifest_path: Path) -> dict[str, list[dict[str, list[float
                     "position": [
                         float(np.median(head[:, 0])),
                         float(np.median(head[:, 1])),
-                        float(np.max(head[:, 2]) - 0.002),
+                        float(np.max(head[:, 2]) + head_clearance_m),
                     ]
                 }
             )
     return anchors
 
 
-def prepare(source_archive: Path, manifest_path: Path, output_dir: Path, accessory_id: str) -> dict[str, str]:
+def prepare(
+    source_archive: Path,
+    manifest_path: Path,
+    output_dir: Path,
+    accessory_id: str,
+    *,
+    head_clearance_m: float = 0.045,
+) -> dict[str, str]:
     """Write a normalized OBJ, all-clip anchors, and an auditable receipt."""
     source_obj, provenance = _source_obj(source_archive)
     output_dir.mkdir(parents=True, exist_ok=True)
     mesh_path = output_dir / f"{accessory_id}.obj"
     mesh_path.write_bytes(normalized_obj(source_obj))
     anchors_path = output_dir / f"{accessory_id}.anchors.json"
-    anchors_path.write_text(json.dumps(head_top_anchors(manifest_path), indent=2) + "\n", encoding="utf-8")
+    anchors_path.write_text(
+        json.dumps(head_top_anchors(manifest_path, head_clearance_m=head_clearance_m), indent=2) + "\n",
+        encoding="utf-8",
+    )
     receipt = {
         "asset_id": accessory_id,
         "asset_quality": "preview",
         "source_format": "nested_zip_obj",
         "coordinate_transform": "source_cm_y_up_to_mujoco_m_z_up",
         "anchor_contract": "local_z_zero_at_head_top_per_animation_frame",
+        "head_clearance_m": head_clearance_m,
         **provenance,
         "outputs": {
             "mesh": mesh_path.name,
@@ -130,8 +146,20 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--accessory-id", default="cap_source_v1")
+    parser.add_argument(
+        "--head-clearance-m",
+        type=float,
+        default=0.045,
+        help="Vertical distance above each animated crown (default: 0.045 m)",
+    )
     args = parser.parse_args()
-    paths = prepare(args.source_archive.resolve(), args.manifest.resolve(), args.output_dir.resolve(), args.accessory_id)
+    paths = prepare(
+        args.source_archive.resolve(),
+        args.manifest.resolve(),
+        args.output_dir.resolve(),
+        args.accessory_id,
+        head_clearance_m=args.head_clearance_m,
+    )
     print(json.dumps(paths, indent=2))
 
 

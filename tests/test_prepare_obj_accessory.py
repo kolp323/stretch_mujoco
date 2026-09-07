@@ -5,6 +5,7 @@ import zipfile
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 
 def _module():
@@ -50,12 +51,33 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
     _nested_cap(archive)
     manifest = tmp_path / "manifest.json"
     manifest.write_text(json.dumps({"bundles": {"smplx_office_neutral_v1": {"clips": {}}}}))
-    monkeypatch.setattr(module, "head_top_anchors", lambda _manifest: {"idle": [{"position": [0, 0, 1]}]})
+    captured: dict[str, float] = {}
 
-    paths = module.prepare(archive, manifest, tmp_path / "output", "cap_source_v1")
+    def anchors(
+        _manifest: Path, *, head_clearance_m: float
+    ) -> dict[str, list[dict[str, list[int]]]]:
+        captured["head_clearance_m"] = head_clearance_m
+        return {"idle": [{"position": [0, 0, 1]}]}
+
+    monkeypatch.setattr(module, "head_top_anchors", anchors)
+
+    paths = module.prepare(
+        archive, manifest, tmp_path / "output", "cap_source_v1", head_clearance_m=0.045
+    )
     receipt = json.loads(Path(paths["receipt"]).read_text())
 
     assert receipt["asset_quality"] == "preview"
+    assert receipt["head_clearance_m"] == 0.045
+    assert captured["head_clearance_m"] == 0.045
     assert receipt["outputs"]["mesh"] == "cap_source_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
+
+
+def test_head_top_anchors_rejects_negative_clearance(tmp_path: Path) -> None:
+    module = _module()
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps({"bundles": {"smplx_office_neutral_v1": {"clips": {}}}}))
+
+    with pytest.raises(ValueError, match="must not be negative"):
+        module.head_top_anchors(manifest, head_clearance_m=-0.001)
