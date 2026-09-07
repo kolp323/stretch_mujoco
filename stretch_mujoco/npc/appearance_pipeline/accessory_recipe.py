@@ -9,7 +9,6 @@ from pathlib import Path
 
 
 ACCESSORY_RECIPE_SCHEMA_VERSION = 1
-BODY_OCCLUSION_MODES = frozenset({"preserve", "cull_covered_head_faces"})
 
 
 @dataclass(frozen=True)
@@ -20,7 +19,6 @@ class FusedAccessoryRecipe:
     head_clearance_m: float
     back_offset_m: float
     back_tilt_degrees: float
-    body_occlusion_mode: str
 
     @classmethod
     def from_json(cls, path: str | Path) -> "FusedAccessoryRecipe":
@@ -34,7 +32,6 @@ class FusedAccessoryRecipe:
             "head_clearance_m",
             "back_offset_m",
             "back_tilt_degrees",
-            "body_occlusion_mode",
         }
         unknown = set(payload) - required
         missing = required - set(payload)
@@ -49,23 +46,13 @@ class FusedAccessoryRecipe:
             raise ValueError("Accessory recipe accessory_id must be a non-empty string")
         if payload["attachment_mode"] != "head_follow_fused":
             raise ValueError("Accessory recipe attachment_mode must be 'head_follow_fused'")
-        if payload["body_occlusion_mode"] not in BODY_OCCLUSION_MODES:
-            raise ValueError(
-                "Accessory recipe body_occlusion_mode must be one of "
-                f"{sorted(BODY_OCCLUSION_MODES)}"
-            )
         values = {
             name: float(payload[name])
             for name in ("mesh_scale", "head_clearance_m", "back_offset_m", "back_tilt_degrees")
         }
         if values["mesh_scale"] <= 0 or values["back_offset_m"] < 0:
             raise ValueError("Accessory recipe has invalid scale or back offset")
-        return cls(
-            str(payload["accessory_id"]),
-            str(payload["attachment_mode"]),
-            **values,
-            body_occlusion_mode=str(payload["body_occlusion_mode"]),
-        )
+        return cls(str(payload["accessory_id"]), str(payload["attachment_mode"]), **values)
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -76,7 +63,6 @@ class FusedAccessoryRecipe:
             "head_clearance_m": self.head_clearance_m,
             "back_offset_m": self.back_offset_m,
             "back_tilt_degrees": self.back_tilt_degrees,
-            "body_occlusion_mode": self.body_occlusion_mode,
         }
 
 
