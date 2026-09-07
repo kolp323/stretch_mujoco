@@ -885,3 +885,27 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_npc_ac
 ```
 
 使用本地已验证的 production population 生成包含原办公室的临时 MJCF 后，以 EGL 执行该脚本，输出 6 秒、120 帧 H.264 MP4。报告中 front/walk、side/walk、seated/work 三段的最小目标可见像素分别为 `36752`、`26196`、`19595`，均高于 `11059` 阈值；透明切帧和颜色稳定检查均为空失败列表，最终 `passed: true`。隔离任务分支本身不复制或提交 ignored SMPL-X 派生资产。
+
+### 11.1 运行时 marker 同步演示（当前实现）
+
+`tools/render_npc_runtime_demo.py` 与验收视频的职责不同：它不直接选择 clip/frame，而是对已加载的 NPC 提交真实的 `MOVE_TO` 命令并逐帧调用 `NpcSystem.step()`。视频 HUD 显示 lifecycle、resolved clip、phase、当前 foot marker、stop marker 和 replan 次数；相邻的 `*.runtime.json` 记录首个 foot marker、首次根节点位移和终态 receipt。只有首次位移不早于首个脚步 marker、且 command 收到 `succeeded` receipt 时，报告才为 `passed: true`。
+
+该演示保留传入办公室 MJCF 的原生灯光和家具，并不会添加展示灯光或替换场景。它是“控制器—marker—root motion”边界的视觉证据，而不是交叉淡化的证据：当前 `MeshSequenceBackend` 明确只有 `phase_switch` 能力，`AnimationState.blend` 仍为零值；在正式 skeleton/skinned backend 落地前，不应把逐 OBJ 帧切换称为 mesh crossfade。
+
+本工具的 focused verification 为：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_npc_runtime_demo.py
+1 passed
+
+.venv/bin/python -m black --check tools/render_npc_runtime_demo.py tests/test_npc_runtime_demo.py
+passed
+
+.venv/bin/python -m flake8 tools/render_npc_runtime_demo.py tests/test_npc_runtime_demo.py
+passed
+
+.venv/bin/python -m mypy --ignore-missing-imports tools/render_npc_runtime_demo.py
+Success: no issues found in 1 source file
+```
+
+以 EGL 对本地已验证的组合 office MJCF 实跑时，`employee_01` 从开放审查起点移动到 `snack_human_stand_site`：首个 `left_foot` marker 在 `0.1667s`，首个 root 位移在 `0.2500s`，`right_foot` 为终止 marker，最终在 `3.6667s` 收到 `succeeded` receipt；`*.runtime.json` 为 `passed: true`。MP4、JSON 和源于受限资产的组合 MJCF 均为本地验收物，不进入版本控制。
