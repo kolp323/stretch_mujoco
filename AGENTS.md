@@ -35,6 +35,23 @@ Use 4-space indentation, type hints, `snake_case` for functions/modules, `Pascal
 
 Add or update pytest tests for behavior changes. Run focused tests while iterating, then run `uv run pytest -q`. Simulator, rendering, asset, and optional-model tests may require headless execution, extra dependencies, or local assets; state requirements and results in the PR. No separate coverage threshold is configured.
 
+## NPC Acceptance Video Requirements
+
+When generating an NPC acceptance video, load the target office MJCF unchanged and use only its
+existing scene lighting, headlight, environment, materials, and furniture. Do not replace the
+office with a standalone presentation scene or add review-only lights.
+
+- Keep the camera close enough to show the NPC's entire body while preserving enough margin to
+  inspect its action animation, texture map, and frame-synchronised OBJ accessory detail.
+- Include close front, side, and seated shots. Exercise the relevant animation frames rather than
+  presenting a single static mesh.
+- Treat occlusion, colour/material stability, alpha-frame switching (no flicker), and missing
+  mesh/texture/anchor assets as explicit acceptance checks. Preserve MuJoCo/asset-loader errors;
+  do not hide a failed load with a fallback model.
+- Deliver the MP4 with a machine-readable acceptance report that records the scene, NPC, native
+  lighting policy, each shot, and any failed check. Generated videos and reports remain local
+  review artifacts unless the task explicitly requests committing them.
+
 ## Current Implementation Record Maintenance Protocol
 
 Treat `aaa_workspace/docs/current.md` as the maintained implementation record for the ongoing NPC-system migration. Read the relevant sections before changing NPC schemas, assets, animation, attachment, interactions, agent execution, simulator transport, recording, or compatibility paths, and update the document in the same change when behavior or migration status changes.
