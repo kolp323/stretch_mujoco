@@ -88,7 +88,7 @@ def normalized_obj(
 
 
 def head_top_anchors(
-    manifest_path: Path, *, head_clearance_m: float = -0.016, back_offset_m: float = 0.088
+    manifest_path: Path, *, head_clearance_m: float = -0.026, back_offset_m: float = 0.098
 ) -> dict[str, list[dict[str, list[float]]]]:
     """Place the normalized mesh above and behind the animated crown."""
     if not np.isfinite(head_clearance_m):
@@ -124,8 +124,8 @@ def prepare(
     output_dir: Path,
     accessory_id: str,
     *,
-    head_clearance_m: float = -0.016,
-    back_offset_m: float = 0.088,
+    head_clearance_m: float = -0.026,
+    back_offset_m: float = 0.098,
     mesh_scale: float = 1.3,
     back_tilt_degrees: float = 13.0,
 ) -> dict[str, str]:
@@ -183,14 +183,14 @@ def main() -> None:
     parser.add_argument(
         "--head-clearance-m",
         type=float,
-        default=-0.016,
-        help="Vertical distance above each animated crown (default: -0.016 m)",
+        default=-0.026,
+        help="Vertical distance above each animated crown (default: -0.026 m)",
     )
     parser.add_argument(
         "--back-offset-m",
         type=float,
-        default=0.088,
-        help="Distance behind each animated crown along local +Y (default: 0.088 m)",
+        default=0.098,
+        help="Distance behind each animated crown along local +Y (default: 0.098 m)",
     )
     parser.add_argument(
         "--mesh-scale", type=float, default=1.3, help="Uniform local mesh scale (default: 1.3)"
