@@ -51,75 +51,58 @@ Treat `aaa_workspace/docs/current.md` as the maintained implementation record fo
 - Never place credentials, private asset locations, machine-specific secrets, generated recordings, or restricted asset contents in `current.md`. Repository-relative paths and reproducible commands are preferred.
 - At handoff, ensure the document's completed work, remaining work, and recommended next step agree with the code and tests in the worktree.
 
-## Agent Git Isolation and Local Commits
+## Agent Git Isolation and Long-Lived Workstreams
 
-Every agent-authored change must be developed as an independently reviewable
-unit. A change task is complete only when it ends in at least one verified local
-commit on a dedicated task branch, not as an uncommitted patch in a shared
-worktree. These rules apply to code, tests, documentation, XML, and assets.
+NPC development uses two long-lived workstream branches, not one branch per
+small task:
 
-### Branch topology and ownership
+- `feat/npc/appearance-optimization` owns NPC models, materials, accessories,
+  appearance assets, appearance configuration, and their focused tests/tools.
+- `feat/npc/action-optimization` owns animation, locomotion, action execution,
+  controller/runtime behavior, recording used to validate actions, and their
+  focused tests/tools.
 
-- `main` is the original-project baseline. Never commit or push directly to it.
-- `feat/npc-system` is the NPC integration branch and its final PR targets
-  `main`. Only the designated integration owner may update this branch.
-- Each task branches from `origin/feat/npc-system` as
-  `feat/npc/<scope>`, `fix/npc/<scope>`, `test/npc/<scope>`, or
-  `docs/npc/<scope>`. Task branches are local delivery units; they do not open
-  task PRs.
-- One agent owns one task branch and one worktree. Never share a task worktree,
-  commit on another agent's branch, or mix independently reviewable tasks on a
-  single branch.
+`main` remains the original-project baseline, and `feat/npc-system` remains the
+NPC integration branch. Never commit or push directly to `main`; only the
+designated integration owner may update `feat/npc-system`.
+
+### Branch and worktree limits
+
+- Do not create a branch or worktree for an individual fix, experiment, test,
+  asset adjustment, or documentation update. Commit that work atomically to the
+  applicable long-lived workstream branch.
+- No additional `feat/npc/*`, `fix/npc/*`, `test/npc/*`, or `docs/npc/*` branch
+  may be created unless a human explicitly approves the new long-lived boundary
+  before creation. A convenient name, a collision, or an existing dirty
+  worktree is not approval to create another branch.
+- Use only the maintained sibling worktrees
+  `../stretch_mujoco-npc-appearance-optimization` and
+  `../stretch_mujoco-npc-action-optimization`. Do not run `git worktree add` for
+  routine NPC work.
+- Only one agent may write in a workstream worktree at a time. Before editing,
+  confirm the branch, inspect `git status --short` and `git diff --name-only`,
+  and stop if another agent or the user has uncommitted work there. Other agents
+  may inspect the worktree read-only or wait for ownership to be handed off.
+- Treat every pre-existing modification, untracked file, ignored file, and
+  commit as user-owned. Never stash, reset, clean, overwrite, move, squash, or
+  discard it merely to obtain a clean worktree.
 - Configure only this repository's local commit identity as
   `kolp323 <1317416016@qq.com>`; never change the global Git identity.
 
-### Start every task in an isolated worktree
-
-Before editing, inspect the launching worktree:
-
-```bash
-git status --short
-git diff --name-only
-git branch --show-current
-git fetch origin --prune
-```
-
-Treat every pre-existing modification and untracked file as user-owned. Do not
-stash, reset, clean, overwrite, move, or include it in a task. A dirty launching
-worktree must remain untouched, but it does not block creating a new sibling
-worktree from the remote integration baseline:
-
-```bash
-task_type=feat
-task_scope=short-unique-scope
-git worktree add "../stretch_mujoco-npc-${task_scope}" \
-  -b "${task_type}/npc/${task_scope}" origin/feat/npc-system
-cd "../stretch_mujoco-npc-${task_scope}"
-git status --short
-git branch --show-current
-```
-
-The new task worktree must begin clean and on the intended task branch. If the
-branch or worktree path already exists, choose a unique scope; do not reuse,
-delete, or take ownership of an existing worktree. If isolation cannot be
-established, stop before editing and report the exact conflict.
-
-Before implementation, define the task boundary in working notes: one
-objective, the expected files or owning modules, explicit non-goals, and the
-focused verification command. Expand that boundary only when required for
-correctness, and report why. Do not opportunistically fix unrelated issues.
+The branch count represents durable development directions, not the number of
+tasks or commits. Follow-up fixes stay on the same workstream branch. If a task
+crosses both workstreams, assign ownership by its primary behavior and keep the
+cross-stream portion minimal and explicit; do not create a third branch.
 
 ### Produce atomic, reviewable commits
 
-An agent may create local commits without another prompt when working on its
-dedicated task branch. Each commit must represent one coherent change, be
-independently understandable, and leave the branch in a usable state. Keep
-implementation and its directly supporting tests together when they form one
-behavioral unit; split unrelated documentation, generated assets/XML, or
-mechanical changes when separate review or rollback would be clearer.
+An agent may create local commits without another prompt only while it owns the
+applicable workstream. Each commit must represent one coherent change, include
+its directly supporting tests, and leave the branch usable. Use Conventional
+Commit subjects such as `feat(npc):`, `fix(npc):`, `test(npc):`, and
+`docs(npc):`.
 
-Use Conventional Commit subjects such as `feat(npc):`, `fix(npc):`,
-`test(npc):`, and `docs(npc):`. Before every commit:
+Before every commit:
 
 ```bash
 git config --local user.name
@@ -136,64 +119,30 @@ git status --short
 ```
 
 The identity must be `kolp323 <1317416016@qq.com>`. Stage explicit paths only;
-never use `git add .`, `git add -A`, or `git commit -a`. Before committing,
-confirm every staged path is inside the declared task boundary and every
-staged hunk is necessary. Do not stage `.env`, `*.local.json`, private SMPL-X
-inputs, unmanifested generated assets, checkpoints, datasets, recordings,
-`outputs/`, `aaa_workspace/task/`, diagnostic dumps, or unrelated user work.
-Ignored files are still user-owned and are never disposable by default.
+never use `git add .`, `git add -A`, or `git commit -a`. Do not stage `.env`,
+`*.local.json`, private SMPL-X inputs, unmanifested generated assets,
+checkpoints, datasets, recordings, `outputs/`, `aaa_workspace/task/`, diagnostic
+dumps, or unrelated user work.
 
-Run focused checks that exercise the changed behavior before committing. Run
-the full suite and pre-commit when practical. A known or environment-dependent
-failure may be committed only when the task change itself is complete, the
-failure is not caused or hidden by the change, and the exact command and output
-are recorded for handoff. Never claim an unrun check passed.
+Run focused checks that exercise the changed behavior. Run the full suite and
+pre-commit when practical. Record exact commands and observed results, including
+known environment-dependent failures. Never claim an unrun check passed. End
+with a clean worktree and report the workstream branch, commit SHA, checks, and
+remaining risks to the integration owner.
 
-After the final commit, the task worktree should be clean. Any intentional
-uncommitted file must be within task scope and explicitly reported; unrelated
-or unexplained residue means the task is not ready for integration handoff.
+### Remote and pull-request policy
 
-### Prepare a clean local handoff
-
-Synchronize and review only from a clean task worktree:
-
-```bash
-git status --short  # Must be empty before rebasing.
-git fetch origin --prune
-git rebase origin/feat/npc-system
-# Rerun the relevant checks after rebasing.
-git diff --check origin/feat/npc-system...HEAD
-git diff --name-status origin/feat/npc-system...HEAD
-git log --oneline origin/feat/npc-system..HEAD
-git status --short
-```
-
-Review the complete range diff, not only the last commit. It must contain only
-the declared task, with no merge commits, unrelated formatting, local files,
-or generated artifacts. A completed task remains as verified local commits for
-the integration owner to review and integrate.
-
-Task agents must not push branches or create, update, close, or otherwise
+Workstream agents must not push branches or create, update, close, or otherwise
 operate on pull requests. They must not use GitHub APIs or other remote mutation
 mechanisms unless a human explicitly requests the exact remote action. GitHub
-access being available is not authorization. Do not report a push or PR command
-as a required next step for an ordinary task handoff.
+access being available is not authorization.
 
-There are no task PRs. A PR may be created only after the entire NPC module is
-ready for integration and a human explicitly requests it. At that point, only
-the integration owner may rebase `feat/npc-system` onto `origin/main`, run the
-agreed integration checks, review the full integration diff, push with
-`--force-with-lease` when history changed, and open the single final PR to
-`main`. Without that explicit human request, leave all remote refs and PR state
-unchanged.
-
-### Required handoff
-
-Every agent reports the task branch and worktree, base and target branches,
-commit SHA(s), `git status --short`, checks run with observed results, and
-remaining risks or integration steps. Disclose uncommitted work, failed checks,
-conflicts, and inability to push; never imply that an uncommitted patch is a
-completed isolated task.
+There are no workstream PRs. A PR may be created only after the entire NPC
+module is ready for integration and a human explicitly requests it. At that
+point, only the integration owner may update `feat/npc-system`, rebase it onto
+`origin/main`, run the agreed integration checks, review the full integration
+diff, and open the single final PR to `main`. Without that explicit human
+request, leave all remote refs and PR state unchanged.
 
 ## Security & Configuration Tips
 
