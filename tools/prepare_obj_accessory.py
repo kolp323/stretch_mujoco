@@ -45,8 +45,10 @@ def _source_obj(source_archive: Path) -> tuple[bytes, dict[str, str]]:
     }
 
 
-def normalized_obj(source_obj: bytes) -> bytes:
+def normalized_obj(source_obj: bytes, *, mesh_scale: float = 1.3) -> bytes:
     """Convert the source cap's centimetre Y-up vertices to metre Z-up OBJ."""
+    if not np.isfinite(mesh_scale) or mesh_scale <= 0:
+        raise ValueError("mesh_scale must be a positive finite number")
     lines = source_obj.decode("utf-8").splitlines()
     vertices = np.array(
         [[float(value) for value in line.split()[1:4]] for line in lines if line.startswith("v ")],
@@ -65,7 +67,7 @@ def normalized_obj(source_obj: bytes) -> bytes:
             vertices[:, 2] - centre[2],
             vertices[:, 1] - minimum[1],
         )
-    ) * 0.01
+    ) * (0.01 * mesh_scale)
     passthrough = [line for line in lines if not line.startswith(("v ", "mtllib ", "usemtl "))]
     return (
         "# Prepared from cap.zip; source centimetres/Y-up -> metres/MuJoCo Z-up.\n"
@@ -75,11 +77,11 @@ def normalized_obj(source_obj: bytes) -> bytes:
 
 
 def head_top_anchors(
-    manifest_path: Path, *, head_clearance_m: float = 0.0, back_offset_m: float = 0.08
+    manifest_path: Path, *, head_clearance_m: float = -0.003, back_offset_m: float = 0.08
 ) -> dict[str, list[dict[str, list[float]]]]:
     """Place the normalized mesh above and behind the animated crown."""
-    if head_clearance_m < 0:
-        raise ValueError("head_clearance_m must not be negative")
+    if not np.isfinite(head_clearance_m):
+        raise ValueError("head_clearance_m must be finite")
     if back_offset_m < 0:
         raise ValueError("back_offset_m must not be negative")
     payload = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -111,14 +113,15 @@ def prepare(
     output_dir: Path,
     accessory_id: str,
     *,
-    head_clearance_m: float = 0.0,
+    head_clearance_m: float = -0.003,
     back_offset_m: float = 0.08,
+    mesh_scale: float = 1.3,
 ) -> dict[str, str]:
     """Write a normalized OBJ, all-clip anchors, and an auditable receipt."""
     source_obj, provenance = _source_obj(source_archive)
     output_dir.mkdir(parents=True, exist_ok=True)
     mesh_path = output_dir / f"{accessory_id}.obj"
-    mesh_path.write_bytes(normalized_obj(source_obj))
+    mesh_path.write_bytes(normalized_obj(source_obj, mesh_scale=mesh_scale))
     anchors_path = output_dir / f"{accessory_id}.anchors.json"
     anchors_path.write_text(
         json.dumps(
@@ -140,6 +143,7 @@ def prepare(
         "anchor_contract": "local_z_zero_at_head_top_per_animation_frame",
         "head_clearance_m": head_clearance_m,
         "back_offset_m": back_offset_m,
+        "mesh_scale": mesh_scale,
         **provenance,
         "outputs": {
             "mesh": mesh_path.name,
@@ -162,14 +166,17 @@ def main() -> None:
     parser.add_argument(
         "--head-clearance-m",
         type=float,
-        default=0.0,
-        help="Vertical distance above each animated crown (default: 0 m)",
+        default=-0.003,
+        help="Vertical distance above each animated crown (default: -0.003 m)",
     )
     parser.add_argument(
         "--back-offset-m",
         type=float,
         default=0.08,
         help="Distance behind each animated crown along local +Y (default: 0.08 m)",
+    )
+    parser.add_argument(
+        "--mesh-scale", type=float, default=1.3, help="Uniform local mesh scale (default: 1.3)"
     )
     args = parser.parse_args()
     paths = prepare(
@@ -179,6 +186,7 @@ def main() -> None:
         args.accessory_id,
         head_clearance_m=args.head_clearance_m,
         back_offset_m=args.back_offset_m,
+        mesh_scale=args.mesh_scale,
     )
     print(json.dumps(paths, indent=2))
 
