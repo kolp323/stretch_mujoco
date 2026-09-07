@@ -172,11 +172,33 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
 
     assert result.status == ExecutionStatus.SUCCEEDED
     assert [command.kind.value for command in simulator.commands] == [
-        "interaction_cue",
-        "interaction_cue",
+        "play_animation",
+        "play_animation",
         "detach_object",
         "attach_object",
     ]
+    assert simulator.commands[0].payload["completion_marker"] == "handover_ready"
+    assert simulator.commands[1].payload["completion_marker"] == "handover_ready"
+
+
+def test_pick_up_waits_for_grasp_marker_before_attachment() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(simulator, {})
+    execution = ActionExecution(
+        execution_id="pick_1",
+        command=ActionCommand("employee_01", ActionType.PICK_UP, "parcel"),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    assert driver.start(execution).phase == "grasp"
+    assert simulator.command.kind.value == "play_animation"
+    assert simulator.command.payload == {"clip": "pick_up", "completion_marker": "grasp"}
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+    )
+
+    assert driver.poll(execution).phase == "attach"
+    assert simulator.command.kind.value == "attach_object"
 
 
 def test_robot_handover_requires_release_confirmation_before_npc_attach() -> None:

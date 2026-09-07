@@ -207,7 +207,23 @@ class NpcAssetManifest:
         if "idle" not in bundle.clips:
             errors.append(f"Bundle '{bundle.bundle_id}' is missing mandatory clip 'idle'")
         if bundle.asset_quality == "production":
-            missing_clips = {"idle", "walk", "sit", "work", "eat"} - bundle.clips.keys()
+            missing_clips = {
+                "idle",
+                "walk",
+                "sit_down",
+                "seated_idle",
+                "stand_up",
+                "work",
+                "use_computer",
+                "eat",
+                "pick_up",
+                "place",
+                "give",
+                "receive",
+                "talk",
+                "gesture_wave",
+                "gesture_point",
+            } - bundle.clips.keys()
             if missing_clips:
                 errors.append(
                     f"Bundle '{bundle.bundle_id}' production clips are incomplete: "

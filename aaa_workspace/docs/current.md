@@ -607,3 +607,73 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q tests
 ```
 
 对本次暂存文件执行 `uv run pre-commit run` 时，large-file、Black、isort、mdformat 和 codespell 均通过；flake8 仍被 `stretch_mujoco/mujoco_server.py` 与 `stretch_mujoco/stretch_mujoco_simulator.py` 中原项目已有的 unused import、bare except、无占位符 f-string、布尔比较和超长行阻断。新增文件中的 flake8 问题已修正，没有为了通过检查而修改这些与 NPC 改造无关的历史代码。
+
+### 10.2 坐姿稳定态与起身过渡（当前状态）
+
+`sit` 这一历史 clip 名称不再是 production animation contract 的一部分。正式
+SMPL-X 烘焙器现在生成并登记以下三个明确角色不同的 clip：
+
+- `sit_down`：非循环，由 `seated` marker 宣告已到达可提交座椅占用的姿态；
+- `seated_idle`：循环坐姿保持；
+- `stand_up`：非循环，由 `standing` marker 宣告可释放座椅占用。
+
+`AnimationGraph` 是这两条完成后迁移的唯一 owner：`sit_down` 成功后请求
+`seated_idle`，`stand_up` 成功后请求 `idle`。`NpcController` 只在带
+`completion_marker` 的动画命令实际越过 marker 后调用该迁移；因此 mesh-sequence
+后端没有使用 alpha crossfade 冒充 blend，也不会在动画刚发出时提前改变稳定态。
+
+Agent 层新增 `ActionType.STAND_UP`。其 embodied driver 提交
+`PLAY_ANIMATION(stand_up, standing)`；runtime 仅在成功 receipt 后删除
+`OCCUPIED_BY`。如果 clip、marker 或 deadline 失败，座椅占用保持，供上层取消、重试或
+恢复。新 production manifest 校验要求三个 clip 全部存在，旧的本地烘焙输出需要重新运行
+baker 才能被当作 production bundle 使用；preview bundle 不会被替代或提升为 production。
+
+本工作项的聚焦验证为：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_npc_completion.py tests/test_action_driver.py tests/test_office_agents.py
+22 passed
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_npc_assets.py::test_smplx_baker_writes_formal_production_clip_contract
+1 passed
+
+uv run mypy --ignore-missing-imports stretch_mujoco/npc \
+  stretch_mujoco/agents/actions.py stretch_mujoco/agents/action_recipes.py \
+  stretch_mujoco/agents/drivers.py stretch_mujoco/humanoid/smplx_animation_baker.py
+Success: no issues found in 24 source files
+```
+
+在隔离 worktree 中运行 preview-manifest 测试仍会报告缺少已声明的
+`assets/humanoid/cesium_man.png`。这说明预览资产未完整检出或未提供，不是校验应被放宽的
+理由；本工作项没有修改 preview manifest、SHA 或 fallback 规则。
+
+完整 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q tests` 未能进入测试执行：收集阶段
+被当前开发环境缺少 `msgpack_numpy` 阻断，影响 grasp episode、GraspGen integration、OpenPI
+与 ground-truth replay 的五个测试模块。这与本工作项无 import 交集；本次没有安装或修改
+该可选抓取依赖。
+
+### 10.3 动作 marker 与 production clip contract（当前状态）
+
+production graph 现明确登记 `use_computer`、`pick_up`、`place`、`give`、`receive`、`talk`、
+`gesture_wave` 与 `gesture_point`。这些 clip 由同一 `OFFICE_CLIPS` 供 baker、production
+manifest 和 runtime graph 使用；runtime 从 bundle 建图时保留 graph policy 的 speed、safe
+marker、interrupt 和预烘焙 overlay metadata。production bundle 缺少任一上述 clip 即校验失败。
+
+`PICK_UP` 现在先播放 `pick_up` 并等待 `grasp` marker，之后才提交 `ATTACH_OBJECT`；
+`PUT_DOWN` 对称地等待 `place/release` marker 后提交 `DETACH_OBJECT`。NPC—NPC handover 的
+ready barrier 不再是 idle 的 duration cue：giver 先完成 `give/handover_ready`，receiver 再完成
+`receive/handover_ready`，随后才沿既有 release/receive attachment receipt 链继续。故 marker
+只是视觉—物理提交的前置条件，attachment receipt 仍是语义所有权提交的唯一依据。
+
+`talk` 与 gesture 的 `upper_body_overlay` 字段仍只表示可选择预烘焙的组合 mesh sequence，
+不表示 OBJ 后端支持实时骨骼层混合或 head look-at；这些能力仍在后续计划中。当前 focused
+verification 为：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_npc_assets.py::test_smplx_baker_writes_formal_production_clip_contract \
+  tests/test_action_driver.py tests/test_animation_controller.py
+8 passed in 0.42s
+```

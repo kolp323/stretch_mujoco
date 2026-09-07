@@ -37,17 +37,22 @@ class _SitWorkflow:
     command_id: str
 
 
+@dataclass
+class _ObjectWorkflow:
+    object_name: str
+    stage: str
+    command_id: str
+    detach_site: str | None = None
+
+
 class ActionDriver(Protocol):
     supported_actions: frozenset[ActionType]
 
-    def start(self, execution: ActionExecution) -> DriverResult:
-        ...
+    def start(self, execution: ActionExecution) -> DriverResult: ...
 
-    def poll(self, execution: ActionExecution) -> DriverResult:
-        ...
+    def poll(self, execution: ActionExecution) -> DriverResult: ...
 
-    def cancel(self, execution: ActionExecution, reason: str) -> DriverResult:
-        ...
+    def cancel(self, execution: ActionExecution, reason: str) -> DriverResult: ...
 
 
 class SimulatorStatus(Protocol):
@@ -55,17 +60,13 @@ class SimulatorStatus(Protocol):
 
 
 class NpcSimulatorClient(Protocol):
-    def pull_status(self) -> SimulatorStatus:
-        ...
+    def pull_status(self) -> SimulatorStatus: ...
 
-    def submit_npc_command(self, command: NpcCommand) -> str:
-        ...
+    def submit_npc_command(self, command: NpcCommand) -> str: ...
 
-    def pull_npc_receipts(self) -> tuple[NpcCommandReceipt, ...]:
-        ...
+    def pull_npc_receipts(self) -> tuple[NpcCommandReceipt, ...]: ...
 
-    def cancel_npc_command(self, npc_id: str, command_id: str) -> None:
-        ...
+    def cancel_npc_command(self, npc_id: str, command_id: str) -> None: ...
 
 
 class MujocoNpcActionDriver:
@@ -75,6 +76,7 @@ class MujocoNpcActionDriver:
         {
             ActionType.MOVE_TO,
             ActionType.SIT,
+            ActionType.STAND_UP,
             ActionType.PICK_UP,
             ActionType.PUT_DOWN,
             ActionType.HANDOVER,
@@ -100,6 +102,7 @@ class MujocoNpcActionDriver:
         self.interactions = InteractionCoordinator()
         self._handovers: dict[str, _HandoverWorkflow] = {}
         self._sits: dict[str, _SitWorkflow] = {}
+        self._objects: dict[str, _ObjectWorkflow] = {}
 
     def start(self, execution: ActionExecution) -> DriverResult:
         command = execution.command
@@ -109,6 +112,10 @@ class MujocoNpcActionDriver:
             return self._start_handover(execution)
         if command.action == ActionType.SIT:
             return self._start_sit(execution)
+        if command.action == ActionType.STAND_UP:
+            return self._start_stand_up(execution)
+        if command.action in {ActionType.PICK_UP, ActionType.PUT_DOWN}:
+            return self._start_object_action(execution)
         status = self.simulator.pull_status()
         issued_at = float(status.time)
         sequence = self._sequences.get(command.agent_id, -1) + 1
@@ -134,10 +141,19 @@ class MujocoNpcActionDriver:
             self._receipts[new_receipt.command_id] = new_receipt
         workflow = self._handovers.get(execution.execution_id)
         sit = self._sits.get(execution.execution_id)
+        object_workflow = self._objects.get(execution.execution_id)
         handle = (
             workflow.command_id
             if workflow is not None
-            else (sit.command_id if sit is not None else str(execution.driver_handle))
+            else (
+                sit.command_id
+                if sit is not None
+                else (
+                    object_workflow.command_id
+                    if object_workflow is not None
+                    else str(execution.driver_handle)
+                )
+            )
         )
         receipt = self._receipts.get(handle)
         if receipt is None or receipt.status in {CommandStatus.ACCEPTED, CommandStatus.RUNNING}:
@@ -146,7 +162,15 @@ class MujocoNpcActionDriver:
                 (
                     workflow.stage
                     if workflow is not None
-                    else (sit.stage if sit is not None else execution.phase)
+                    else (
+                        sit.stage
+                        if sit is not None
+                        else (
+                            object_workflow.stage
+                            if object_workflow is not None
+                            else execution.phase
+                        )
+                    )
                 ),
                 handle,
             )
@@ -154,6 +178,8 @@ class MujocoNpcActionDriver:
             return self._advance_handover(execution, workflow, receipt)
         if sit is not None:
             return self._advance_sit(execution, sit, receipt)
+        if object_workflow is not None:
+            return self._advance_object_action(execution, object_workflow, receipt)
         if receipt.status == CommandStatus.SUCCEEDED:
             return DriverResult(ExecutionStatus.SUCCEEDED, "arrived", execution.driver_handle)
         status = (
@@ -177,21 +203,69 @@ class MujocoNpcActionDriver:
             if site is None:
                 raise ValueError(f"No NPC site configured for location '{command.target}'")
             return NpcCommandKind.MOVE_TO, {"site": site, "arrival_clip": "idle"}, "navigate"
-        if command.action == ActionType.PICK_UP:
-            return NpcCommandKind.ATTACH_OBJECT, {"object": str(command.target)}, "attach"
-        if command.action == ActionType.PUT_DOWN:
-            object_name = command.parameters.get("object")
-            if not object_name:
-                raise ValueError("Put-down command has no held object")
-            site = self.placement_sites.get(str(command.target))
-            if site is None:
-                raise ValueError(f"No placement site configured for '{command.target}'")
-            return (
-                NpcCommandKind.DETACH_OBJECT,
-                {"object": str(object_name), "site": site},
-                "detach",
-            )
         raise ValueError(f"Unsupported embodied action '{command.action.value}'")
+
+    def _start_object_action(self, execution: ActionExecution) -> DriverResult:
+        assert execution.command is not None
+        command = execution.command
+        if command.action == ActionType.PICK_UP:
+            object_name, stage, clip, marker, detach_site = (
+                str(command.target or ""),
+                "grasp",
+                "pick_up",
+                "grasp",
+                None,
+            )
+        else:
+            object_name = str(command.parameters.get("object", ""))
+            detach_site = self.placement_sites.get(str(command.target))
+            stage, clip, marker = "release", "place", "release"
+        if not object_name or (command.action == ActionType.PUT_DOWN and detach_site is None):
+            return DriverResult(
+                ExecutionStatus.FAILED, "prepare", error="Missing object or placement site"
+            )
+        handle = self._submit_stage(
+            command.agent_id,
+            execution.execution_id,
+            stage,
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": clip, "completion_marker": marker},
+        )
+        self._objects[execution.execution_id] = _ObjectWorkflow(
+            object_name, stage, handle, detach_site
+        )
+        return DriverResult(ExecutionStatus.RUNNING, stage, handle)
+
+    def _advance_object_action(
+        self, execution: ActionExecution, workflow: _ObjectWorkflow, receipt: NpcCommandReceipt
+    ) -> DriverResult:
+        payload: dict[str, object]
+        if receipt.status != CommandStatus.SUCCEEDED:
+            self._objects.pop(execution.execution_id, None)
+            return DriverResult(
+                ExecutionStatus.FAILED, "terminal", workflow.command_id, receipt.reason
+            )
+        assert execution.command is not None
+        if workflow.stage == "grasp":
+            workflow.stage, kind, payload = (
+                "attach",
+                NpcCommandKind.ATTACH_OBJECT,
+                {"object": workflow.object_name},
+            )
+        elif workflow.stage == "release":
+            assert workflow.detach_site is not None
+            workflow.stage, kind, payload = (
+                "detach",
+                NpcCommandKind.DETACH_OBJECT,
+                {"object": workflow.object_name, "site": workflow.detach_site},
+            )
+        else:
+            self._objects.pop(execution.execution_id, None)
+            return DriverResult(ExecutionStatus.SUCCEEDED, workflow.stage, workflow.command_id)
+        workflow.command_id = self._submit_stage(
+            execution.command.agent_id, execution.execution_id, workflow.stage, kind, payload
+        )
+        return DriverResult(ExecutionStatus.RUNNING, workflow.stage, workflow.command_id)
 
     def _start_sit(self, execution: ActionExecution) -> DriverResult:
         assert execution.command is not None
@@ -258,11 +332,23 @@ class MujocoNpcActionDriver:
                 execution.execution_id,
                 workflow.stage,
                 NpcCommandKind.PLAY_ANIMATION,
-                {"clip": "sit", "completion_marker": "seated"},
+                {"clip": "sit_down", "completion_marker": "seated"},
             )
             return DriverResult(ExecutionStatus.RUNNING, workflow.stage, workflow.command_id)
         self._sits.pop(execution.execution_id, None)
         return DriverResult(ExecutionStatus.SUCCEEDED, "seated", workflow.command_id)
+
+    def _start_stand_up(self, execution: ActionExecution) -> DriverResult:
+        assert execution.command is not None
+        command = execution.command
+        handle = self._submit_stage(
+            command.agent_id,
+            execution.execution_id,
+            "stand_transition",
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "stand_up", "completion_marker": "standing"},
+        )
+        return DriverResult(ExecutionStatus.RUNNING, "stand_transition", handle)
 
     def _start_handover(self, execution: ActionExecution) -> DriverResult:
         assert execution.command is not None
@@ -288,8 +374,12 @@ class MujocoNpcActionDriver:
             command.agent_id,
             execution.execution_id,
             "giver_ready",
-            NpcCommandKind.INTERACTION_CUE,
-            {"clip": "idle", "duration": 0.1, "interaction_id": session.session_id},
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "give",
+                "completion_marker": "handover_ready",
+                "interaction_id": session.session_id,
+            },
         )
         self._handovers[execution.execution_id] = _HandoverWorkflow(
             session.session_id,
@@ -322,8 +412,12 @@ class MujocoNpcActionDriver:
                 workflow.receiver,
                 execution.execution_id,
                 workflow.stage,
-                NpcCommandKind.INTERACTION_CUE,
-                {"clip": "idle", "duration": 0.1, "interaction_id": workflow.session_id},
+                NpcCommandKind.PLAY_ANIMATION,
+                {
+                    "clip": "receive",
+                    "completion_marker": "handover_ready",
+                    "interaction_id": workflow.session_id,
+                },
             )
         elif workflow.stage == "receiver_ready":
             self.interactions.acknowledge(workflow.session_id, workflow.receiver, "ready")

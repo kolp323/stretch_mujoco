@@ -91,7 +91,15 @@ def _pose_clips(torch: Any) -> dict[str, list[Any]]:
         "walk": [],
         "sit": [],
         "work": [],
+        "use_computer": [],
         "eat": [],
+        "pick_up": [],
+        "place": [],
+        "give": [],
+        "receive": [],
+        "talk": [],
+        "gesture_wave": [],
+        "gesture_point": [],
     }
 
     for phase in np.linspace(0, 2 * np.pi, 4, endpoint=False):
@@ -134,6 +142,7 @@ def _pose_clips(torch: Any) -> dict[str, list[Any]]:
         pose[0, 17, 1] = -1.05 + 0.08 * typing
         pose[0, 18, 1] = 1.05 + 0.08 * typing
         clips["work"].append(pose.reshape(1, -1))
+        clips["use_computer"].append(pose.reshape(1, -1))
 
     for phase in np.linspace(0, 2 * np.pi, 8, endpoint=False):
         reach = float((1.0 - np.cos(phase)) * 0.5)
@@ -144,6 +153,22 @@ def _pose_clips(torch: Any) -> dict[str, list[Any]]:
         pose[0, 18, 1] = 1.30 * reach
         pose[0, 18, 2] = 0.22 * reach
         clips["eat"].append(pose.reshape(1, -1))
+        for name, arm in (("pick_up", -0.9), ("place", -0.55), ("give", -0.75), ("receive", -0.65)):
+            gesture = base.clone()
+            gesture[0, 16, 0] = arm * reach
+            gesture[0, 16, 2] = 0.8 * reach
+            clips[name].append(gesture.reshape(1, -1))
+        talk = base.clone()
+        talk[0, 5, 2] = 0.03 * np.sin(phase)
+        clips["talk"].append(talk.reshape(1, -1))
+        wave = base.clone()
+        wave[0, 16, 0] = -0.7
+        wave[0, 16, 2] = 0.8 * np.sin(phase)
+        clips["gesture_wave"].append(wave.reshape(1, -1))
+        point = base.clone()
+        point[0, 16, 0] = -0.85
+        point[0, 16, 2] = 0.55
+        clips["gesture_point"].append(point.reshape(1, -1))
     return clips
 
 

@@ -85,6 +85,12 @@ class AnimationGraph:
                         for marker in clip.markers
                     ),
                     completion_clip=OFFICE_COMPLETION_CLIPS.get(clip_id),
+                    speed=OFFICE_CLIPS.get(clip_id, ClipDefinition()).speed,
+                    interrupt_policy=OFFICE_CLIPS.get(clip_id, ClipDefinition()).interrupt_policy,
+                    safe_marker=OFFICE_CLIPS.get(clip_id, ClipDefinition()).safe_marker,
+                    upper_body_overlay=OFFICE_CLIPS.get(
+                        clip_id, ClipDefinition()
+                    ).upper_body_overlay,
                 )
                 for clip_id, clip in bundle.clips.items()
             },
@@ -114,7 +120,15 @@ OFFICE_CLIPS: dict[str, ClipDefinition] = {
         completion_clip=OFFICE_COMPLETION_CLIPS["stand_up"],
     ),
     "work": ClipDefinition(markers=(("work_cycle", 0.75),)),
+    "use_computer": ClipDefinition(markers=(("computer_cycle", 0.75),)),
     "eat": ClipDefinition(markers=(("consume", 0.625),)),
+    "pick_up": ClipDefinition(loop=False, markers=(("grasp", 0.75),)),
+    "place": ClipDefinition(loop=False, markers=(("release", 0.75),)),
+    "give": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
+    "receive": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
+    "talk": ClipDefinition(upper_body_overlay=True),
+    "gesture_wave": ClipDefinition(loop=False, upper_body_overlay=True),
+    "gesture_point": ClipDefinition(loop=False, upper_body_overlay=True),
 }
 
 OFFICE_ANIMATION_GRAPH = AnimationGraph(
