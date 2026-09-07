@@ -63,6 +63,7 @@ MUJOCO_LOG.TXT
 
 # Temp runtime XML 
 stretch_temp_abs.xml
+stretch_mujoco/models/.npc_*.xml
 
 # Licensed humanoid model parameters must not be redistributed.
 models_smplx_*.zip

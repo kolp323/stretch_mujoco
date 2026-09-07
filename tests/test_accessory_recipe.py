@@ -265,12 +265,13 @@ def test_checked_in_baseball_cap_runtime_config_references_the_canonical_recipe(
     assert runtime.source_archive == (
         "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap_v1.zip"
     )
-    assert runtime.output_dir.endswith("runtime/baseball_cap_v1/employee_01")
+    assert runtime.npc_id == "npc_alex_chen"
+    assert runtime.output_dir.endswith("runtime/baseball_cap_v1/npc_alex_chen")
     assert runtime.source_manifest == "../assets/humanoid/generated/animations/manifest.json"
     assert runtime.output_manifest == (
         "../assets/humanoid/generated/animations/"
-        "manifest.baseball_cap_v1.employee_01.runtime.json"
+        "manifest.baseball_cap_v1.npc_alex_chen.runtime.json"
     )
     assert runtime.output_population.endswith(
-        "runtime_populations/baseball_cap_v1/employee_01.json"
+        "runtime_populations/baseball_cap_v1/npc_alex_chen.json"
     )
