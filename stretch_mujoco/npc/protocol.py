@@ -136,6 +136,10 @@ class NpcRuntimeState:
     last_marker: str | None = None
     pending_clip: str | None = None
     deferred_interrupt: bool = False
+    route_revision: int = 0
+    replan_attempt: int = 0
+    stop_marker: str | None = None
+    locomotion_failure: str | None = None
     animation_lifecycle: str = "requested"
     transition: str | None = None
     animation_events: tuple[str, ...] = ()
@@ -182,6 +186,16 @@ class NpcRuntimeState:
                 None if payload.get("pending_clip") is None else str(payload["pending_clip"])
             ),
             deferred_interrupt=bool(payload.get("deferred_interrupt", False)),
+            route_revision=int(payload.get("route_revision", 0)),
+            replan_attempt=int(payload.get("replan_attempt", 0)),
+            stop_marker=(
+                None if payload.get("stop_marker") is None else str(payload["stop_marker"])
+            ),
+            locomotion_failure=(
+                None
+                if payload.get("locomotion_failure") is None
+                else str(payload["locomotion_failure"])
+            ),
             animation_lifecycle=str(payload.get("animation_lifecycle", "requested")),
             transition=None if payload.get("transition") is None else str(payload["transition"]),
             animation_events=tuple(str(value) for value in payload.get("animation_events", ())),

@@ -720,6 +720,31 @@ Success: no issues found in 11 source files
 `tests/test_npc_assets.py` preview-manifest 测试在收集资产时失败，因为隔离 worktree 缺少
 已由 manifest 声明的 `assets/humanoid/cesium_man.png`。没有为通过测试放宽 SHA/存在性校验。
 
+### 10.5 导航与脚步 marker 同步（当前状态）
+
+`LocomotionController` 仍是唯一写入 NPC mocap root pose/yaw 的组件，但现在公开直线路由的
+`route_revision`、`replan_attempt`、`route_tangent`、progress timeout 和失败原因。MOVE 命令先
+采样 walk，只有跨过 `left_foot` 或 `right_foot` marker 后才开始 root motion；到达位置和目标 yaw
+后同样等待下一个 foot marker 才返回成功。运行中的 MOVE 取消会返回 running，直到 foot marker
+安全停止并发出原 command 的 cancelled receipt。
+
+无进展会在 recipe/command 指定的 `progress_timeout` 后增加 route revision；达到
+`max_replans` 后以 `FAILED(reason=route_blocked)` 结束并 idle recovery。site 在运行中失效则以
+`route_invalid` 失败。两种原因以及 route/replan/stop-marker 投影到 `NpcRuntimeState`，不提交
+逻辑位置或其他语义副作用。
+
+本轮公开 headless 覆盖 MOVE 的脚步 marker 起停和一次有限重规划后失败：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_npc_completion.py tests/test_animation_controller.py tests/test_action_driver.py
+19 passed in 0.44s
+```
+
+当前 route abstraction 仍是直线路径；它不包含导航网格避障或动态障碍物绕行。下一轮可在不改变
+controller/root-pose ownership 的前提下替换 waypoint provider，并复用 revision/progress/failure
+contract。
+
 ### 10.5 Replay phase offsets and validated embodied recipes (current state)
 
 `NpcSystem` now accepts a stable `simulation_seed` (including the explicit, stable

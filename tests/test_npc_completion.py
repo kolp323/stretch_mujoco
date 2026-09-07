@@ -16,6 +16,7 @@ def _model() -> mujoco.MjModel:
     sit_down_frames = frames("sit_down", 8)
     seated_idle_frames = frames("seated_idle", 4)
     stand_up_frames = frames("stand_up", 8)
+    walk_frames = frames("walk", 8)
     return mujoco.MjModel.from_xml_string(
         f"""
         <mujoco>
@@ -26,6 +27,7 @@ def _model() -> mujoco.MjModel:
               {sit_down_frames}
               {seated_idle_frames}
               {stand_up_frames}
+              {walk_frames}
               <site name="npc__employee_01__handover" pos="0 0 1"/>
             </body>
             <body name="npc__employee_02" mocap="true" pos="0 1 0">
@@ -51,6 +53,7 @@ def _command(kind: NpcCommandKind, payload: dict[str, object], sequence: int) ->
 def test_sit_completes_at_animation_marker() -> None:
     model = _model()
     data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
     system = NpcSystem.from_model(model)
     system.submit(
         _command(
@@ -72,6 +75,7 @@ def test_sit_completes_at_animation_marker() -> None:
 def test_stand_up_marker_returns_to_idle_only_after_completion() -> None:
     model = _model()
     data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
     system = NpcSystem.from_model(model)
     system.submit(
         _command(
@@ -142,6 +146,55 @@ def test_missing_clip_emits_one_fallback_event() -> None:
     assert state.last_receipt is not None
     assert state.last_receipt.status == CommandStatus.FAILED
     assert state.last_receipt.reason == "clip_unavailable:missing"
+
+
+def test_move_waits_for_walk_marker_before_start_and_stop() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(_command(NpcCommandKind.MOVE_TO, {"site": "drop_site"}, 0))
+
+    system.step(model, data, 0.0)
+    np.testing.assert_allclose(data.mocap_pos[0, :2], (0.0, 0.0))
+    for index in range(1, 100):
+        system.step(model, data, index * 0.125)
+        state = system.states(data)["employee_01"]
+        if state.last_receipt is not None and state.last_receipt.status.terminal:
+            break
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+    assert state.stop_marker in {"left_foot", "right_foot"}
+    np.testing.assert_allclose(data.mocap_pos[0, :2], (2.0, 0.0), atol=1e-6)
+
+
+def test_blocked_move_replans_once_then_fails_without_location_commit() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        _command(
+            NpcCommandKind.MOVE_TO,
+            {"site": "drop_site", "speed": 0.001, "progress_timeout": 0.01, "max_replans": 1},
+            0,
+        )
+    )
+
+    for index in range(100):
+        system.step(model, data, index * 0.125)
+        state = system.states(data)["employee_01"]
+        if state.last_receipt is not None and state.last_receipt.status.terminal:
+            break
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.FAILED
+    assert state.last_receipt.reason == "route_blocked"
+    assert state.replan_attempt == 1
+    assert state.locomotion_failure == "route_blocked"
 
 
 def test_lifecycle_tracks_requested_navigation_alignment_playback_and_completion() -> None:
