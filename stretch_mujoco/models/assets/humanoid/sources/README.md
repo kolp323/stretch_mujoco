@@ -12,7 +12,7 @@ npc/hair/<hair-id>/<source-file>
 npc/textures/<material-id>/<source-file>
 ```
 
-`cap_source_v1` uses
-`npc/accessories/cap_source_v1/cap_source_v1.zip`. Files here are local inputs;
+`baseball_cap_v1` uses
+`npc/accessories/baseball_cap_v1/baseball_cap_v1.zip`. Files here are local inputs;
 do not commit them. Fused OBJ, anchors, receipts and manifests belong under the
 neighbouring `generated/` directory.

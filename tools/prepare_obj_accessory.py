@@ -179,7 +179,7 @@ def main() -> None:
     parser.add_argument("--source-archive", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--accessory-id", default="cap_source_v1")
+    parser.add_argument("--accessory-id", default="baseball_cap_v1")
     parser.add_argument(
         "--head-clearance-m",
         type=float,

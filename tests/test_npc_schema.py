@@ -101,7 +101,7 @@ def test_explicit_appearance_slots_bind_to_npc_agent() -> None:
             "top": "top_teal_v1",
             "bottom": "bottom_charcoal_v1",
             "shoes": "shoes_black_v1",
-            "accessories": ["cap_simple_v1"],
+            "accessories": ["accessory_demo_v1"],
             "scale": 1.0,
         }
     )

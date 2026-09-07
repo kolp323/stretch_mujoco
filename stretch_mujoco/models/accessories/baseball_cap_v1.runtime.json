@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "recipe": "baseball_cap_v1.recipe.json",
+  "source_archive": "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap_v1.zip",
+  "source_manifest": "../assets/humanoid/generated/animations/manifest.json",
+  "source_population": "../office_population.production.example.json",
+  "npc_id": "employee_01",
+  "bundle": "smplx_office_neutral_v1",
+  "output_dir": "../assets/humanoid/generated/animations/runtime/baseball_cap_v1/employee_01",
+  "output_manifest": "../assets/humanoid/generated/animations/manifest.baseball_cap_v1.employee_01.runtime.json",
+  "output_population": "../assets/humanoid/generated/animations/runtime_populations/baseball_cap_v1/employee_01.json"
+}

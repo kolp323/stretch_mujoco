@@ -76,7 +76,7 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
         archive,
         manifest,
         tmp_path / "output",
-        "cap_source_v1",
+        "baseball_cap_v1",
         head_clearance_m=-0.026,
         back_offset_m=0.098,
         mesh_scale=1.3,
@@ -90,7 +90,7 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
     assert receipt["mesh_scale"] == 1.3
     assert receipt["back_tilt_degrees"] == 13.0
     assert captured == {"head_clearance_m": -0.026, "back_offset_m": 0.098}
-    assert receipt["outputs"]["mesh"] == "cap_source_v1.obj"
+    assert receipt["outputs"]["mesh"] == "baseball_cap_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
 

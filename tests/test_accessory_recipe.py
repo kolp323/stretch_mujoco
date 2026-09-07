@@ -252,23 +252,25 @@ def test_builder_creates_nested_runtime_population_directory(
     assert output_population.parent.is_dir()
 
 
-def test_checked_in_cap_runtime_config_references_the_canonical_recipe() -> None:
+def test_checked_in_baseball_cap_runtime_config_references_the_canonical_recipe() -> None:
     models = Path(__file__).parents[1] / "stretch_mujoco/models/accessories"
-    recipe_path = models / "cap_source_v1.recipe.json"
-    runtime_path = models / "cap_source_v1.runtime.json"
+    recipe_path = models / "baseball_cap_v1.recipe.json"
+    runtime_path = models / "baseball_cap_v1.runtime.json"
 
     recipe = FusedAccessoryRecipe.from_json(recipe_path)
     runtime = FusedAccessoryRuntimeConfig.from_json(runtime_path)
 
     assert runtime.resolve_path(runtime_path, "recipe") == recipe_path
-    assert recipe.accessory_id == "cap_source_v1"
+    assert recipe.accessory_id == "baseball_cap_v1"
     assert runtime.source_archive == (
-        "../assets/humanoid/sources/npc/accessories/cap_source_v1/cap_source_v1.zip"
+        "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap_v1.zip"
     )
-    assert runtime.output_dir.endswith("runtime/cap_source_v1/employee_01")
+    assert runtime.output_dir.endswith("runtime/baseball_cap_v1/employee_01")
     assert runtime.source_manifest == "../assets/humanoid/generated/animations/manifest.json"
     assert runtime.output_manifest == (
         "../assets/humanoid/generated/animations/"
-        "manifest.cap_source_v1.employee_01.runtime.preview.json"
+        "manifest.baseball_cap_v1.employee_01.runtime.json"
     )
-    assert runtime.output_population.endswith("runtime_populations/cap_source_v1/employee_01.json")
+    assert runtime.output_population.endswith(
+        "runtime_populations/baseball_cap_v1/employee_01.json"
+    )
