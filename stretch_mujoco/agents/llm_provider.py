@@ -103,7 +103,12 @@ class OpenAICompatibleProvider:
                 "a lunch/rest window."
             )
         elif request.trigger.value == "dialogue":
-            contract = 'Return exactly {"dialogue": "brief office-appropriate reply"}.'
+            allowed_intents = request.context.get("allowed_intents", [])
+            contract = (
+                'Return exactly {"intent": "allowed_intent", "text": "brief office reply"}. '
+                "The runtime will filter sensitive content, constrain length, and may replace text. "
+                f"Allowed intents: {allowed_intents}."
+            )
         elif request.trigger.value == "new_task":
             contract = (
                 'Return {"action": {"action": "allowed_action", '

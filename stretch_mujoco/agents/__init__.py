@@ -12,6 +12,15 @@ from .actions import (
 )
 from .drivers import ActionDriver, DriverResult, MujocoNpcActionDriver
 from .employee import BehaviorPlan, EmployeeAgent, EmployeePlanner
+from .conversation import (
+    ConversationCoordinator,
+    ConversationIntent,
+    ConversationSession,
+    ConversationStatus,
+    ConversationTurn,
+    InterruptPolicy,
+    SpatialPose,
+)
 from .events import DailyOfficeEvent, DailyOfficeEventGenerator
 from .interactions import InteractionCoordinator, InteractionSession, InteractionStatus
 from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
@@ -29,6 +38,11 @@ __all__ = [
     "ActionExecution",
     "ActionType",
     "BehaviorPlan",
+    "ConversationCoordinator",
+    "ConversationIntent",
+    "ConversationSession",
+    "ConversationStatus",
+    "ConversationTurn",
     "DailyOfficeEvent",
     "DailyOfficeEventGenerator",
     "EmployeeAgent",
@@ -49,11 +63,13 @@ __all__ = [
     "InteractionCoordinator",
     "InteractionSession",
     "InteractionStatus",
+    "InterruptPolicy",
     "OfficeAgentRuntime",
     "OpenAICompatibleProvider",
     "ReservationManager",
     "RobotHandover",
     "RobotToNpcHandoverBridge",
+    "SpatialPose",
     "RobotTask",
     "RobotTaskStatus",
     "RuntimeEvent",
