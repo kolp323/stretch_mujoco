@@ -805,7 +805,8 @@ locally licensed AMASS source to the restricted animation baker. Its `list`
 command safely inspects an NPZ, a directory tree, or a `.tar.bz2` archive
 without extracting it, reporting source ID, frame count, source FPS, duration,
 SMPL-X model type, gender, and why an incompatible sequence was rejected.
-It never enables NumPy pickle loading.
+Archive inspection is streamed one member at a time; it never enables NumPy
+pickle loading or retains the complete archive in memory.
 
 Its `prepare` command accepts an ignored schema-v1 selection JSON. Each entry
 explicitly binds a target clip to one source ID, source-frame crop, target FPS,
@@ -814,7 +815,8 @@ data, an explicit SMPL-X surface model type, and a valid source frame rate, resa
 writes `<clip>.npz` with a `body_pose` array. It also writes an ignored receipt
 containing the AMASS license reference, source-member hash, crop/resampling
 parameters, SMPL-X metadata, and output hash. Existing output or receipt files
-are never overwritten.
+are never overwritten. When preparing from an archive, it retains only the
+members named by the selection rather than the complete archive payload.
 
 The restricted baker now requires `--motion-root` and rejects any incomplete or
 invalid set of selected clips. It no longer manufactures illustrative poses for
@@ -831,7 +833,7 @@ Focused verification:
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
   tests/test_amass_intake.py tests/test_npc_assets.py \
   -k 'amass or smplx_baker or restricted_bundle'
-7 passed, 3 deselected
+8 passed, 3 deselected
 
 uv run black --check stretch_mujoco/humanoid/amass_intake.py \
   stretch_mujoco/humanoid/smplx_animation_baker.py tests/test_amass_intake.py \

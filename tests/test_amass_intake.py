@@ -98,6 +98,22 @@ def test_prepare_motions_resamples_and_writes_provenance_receipt(tmp_path: Path)
     assert len(receipt["output_sha256"]) == 64
 
 
+def test_prepare_motions_reads_only_selected_tar_member(tmp_path: Path) -> None:
+    source_dir = tmp_path / "Transitions"
+    source_dir.mkdir()
+    _write_motion(source_dir / "example.npz")
+    _write_motion(source_dir / "unselected.npz")
+    archive = tmp_path / "Transitions.tar.bz2"
+    with tarfile.open(archive, "w:bz2") as output:
+        output.add(source_dir, arcname="Transitions")
+    selection = tmp_path / "selection.json"
+    _write_selection(selection)
+
+    outputs = prepare_motions(archive, selection, tmp_path / "motions", tmp_path / "receipts")
+
+    assert outputs == (tmp_path / "motions" / "stand_up.npz",)
+
+
 def test_prepare_motions_refuses_to_overwrite_existing_outputs(tmp_path: Path) -> None:
     source_dir = tmp_path / "source" / "Transitions"
     source_dir.mkdir(parents=True)

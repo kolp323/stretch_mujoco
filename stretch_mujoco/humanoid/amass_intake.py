@@ -194,7 +194,16 @@ def prepare_motions(
 ) -> tuple[Path, ...]:
     """Create ignored baker inputs and receipts from explicitly selected local motions."""
     license_info, selections = _load_selection(selection_path)
-    payloads = {payload.source_id: payload for payload in _source_payloads(source)}
+    selected_source_ids = {
+        source_id
+        for selection in selections
+        if isinstance((source_id := selection.get("source_id")), str)
+    }
+    payloads = {
+        payload.source_id: payload
+        for payload in _source_payloads(source)
+        if payload.source_id in selected_source_ids
+    }
     output_dir.mkdir(parents=True, exist_ok=True)
     receipt_dir.mkdir(parents=True, exist_ok=True)
     outputs: list[Path] = []
