@@ -45,3 +45,25 @@ def test_show_frame_rejects_missing_clip() -> None:
 
     with pytest.raises(ValueError, match="available: idle"):
         acceptance._show_frame(model, {"idle": {0: [0]}}, "sit", 0)
+
+
+def test_acceptance_hides_non_target_legacy_and_roster_frames(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    names = [
+        "humanoid_preview_frame_idle_00_body",
+        "npc__npc_alex_chen__clip__walk__frame__000__slot__body",
+        "npc__npc_morgan_lee__clip__walk__frame__000__slot__body",
+        "office_desk_surface",
+    ]
+    monkeypatch.setattr(
+        acceptance.mujoco,
+        "mj_id2name",
+        lambda _model, _object_type, geom_id: names[geom_id],
+    )
+    model = SimpleNamespace(geom_rgba=np.ones((len(names), 4), dtype=float), ngeom=len(names))
+
+    hidden = acceptance._hide_non_target_animated_geometries(model, "npc_alex_chen")
+
+    assert hidden == ["employee_01", "npc_morgan_lee"]
+    assert model.geom_rgba[:, 3].tolist() == [0.0, 1.0, 0.0, 1.0]

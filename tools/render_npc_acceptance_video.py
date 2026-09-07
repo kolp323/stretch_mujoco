@@ -92,6 +92,27 @@ def _show_frame(
     return active
 
 
+def _hide_non_target_animated_geometries(model: mujoco.MjModel, npc_id: str) -> list[str]:
+    """Hide legacy and roster NPC frames that would obstruct target review.
+
+    Acceptance still loads the caller's composed office MJCF unchanged.  This
+    only changes frame-geometry alpha in the in-memory review model, leaving
+    the office's furniture, native lights, camera environment, and target NPC
+    untouched.  It prevents legacy ``humanoid_preview`` frames and other
+    roster members at shared desk spawn sites from being mistaken for a defect
+    in the NPC under review.
+    """
+    hidden_npc_ids: set[str] = set()
+    for geom_id in range(model.ngeom):
+        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or ""
+        parsed = parse_frame_geom_name(name)
+        if parsed is None or parsed[0] == npc_id:
+            continue
+        model.geom_rgba[geom_id, 3] = 0.0
+        hidden_npc_ids.add(parsed[0])
+    return sorted(hidden_npc_ids)
+
+
 def _yaw_from_xmat(xmat: np.ndarray) -> float:
     """Read the world yaw from MuJoCo's row-major rotation matrix."""
     return math.atan2(float(xmat[3]), float(xmat[0]))
@@ -213,11 +234,16 @@ def render_acceptance_video(
     frame_count = max(1, round(seconds_per_shot * fps))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     material_checks = _frame_material_checks(model, frame_groups)
+    hidden_npc_ids = _hide_non_target_animated_geometries(model, npc_id)
     report: dict[str, object] = {
         "scene": str(scene_path),
         "npc_id": npc_id,
         "standing_position": list(standing_position),
         "lighting": "scene_native_only",
+        "review_visibility": {
+            "policy": "target_npc_frames_only",
+            "hidden_npc_ids": hidden_npc_ids,
+        },
         "shots": [],
         **material_checks,
     }
