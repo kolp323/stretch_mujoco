@@ -37,12 +37,16 @@ class NpcController:
         model: mujoco.MjModel,
         binding: NpcBinding,
         animation_graph: AnimationGraph | None = None,
+        simulation_seed: int = 0,
     ) -> None:
         self.model = model
         self.binding = binding
         self.locomotion = LocomotionController(model, binding)
         self.animation = AnimationController(
-            MeshSequenceBackend(model, binding), graph=animation_graph
+            MeshSequenceBackend(model, binding),
+            graph=animation_graph,
+            phase_seed=simulation_seed,
+            npc_id=binding.npc_id,
         )
         self.attachments = AttachmentController(model, binding)
         self.active_command: ActiveNpcCommand | None = None
@@ -62,13 +66,16 @@ class NpcController:
             )
         try:
             if command.kind == NpcCommandKind.MOVE_TO:
+                self.animation.set_execution(command.command_id)
                 site = str(command.payload["site"])
                 speed = _payload_float(command.payload.get("speed", 1.0), "speed")
                 self.locomotion.move_to(site, speed)
                 self.animation.lifecycle = AnimationLifecycle.NAVIGATING
             elif command.kind == NpcCommandKind.PLAY_ANIMATION:
+                self.animation.set_execution(command.command_id)
                 self.animation.request(str(command.payload["clip"]))
             elif command.kind == NpcCommandKind.INTERACTION_CUE:
+                self.animation.set_execution(command.command_id)
                 self.animation.request(str(command.payload.get("clip", "idle")))
             elif command.kind == NpcCommandKind.ATTACH_OBJECT:
                 object_name = str(command.payload["object"])
@@ -277,6 +284,11 @@ class NpcController:
             requested_animation=self.animation.requested_clip,
             resolved_clip=self.animation.resolved_clip,
             clip_phase=self.animation.phase,
+            phase_seed=self.animation.phase_seed,
+            phase_offset=self.animation.phase_offset,
+            last_marker=(self._animation_events[-1] if self._animation_events else None),
+            pending_clip=self.animation.pending_clip,
+            deferred_interrupt=self.animation.pending_clip is not None,
             animation_lifecycle=self.animation.lifecycle.value,
             transition=self.animation.transition,
             animation_events=self._animation_events,

@@ -131,6 +131,11 @@ class NpcRuntimeState:
     requested_animation: str
     resolved_clip: str
     clip_phase: float
+    phase_seed: int = 0
+    phase_offset: float = 0.0
+    last_marker: str | None = None
+    pending_clip: str | None = None
+    deferred_interrupt: bool = False
     animation_lifecycle: str = "requested"
     transition: str | None = None
     animation_events: tuple[str, ...] = ()
@@ -170,6 +175,13 @@ class NpcRuntimeState:
             requested_animation=str(payload["requested_animation"]),
             resolved_clip=str(payload["resolved_clip"]),
             clip_phase=float(payload["clip_phase"]),
+            phase_seed=int(payload.get("phase_seed", 0)),
+            phase_offset=float(payload.get("phase_offset", 0.0)),
+            last_marker=None if payload.get("last_marker") is None else str(payload["last_marker"]),
+            pending_clip=(
+                None if payload.get("pending_clip") is None else str(payload["pending_clip"])
+            ),
+            deferred_interrupt=bool(payload.get("deferred_interrupt", False)),
             animation_lifecycle=str(payload.get("animation_lifecycle", "requested")),
             transition=None if payload.get("transition") is None else str(payload["transition"]),
             animation_events=tuple(str(value) for value in payload.get("animation_events", ())),

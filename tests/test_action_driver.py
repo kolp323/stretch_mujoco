@@ -201,6 +201,38 @@ def test_pick_up_waits_for_grasp_marker_before_attachment() -> None:
     assert simulator.command.kind.value == "attach_object"
 
 
+def test_use_computer_recipe_requires_complete_contract_then_orders_commands() -> None:
+    simulator = FakeSimulator()
+    execution = ActionExecution(
+        execution_id="computer_1",
+        command=ActionCommand("employee_01", ActionType.USE_COMPUTER, "workstation_left"),
+        status=ExecutionStatus.RUNNING,
+    )
+    incomplete = MujocoNpcActionDriver(simulator, {"workstation_left": "desk_site"})
+    assert incomplete.start(execution).error == "recipe_missing_yaw"
+
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {"workstation_left": "desk_site"},
+        interaction_yaws={"workstation_left": 3.14},
+        available_clips={"use_computer"},
+    )
+    assert driver.start(execution).phase == "approach"
+    for kind, phase in (("align_to", "align"), ("play_animation", "play"), (None, "completed")):
+        simulator.receipts.append(
+            NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+        )
+        result = driver.poll(execution)
+        assert result.phase == phase
+        if kind is not None:
+            assert simulator.command.kind.value == kind
+    assert result.status == ExecutionStatus.SUCCEEDED
+    assert simulator.commands[-1].payload == {
+        "clip": "use_computer",
+        "completion_marker": "computer_cycle",
+    }
+
+
 def test_robot_handover_requires_release_confirmation_before_npc_attach() -> None:
     simulator = FakeSimulator()
     bridge = RobotToNpcHandoverBridge(simulator)

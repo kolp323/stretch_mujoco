@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import random
+import hashlib
 from dataclasses import dataclass
 
 from .backend import AnimationBackend
@@ -27,6 +27,7 @@ class AnimationController:
         fps: float | None = None,
         clips: dict[str, ClipDefinition] | None = None,
         phase_seed: int | None = None,
+        npc_id: str = "npc",
     ) -> None:
         self.backend = backend
         if graph is not None and clips is not None:
@@ -45,7 +46,11 @@ class AnimationController:
         self._last_time: float | None = None
         self._pending_reset = False
         self.lifecycle = AnimationLifecycle.REQUESTED
-        self._random = random.Random(phase_seed)
+        self.phase_seed = 0 if phase_seed is None else phase_seed
+        self.npc_id = npc_id
+        self.phase_offset = 0.0
+        self._execution_id = "initial"
+        self._cycle = 0
         self._deferred_clip: str | None = None
         self._pending_events: list[AnimationEvent] = []
 
@@ -67,6 +72,18 @@ class AnimationController:
             self._fallback_request = None
         self.requested_clip = clip
         self.lifecycle = AnimationLifecycle.REQUESTED
+
+    def set_execution(self, execution_id: str) -> None:
+        """Set the command scope used for deterministic loop phase offsets."""
+        self._execution_id = execution_id
+
+    @property
+    def pending_clip(self) -> str | None:
+        return self._deferred_clip
+
+    def _phase_offset(self, clip: str, cycle: int = 0) -> float:
+        material = f"{self.phase_seed}:{self.npc_id}:{self._execution_id}:{clip}:{cycle}".encode()
+        return int.from_bytes(hashlib.sha256(material).digest()[:8], "big") / 2**64
 
     def recover_to_idle(self) -> None:
         """Cancel-safe recovery used after a deadline or an explicit cancellation."""
@@ -120,7 +137,11 @@ class AnimationController:
             self.transition = f"{self.resolved_clip}->{resolved}"
             self.resolved_clip = resolved
             definition = self.clips.get(resolved, ClipDefinition())
-            self.phase = self._random.random() if definition.loop and resolved != "idle" else 0.0
+            self._cycle = 0
+            self.phase_offset = (
+                self._phase_offset(resolved) if definition.loop and resolved != "idle" else 0.0
+            )
+            self.phase = self.phase_offset
             self._pending_reset = False
         else:
             self.transition = None
@@ -135,6 +156,7 @@ class AnimationController:
             _frame_count(self.backend, self.resolved_clip), 1
         )
         if definition.loop:
+            self._cycle += int(next_phase)
             self.phase = next_phase % 1.0
         else:
             self.phase = min(next_phase, 1.0)

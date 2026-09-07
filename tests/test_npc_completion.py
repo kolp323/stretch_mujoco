@@ -7,7 +7,7 @@ from stretch_mujoco.npc.system import NpcSystem
 
 def _model() -> mujoco.MjModel:
     frames = "\n".join(
-        f'<geom name="npc__employee_01__clip__sit__frame__{index:03d}__slot__body" '
+        f'<geom name="npc__employee_01__clip__sit_down__frame__{index:03d}__slot__body" '
         f'type="sphere" size=".1" rgba="1 1 1 0"/>'
         for index in range(8)
     )
@@ -48,7 +48,7 @@ def test_sit_completes_at_animation_marker() -> None:
     system.submit(
         _command(
             NpcCommandKind.PLAY_ANIMATION,
-            {"clip": "sit", "completion_marker": "seated"},
+            {"clip": "sit_down", "completion_marker": "seated"},
             0,
         )
     )

@@ -12,6 +12,7 @@ class ActionType(str, Enum):
     IDLE = "idle"
     MOVE_TO = "move_to"
     SIT = "sit"
+    STAND_UP = "stand_up"
     WORK = "work"
     REST = "rest"
     EAT = "eat"

@@ -719,3 +719,34 @@ Success: no issues found in 11 source files
 同次运行完整的 animation/action/assets focused set 时，17 个相关测试通过；两个
 `tests/test_npc_assets.py` preview-manifest 测试在收集资产时失败，因为隔离 worktree 缺少
 已由 manifest 声明的 `assets/humanoid/cesium_man.png`。没有为通过测试放宽 SHA/存在性校验。
+
+### 10.5 Replay phase offsets and validated embodied recipes (current state)
+
+`NpcSystem` now accepts a stable `simulation_seed` (including the explicit, stable
+default used by `from_model`). Each controller derives loop offsets with SHA-256 over
+the simulation seed, NPC ID, command ID, resolved clip, and cycle; it does not use
+Python's randomized hash or wall-clock entropy. Runtime state projects `phase_seed`,
+`phase_offset`, `last_marker`, `pending_clip`, and `deferred_interrupt` while retaining
+the existing snapshot fields, so older snapshots remain readable.
+
+`ActionRecipe` is now an immutable contract with target/site, yaw, marker, timeout,
+recovery, and observation fields. The first complete recipe path is `USE_COMPUTER`:
+the driver refuses incomplete configuration before command submission, then executes
+`MOVE_TO -> ALIGN_TO -> PLAY_ANIMATION(use_computer, computer_cycle)`. No talk/session
+state, crossfade, or production visual asset was added; actions without a complete
+recipe must not be treated as physically supported.
+
+Focused verification after this change:
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_animation_controller.py tests/test_action_driver.py tests/test_npc_completion.py
+16 passed in 0.44s
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_npc_assets.py::test_smplx_baker_writes_formal_production_clip_contract
+1 passed in 0.39s
+```
+
+The two preview-manifest tests remain blocked by the absent declared preview asset
+`assets/humanoid/cesium_man.png`; this work does not alter asset validation.

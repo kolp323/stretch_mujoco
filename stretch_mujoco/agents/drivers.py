@@ -8,6 +8,7 @@ from typing import Protocol
 from stretch_mujoco.npc.protocol import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt
 
 from .actions import ActionExecution, ActionType, ExecutionStatus
+from .action_recipes import ACTION_RECIPES, ActionRecipe
 from .interactions import InteractionCoordinator
 
 
@@ -45,17 +46,22 @@ class _ObjectWorkflow:
     detach_site: str | None = None
 
 
+@dataclass
+class _RecipeWorkflow:
+    recipe: ActionRecipe
+    stage: str
+    command_id: str
+    yaw: float
+
+
 class ActionDriver(Protocol):
     supported_actions: frozenset[ActionType]
 
-    def start(self, execution: ActionExecution) -> DriverResult:
-        ...
+    def start(self, execution: ActionExecution) -> DriverResult: ...
 
-    def poll(self, execution: ActionExecution) -> DriverResult:
-        ...
+    def poll(self, execution: ActionExecution) -> DriverResult: ...
 
-    def cancel(self, execution: ActionExecution, reason: str) -> DriverResult:
-        ...
+    def cancel(self, execution: ActionExecution, reason: str) -> DriverResult: ...
 
 
 class SimulatorStatus(Protocol):
@@ -63,17 +69,13 @@ class SimulatorStatus(Protocol):
 
 
 class NpcSimulatorClient(Protocol):
-    def pull_status(self) -> SimulatorStatus:
-        ...
+    def pull_status(self) -> SimulatorStatus: ...
 
-    def submit_npc_command(self, command: NpcCommand) -> str:
-        ...
+    def submit_npc_command(self, command: NpcCommand) -> str: ...
 
-    def pull_npc_receipts(self) -> tuple[NpcCommandReceipt, ...]:
-        ...
+    def pull_npc_receipts(self) -> tuple[NpcCommandReceipt, ...]: ...
 
-    def cancel_npc_command(self, npc_id: str, command_id: str) -> None:
-        ...
+    def cancel_npc_command(self, npc_id: str, command_id: str) -> None: ...
 
 
 class MujocoNpcActionDriver:
@@ -87,6 +89,7 @@ class MujocoNpcActionDriver:
             ActionType.PICK_UP,
             ActionType.PUT_DOWN,
             ActionType.HANDOVER,
+            ActionType.USE_COMPUTER,
         }
     )
 
@@ -97,12 +100,16 @@ class MujocoNpcActionDriver:
         placement_sites: dict[str, str] | None = None,
         *,
         seat_yaws: dict[str, float] | None = None,
+        interaction_yaws: dict[str, float] | None = None,
+        available_clips: set[str] | None = None,
         timeout_seconds: float = 30.0,
     ) -> None:
         self.simulator = simulator
         self.location_sites = dict(location_sites)
         self.placement_sites = dict(placement_sites or {})
         self.seat_yaws = dict(seat_yaws or {})
+        self.interaction_yaws = dict(interaction_yaws or {})
+        self.available_clips = None if available_clips is None else set(available_clips)
         self.timeout_seconds = timeout_seconds
         self._sequences: dict[str, int] = {}
         self._receipts: dict[str, NpcCommandReceipt] = {}
@@ -110,6 +117,7 @@ class MujocoNpcActionDriver:
         self._handovers: dict[str, _HandoverWorkflow] = {}
         self._sits: dict[str, _SitWorkflow] = {}
         self._objects: dict[str, _ObjectWorkflow] = {}
+        self._recipes: dict[str, _RecipeWorkflow] = {}
 
     def start(self, execution: ActionExecution) -> DriverResult:
         command = execution.command
@@ -121,6 +129,8 @@ class MujocoNpcActionDriver:
             return self._start_sit(execution)
         if command.action == ActionType.STAND_UP:
             return self._start_stand_up(execution)
+        if command.action == ActionType.USE_COMPUTER:
+            return self._start_recipe(execution)
         if command.action in {ActionType.PICK_UP, ActionType.PUT_DOWN}:
             return self._start_object_action(execution)
         status = self.simulator.pull_status()
@@ -149,6 +159,7 @@ class MujocoNpcActionDriver:
         workflow = self._handovers.get(execution.execution_id)
         sit = self._sits.get(execution.execution_id)
         object_workflow = self._objects.get(execution.execution_id)
+        recipe_workflow = self._recipes.get(execution.execution_id)
         handle = (
             workflow.command_id
             if workflow is not None
@@ -162,6 +173,8 @@ class MujocoNpcActionDriver:
                 )
             )
         )
+        if recipe_workflow is not None:
+            handle = recipe_workflow.command_id
         receipt = self._receipts.get(handle)
         if receipt is None or receipt.status in {CommandStatus.ACCEPTED, CommandStatus.RUNNING}:
             return DriverResult(
@@ -187,6 +200,8 @@ class MujocoNpcActionDriver:
             return self._advance_sit(execution, sit, receipt)
         if object_workflow is not None:
             return self._advance_object_action(execution, object_workflow, receipt)
+        if recipe_workflow is not None:
+            return self._advance_recipe(execution, recipe_workflow, receipt)
         if receipt.status == CommandStatus.SUCCEEDED:
             return DriverResult(ExecutionStatus.SUCCEEDED, "arrived", execution.driver_handle)
         status = (
@@ -211,6 +226,61 @@ class MujocoNpcActionDriver:
                 raise ValueError(f"No NPC site configured for location '{command.target}'")
             return NpcCommandKind.MOVE_TO, {"site": site, "arrival_clip": "idle"}, "navigate"
         raise ValueError(f"Unsupported embodied action '{command.action.value}'")
+
+    def _start_recipe(self, execution: ActionExecution) -> DriverResult:
+        assert execution.command is not None
+        command = execution.command
+        recipe = ACTION_RECIPES[command.action]
+        error = recipe.validate(
+            target=command.target,
+            location_sites=self.location_sites,
+            yaws=self.interaction_yaws,
+            available_clips=self.available_clips,
+        )
+        if error is not None:
+            return DriverResult(ExecutionStatus.FAILED, "prepare", error=error)
+        assert command.target is not None
+        handle = self._submit_stage(
+            command.agent_id,
+            execution.execution_id,
+            "approach",
+            NpcCommandKind.MOVE_TO,
+            {"site": self.location_sites[command.target], "arrival_clip": "idle"},
+        )
+        self._recipes[execution.execution_id] = _RecipeWorkflow(
+            recipe, "approach", handle, self.interaction_yaws[command.target]
+        )
+        return DriverResult(ExecutionStatus.RUNNING, "approach", handle)
+
+    def _advance_recipe(
+        self, execution: ActionExecution, workflow: _RecipeWorkflow, receipt: NpcCommandReceipt
+    ) -> DriverResult:
+        if receipt.status != CommandStatus.SUCCEEDED:
+            self._recipes.pop(execution.execution_id, None)
+            return DriverResult(
+                ExecutionStatus.FAILED, "terminal", workflow.command_id, receipt.reason
+            )
+        assert execution.command is not None
+        kind: NpcCommandKind
+        payload: dict[str, object]
+        if workflow.stage == "approach":
+            workflow.stage = "align"
+            kind = NpcCommandKind.ALIGN_TO
+            payload = {"yaw": workflow.yaw}
+        elif workflow.stage == "align":
+            workflow.stage = "play"
+            kind = NpcCommandKind.PLAY_ANIMATION
+            payload = {
+                "clip": workflow.recipe.animation,
+                "completion_marker": workflow.recipe.completion_marker,
+            }
+        else:
+            self._recipes.pop(execution.execution_id, None)
+            return DriverResult(ExecutionStatus.SUCCEEDED, "completed", workflow.command_id)
+        workflow.command_id = self._submit_stage(
+            execution.command.agent_id, execution.execution_id, workflow.stage, kind, payload
+        )
+        return DriverResult(ExecutionStatus.RUNNING, workflow.stage, workflow.command_id)
 
     def _start_object_action(self, execution: ActionExecution) -> DriverResult:
         assert execution.command is not None

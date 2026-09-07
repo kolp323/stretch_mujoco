@@ -83,3 +83,19 @@ def test_uninterruptible_clip_defers_until_its_terminal_phase() -> None:
     assert controller.requested_clip == "idle"
     controller.step(1.1)
     assert controller.resolved_clip == "idle"
+
+
+def test_phase_offset_is_stable_per_execution_and_distinct_per_npc() -> None:
+    graph = AnimationGraph(
+        "replay", "idle", "idle", {"idle": ClipDefinition(), "walk": ClipDefinition()}
+    )
+    first = AnimationController(Backend(), graph, phase_seed=17, npc_id="employee_01")
+    replay = AnimationController(Backend(), graph, phase_seed=17, npc_id="employee_01")
+    other = AnimationController(Backend(), graph, phase_seed=17, npc_id="employee_02")
+    for controller in (first, replay, other):
+        controller.set_execution("move_1")
+        controller.request("walk")
+        controller.step(0.0)
+    assert first.phase_offset == replay.phase_offset
+    assert first.phase_offset != other.phase_offset
+    assert first.pending_clip is None

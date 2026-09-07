@@ -12,14 +12,61 @@ from .actions import ActionType
 class ActionRecipe:
     animation: str
     completion: str
+    target_kind: str = "logical"
+    interaction_site_key: str | None = None
+    yaw_source: str | None = None
+    approach_required: bool = False
+    completion_marker: str | None = None
+    observation_condition: str = "marker_only"
+    timeout_seconds: float | None = None
+    interrupt_policy: str = "safe_marker"
+    recovery_policy: str = "idle"
+    base_clip_after_completion: str | None = None
+
+    def validate(
+        self,
+        *,
+        target: str | None,
+        location_sites: dict[str, str],
+        yaws: dict[str, float],
+        available_clips: set[str] | None = None,
+    ) -> str | None:
+        """Return a stable, machine-readable failure reason before any command is sent."""
+        if self.target_kind == "logical":
+            return "recipe_not_embodied"
+        if self.approach_required and (target is None or target not in location_sites):
+            return "recipe_missing_site"
+        if self.yaw_source is not None and (target is None or target not in yaws):
+            return "recipe_missing_yaw"
+        if self.completion_marker is None:
+            return "recipe_missing_marker"
+        if self.timeout_seconds is None or self.timeout_seconds <= 0:
+            return "recipe_missing_timeout"
+        if available_clips is not None and self.animation not in available_clips:
+            return "recipe_clip_unavailable"
+        return None
 
 
 ACTION_RECIPES = {
     ActionType.IDLE: ActionRecipe("idle", "duration"),
     ActionType.MOVE_TO: ActionRecipe("walk", "pose_and_yaw"),
     ActionType.SIT: ActionRecipe("sit", "seat_pose_and_marker"),
+    ActionType.STAND_UP: ActionRecipe("stand_up", "standing_marker"),
     ActionType.WORK: ActionRecipe("work", "minimum_duration"),
-    ActionType.USE_COMPUTER: ActionRecipe("use_computer", "computer_cycle"),
+    ActionType.USE_COMPUTER: ActionRecipe(
+        "use_computer",
+        "computer_cycle",
+        "location",
+        "workstation",
+        "site",
+        True,
+        "computer_cycle",
+        "marker_only",
+        30.0,
+        "safe_marker",
+        "idle",
+        "idle",
+    ),
     ActionType.EAT: ActionRecipe("eat", "attachment_and_duration"),
     ActionType.DRINK: ActionRecipe("eat", "attachment_and_duration"),
     ActionType.PICK_UP: ActionRecipe("pick_up", "grasp_and_attachment"),
