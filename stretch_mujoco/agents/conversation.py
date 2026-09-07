@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import math
 import re
-import uuid
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Iterable
+from types import MappingProxyType
+from typing import Any, Iterable, Mapping
+
+
+CONVERSATION_SCHEMA_VERSION = 1
+DEFAULT_MAX_OBSERVATION_AGE = 0.5
 
 
 class ConversationStatus(str, Enum):
@@ -17,9 +21,65 @@ class ConversationStatus(str, Enum):
     INTERRUPTED = "interrupted"
 
 
+class ConversationTerminalReason(str, Enum):
+    COMPLETED = "completed"
+    TIMED_OUT = "timed_out"
+    INTERRUPTED = "interrupted"
+
+
 class InterruptPolicy(str, Enum):
     REJECT = "reject"
+    """Reject a request that would interrupt an occupied participant."""
+
     ALLOW = "allow"
+    """Legacy logical-only interrupt policy; never interrupts an embodied action."""
+
+    SAFE_MARKER = "safe_marker"
+    IMMEDIATE = "immediate"
+
+
+class ConversationParticipantKind(str, Enum):
+    UNKNOWN = "unknown"
+    NPC = "npc"
+    STRETCH_ROBOT = "stretch_robot"
+
+
+class TurnPolicy(str, Enum):
+    """Turn policy is contractual; enforcement is added with lifecycle work."""
+
+    FREE_FORM = "free_form"
+    ROUND_ROBIN = "round_robin"
+
+
+class ConversationEvent(str, Enum):
+    STARTED = "conversation_started"
+    TURN = "conversation_turn"
+    COMPLETED = "conversation_completed"
+    TIMED_OUT = "conversation_timed_out"
+
+
+class ConversationObservationSource(str, Enum):
+    SEMANTIC_WORLD = "semantic_world"
+    OFFLINE_RECORDING = "offline_recording"
+    LEGACY_OBJECTS = "legacy_objects"
+
+
+class ConversationErrorCode(str, Enum):
+    INVALID_SNAPSHOT = "invalid_snapshot"
+    INVALID_OBSERVATION_TIME = "invalid_observation_time"
+    STALE_OBSERVATION = "stale_observation"
+    FUTURE_OBSERVATION = "future_observation"
+    MISSING_PARTICIPANT = "missing_participant"
+    INVALID_POSE = "invalid_pose"
+    PARTICIPANT_NOT_VISIBLE = "participant_not_visible"
+
+
+class ConversationPerceptionError(ValueError):
+    """A stable error emitted when an untrusted observation cannot start a session."""
+
+    def __init__(self, code: ConversationErrorCode, message: str) -> None:
+        self.code = code
+        super().__init__(f"{code.value}: {message}")
 
 
 class ConversationIntent(str, Enum):
@@ -72,12 +132,170 @@ class SpatialPose:
 
 
 @dataclass(frozen=True)
+class ConversationPerception:
+    """Read-only, validated spatial input for a conversation decision.
+
+    The adapter accepts the live ``SemanticWorld.pose_snapshot()`` shape
+    (``time`` + ``objects`` + quaternion), the offline recording shape
+    (``sim_time`` + ``agents`` + yaw), and the pre-P0 ``objects`` + yaw shape.
+    A legacy payload without a timestamp is treated as observed *now* only at
+    this boundary so existing callers remain compatible; new producers must
+    provide a finite timestamp to receive stale-observation protection.
+    """
+
+    schema_version: int
+    source: ConversationObservationSource
+    observed_at: float
+    poses: Mapping[str, SpatialPose]
+
+    @classmethod
+    def from_snapshot(
+        cls,
+        snapshot: Mapping[str, Any],
+        participants: Iterable[str],
+        *,
+        now: float | None = None,
+        max_age: float = DEFAULT_MAX_OBSERVATION_AGE,
+    ) -> "ConversationPerception":
+        if not isinstance(snapshot, Mapping):
+            raise ConversationPerceptionError(
+                ConversationErrorCode.INVALID_SNAPSHOT,
+                "conversation observation must be a mapping",
+            )
+        if not math.isfinite(max_age) or max_age < 0:
+            raise ValueError("Conversation observation max_age must be a non-negative finite value")
+        if now is not None and (isinstance(now, bool) or not math.isfinite(now)):
+            raise ValueError("Conversation observation clock must be finite")
+
+        participant_tuple = tuple(participants)
+        if len(participant_tuple) != len(set(participant_tuple)):
+            raise ValueError("Conversation observation participants must be distinct")
+        if not participant_tuple:
+            raise ValueError("Conversation observation requires at least one participant")
+
+        source, observations, time_key = cls._observation_fields(snapshot)
+        raw_time = snapshot.get(time_key)
+        has_timestamp = raw_time is not None
+        if has_timestamp:
+            observed_at = cls._finite_number(
+                raw_time,
+                ConversationErrorCode.INVALID_OBSERVATION_TIME,
+                "observation timestamp",
+            )
+        elif now is not None:
+            observed_at = now
+        else:
+            observed_at = 0.0
+
+        if now is not None and has_timestamp:
+            age = now - observed_at
+            if age > max_age:
+                raise ConversationPerceptionError(
+                    ConversationErrorCode.STALE_OBSERVATION,
+                    f"observation age {age:.3f} exceeds {max_age:.3f}",
+                )
+            if age < -max_age:
+                raise ConversationPerceptionError(
+                    ConversationErrorCode.FUTURE_OBSERVATION,
+                    f"observation is {-age:.3f} ahead of the runtime clock",
+                )
+
+        poses: dict[str, SpatialPose] = {}
+        for participant in participant_tuple:
+            payload = observations.get(participant)
+            if not isinstance(payload, Mapping):
+                raise ConversationPerceptionError(
+                    ConversationErrorCode.MISSING_PARTICIPANT,
+                    f"observation is missing participant '{participant}'",
+                )
+            if payload.get("visible") is False or payload.get("valid") is False:
+                raise ConversationPerceptionError(
+                    ConversationErrorCode.PARTICIPANT_NOT_VISIBLE,
+                    f"participant '{participant}' is not available for face-to-face dialogue",
+                )
+            poses[participant] = cls._pose_from_payload(participant, payload)
+
+        return cls(
+            schema_version=CONVERSATION_SCHEMA_VERSION,
+            source=source,
+            observed_at=observed_at,
+            poses=MappingProxyType(poses),
+        )
+
+    @staticmethod
+    def _observation_fields(
+        snapshot: Mapping[str, Any],
+    ) -> tuple[ConversationObservationSource, Mapping[str, Any], str]:
+        agents = snapshot.get("agents")
+        if isinstance(agents, Mapping):
+            return ConversationObservationSource.OFFLINE_RECORDING, agents, "sim_time"
+        objects = snapshot.get("objects")
+        if not isinstance(objects, Mapping):
+            raise ConversationPerceptionError(
+                ConversationErrorCode.INVALID_SNAPSHOT,
+                "observation requires an 'objects' or 'agents' mapping",
+            )
+        if any(isinstance(value, Mapping) and "quaternion" in value for value in objects.values()):
+            return ConversationObservationSource.SEMANTIC_WORLD, objects, "time"
+        return ConversationObservationSource.LEGACY_OBJECTS, objects, "time"
+
+    @classmethod
+    def _pose_from_payload(cls, participant: str, payload: Mapping[str, Any]) -> SpatialPose:
+        position = payload.get("position")
+        if not isinstance(position, (list, tuple)) or len(position) != 3:
+            raise ConversationPerceptionError(
+                ConversationErrorCode.INVALID_POSE,
+                f"participant '{participant}' has no three-axis position",
+            )
+        coordinates = tuple(
+            cls._finite_number(value, ConversationErrorCode.INVALID_POSE, "position")
+            for value in position
+        )
+        raw_yaw = payload.get("yaw")
+        if raw_yaw is None:
+            raw_yaw = cls._yaw_from_quaternion(participant, payload.get("quaternion"))
+        yaw = cls._finite_number(raw_yaw, ConversationErrorCode.INVALID_POSE, "yaw")
+        return SpatialPose((coordinates[0], coordinates[1], coordinates[2]), yaw)
+
+    @classmethod
+    def _yaw_from_quaternion(cls, participant: str, quaternion: Any) -> float:
+        if not isinstance(quaternion, (list, tuple)) or len(quaternion) != 4:
+            raise ConversationPerceptionError(
+                ConversationErrorCode.INVALID_POSE,
+                f"participant '{participant}' has no yaw or quaternion",
+            )
+        w, x, y, z = (
+            cls._finite_number(value, ConversationErrorCode.INVALID_POSE, "quaternion")
+            for value in quaternion
+        )
+        norm = math.sqrt(w * w + x * x + y * y + z * z)
+        if norm == 0:
+            raise ConversationPerceptionError(
+                ConversationErrorCode.INVALID_POSE,
+                f"participant '{participant}' has a zero-length quaternion",
+            )
+        w, x, y, z = (value / norm for value in (w, x, y, z))
+        return math.atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z))
+
+    @staticmethod
+    def _finite_number(value: Any, code: ConversationErrorCode, field_name: str) -> float:
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+        ):
+            raise ConversationPerceptionError(code, f"{field_name} must be a finite number")
+        return float(value)
+
+
+@dataclass(frozen=True)
 class ConversationTurn:
     speaker: str
     intent: ConversationIntent
     text: str
     timestamp: float
     used_fallback: bool = False
+    turn_id: str = ""
 
 
 @dataclass
@@ -91,6 +309,9 @@ class ConversationSession:
     status: ConversationStatus
     transcript: list[ConversationTurn] = field(default_factory=list)
     interrupt_policy: InterruptPolicy = InterruptPolicy.REJECT
+    participant_kinds: tuple[ConversationParticipantKind, ...] = ()
+    turn_policy: TurnPolicy = TurnPolicy.FREE_FORM
+    terminal_reason: ConversationTerminalReason | None = None
 
     @property
     def deadline(self) -> float:
@@ -118,16 +339,19 @@ class ConversationCoordinator:
         self.max_text_length = max_text_length
         self.sessions: dict[str, ConversationSession] = {}
         self._last_message_at: dict[str, float] = {}
+        self._next_session_number = 1
 
     def start(
         self,
         participants: Iterable[str],
         topic: str,
         started_at: float,
-        poses: dict[str, SpatialPose],
+        poses: Mapping[str, SpatialPose],
         *,
         timeout: float = 2.0,
         interrupt_policy: InterruptPolicy = InterruptPolicy.REJECT,
+        participant_kinds: Mapping[str, ConversationParticipantKind | str] | None = None,
+        turn_policy: TurnPolicy = TurnPolicy.FREE_FORM,
     ) -> ConversationSession:
         participant_tuple = tuple(dict.fromkeys(participants))
         if len(participant_tuple) != 2:
@@ -139,8 +363,22 @@ class ConversationCoordinator:
             raise ValueError("Conversation requires semantic poses for both participants")
         if not self._can_speak(poses[first], poses[second]):
             raise ValueError("Participants are too far apart or are not facing each other")
+        if any(
+            session.status == ConversationStatus.ACTIVE
+            and set(session.participants).intersection(participant_tuple)
+            for session in self.sessions.values()
+        ):
+            raise ValueError("A conversation participant already has an active session")
+        kinds = tuple(
+            ConversationParticipantKind(
+                ConversationParticipantKind.UNKNOWN
+                if participant_kinds is None
+                else participant_kinds.get(participant, ConversationParticipantKind.UNKNOWN)
+            )
+            for participant in participant_tuple
+        )
         session = ConversationSession(
-            session_id=f"conversation_{uuid.uuid4().hex}",
+            session_id=f"conversation_{self._next_session_number:06d}",
             participants=participant_tuple,
             topic=topic.strip(),
             turn=0,
@@ -148,7 +386,10 @@ class ConversationCoordinator:
             timeout=timeout,
             status=ConversationStatus.ACTIVE,
             interrupt_policy=interrupt_policy,
+            participant_kinds=kinds,
+            turn_policy=turn_policy,
         )
+        self._next_session_number += 1
         self.sessions[session.session_id] = session
         return session
 
@@ -178,7 +419,14 @@ class ConversationCoordinator:
         if last_message is not None and timestamp - last_message < self.cooldown_minutes:
             raise ValueError(f"Speaker '{speaker}' is in conversation cooldown")
         clean_text, used_fallback = self._safe_text(normalized_intent, text)
-        entry = ConversationTurn(speaker, normalized_intent, clean_text, timestamp, used_fallback)
+        entry = ConversationTurn(
+            speaker,
+            normalized_intent,
+            clean_text,
+            timestamp,
+            used_fallback,
+            f"{session.session_id}:turn:{session.turn + 1}",
+        )
         session.transcript.append(entry)
         session.turn += 1
         self._last_message_at[speaker] = timestamp
@@ -187,6 +435,7 @@ class ConversationCoordinator:
     def complete(self, session_id: str) -> ConversationSession:
         session = self._active(session_id)
         session.status = ConversationStatus.COMPLETED
+        session.terminal_reason = ConversationTerminalReason.COMPLETED
         return session
 
     def expire(self, now: float) -> tuple[ConversationSession, ...]:
@@ -194,6 +443,7 @@ class ConversationCoordinator:
         for session in self.sessions.values():
             if session.status == ConversationStatus.ACTIVE and now >= session.deadline:
                 session.status = ConversationStatus.TIMED_OUT
+                session.terminal_reason = ConversationTerminalReason.TIMED_OUT
                 expired.append(session)
         return tuple(expired)
 
@@ -207,6 +457,11 @@ class ConversationCoordinator:
         return session
 
     def _can_speak(self, first: SpatialPose, second: SpatialPose) -> bool:
+        if not all(
+            math.isfinite(value)
+            for value in (*first.position, first.yaw, *second.position, second.yaw)
+        ):
+            return False
         dx = second.position[0] - first.position[0]
         dy = second.position[1] - first.position[1]
         distance = math.hypot(dx, dy)

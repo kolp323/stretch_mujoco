@@ -1,20 +1,86 @@
-from math import pi
+from dataclasses import dataclass
+from math import nan, pi
 from pathlib import Path
 
 import pytest
 
 from stretch_mujoco.agents import (
+    AgentAvailability,
+    AgentMemory,
     ConversationCoordinator,
+    ConversationErrorCode,
     ConversationIntent,
+    ConversationObservationSource,
+    ConversationParticipantKind,
+    ConversationPerception,
+    ConversationPerceptionError,
     ConversationStatus,
+    EmployeeAgent,
+    EmployeeState,
     InterruptPolicy,
+    MockRobotExecutor,
+    MemoryEntry,
     OfficeAgentRuntime,
     SpatialPose,
 )
-from stretch_mujoco.semantics import SemanticWorld
+from stretch_mujoco.semantics import ObjectType, SemanticObject, SemanticWorld
 
 
 MODELS_PATH = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
+
+
+@dataclass
+class DeterministicConversationFixture:
+    """A no-asset conversation fixture for P0/P3 lifecycle tests."""
+
+    runtime: OfficeAgentRuntime
+    semantic_snapshot: dict[str, object]
+    robot: MockRobotExecutor
+
+
+@pytest.fixture
+def deterministic_conversation_fixture() -> DeterministicConversationFixture:
+    world = SemanticWorld.from_json(MODELS_PATH / "office_semantics.json")
+    employee_binding = world.object("employee_01").binding
+    for employee_id in ("employee_02", "employee_03"):
+        world.objects[employee_id] = SemanticObject(
+            employee_id,
+            ObjectType.EMPLOYEE,
+            employee_binding,
+            {"display_name": employee_id},
+        )
+
+    def employee(employee_id: str) -> EmployeeAgent:
+        return EmployeeAgent.from_dict(
+            employee_id,
+            {
+                "profile": {"role": "Tester", "department": "QA"},
+                "initial_location": "workstation_right",
+            },
+        )
+
+    runtime = OfficeAgentRuntime(
+        world,
+        {
+            employee_id: employee(employee_id)
+            for employee_id in ("employee_01", "employee_02", "employee_03")
+        },
+        auto_plan=False,
+        daily_events=False,
+    )
+    return DeterministicConversationFixture(
+        runtime=runtime,
+        semantic_snapshot={
+            "time": 0.0,
+            "objects": {
+                "employee_01": {"position": [0.0, 0.0, 0.0], "yaw": 0.0},
+                "employee_02": {"position": [1.0, 0.0, 0.0], "yaw": pi},
+                "employee_03": {"position": [0.0, 2.0, 0.0], "yaw": -pi / 2},
+                "stretch_3": {"position": [0.0, -1.0, 0.0], "yaw": pi / 2},
+            },
+        },
+        robot=MockRobotExecutor(completion_delay_minutes=1.0),
+    )
 
 
 def load_runtime() -> OfficeAgentRuntime:
@@ -40,6 +106,178 @@ def test_conversation_requires_distance_and_mutual_facing() -> None:
 
     with pytest.raises(ValueError, match="too far apart"):
         coordinator.start(("a", "b"), "status", 0.0, poses)
+
+
+def test_conversation_contract_uses_deterministic_ids_and_rejects_repeated_participants() -> None:
+    coordinator = ConversationCoordinator()
+    poses = {
+        "employee_01": SpatialPose((0.0, 0.0, 0.0), 0.0),
+        "stretch_3": SpatialPose((1.0, 0.0, 0.0), pi),
+    }
+    session = coordinator.start(
+        ("employee_01", "stretch_3"),
+        "delivery",
+        0.0,
+        poses,
+        participant_kinds={
+            "employee_01": ConversationParticipantKind.NPC,
+            "stretch_3": ConversationParticipantKind.STRETCH_ROBOT,
+        },
+    )
+
+    assert session.session_id == "conversation_000001"
+    assert session.participant_kinds == (
+        ConversationParticipantKind.NPC,
+        ConversationParticipantKind.STRETCH_ROBOT,
+    )
+    turn = coordinator.record_candidate(
+        session.session_id,
+        "employee_01",
+        ConversationIntent.REQUEST,
+        "Please bring the document.",
+        0.0,
+        includes_robot=True,
+    )
+    assert turn.turn_id == "conversation_000001:turn:1"
+
+    with pytest.raises(ValueError, match="already has an active session"):
+        coordinator.start(("employee_01", "stretch_3"), "delivery", 0.1, poses)
+
+
+def test_conversation_perception_adapts_semantic_and_offline_snapshots_read_only() -> None:
+    semantic = ConversationPerception.from_snapshot(
+        {
+            "time": 3.0,
+            "objects": {
+                "employee_01": {
+                    "position": [0.0, 0.0, 0.0],
+                    "quaternion": [1.0, 0.0, 0.0, 0.0],
+                },
+                "stretch_3": {
+                    "position": [1.0, 0.0, 0.0],
+                    "quaternion": [0.0, 0.0, 0.0, 1.0],
+                },
+            },
+        },
+        ("employee_01", "stretch_3"),
+        now=3.25,
+    )
+    offline = ConversationPerception.from_snapshot(
+        {
+            "sim_time": 4.0,
+            "agents": {
+                "employee_01": {"position": [0.0, 0.0, 0.0], "yaw": 0.0},
+                "stretch_3": {"position": [1.0, 0.0, 0.0], "yaw": pi},
+            },
+        },
+        ("employee_01", "stretch_3"),
+        now=4.25,
+    )
+
+    assert semantic.source == ConversationObservationSource.SEMANTIC_WORLD
+    assert semantic.poses["stretch_3"].yaw == pytest.approx(pi)
+    assert offline.source == ConversationObservationSource.OFFLINE_RECORDING
+    with pytest.raises(TypeError):
+        semantic.poses["other"] = SpatialPose((0.0, 0.0, 0.0), 0.0)  # type: ignore[index]
+
+
+@pytest.mark.parametrize(
+    ("snapshot", "code"),
+    [
+        (
+            {
+                "time": 0.0,
+                "objects": {
+                    "employee_01": {"position": [0.0, 0.0, 0.0], "yaw": 0.0},
+                    "stretch_3": {"position": [1.0, 0.0, 0.0], "yaw": pi},
+                },
+            },
+            ConversationErrorCode.STALE_OBSERVATION,
+        ),
+        (
+            {
+                "time": 1.0,
+                "objects": {
+                    "employee_01": {"position": [nan, 0.0, 0.0], "yaw": 0.0},
+                    "stretch_3": {"position": [1.0, 0.0, 0.0], "yaw": pi},
+                },
+            },
+            ConversationErrorCode.INVALID_POSE,
+        ),
+        (
+            {
+                "time": 1.0,
+                "objects": {
+                    "employee_01": {"position": [0.0, 0.0, 0.0], "yaw": 0.0},
+                    "stretch_3": {"position": [1.0, 0.0, 0.0]},
+                },
+            },
+            ConversationErrorCode.INVALID_POSE,
+        ),
+        (
+            {
+                "time": 1.0,
+                "objects": {
+                    "employee_01": {"position": [0.0, 0.0, 0.0], "yaw": 0.0},
+                    "stretch_3": {
+                        "position": [1.0, 0.0, 0.0],
+                        "yaw": pi,
+                        "visible": False,
+                    },
+                },
+            },
+            ConversationErrorCode.PARTICIPANT_NOT_VISIBLE,
+        ),
+    ],
+)
+def test_conversation_perception_rejects_unusable_observations(
+    snapshot: dict[str, object], code: ConversationErrorCode
+) -> None:
+    with pytest.raises(ConversationPerceptionError) as error:
+        ConversationPerception.from_snapshot(
+            snapshot,
+            ("employee_01", "stretch_3"),
+            now=1.0,
+            max_age=0.25,
+        )
+
+    assert error.value.code == code
+
+
+def test_runtime_rejects_stale_observation_and_unknown_participant(
+    deterministic_conversation_fixture: DeterministicConversationFixture,
+) -> None:
+    runtime = deterministic_conversation_fixture.runtime
+    runtime.tick(1.0)
+
+    with pytest.raises(ConversationPerceptionError, match="stale_observation"):
+        runtime.start_conversation(
+            "employee_01",
+            "employee_02",
+            "status",
+            deterministic_conversation_fixture.semantic_snapshot,
+        )
+    with pytest.raises(KeyError, match="Unknown conversation participant"):
+        runtime.start_conversation(
+            "employee_01",
+            "employee_missing",
+            "status",
+            deterministic_conversation_fixture.semantic_snapshot,
+        )
+
+
+def test_employee_state_uses_bounded_availability_and_legacy_busy_value() -> None:
+    assert EmployeeState("desk", availability="busy").availability == AgentAvailability.EXECUTING
+    with pytest.raises(ValueError, match="Unknown agent availability"):
+        EmployeeState("desk", availability="unbounded")
+
+
+def test_agent_memory_capacity_discards_oldest_entries() -> None:
+    memory = AgentMemory(capacity=2)
+    for timestamp in range(3):
+        memory.remember(MemoryEntry(float(timestamp), "conversation_turn", {}))
+
+    assert [entry.timestamp for entry in memory.entries] == [1, 2]
 
 
 def test_robot_conversation_filters_candidate_and_restores_agent_plan() -> None:

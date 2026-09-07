@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import random
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import Any
 
 
@@ -97,6 +98,15 @@ class AgentMemory:
             del self.entries[: len(self.entries) - self.capacity]
 
 
+class AgentAvailability(str, Enum):
+    """The bounded public availability state used by planning and conversations."""
+
+    AVAILABLE = "available"
+    EXECUTING = "executing"
+    IN_CONVERSATION = "in_conversation"
+    BLOCKED = "blocked"
+
+
 @dataclass
 class AgentPerception:
     visible_objects: set[str] = field(default_factory=set)
@@ -135,11 +145,26 @@ class EmployeeState:
     current_goal: str = "follow_schedule"
     schedule_item: str = ""
     mood: float = 1.0
-    availability: str = "available"
+    availability: AgentAvailability | str = AgentAvailability.AVAILABLE
     attention_target: str | None = None
     blocked_reason: str | None = None
     last_failure: str | None = None
     animation_state: str = "idle"
+
+    def __post_init__(self) -> None:
+        self.set_availability(self.availability)
+
+    def set_availability(self, availability: AgentAvailability | str) -> None:
+        """Accept schema-v1 ``busy`` while retaining a bounded runtime state."""
+        if availability == "busy":
+            availability = AgentAvailability.EXECUTING
+        try:
+            self.availability = AgentAvailability(availability)
+        except ValueError as error:
+            allowed = ", ".join(item.value for item in AgentAvailability)
+            raise ValueError(
+                f"Unknown agent availability '{availability}'; expected one of {allowed}"
+            ) from error
 
     def sync_needs(self, needs: EmployeeNeeds) -> None:
         self.hunger = needs.hunger

@@ -22,18 +22,21 @@ from .actions import (
 )
 from .employee import EmployeeAgent
 from .conversation import (
+    DEFAULT_MAX_OBSERVATION_AGE,
     ConversationCoordinator,
+    ConversationEvent,
     ConversationIntent,
+    ConversationParticipantKind,
+    ConversationPerception,
     ConversationSession,
     ConversationTurn,
     InterruptPolicy,
-    SpatialPose,
 )
 from .events import DailyOfficeEvent, DailyOfficeEventGenerator
 from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
 from .llm_config import LLMProviderConfig
 from .llm_provider import OpenAICompatibleProvider
-from .models import EmployeeSchedule, MemoryEntry, ScheduleItem
+from .models import AgentAvailability, EmployeeSchedule, MemoryEntry, ScheduleItem
 
 ACTION_DURATIONS_MINUTES = {
     ActionType.IDLE: 1.0,
@@ -111,6 +114,7 @@ class OfficeAgentRuntime:
         action_driver: object | None = None,
         population_npc_ids: Iterable[str] | None = None,
         trajectory_profile_path: Path | None = None,
+        conversation_max_observation_age: float = DEFAULT_MAX_OBSERVATION_AGE,
     ) -> None:
         if state_machine_hz <= 0 or needs_hz <= 0:
             raise ValueError("Agent update frequencies must be positive")
@@ -119,6 +123,10 @@ class OfficeAgentRuntime:
             or utility_interval_seconds[1] < utility_interval_seconds[0]
         ):
             raise ValueError("Invalid utility decision interval")
+        if conversation_max_observation_age < 0 or not math.isfinite(
+            conversation_max_observation_age
+        ):
+            raise ValueError("Conversation observation age must be a non-negative finite value")
         self.world = world
         self.agents = agents
         self.minute_of_day = float(start_minute)
@@ -133,6 +141,7 @@ class OfficeAgentRuntime:
         self.reservations = ReservationManager()
         self.robot_tasks: dict[str, RobotTask] = {}
         self.conversations = ConversationCoordinator()
+        self.conversation_max_observation_age = conversation_max_observation_age
         self._conversation_locks: dict[str, dict[str, tuple[str | None, str, str]]] = {}
         self.events: list[RuntimeEvent] = []
         self.llm = EventDrivenLLMGateway(llm_daily_budget)
@@ -380,7 +389,7 @@ class OfficeAgentRuntime:
         )
         agent.state.current_action = normalized.action.value
         agent.state.animation_state = normalized.action.value
-        agent.state.availability = "busy"
+        agent.state.set_availability(AgentAvailability.EXECUTING)
         agent.state.attention_target = normalized.target
         agent.state.blocked_reason = None
         self._emit(
@@ -416,7 +425,7 @@ class OfficeAgentRuntime:
         self._advance_clock(minutes)
 
         for session in self.conversations.expire(self.elapsed_minutes):
-            self._close_conversation(session, "conversation_timed_out")
+            self._close_conversation(session, ConversationEvent.TIMED_OUT.value)
 
         for agent in self.agents.values():
             agent.perception.update(agent.agent_id, semantic_snapshot)
@@ -578,22 +587,29 @@ class OfficeAgentRuntime:
         agent_participants = tuple(
             agent_id for agent_id in (initiator, participant) if agent_id in self.agents
         )
-        if interrupt_policy == InterruptPolicy.REJECT and any(
-            self.agents[agent_id].executor.is_busy for agent_id in agent_participants
-        ):
+        if any(self.agents[agent_id].executor.is_busy for agent_id in agent_participants):
             raise ValueError("Cannot interrupt a busy NPC conversation plan")
         if any(
             self.agents[agent_id].state.availability == "in_conversation"
             for agent_id in agent_participants
         ):
             raise ValueError("An NPC may only participate in one active conversation")
+        perception = self._conversation_perception(semantic_snapshot, (initiator, participant))
         session = self.conversations.start(
             (initiator, participant),
             topic,
             self.elapsed_minutes,
-            self._conversation_poses(semantic_snapshot, (initiator, participant)),
+            perception.poses,
             timeout=timeout,
             interrupt_policy=interrupt_policy,
+            participant_kinds={
+                initiator: ConversationParticipantKind.NPC,
+                participant: (
+                    ConversationParticipantKind.NPC
+                    if participant in self.agents
+                    else ConversationParticipantKind.STRETCH_ROBOT
+                ),
+            },
         )
         locks: dict[str, tuple[str | None, str, str]] = {}
         for agent_id in agent_participants:
@@ -604,10 +620,12 @@ class OfficeAgentRuntime:
                 agent.state.current_goal,
             )
             agent.state.attention_target = participant if agent_id == initiator else initiator
-            agent.state.availability = "in_conversation"
-            self._remember(agent, "conversation_started", {"session_id": session.session_id})
+            agent.state.set_availability(AgentAvailability.IN_CONVERSATION)
+            self._remember(
+                agent, ConversationEvent.STARTED.value, {"session_id": session.session_id}
+            )
             self._emit(
-                "conversation_started",
+                ConversationEvent.STARTED.value,
                 agent_id,
                 {"session_id": session.session_id, "topic": session.topic},
             )
@@ -639,7 +657,7 @@ class OfficeAgentRuntime:
             if agent is not None:
                 self._remember(
                     agent,
-                    "conversation_turn",
+                    ConversationEvent.TURN.value,
                     {
                         "session_id": session_id,
                         "speaker": speaker,
@@ -648,7 +666,7 @@ class OfficeAgentRuntime:
                     },
                 )
         self._emit(
-            "conversation_turn",
+            ConversationEvent.TURN.value,
             speaker,
             {
                 "session_id": session_id,
@@ -660,7 +678,7 @@ class OfficeAgentRuntime:
 
     def complete_conversation(self, session_id: str) -> ConversationSession:
         session = self.conversations.complete(session_id)
-        self._close_conversation(session, "conversation_completed")
+        self._close_conversation(session, ConversationEvent.COMPLETED.value)
         return session
 
     def queue_conversation_candidate(self, session_id: str, speaker: str) -> bool:
@@ -906,7 +924,7 @@ class OfficeAgentRuntime:
             )
         agent.state.current_action = "idle"
         agent.state.animation_state = "idle"
-        agent.state.availability = "available"
+        agent.state.set_availability(AgentAvailability.AVAILABLE)
         agent.state.attention_target = None
 
     def _fail_action(self, agent: EmployeeAgent, error: str) -> None:
@@ -940,7 +958,7 @@ class OfficeAgentRuntime:
         )
         agent.state.current_action = "idle"
         agent.state.animation_state = "idle"
-        agent.state.availability = "available"
+        agent.state.set_availability(AgentAvailability.AVAILABLE)
         agent.state.attention_target = None
 
     def _apply_action_effect(self, agent: EmployeeAgent, command: ActionCommand) -> None:
@@ -1267,28 +1285,16 @@ class OfficeAgentRuntime:
             )
             self._consecutive_failures[agent_id] = 0
 
-    def _conversation_poses(
+    def _conversation_perception(
         self, semantic_snapshot: dict[str, Any], participants: tuple[str, str]
-    ) -> dict[str, SpatialPose]:
-        objects = semantic_snapshot.get("objects", {})
-        poses: dict[str, SpatialPose] = {}
-        for participant in participants:
-            payload = objects.get(participant)
-            if not isinstance(payload, dict):
-                raise ValueError(f"Semantic snapshot is missing participant '{participant}'")
-            position = payload.get("position")
-            yaw = payload.get("yaw")
-            if (
-                not isinstance(position, (list, tuple))
-                or len(position) != 3
-                or not all(isinstance(value, (int, float)) for value in position)
-                or not isinstance(yaw, (int, float))
-            ):
-                raise ValueError(f"Semantic snapshot has no valid position/yaw for '{participant}'")
-            poses[participant] = SpatialPose(
-                (float(position[0]), float(position[1]), float(position[2])), float(yaw)
-            )
-        return poses
+    ) -> ConversationPerception:
+        """Adapt live, offline, and legacy observation payloads at one boundary."""
+        return ConversationPerception.from_snapshot(
+            semantic_snapshot,
+            participants,
+            now=self.elapsed_minutes,
+            max_age=self.conversation_max_observation_age,
+        )
 
     def _close_conversation(self, session: ConversationSession, event: str) -> None:
         locks = self._conversation_locks.pop(session.session_id, {})
@@ -1296,7 +1302,7 @@ class OfficeAgentRuntime:
             agent = self.agents[agent_id]
             if agent.state.availability == "in_conversation":
                 agent.state.attention_target = attention_target
-                agent.state.availability = availability
+                agent.state.set_availability(availability)
                 agent.state.current_goal = current_goal
             self._remember(
                 agent,
