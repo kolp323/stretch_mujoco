@@ -54,21 +54,28 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
     captured: dict[str, float] = {}
 
     def anchors(
-        _manifest: Path, *, head_clearance_m: float
+        _manifest: Path, *, head_clearance_m: float, back_offset_m: float
     ) -> dict[str, list[dict[str, list[int]]]]:
         captured["head_clearance_m"] = head_clearance_m
+        captured["back_offset_m"] = back_offset_m
         return {"idle": [{"position": [0, 0, 1]}]}
 
     monkeypatch.setattr(module, "head_top_anchors", anchors)
 
     paths = module.prepare(
-        archive, manifest, tmp_path / "output", "cap_source_v1", head_clearance_m=0.045
+        archive,
+        manifest,
+        tmp_path / "output",
+        "cap_source_v1",
+        head_clearance_m=0.025,
+        back_offset_m=0.03,
     )
     receipt = json.loads(Path(paths["receipt"]).read_text())
 
     assert receipt["asset_quality"] == "preview"
-    assert receipt["head_clearance_m"] == 0.045
-    assert captured["head_clearance_m"] == 0.045
+    assert receipt["head_clearance_m"] == 0.025
+    assert receipt["back_offset_m"] == 0.03
+    assert captured == {"head_clearance_m": 0.025, "back_offset_m": 0.03}
     assert receipt["outputs"]["mesh"] == "cap_source_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
@@ -81,3 +88,5 @@ def test_head_top_anchors_rejects_negative_clearance(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="must not be negative"):
         module.head_top_anchors(manifest, head_clearance_m=-0.001)
+    with pytest.raises(ValueError, match="must not be negative"):
+        module.head_top_anchors(manifest, back_offset_m=-0.001)

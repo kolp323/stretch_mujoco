@@ -75,11 +75,13 @@ def normalized_obj(source_obj: bytes) -> bytes:
 
 
 def head_top_anchors(
-    manifest_path: Path, *, head_clearance_m: float = 0.045
+    manifest_path: Path, *, head_clearance_m: float = 0.025, back_offset_m: float = 0.03
 ) -> dict[str, list[dict[str, list[float]]]]:
-    """Place the normalized mesh above, rather than inside, the animated crown."""
+    """Place the normalized mesh above and behind the animated crown."""
     if head_clearance_m < 0:
         raise ValueError("head_clearance_m must not be negative")
+    if back_offset_m < 0:
+        raise ValueError("back_offset_m must not be negative")
     payload = json.loads(manifest_path.read_text(encoding="utf-8"))
     bundle = payload["bundles"]["smplx_office_neutral_v1"]
     anchors: dict[str, list[dict[str, list[float]]]] = {}
@@ -94,7 +96,8 @@ def head_top_anchors(
                 {
                     "position": [
                         float(np.median(head[:, 0])),
-                        float(np.median(head[:, 1])),
+                        # NPC forward is local -Y, so +Y moves a hat backward.
+                        float(np.median(head[:, 1]) + back_offset_m),
                         float(np.max(head[:, 2]) + head_clearance_m),
                     ]
                 }
@@ -108,7 +111,8 @@ def prepare(
     output_dir: Path,
     accessory_id: str,
     *,
-    head_clearance_m: float = 0.045,
+    head_clearance_m: float = 0.025,
+    back_offset_m: float = 0.03,
 ) -> dict[str, str]:
     """Write a normalized OBJ, all-clip anchors, and an auditable receipt."""
     source_obj, provenance = _source_obj(source_archive)
@@ -117,7 +121,15 @@ def prepare(
     mesh_path.write_bytes(normalized_obj(source_obj))
     anchors_path = output_dir / f"{accessory_id}.anchors.json"
     anchors_path.write_text(
-        json.dumps(head_top_anchors(manifest_path, head_clearance_m=head_clearance_m), indent=2) + "\n",
+        json.dumps(
+            head_top_anchors(
+                manifest_path,
+                head_clearance_m=head_clearance_m,
+                back_offset_m=back_offset_m,
+            ),
+            indent=2,
+        )
+        + "\n",
         encoding="utf-8",
     )
     receipt = {
@@ -127,6 +139,7 @@ def prepare(
         "coordinate_transform": "source_cm_y_up_to_mujoco_m_z_up",
         "anchor_contract": "local_z_zero_at_head_top_per_animation_frame",
         "head_clearance_m": head_clearance_m,
+        "back_offset_m": back_offset_m,
         **provenance,
         "outputs": {
             "mesh": mesh_path.name,
@@ -149,8 +162,14 @@ def main() -> None:
     parser.add_argument(
         "--head-clearance-m",
         type=float,
-        default=0.045,
-        help="Vertical distance above each animated crown (default: 0.045 m)",
+        default=0.025,
+        help="Vertical distance above each animated crown (default: 0.025 m)",
+    )
+    parser.add_argument(
+        "--back-offset-m",
+        type=float,
+        default=0.03,
+        help="Distance behind each animated crown along local +Y (default: 0.03 m)",
     )
     args = parser.parse_args()
     paths = prepare(
@@ -159,6 +178,7 @@ def main() -> None:
         args.output_dir.resolve(),
         args.accessory_id,
         head_clearance_m=args.head_clearance_m,
+        back_offset_m=args.back_offset_m,
     )
     print(json.dumps(paths, indent=2))
 
