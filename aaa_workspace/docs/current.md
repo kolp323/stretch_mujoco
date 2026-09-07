@@ -677,3 +677,45 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
   tests/test_action_driver.py tests/test_animation_controller.py
 8 passed in 0.42s
 ```
+
+### 10.4 动画状态、速度和安全中断闭环（当前状态）
+
+`AnimationState` 现在是 controller 所有的结构化观察值：它包含实际 resolved
+clip、phase、有效 speed、loop、blend 和可选的预烘焙 overlay 标识；
+`AnimationLifecycle` 则由同一 controller 沿 `requested -> navigating -> aligning -> playing -> completed/failed` 更新。命令的 accepted receipt 不再被视为播放或完成：MOVE_TO
+与 ALIGN_TO 分别公开 navigating/aligning，PLAY_ANIMATION 在 backend 真正采样后才公开
+playing，marker/attachment 失败、取消或 deadline 会公开 failed。终态会保留到下一次 intent，
+不会被后台 idle frame 的采样重写为 playing。
+
+loop clip 的初相可由注入 seed 决定；相同 seed 得到相同 phase。phase 推进现在实际乘以
+`ClipDefinition.speed`，因此 graph policy 的速度元数据不再只是声明。SAFE_MARKER 请求会
+记录 `interrupt_deferred` 并只在声明 marker 后切换；UNINTERRUPTIBLE 非循环 clip 会运行至
+终点，cancel/deadline 则使用受控的 force-idle recovery。找不到请求 clip 时仍会产生
+`clip_fallback` 以保持观察性，但该 embodied command 立即返回
+`FAILED(reason=clip_unavailable:<clip>)`，不会以 fallback idle 和 duration 伪造成功。
+
+OBJ mesh-sequence backend 当前只声明 `mesh_sequence`/`phase_switch`，没有已验证的透明
+crossfade 或骨骼 layer-blend capability。因此 `blend` 保持 0，transition 通过 marker-safe
+hard cut 完成；`upper_body_overlay` 仅表示选择已烘焙的全身组合 clip，并不宣称运行时上半身
+叠加或 head look-at。真正 opacity crossfade 必须先有同 topology、可共存的 frame mesh，且
+在资产/材质契约中显式声明 alpha blend 后再实现。
+
+本轮聚焦验证：
+
+```text
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
+  tests/test_animation_controller.py tests/test_npc_completion.py \
+  tests/test_action_driver.py \
+  tests/test_npc_assets.py::test_smplx_baker_writes_formal_production_clip_contract
+16 passed in 0.46s
+
+uv run mypy --ignore-missing-imports stretch_mujoco/npc/animation \
+  stretch_mujoco/npc/controller.py stretch_mujoco/agents/action_recipes.py \
+  stretch_mujoco/agents/actions.py stretch_mujoco/agents/drivers.py \
+  stretch_mujoco/humanoid/smplx_animation_baker.py
+Success: no issues found in 11 source files
+```
+
+同次运行完整的 animation/action/assets focused set 时，17 个相关测试通过；两个
+`tests/test_npc_assets.py` preview-manifest 测试在收集资产时失败，因为隔离 worktree 缺少
+已由 manifest 声明的 `assets/humanoid/cesium_man.png`。没有为通过测试放宽 SHA/存在性校验。

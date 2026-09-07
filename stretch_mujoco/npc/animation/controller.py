@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+import random
 from dataclasses import dataclass
 
 from .backend import AnimationBackend
 from .graph import OFFICE_ANIMATION_GRAPH, AnimationGraph, ClipDefinition
-from .state import AnimationLifecycle, AnimationState
+from .state import AnimationLifecycle, AnimationState, InterruptPolicy
 
 
 @dataclass(frozen=True)
@@ -25,6 +26,7 @@ class AnimationController:
         graph: AnimationGraph | None = None,
         fps: float | None = None,
         clips: dict[str, ClipDefinition] | None = None,
+        phase_seed: int | None = None,
     ) -> None:
         self.backend = backend
         if graph is not None and clips is not None:
@@ -43,13 +45,40 @@ class AnimationController:
         self._last_time: float | None = None
         self._pending_reset = False
         self.lifecycle = AnimationLifecycle.REQUESTED
+        self._random = random.Random(phase_seed)
+        self._deferred_clip: str | None = None
+        self._pending_events: list[AnimationEvent] = []
 
-    def request(self, clip: str) -> None:
+    def request(self, clip: str, *, force: bool = False) -> None:
+        """Request a clip without interrupting an unsafe mesh frame sequence."""
+        current = self.clips.get(self.resolved_clip, ClipDefinition())
+        if clip != self.resolved_clip and not force:
+            if current.interrupt_policy == InterruptPolicy.UNINTERRUPTIBLE:
+                self._defer_interrupt(clip)
+                return
+            if (
+                current.interrupt_policy == InterruptPolicy.SAFE_MARKER
+                and current.safe_marker is not None
+            ):
+                self._defer_interrupt(clip)
+                return
         if clip != self.requested_clip:
             self._pending_reset = True
             self._fallback_request = None
         self.requested_clip = clip
         self.lifecycle = AnimationLifecycle.REQUESTED
+
+    def recover_to_idle(self) -> None:
+        """Cancel-safe recovery used after a deadline or an explicit cancellation."""
+        self._deferred_clip = None
+        self.request("idle", force=True)
+
+    def _defer_interrupt(self, clip: str) -> None:
+        if self._deferred_clip != clip:
+            self._pending_events.append(
+                AnimationEvent("interrupt_deferred", self.resolved_clip, self.phase)
+            )
+        self._deferred_clip = clip
 
     @property
     def state(self) -> AnimationState:
@@ -78,7 +107,8 @@ class AnimationController:
         resolved = requested if requested in clips else self.graph.fallback_clip
         if resolved not in clips:
             resolved = "idle" if "idle" in clips else clips[0]
-        events: list[AnimationEvent] = []
+        events = self._pending_events
+        self._pending_events = []
         self.fallback_event = None
         if resolved != requested and self._fallback_request != requested:
             self.fallback_event = AnimationEvent("clip_fallback", requested, self.phase)
@@ -89,7 +119,8 @@ class AnimationController:
         if resolved != self.resolved_clip or self._pending_reset:
             self.transition = f"{self.resolved_clip}->{resolved}"
             self.resolved_clip = resolved
-            self.phase = 0.0
+            definition = self.clips.get(resolved, ClipDefinition())
+            self.phase = self._random.random() if definition.loop and resolved != "idle" else 0.0
             self._pending_reset = False
         else:
             self.transition = None
@@ -97,16 +128,28 @@ class AnimationController:
         self._last_time = sim_time
         previous_phase = self.phase
         clip_fps = self.fps if self.fps is not None else self.clips[self.resolved_clip].fps
-        self.lifecycle = AnimationLifecycle.PLAYING
-        next_phase = self.phase + dt * clip_fps / max(
+        if self.lifecycle not in {AnimationLifecycle.COMPLETED, AnimationLifecycle.FAILED}:
+            self.lifecycle = AnimationLifecycle.PLAYING
+        definition = self.clips.get(self.resolved_clip, ClipDefinition())
+        next_phase = self.phase + dt * clip_fps * definition.speed / max(
             _frame_count(self.backend, self.resolved_clip), 1
         )
-        definition = self.clips.get(self.resolved_clip, ClipDefinition())
         if definition.loop:
             self.phase = next_phase % 1.0
         else:
             self.phase = min(next_phase, 1.0)
         events.extend(self._crossed_markers(definition, previous_phase, next_phase, sim_time))
+        if self._deferred_clip is not None and (
+            any(event.name == definition.safe_marker for event in events)
+            or (
+                definition.interrupt_policy == InterruptPolicy.UNINTERRUPTIBLE
+                and not definition.loop
+                and self.phase >= 1.0
+            )
+        ):
+            deferred = self._deferred_clip
+            self._deferred_clip = None
+            self.request(deferred, force=True)
         self.backend.sample(self.resolved_clip, self.phase)
         return tuple(events)
 

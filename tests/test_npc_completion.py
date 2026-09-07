@@ -97,9 +97,57 @@ def test_missing_clip_emits_one_fallback_event() -> None:
     system.submit(_command(NpcCommandKind.PLAY_ANIMATION, {"clip": "missing", "duration": 0.2}, 0))
 
     system.step(model, data, 0.0)
-    assert system.states(data)["employee_01"].animation_events == ("clip_fallback",)
-    system.step(model, data, 0.1)
-    assert system.states(data)["employee_01"].animation_events == ()
+    state = system.states(data)["employee_01"]
+    assert state.animation_events == ("clip_fallback",)
+    assert state.animation_lifecycle == "failed"
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.FAILED
+    assert state.last_receipt.reason == "clip_unavailable:missing"
+
+
+def test_lifecycle_tracks_requested_navigation_alignment_playback_and_completion() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+
+    system.submit(_command(NpcCommandKind.MOVE_TO, {"site": "drop_site"}, 0))
+    assert system.states(data)["employee_01"].animation_lifecycle == "navigating"
+    system.submit(
+        NpcCommand(
+            "cancel_0", 1, "employee_01", NpcCommandKind.CANCEL, {"command_id": "command_0"}, 0.0
+        )
+    )
+
+    system.submit(_command(NpcCommandKind.ALIGN_TO, {"yaw": 1.0}, 2))
+    assert system.states(data)["employee_01"].animation_lifecycle == "aligning"
+    system.submit(
+        NpcCommand(
+            "cancel_1", 3, "employee_01", NpcCommandKind.CANCEL, {"command_id": "command_2"}, 0.0
+        )
+    )
+
+    system.submit(_command(NpcCommandKind.PLAY_ANIMATION, {"clip": "sit_down"}, 4))
+    assert system.states(data)["employee_01"].animation_lifecycle == "requested"
+    system.step(model, data, 0.0)
+    assert system.states(data)["employee_01"].animation_lifecycle == "playing"
+
+    system.submit(
+        NpcCommand(
+            "cancel_2", 5, "employee_01", NpcCommandKind.CANCEL, {"command_id": "command_4"}, 0.0
+        )
+    )
+    assert system.states(data)["employee_01"].animation_lifecycle == "failed"
+
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "sit_down", "completion_marker": "seated"},
+            6,
+        )
+    )
+    for index in range(1, 10):
+        system.step(model, data, index * 0.125)
+    assert system.states(data)["employee_01"].animation_lifecycle == "completed"
 
 
 def test_cancelled_attach_releases_cross_npc_object_claim() -> None:

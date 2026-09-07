@@ -124,7 +124,8 @@ class NpcController:
             )
         started_at = self.active_command.started_at
         self.locomotion.cancel()
-        self.animation.request("idle")
+        self.animation.recover_to_idle()
+        self.animation.lifecycle = AnimationLifecycle.FAILED
         self.active_command = None
         receipt = NpcCommandReceipt(
             command_id,
@@ -156,7 +157,7 @@ class NpcController:
             and sim_time > active.command.deadline
         ):
             self.locomotion.cancel()
-            self.animation.request("idle")
+            self.animation.recover_to_idle()
             return self._finish(CommandStatus.TIMED_OUT, sim_time, "deadline_exceeded")
 
         complete = False
@@ -206,6 +207,17 @@ class NpcController:
         elif active is not None and active.command.kind == NpcCommandKind.ALIGN_TO:
             self.animation.lifecycle = AnimationLifecycle.ALIGNING
         self._animation_events = tuple(event.name for event in events)
+        if (
+            active is not None
+            and active.command.kind
+            in {NpcCommandKind.PLAY_ANIMATION, NpcCommandKind.INTERACTION_CUE}
+            and self.animation.fallback_event is not None
+        ):
+            requested_clip = str(active.command.payload.get("clip", "idle"))
+            self.animation.recover_to_idle()
+            return self._finish(
+                CommandStatus.FAILED, sim_time, f"clip_unavailable:{requested_clip}"
+            )
         if active is not None and active.command.kind in {
             NpcCommandKind.PLAY_ANIMATION,
             NpcCommandKind.INTERACTION_CUE,

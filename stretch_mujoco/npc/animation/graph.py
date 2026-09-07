@@ -137,4 +137,3 @@ OFFICE_ANIMATION_GRAPH = AnimationGraph(
     fallback_clip="idle",
     clips=OFFICE_CLIPS,
 )
-from .state import InterruptPolicy
