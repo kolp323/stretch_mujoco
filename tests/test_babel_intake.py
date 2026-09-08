@@ -60,6 +60,12 @@ def test_babel_feature_mapping_requires_expected_bmlmovi_layout() -> None:
         == "BMLmovi/Subject_1_F_MoSh/Subject_1_F_4_stageii.npz"
     )
     assert babel_feature_to_amass_stageii("CMU/CMU/1/foo_poses.npz") == "CMU/1/foo_stageii.npz"
+    assert (
+        babel_feature_to_amass_stageii(
+            "Transitionsmocap/Transitions_mocap/mazen_c3d/sit_stand_poses.npz"
+        )
+        == "Transitions/mazen_c3d/sit_stand_stageii.npz"
+    )
     assert babel_feature_to_amass_stageii("CMU/Other/1/foo_poses.npz") is None
     assert babel_feature_to_amass_stageii("CMU/CMU/../foo_poses.npz") is None
 

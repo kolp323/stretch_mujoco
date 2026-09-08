@@ -119,18 +119,20 @@ def babel_feature_to_amass_stageii(feature_path: str) -> str | None:
     """Map a supported BABEL ``*_poses`` path to its local AMASS stage-II member."""
     path = PurePosixPath(feature_path)
     parts = path.parts
-    if (
-        len(parts) < 4
-        or parts[0] not in {"BMLmovi", "CMU"}
-        or parts[:2] != (parts[0], parts[0])
-        or any(part in {".", ".."} for part in parts)
-        or path.suffix != ".npz"
-    ):
+    source_roots = {
+        ("BMLmovi", "BMLmovi"): "BMLmovi",
+        ("CMU", "CMU"): "CMU",
+        ("Transitionsmocap", "Transitions_mocap"): "Transitions",
+    }
+    if len(parts) < 4 or any(part in {".", ".."} for part in parts) or path.suffix != ".npz":
+        return None
+    dataset_key = (parts[0], parts[1])
+    if dataset_key not in source_roots:
         return None
     if not path.stem.endswith("_poses"):
         return None
     stem = path.stem.removesuffix("_poses") + "_stageii"
-    return PurePosixPath(parts[0], *parts[2:-1], f"{stem}.npz").as_posix()
+    return PurePosixPath(source_roots[dataset_key], *parts[2:-1], f"{stem}.npz").as_posix()
 
 
 # Kept as a compatibility alias for callers created before CMU support.
