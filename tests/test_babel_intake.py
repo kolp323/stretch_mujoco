@@ -126,6 +126,53 @@ def test_find_babel_candidates_maps_cmu_and_normalizes_annotation_spacing(tmp_pa
     assert candidate.babel_proc_label == "give deck cards with right hand"
 
 
+def test_find_babel_candidates_prioritizes_explicit_chair_sit_down(tmp_path: Path) -> None:
+    index = tmp_path / "candidates.jsonl"
+    archive = tmp_path / "babel.zip"
+    index.write_text(
+        "\n".join(
+            json.dumps(
+                {
+                    "source_id": f"BMLmovi/Subject_{subject}_F_MoSh/Subject_{subject}_F_4_stageii.npz",
+                    "frame_count": 200,
+                    "mocap_frame_rate": 10.0,
+                    "usable": True,
+                }
+            )
+            for subject in (1, 2)
+        )
+        + "\n"
+    )
+    records = {
+        "generic": {
+            "feat_p": "BMLmovi/BMLmovi/Subject_1_F_MoSh/Subject_1_F_4_poses.npz",
+            "frame_ann": {
+                "labels": [
+                    {"proc_label": "sit down", "start_t": 0.0, "end_t": 10.0},
+                ]
+            },
+        },
+        "chair": {
+            "feat_p": "BMLmovi/BMLmovi/Subject_2_F_MoSh/Subject_2_F_4_poses.npz",
+            "frame_ann": {
+                "labels": [
+                    {"proc_label": "sit down in chair", "start_t": 0.0, "end_t": 2.0},
+                ]
+            },
+        },
+    }
+    with zipfile.ZipFile(archive, "w") as zipped:
+        for split in ("train", "val", "test"):
+            zipped.writestr(
+                f"babel_v1.0_release/{split}.json", json.dumps(records if split == "train" else {})
+            )
+
+    (candidate,) = find_babel_candidates(archive, index, per_clip=1, min_duration_seconds=0.5)
+
+    assert candidate.target_clip == "sit_down"
+    assert candidate.babel_proc_label == "sit down in chair"
+
+
 def test_write_babel_candidates_records_missing_contract_clips(tmp_path: Path) -> None:
     index = tmp_path / "candidates.jsonl"
     archive = tmp_path / "babel.zip"

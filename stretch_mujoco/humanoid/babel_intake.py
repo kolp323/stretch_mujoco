@@ -73,6 +73,13 @@ OFFICE_BABEL_LABELS: dict[str, frozenset[str]] = {
     "give": frozenset({"give deck cards with right hand"}),
 }
 
+# Prefer an annotation that explicitly names the office prop when several
+# otherwise-exact labels satisfy one graph clip.  This remains an ordering
+# hint only: every candidate still requires visual and scene review.
+OFFICE_BABEL_LABEL_PRIORITY: dict[str, dict[str, int]] = {
+    "sit_down": {"sit down in chair": 0, "sit on a chair": 0},
+}
+
 
 @dataclass(frozen=True)
 class BabelCandidate:
@@ -236,6 +243,7 @@ def find_babel_candidates(
     for target_clip, entries in candidates.items():
         entries.sort(
             key=lambda candidate: (
+                OFFICE_BABEL_LABEL_PRIORITY.get(target_clip, {}).get(candidate.babel_proc_label, 1),
                 -(candidate.source_frame_range[1] - candidate.source_frame_range[0]),
                 candidate.source_id,
                 candidate.source_frame_range,
