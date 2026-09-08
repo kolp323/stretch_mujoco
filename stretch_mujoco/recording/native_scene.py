@@ -24,13 +24,20 @@ def _rename_employee(body: ET.Element, employee_number: int) -> None:
             element.set("name", name)
 
 
-def build_native_multi_npc_scene(destination: str | Path) -> Path:
-    """Write a real-office scene containing two independently poseable NPCs.
+def build_native_multi_npc_scene(
+    destination: str | Path, *, employee_numbers: tuple[int, ...] = (1, 2)
+) -> Path:
+    """Write a real-office scene containing independently poseable NPCs.
 
     The source office remains authoritative for furniture, lighting, collision
     geometry, and Stretch.  Only its existing animated humanoid is cloned;
     this avoids maintaining a second, simplified office for video playback.
     """
+    if not employee_numbers or any(number <= 0 for number in employee_numbers):
+        raise ValueError("employee_numbers must contain positive employee numbers")
+    if len(set(employee_numbers)) != len(employee_numbers):
+        raise ValueError("employee_numbers must not contain duplicates")
+
     output = Path(destination).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     stretch_tree = ET.parse(MODELS_PATH / "stretch.xml")
@@ -74,7 +81,7 @@ def build_native_multi_npc_scene(destination: str | Path) -> Path:
 
     insertion_index = list(worldbody).index(template)
     worldbody.remove(template)
-    for offset, number in enumerate((1, 2)):
+    for offset, number in enumerate(employee_numbers):
         employee = deepcopy(template)
         _rename_employee(employee, number)
         worldbody.insert(insertion_index + offset, employee)
