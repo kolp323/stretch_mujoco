@@ -7,6 +7,7 @@
   "flat_layer_output": "appearance_sources/office_personas_v1/layers",
   "hair_layer_spec": "office_personas_v1.hair_layers.json",
   "hair_layer_output": "appearance_sources/office_personas_v1/hair",
+  "textile_layer_spec": "office_personas_v1.textile_layers.json",
   "layers": [
     {"id": "skin_light_v1", "category": "skin", "image": "appearance_sources/office_personas_v1/layers/skin_light_v1.png"},
     {"id": "skin_warm_v2", "category": "skin", "image": "appearance_sources/office_personas_v1/layers/skin_warm_v2.png"},
@@ -16,9 +17,12 @@
     {"id": "top_navy_v1", "category": "top", "image": "appearance_sources/office_personas_v1/layers/top_navy_v1.png"},
     {"id": "top_burgundy_v1", "category": "top", "image": "appearance_sources/office_personas_v1/layers/top_burgundy_v1.png"},
     {"id": "top_ochre_v1", "category": "top", "image": "appearance_sources/office_personas_v1/layers/top_ochre_v1.png"},
+    {"id": "top_gingham_check_v1", "category": "top", "image": "appearance_sources/office_personas_v1/textiles/top_gingham_check_v1.png"},
+    {"id": "top_jersey_melange_v1", "category": "top", "image": "appearance_sources/office_personas_v1/textiles/top_jersey_melange_v1.png"},
     {"id": "bottom_charcoal_v2", "category": "bottom", "image": "appearance_sources/office_personas_v1/layers/bottom_charcoal_v2.png"},
     {"id": "bottom_navy_v1", "category": "bottom", "image": "appearance_sources/office_personas_v1/layers/bottom_navy_v1.png"},
     {"id": "bottom_khaki_v1", "category": "bottom", "image": "appearance_sources/office_personas_v1/layers/bottom_khaki_v1.png"},
+    {"id": "bottom_jogging_melange_v1", "category": "bottom", "image": "appearance_sources/office_personas_v1/textiles/bottom_jogging_melange_v1.png"},
     {"id": "shoes_cognac_v2", "category": "shoes", "image": "appearance_sources/office_personas_v1/layers/shoes_cognac_v2.png"},
     {"id": "shoes_black_v1", "category": "shoes", "image": "appearance_sources/office_personas_v1/layers/shoes_black_v1.png"},
     {"id": "shoes_cream_v1", "category": "shoes", "image": "appearance_sources/office_personas_v1/layers/shoes_cream_v1.png"},
@@ -34,13 +38,13 @@
   "identities": [
     {"id": "office_sage_beard_glasses_v1", "seed": 101, "slots": ["skin_warm_v2", "hair_brown_v1", "top_sage_v2", "bottom_charcoal_v2", "shoes_cognac_v2"], "details": ["brows_soft_brown_v4", "beard_chin_brown_v4", "glasses_thin_round_v4"], "traits": {"look": "sage_beard_glasses"}},
     {"id": "office_navy_freckled_v1", "seed": 102, "slots": ["skin_light_v1", "hair_black_v1", "top_navy_v1", "bottom_charcoal_v2", "shoes_black_v1"], "details": ["freckles_light_v4", "brows_soft_brown_v4"], "traits": {"look": "navy_freckled"}},
-    {"id": "office_burgundy_auburn_v1", "seed": 103, "slots": ["skin_olive_v1", "hair_auburn_v1", "top_burgundy_v1", "bottom_navy_v1", "shoes_cognac_v2"], "details": ["brows_soft_brown_v4"], "traits": {"look": "burgundy_auburn"}},
+    {"id": "office_burgundy_auburn_v1", "seed": 103, "slots": ["skin_olive_v1", "hair_auburn_v1", "top_gingham_check_v1", "bottom_navy_v1", "shoes_cognac_v2"], "details": ["brows_soft_brown_v4"], "traits": {"look": "gingham_auburn"}},
     {"id": "office_ochre_blonde_glasses_v1", "seed": 104, "slots": ["skin_deep_v1", "hair_blonde_v1", "top_ochre_v1", "bottom_khaki_v1", "shoes_cream_v1"], "details": ["glasses_thin_round_v4"], "traits": {"look": "ochre_blonde_glasses"}},
     {"id": "office_sage_freckled_v1", "seed": 105, "slots": ["skin_light_v1", "hair_brown_v1", "top_sage_v2", "bottom_charcoal_v2", "shoes_black_v1"], "details": ["freckles_light_v4"], "traits": {"look": "sage_freckled"}},
-    {"id": "office_navy_beard_v1", "seed": 106, "slots": ["skin_olive_v1", "hair_black_v1", "top_navy_v1", "bottom_charcoal_v2", "shoes_cognac_v2"], "details": ["beard_chin_brown_v4"], "traits": {"look": "navy_beard"}},
+    {"id": "office_navy_beard_v1", "seed": 106, "slots": ["skin_olive_v1", "hair_black_v1", "top_jersey_melange_v1", "bottom_charcoal_v2", "shoes_cognac_v2"], "details": ["beard_chin_brown_v4"], "traits": {"look": "jersey_beard"}},
     {"id": "office_sage_auburn_glasses_v1", "seed": 107, "slots": ["skin_deep_v1", "hair_auburn_v1", "top_sage_v2", "bottom_khaki_v1", "shoes_cream_v1"], "details": ["brows_soft_brown_v4", "glasses_thin_round_v4"], "traits": {"look": "sage_auburn_glasses"}},
     {"id": "office_burgundy_blonde_freckled_v1", "seed": 108, "slots": ["skin_light_v1", "hair_blonde_v1", "top_burgundy_v1", "bottom_navy_v1", "shoes_black_v1"], "details": ["freckles_light_v4", "brows_soft_brown_v4"], "traits": {"look": "burgundy_blonde_freckled"}},
-    {"id": "office_ochre_auburn_beard_v1", "seed": 109, "slots": ["skin_warm_v2", "hair_auburn_v1", "top_ochre_v1", "bottom_charcoal_v2", "shoes_cognac_v2"], "details": ["beard_chin_brown_v4"], "traits": {"look": "ochre_auburn_beard"}},
+    {"id": "office_ochre_auburn_beard_v1", "seed": 109, "slots": ["skin_warm_v2", "hair_auburn_v1", "top_ochre_v1", "bottom_jogging_melange_v1", "shoes_cognac_v2"], "details": ["beard_chin_brown_v4"], "traits": {"look": "jogging_auburn_beard"}},
     {"id": "office_olive_cream_glasses_v1", "seed": 110, "slots": ["skin_olive_v1", "hair_brown_v1", "top_sage_v2", "bottom_khaki_v1", "shoes_cream_v1"], "details": ["brows_soft_brown_v4", "glasses_thin_round_v4"], "traits": {"look": "olive_cream_glasses"}}
   ]
 }

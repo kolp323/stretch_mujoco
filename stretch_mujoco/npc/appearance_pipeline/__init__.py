@@ -17,6 +17,7 @@ from .face_details import generate_face_detail_layers
 from .flat_layers import generate_flat_layers
 from .hair_layers import generate_short_hair_layers
 from .semantic_masks import SemanticMaskSet, generate_semantic_masks
+from .textile_layers import generate_textile_layers
 
 __all__ = [
     "BakedAppearance",
@@ -31,6 +32,7 @@ __all__ = [
     "generate_face_detail_layers",
     "generate_short_hair_layers",
     "generate_semantic_masks",
+    "generate_textile_layers",
     "register_baked_appearance",
     "recipe_sha256",
 ]

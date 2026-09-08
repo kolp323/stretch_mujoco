@@ -13,6 +13,7 @@ from typing import Any
 from stretch_mujoco.npc.appearance_pipeline.catalog import AppearanceCatalog
 from stretch_mujoco.npc.appearance_pipeline.flat_layers import generate_flat_layers
 from stretch_mujoco.npc.appearance_pipeline.hair_layers import generate_short_hair_layers
+from stretch_mujoco.npc.appearance_pipeline.textile_layers import generate_textile_layers
 from stretch_mujoco.npc.assets import NpcAssetManifest
 
 
@@ -75,6 +76,11 @@ def build_persona_roster(
         roster_source.parent / _required_string(roster, "hair_layer_spec"),
         _relative(root, _required_string(roster, "hair_layer_output")),
     )
+    textile_layer_spec = roster.get("textile_layer_spec")
+    if textile_layer_spec is not None:
+        generate_textile_layers(
+            roster_source.parent / _required_string(roster, "textile_layer_spec"), root
+        )
 
     raw_layers = roster.get("layers")
     raw_identities = roster.get("identities")

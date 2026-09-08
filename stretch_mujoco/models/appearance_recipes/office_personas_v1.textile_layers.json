@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "base": "smplx_employee_diffuse.png",
+  "receipt": "appearance_sources/office_personas_v1/textiles/textile_layers.receipt.json",
+  "layers": [
+    {
+      "id": "top_gingham_check_v1",
+      "source_archive": "../../sources/npc/textures/gingham_check_v1/gingham_check_1k.zip",
+      "source_sha256": "63295f8e7dc1429fe52a2b19d2c392e761ffdc1b0b6d00709a616465e15486ba",
+      "source_url": "https://polyhaven.com/a/gingham_check",
+      "license": "CC0-1.0",
+      "archive_member": "textures/gingham_check_diff_1k.jpg",
+      "mask": "appearance_sources/semantic_masks_v2/masks/top.png",
+      "output": "appearance_sources/office_personas_v1/textiles/top_gingham_check_v1.png",
+      "tile_width_px": 128,
+      "seed": 301
+    },
+    {
+      "id": "top_jersey_melange_v1",
+      "source_archive": "../../sources/npc/textures/jersey_melange_v1/jersey_melange_1k.zip",
+      "source_sha256": "9ee8e1e42251c578c7d125731a463d72e132b7421bd6d53d7d3ab99314d21054",
+      "source_url": "https://polyhaven.com/a/jersey_melange",
+      "license": "CC0-1.0",
+      "archive_member": "textures/jersey_melange_diff_1k.jpg",
+      "mask": "appearance_sources/semantic_masks_v2/masks/top.png",
+      "output": "appearance_sources/office_personas_v1/textiles/top_jersey_melange_v1.png",
+      "tile_width_px": 176,
+      "seed": 302
+    },
+    {
+      "id": "bottom_jogging_melange_v1",
+      "source_archive": "../../sources/npc/textures/jogging_melange_v1/jogging_melange_2k.zip",
+      "source_sha256": "453766b8fb4faf13781ef0b9599cf3867fca830a164c7dc15bb417cf28dcc68d",
+      "source_url": "https://polyhaven.com/a/jogging_melange",
+      "license": "CC0-1.0",
+      "archive_member": "textures/jogging_melange_diff_2k.jpg",
+      "mask": "appearance_sources/semantic_masks_v2/masks/pants.png",
+      "output": "appearance_sources/office_personas_v1/textiles/bottom_jogging_melange_v1.png",
+      "tile_width_px": 192,
+      "seed": 303
+    }
+  ]
+}
