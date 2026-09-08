@@ -20,6 +20,7 @@ from .smplx_converter import (
     _write_obj,
     find_model_file,
 )
+from .amass_intake import canonicalize_vertical_translation
 
 MATERIAL_GROUPS = ("body",)
 
@@ -83,9 +84,11 @@ def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str
     return manifest
 
 
-def _load_retargeted_body_pose_clips(motion_root: Path, torch: Any) -> dict[str, list[Any]]:
+def _load_retargeted_body_pose_clips(
+    motion_root: Path, torch: Any
+) -> dict[str, tuple[list[Any], list[Any]]]:
     """Load all locally selected, provenance-backed baker inputs."""
-    clips: dict[str, list[Any]] = {}
+    clips: dict[str, tuple[list[Any], list[Any]]] = {}
     missing: list[str] = []
     for clip_name in OFFICE_CLIPS:
         path = motion_root / f"{clip_name}.npz"
@@ -96,13 +99,24 @@ def _load_retargeted_body_pose_clips(motion_root: Path, torch: Any) -> dict[str,
             if "body_pose" not in payload:
                 raise SmplxAssetError(f"Motion clip '{path}' is missing body_pose")
             poses = np.asarray(payload["body_pose"], dtype=np.float32)
+            transl = np.asarray(
+                payload["transl"] if "transl" in payload else np.zeros((poses.shape[0], 3)),
+                dtype=np.float32,
+            )
         if poses.ndim != 2 or poses.shape[0] < 2 or poses.shape[1] != 63:
             raise SmplxAssetError(
                 f"Motion clip '{path}' body_pose must have shape (frames >= 2, 63)"
             )
         if not np.isfinite(poses).all():
             raise SmplxAssetError(f"Motion clip '{path}' body_pose contains non-finite values")
-        clips[clip_name] = [torch.from_numpy(pose).reshape(1, -1) for pose in poses]
+        try:
+            canonical_transl = canonicalize_vertical_translation(transl)
+        except ValueError as error:
+            raise SmplxAssetError(f"Motion clip '{path}' has invalid transl: {error}") from error
+        clips[clip_name] = (
+            [torch.from_numpy(pose).reshape(1, -1) for pose in poses],
+            [torch.from_numpy(trans).reshape(1, -1) for trans in canonical_transl],
+        )
     if missing:
         raise SmplxAssetError(
             "Restricted motion input is incomplete; missing clips: " + ", ".join(missing)
@@ -240,9 +254,12 @@ def bake_smplx_animations(
     clips = _load_retargeted_body_pose_clips(motion_root, torch)
 
     with torch.no_grad():
-        reference = model(body_pose=clips["idle"][0], return_verts=True)
+        reference = model(
+            body_pose=clips["idle"][0][0], transl=clips["idle"][1][0], return_verts=True
+        )
     reference_vertices = _to_mujoco_coordinates(reference.vertices[0].detach().cpu().numpy())
     scale = target_height / float(reference_vertices[:, 2].ptp())
+    ground_offset = float(reference_vertices[:, 2].min()) * scale
 
     output_dir.mkdir(parents=True, exist_ok=True)
     for stale_mesh in output_dir.glob("humanoid_*.obj"):
@@ -255,13 +272,13 @@ def bake_smplx_animations(
     )
     mesh_elements = []
 
-    for clip_name, poses in clips.items():
-        for frame_index, body_pose in enumerate(poses):
+    for clip_name, (poses, translations) in clips.items():
+        for frame_index, (body_pose, translation) in enumerate(zip(poses, translations)):
             with torch.no_grad():
-                result = model(body_pose=body_pose, return_verts=True)
+                result = model(body_pose=body_pose, transl=translation, return_verts=True)
             vertices = _to_mujoco_coordinates(result.vertices[0].detach().cpu().numpy())
             vertices *= scale
-            vertices[:, 2] -= float(vertices[:, 2].min())
+            vertices[:, 2] -= ground_offset
             mesh_name = f"humanoid_{clip_name}_{frame_index:02d}_body"
             filename = f"{mesh_name}.obj"
             _write_obj(

@@ -5,7 +5,12 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from stretch_mujoco.humanoid.amass_intake import AmassIntakeError, list_candidates, prepare_motions
+from stretch_mujoco.humanoid.amass_intake import (
+    AmassIntakeError,
+    canonicalize_vertical_translation,
+    list_candidates,
+    prepare_motions,
+)
 
 
 def _write_motion(path: Path, frames: int = 30, surface_model_type: str = "smplx") -> None:
@@ -90,12 +95,22 @@ def test_prepare_motions_resamples_and_writes_provenance_receipt(tmp_path: Path)
     with np.load(outputs[0], allow_pickle=False) as prepared:
         assert prepared["body_pose"].shape == (10, 63)
         assert prepared["body_pose"][:, 0].tolist() == list(range(0, 30 * 63, 3 * 63))
+        assert np.array_equal(prepared["transl"], np.zeros((10, 3), dtype=np.float32))
     receipt = json.loads((tmp_path / "receipts" / "stand_up.receipt.json").read_text())
     assert receipt["source_frame_range"] == [0, 30]
     assert receipt["target_fps"] == 10.0
     assert receipt["target_frame_count"] == 10
     assert len(receipt["source_sha256"]) == 64
     assert len(receipt["output_sha256"]) == 64
+    assert receipt["root_translation_policy"] == "relative_smpl_y_only_runtime_anchor"
+
+
+def test_canonicalize_vertical_translation_pins_horizontal_motion() -> None:
+    source = np.array([[5.0, 2.0, -3.0], [7.0, 2.5, 9.0]], dtype=np.float32)
+
+    canonical = canonicalize_vertical_translation(source)
+
+    assert np.array_equal(canonical, np.array([[0.0, 0.0, 0.0], [0.0, 0.5, 0.0]]))
 
 
 def test_prepare_motions_reads_only_selected_tar_member(tmp_path: Path) -> None:

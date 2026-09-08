@@ -7,6 +7,7 @@ import pytest
 
 from stretch_mujoco.humanoid.amass_motion_review import (
     AmassReviewError,
+    _canonical_review_root_parameters,
     build_review_queue,
     load_amass_motion,
     load_review_queue,
@@ -50,6 +51,17 @@ def test_review_frame_indices_include_both_crop_endpoints() -> None:
 def test_review_frame_indices_reject_invalid_crop() -> None:
     with pytest.raises(AmassReviewError, match="within the source motion"):
         review_frame_indices(5, 31, 30, 3)
+
+
+def test_canonical_review_root_matches_restricted_baker_orientation_contract() -> None:
+    orient, transl = _canonical_review_root_parameters(3)
+
+    assert orient.dtype == np.float32
+    assert transl.dtype == np.float32
+    assert orient.shape == (3, 3)
+    assert np.array_equal(orient, np.zeros((3, 3), dtype=np.float32))
+    assert np.array_equal(transl, orient)
+    assert orient is not transl
 
 
 def test_review_output_stem_is_unique_for_same_named_members() -> None:

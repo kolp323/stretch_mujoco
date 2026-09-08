@@ -16,6 +16,7 @@ from typing import Any
 import click
 import numpy as np
 
+from .amass_intake import canonicalize_vertical_translation
 from .smplx_converter import SmplxAssetError, _load_runtime, _to_mujoco_coordinates, find_model_file
 
 
@@ -170,6 +171,14 @@ def review_frame_indices(
     )
 
 
+def _canonical_review_root_parameters(frame_count: int) -> tuple[np.ndarray, np.ndarray]:
+    """Match restricted baking's identity root orientation and anchored translation."""
+    if frame_count < 1:
+        raise AmassReviewError("Canonical review requires at least one frame")
+    root = np.zeros((frame_count, 3), dtype=np.float32)
+    return root, root.copy()
+
+
 def build_review_queue(
     candidate_index: Path,
     batch_size: int,
@@ -322,11 +331,13 @@ def _render_loaded_motion(
         use_pca=False,
         batch_size=len(indices),
     )
+    canonical_orient, _ = _canonical_review_root_parameters(len(indices))
+    canonical_transl = canonicalize_vertical_translation(motion.transl[indices])
     with torch.no_grad():
         result = model(
             body_pose=torch.from_numpy(motion.body_pose[indices]),
-            global_orient=torch.from_numpy(motion.global_orient[indices]),
-            transl=torch.from_numpy(motion.transl[indices]),
+            global_orient=torch.from_numpy(canonical_orient),
+            transl=torch.from_numpy(canonical_transl),
             return_verts=True,
         )
     vertices = _to_mujoco_coordinates(
@@ -374,8 +385,13 @@ def _render_loaded_motion(
         "source_frame_range": [start_frame, end_frame],
         "source_fps": motion.mocap_frame_rate,
         "reviewed_frame_indices": indices.tolist(),
+        "root_policy": "canonical_identity_with_relative_smpl_y_translation",
         "image_sha256": hashlib.sha256(image_path.read_bytes()).hexdigest(),
-        "note": "This receipt is visual evidence only and does not approve an action clip.",
+        "note": (
+            "This receipt is visual evidence only and does not approve an action clip. "
+            "Source root_orient and horizontal trans are deliberately excluded; the restricted "
+            "baker retains only relative SMPL-Y translation for vertical action transitions."
+        ),
     }
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     return image_path, receipt_path
