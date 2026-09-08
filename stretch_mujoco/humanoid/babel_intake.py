@@ -64,6 +64,13 @@ OFFICE_BABEL_LABELS: dict[str, frozenset[str]] = {
     "place": frozenset({"place", "place down"}),
     "talk": frozenset({"talk", "talk on phone", "talk on cell phone"}),
     "receive": frozenset({"receive"}),
+    "seated_idle": frozenset({"sit"}),
+    # BABEL's ``type motion`` is an exact annotation, not a generic interaction
+    # category.  It remains a candidate for both office roles until visual review.
+    "use_computer": frozenset({"type motion"}),
+    "work": frozenset({"type motion"}),
+    "eat": frozenset({"eat with right hand"}),
+    "give": frozenset({"give deck cards with right hand"}),
 }
 
 
@@ -108,16 +115,31 @@ def _read_candidate_index(path: Path) -> dict[str, tuple[int, float]]:
     return available
 
 
-def babel_feature_to_bmlmovi_stageii(feature_path: str) -> str | None:
-    """Map BABEL's BMLmovi ``*_poses`` path to the local AMASS stage-II member."""
+def babel_feature_to_amass_stageii(feature_path: str) -> str | None:
+    """Map a supported BABEL ``*_poses`` path to its local AMASS stage-II member."""
     path = PurePosixPath(feature_path)
     parts = path.parts
-    if len(parts) < 4 or parts[:2] != ("BMLmovi", "BMLmovi") or path.suffix != ".npz":
+    if (
+        len(parts) < 4
+        or parts[0] not in {"BMLmovi", "CMU"}
+        or parts[:2] != (parts[0], parts[0])
+        or any(part in {".", ".."} for part in parts)
+        or path.suffix != ".npz"
+    ):
         return None
     if not path.stem.endswith("_poses"):
         return None
     stem = path.stem.removesuffix("_poses") + "_stageii"
-    return PurePosixPath("BMLmovi", *parts[2:-1], f"{stem}.npz").as_posix()
+    return PurePosixPath(parts[0], *parts[2:-1], f"{stem}.npz").as_posix()
+
+
+# Kept as a compatibility alias for callers created before CMU support.
+babel_feature_to_bmlmovi_stageii = babel_feature_to_amass_stageii
+
+
+def _normalize_label(label: str) -> str:
+    """Normalize BABEL's incidental spacing without broadening label matching."""
+    return " ".join(label.split())
 
 
 def _frame_range(
@@ -141,7 +163,7 @@ def _frame_range(
 def find_babel_candidates(
     babel_archive: Path, candidate_index: Path, per_clip: int, min_duration_seconds: float
 ) -> tuple[BabelCandidate, ...]:
-    """Return exact, local BMLmovi candidates from BABEL dense frame annotations."""
+    """Return exact, local supported-AMASS candidates from BABEL frame annotations."""
     if per_clip < 1 or min_duration_seconds <= 0:
         raise BabelIntakeError("per_clip and min_duration_seconds must be positive")
     local_motions = _read_candidate_index(candidate_index)
@@ -156,7 +178,7 @@ def find_babel_candidates(
                 for sequence_id, sequence in records.items():
                     if not isinstance(sequence_id, str) or not isinstance(sequence, dict):
                         continue
-                    source_id = babel_feature_to_bmlmovi_stageii(str(sequence.get("feat_p", "")))
+                    source_id = babel_feature_to_amass_stageii(str(sequence.get("feat_p", "")))
                     if source_id not in local_motions:
                         continue
                     frame_annotation = sequence.get("frame_ann")
@@ -169,9 +191,10 @@ def find_babel_candidates(
                     for label in labels:
                         if not isinstance(label, dict):
                             continue
-                        proc_label = label.get("proc_label")
-                        if not isinstance(proc_label, str):
+                        raw_proc_label = label.get("proc_label")
+                        if not isinstance(raw_proc_label, str):
                             continue
+                        proc_label = _normalize_label(raw_proc_label)
                         frame_range = _frame_range(
                             label.get("start_t"), label.get("end_t"), fps, frame_count
                         )
