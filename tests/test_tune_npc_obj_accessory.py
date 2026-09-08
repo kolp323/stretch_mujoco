@@ -7,6 +7,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from stretch_mujoco.npc.appearance_pipeline.accessory_recipe import FusedAccessoryRecipe
 
@@ -114,3 +115,9 @@ def test_tuner_can_render_a_headless_snapshot(tmp_path: Path) -> None:
 
     assert snapshot.is_file()
     assert snapshot.stat().st_size > 1000
+
+
+def test_tuner_reports_valid_reference_frame_range(tmp_path: Path) -> None:
+    module = _module()
+    with pytest.raises(ValueError, match=r"valid range is 0\.\.0"):
+        module.load_tuning_context(_fixture(tmp_path), reference_clip="idle", reference_frame=12)

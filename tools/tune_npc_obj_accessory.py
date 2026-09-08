@@ -90,11 +90,17 @@ def load_tuning_context(
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     try:
         frames = manifest["bundles"][runtime.bundle]["clips"][reference_clip]["frames"]
-        frame_relative = frames[reference_frame]
-    except (KeyError, IndexError, TypeError) as error:
+    except (KeyError, TypeError) as error:
         raise ValueError(
-            f"Reference frame does not exist: {runtime.bundle}/{reference_clip}/{reference_frame}"
+            f"Reference clip does not exist: {runtime.bundle}/{reference_clip}"
         ) from error
+    if not isinstance(frames, list) or not 0 <= reference_frame < len(frames):
+        maximum = len(frames) - 1 if isinstance(frames, list) else "unknown"
+        raise ValueError(
+            f"Reference frame {reference_frame} is out of range for "
+            f"{runtime.bundle}/{reference_clip}; valid range is 0..{maximum}"
+        )
+    frame_relative = frames[reference_frame]
     body_path = (manifest_path.parent / frame_relative).resolve()
     prepare = _tool_module("prepare_obj_accessory.py")
     source_obj, _ = prepare._source_obj(
