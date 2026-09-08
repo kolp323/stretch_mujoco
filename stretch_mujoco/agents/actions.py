@@ -108,6 +108,11 @@ class RobotTask:
     task_id: str = field(default_factory=lambda: f"task_{uuid.uuid4().hex[:10]}")
     status: RobotTaskStatus = RobotTaskStatus.PENDING
     error: str | None = None
+    conversation_id: str | None = None
+    robot_release_confirmed: bool = False
+    npc_attachment_confirmed: bool = False
+    interaction_confirmed: bool = False
+    receipt_ids: set[str] = field(default_factory=set)
 
 
 @dataclass(frozen=True)

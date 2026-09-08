@@ -150,9 +150,22 @@ class EmployeeState:
     blocked_reason: str | None = None
     last_failure: str | None = None
     animation_state: str = "idle"
+    conversation_id: str | None = None
+    social_energy: float = 1.0
+    stress: float = 0.0
 
     def __post_init__(self) -> None:
         self.set_availability(self.availability)
+        self.social_energy = self._bounded_social_value("social_energy", self.social_energy)
+        self.stress = self._bounded_social_value("stress", self.stress)
+
+    @staticmethod
+    def _bounded_social_value(name: str, value: float) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError(f"{name} must be a finite value between 0 and 1")
+        if not 0.0 <= float(value) <= 1.0:
+            raise ValueError(f"{name} must be between 0 and 1")
+        return float(value)
 
     def set_availability(self, availability: AgentAvailability | str) -> None:
         """Accept schema-v1 ``busy`` while retaining a bounded runtime state."""

@@ -15,15 +15,40 @@ DEFAULT_MAX_OBSERVATION_AGE = 0.5
 
 
 class ConversationStatus(str, Enum):
+    """Lifecycle states owned by the logical conversation runtime.
+
+    ``APPROACHING`` and ``ALIGNING`` are reserved for the action-driver
+    integration.  This branch starts directly in ``ACTIVE`` only for the
+    explicitly logical/mock path; it never claims that an embodied cue ran.
+    """
+
+    REQUESTED = "requested"
+    APPROACHING = "approaching"
+    ALIGNING = "aligning"
     ACTIVE = "active"
+    COMPLETING = "completing"
     COMPLETED = "completed"
     TIMED_OUT = "timed_out"
-    INTERRUPTED = "interrupted"
+    CANCELLED = "cancelled"
+    FAILED = "failed"
+    INTERRUPTED = "interrupted"  # schema-v1 terminal compatibility
+
+    @property
+    def terminal(self) -> bool:
+        return self in {
+            ConversationStatus.COMPLETED,
+            ConversationStatus.TIMED_OUT,
+            ConversationStatus.CANCELLED,
+            ConversationStatus.FAILED,
+            ConversationStatus.INTERRUPTED,
+        }
 
 
 class ConversationTerminalReason(str, Enum):
     COMPLETED = "completed"
     TIMED_OUT = "timed_out"
+    CANCELLED = "cancelled"
+    FAILED = "failed"
     INTERRUPTED = "interrupted"
 
 
@@ -56,6 +81,8 @@ class ConversationEvent(str, Enum):
     TURN = "conversation_turn"
     COMPLETED = "conversation_completed"
     TIMED_OUT = "conversation_timed_out"
+    CANCELLED = "conversation_cancelled"
+    FAILED = "conversation_failed"
 
 
 class ConversationObservationSource(str, Enum):
@@ -91,6 +118,140 @@ class ConversationIntent(str, Enum):
     PROGRESS_INQUIRY = "progress_inquiry"
     MEETING_INVITATION = "meeting_invitation"
     CONFLICT_RESOLUTION = "conflict_resolution"
+
+
+@dataclass(frozen=True)
+class SocialState:
+    """Read-only social inputs; the scheduler never mutates agent state."""
+
+    social_energy: float
+    stress: float
+    available: bool
+
+
+@dataclass(frozen=True)
+class SocialConversationProposal:
+    initiator: str
+    participant: str
+    intent: ConversationIntent
+    topic: str
+    created_at: float
+    metadata: Mapping[str, str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class SocialConversationDecision:
+    proposal: SocialConversationProposal
+    accepted: bool
+    reason: str
+
+
+@dataclass
+class MeetingInvitation:
+    invitation_id: str
+    proposal: SocialConversationProposal
+    expires_at: float
+    accepted: bool | None = None
+
+
+class NpcConversationScheduler:
+    """Deterministically admit low-priority NPC social conversations.
+
+    Sorting by proposal time and both participant IDs gives two simultaneous
+    initiators one winner without either waiting on the other.  It is pure
+    logical scheduling: embodied approach/alignment stays in the action branch.
+    """
+
+    def __init__(self, cooldown_minutes: float = 2.0) -> None:
+        if cooldown_minutes < 0:
+            raise ValueError("Social conversation cooldown must be non-negative")
+        self.cooldown_minutes = cooldown_minutes
+        self._cooldown_until: dict[tuple[str, str], float] = {}
+        self.invitations: dict[str, MeetingInvitation] = {}
+        self._next_invitation_number = 1
+
+    def admit(
+        self,
+        proposals: Iterable[SocialConversationProposal],
+        states: Mapping[str, SocialState],
+        now: float,
+    ) -> tuple[SocialConversationDecision, ...]:
+        admitted: list[SocialConversationDecision] = []
+        occupied: set[str] = set()
+        for proposal in sorted(
+            proposals,
+            key=lambda item: (
+                item.created_at,
+                min(item.initiator, item.participant),
+                max(item.initiator, item.participant),
+                item.intent.value,
+            ),
+        ):
+            pair = (
+                min(proposal.initiator, proposal.participant),
+                max(proposal.initiator, proposal.participant),
+            )
+            initiator = states.get(proposal.initiator)
+            participant = states.get(proposal.participant)
+            if proposal.initiator == proposal.participant or not proposal.topic.strip():
+                admitted.append(SocialConversationDecision(proposal, False, "invalid_proposal"))
+            elif proposal.intent not in NPC_INTENTS:
+                admitted.append(SocialConversationDecision(proposal, False, "invalid_npc_intent"))
+            elif initiator is None or participant is None:
+                admitted.append(SocialConversationDecision(proposal, False, "unknown_participant"))
+            elif pair in self._cooldown_until and now < self._cooldown_until[pair]:
+                admitted.append(SocialConversationDecision(proposal, False, "cooldown"))
+            elif proposal.initiator in occupied or proposal.participant in occupied:
+                admitted.append(SocialConversationDecision(proposal, False, "participant_busy"))
+            elif not initiator.available or not participant.available:
+                admitted.append(
+                    SocialConversationDecision(proposal, False, "participant_unavailable")
+                )
+            elif min(initiator.social_energy, participant.social_energy) <= 0.0:
+                admitted.append(
+                    SocialConversationDecision(proposal, False, "social_energy_depleted")
+                )
+            elif max(initiator.stress, participant.stress) >= 1.0:
+                admitted.append(SocialConversationDecision(proposal, False, "stress_limit"))
+            else:
+                occupied.update(pair)
+                self._cooldown_until[pair] = now + self.cooldown_minutes
+                admitted.append(SocialConversationDecision(proposal, True, "accepted"))
+        return tuple(admitted)
+
+    def create_invitation(
+        self, proposal: SocialConversationProposal, expires_at: float
+    ) -> MeetingInvitation:
+        if proposal.intent != ConversationIntent.MEETING_INVITATION:
+            raise ValueError("Only meeting invitations can create invitation records")
+        if expires_at <= proposal.created_at:
+            raise ValueError("Meeting invitation expiry must be after creation")
+        invitation = MeetingInvitation(
+            f"meeting_invitation_{self._next_invitation_number:06d}", proposal, expires_at
+        )
+        self._next_invitation_number += 1
+        self.invitations[invitation.invitation_id] = invitation
+        return invitation
+
+    def respond_invitation(
+        self, invitation_id: str, accepted: bool, now: float
+    ) -> MeetingInvitation:
+        invitation = self.invitations[invitation_id]
+        if invitation.accepted is not None:
+            return invitation
+        if now >= invitation.expires_at:
+            invitation.accepted = False
+        else:
+            invitation.accepted = accepted
+        return invitation
+
+    def expire_invitations(self, now: float) -> tuple[MeetingInvitation, ...]:
+        expired: list[MeetingInvitation] = []
+        for invitation in self.invitations.values():
+            if invitation.accepted is None and now >= invitation.expires_at:
+                invitation.accepted = False
+                expired.append(invitation)
+        return tuple(expired)
 
 
 ROBOT_INTENTS = frozenset(
@@ -312,6 +473,11 @@ class ConversationSession:
     participant_kinds: tuple[ConversationParticipantKind, ...] = ()
     turn_policy: TurnPolicy = TurnPolicy.FREE_FORM
     terminal_reason: ConversationTerminalReason | None = None
+    expected_speaker: str | None = None
+    turn_deadline: float | None = None
+    failure_reason: str | None = None
+    robot_task_id: str | None = None
+    handover_receipts: frozenset[str] = frozenset()
 
     @property
     def deadline(self) -> float:
@@ -351,20 +517,23 @@ class ConversationCoordinator:
         timeout: float = 2.0,
         interrupt_policy: InterruptPolicy = InterruptPolicy.REJECT,
         participant_kinds: Mapping[str, ConversationParticipantKind | str] | None = None,
-        turn_policy: TurnPolicy = TurnPolicy.FREE_FORM,
+        turn_policy: TurnPolicy = TurnPolicy.ROUND_ROBIN,
+        turn_timeout: float | None = None,
     ) -> ConversationSession:
         participant_tuple = tuple(dict.fromkeys(participants))
         if len(participant_tuple) != 2:
             raise ValueError("A conversation requires exactly two distinct participants")
         if not topic.strip() or timeout <= 0:
             raise ValueError("Conversation topic and timeout must be positive")
+        if turn_timeout is not None and turn_timeout <= 0:
+            raise ValueError("Conversation turn timeout must be positive")
         first, second = participant_tuple
         if first not in poses or second not in poses:
             raise ValueError("Conversation requires semantic poses for both participants")
         if not self._can_speak(poses[first], poses[second]):
             raise ValueError("Participants are too far apart or are not facing each other")
         if any(
-            session.status == ConversationStatus.ACTIVE
+            not session.status.terminal
             and set(session.participants).intersection(participant_tuple)
             for session in self.sessions.values()
         ):
@@ -388,6 +557,10 @@ class ConversationCoordinator:
             interrupt_policy=interrupt_policy,
             participant_kinds=kinds,
             turn_policy=turn_policy,
+            expected_speaker=(
+                participant_tuple[0] if turn_policy == TurnPolicy.ROUND_ROBIN else None
+            ),
+            turn_deadline=(started_at + turn_timeout if turn_timeout is not None else None),
         )
         self._next_session_number += 1
         self.sessions[session.session_id] = session
@@ -418,6 +591,10 @@ class ConversationCoordinator:
         last_message = self._last_message_at.get(speaker)
         if last_message is not None and timestamp - last_message < self.cooldown_minutes:
             raise ValueError(f"Speaker '{speaker}' is in conversation cooldown")
+        if session.turn_policy == TurnPolicy.ROUND_ROBIN and speaker != session.expected_speaker:
+            raise ValueError(
+                f"Conversation '{session_id}' is waiting for '{session.expected_speaker}'"
+            )
         clean_text, used_fallback = self._safe_text(normalized_intent, text)
         entry = ConversationTurn(
             speaker,
@@ -430,30 +607,68 @@ class ConversationCoordinator:
         session.transcript.append(entry)
         session.turn += 1
         self._last_message_at[speaker] = timestamp
+        if session.turn_policy == TurnPolicy.ROUND_ROBIN:
+            session.expected_speaker = next(
+                participant for participant in session.participants if participant != speaker
+            )
         return entry
 
     def complete(self, session_id: str) -> ConversationSession:
-        session = self._active(session_id)
+        session = self._session(session_id)
+        if session.status.terminal:
+            return session
+        if session.status != ConversationStatus.ACTIVE:
+            raise ValueError(f"Conversation '{session_id}' is {session.status.value}")
+        session.status = ConversationStatus.COMPLETING
         session.status = ConversationStatus.COMPLETED
         session.terminal_reason = ConversationTerminalReason.COMPLETED
         return session
 
+    def cancel(self, session_id: str, reason: str = "cancelled") -> ConversationSession:
+        return self._terminal(session_id, ConversationStatus.CANCELLED, reason)
+
+    def fail(self, session_id: str, reason: str) -> ConversationSession:
+        if not reason.strip():
+            raise ValueError("Conversation failure requires a reason")
+        return self._terminal(session_id, ConversationStatus.FAILED, reason)
+
     def expire(self, now: float) -> tuple[ConversationSession, ...]:
         expired: list[ConversationSession] = []
         for session in self.sessions.values():
-            if session.status == ConversationStatus.ACTIVE and now >= session.deadline:
+            if session.status == ConversationStatus.ACTIVE and (
+                now >= session.deadline
+                or (session.turn_deadline is not None and now >= session.turn_deadline)
+            ):
                 session.status = ConversationStatus.TIMED_OUT
                 session.terminal_reason = ConversationTerminalReason.TIMED_OUT
+                if session.turn_deadline is not None and now >= session.turn_deadline:
+                    session.failure_reason = "turn_timeout"
                 expired.append(session)
         return tuple(expired)
 
     def _active(self, session_id: str) -> ConversationSession:
-        try:
-            session = self.sessions[session_id]
-        except KeyError as error:
-            raise KeyError(f"Unknown conversation '{session_id}'") from error
+        session = self._session(session_id)
         if session.status != ConversationStatus.ACTIVE:
             raise ValueError(f"Conversation '{session_id}' is {session.status.value}")
+        return session
+
+    def _session(self, session_id: str) -> ConversationSession:
+        try:
+            return self.sessions[session_id]
+        except KeyError as error:
+            raise KeyError(f"Unknown conversation '{session_id}'") from error
+
+    def _terminal(
+        self, session_id: str, status: ConversationStatus, reason: str
+    ) -> ConversationSession:
+        session = self._session(session_id)
+        if session.status.terminal:
+            return session
+        if session.status != ConversationStatus.ACTIVE:
+            raise ValueError(f"Conversation '{session_id}' is {session.status.value}")
+        session.status = status
+        session.terminal_reason = ConversationTerminalReason(status.value)
+        session.failure_reason = reason
         return session
 
     def _can_speak(self, first: SpatialPose, second: SpatialPose) -> bool:
@@ -471,8 +686,8 @@ class ConversationCoordinator:
         second_direction = math.atan2(-dy, -dx)
         limit = math.radians(self.max_facing_degrees)
         return (
-            self._angular_distance(first.yaw, first_direction) <= limit
-            and self._angular_distance(second.yaw, second_direction) <= limit
+            self._angular_distance(first.yaw, first_direction) <= limit + 1e-9
+            and self._angular_distance(second.yaw, second_direction) <= limit + 1e-9
         )
 
     @staticmethod
