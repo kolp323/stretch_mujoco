@@ -7,6 +7,8 @@ and robot tasks). It is not presented as a physics-camera recording of MuJoCo.
 from __future__ import annotations
 
 import json
+import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -53,6 +55,32 @@ ZONE_LABELS = {
 }
 
 
+def _transcode_h264(source: Path, destination: Path) -> None:
+    """Convert an OpenCV intermediate into a VS Code/browser-compatible MP4."""
+    try:
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-loglevel",
+                "error",
+                "-i",
+                str(source),
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                "-movflags",
+                "+faststart",
+                "-an",
+                str(destination),
+            ],
+            check=True,
+        )
+    except FileNotFoundError as error:
+        raise RuntimeError("2-D MP4 recording requires the 'ffmpeg' executable") from error
+
+
 class OfficeMp4Recorder:
     """Record an inspection-oriented 2-D office-day video."""
 
@@ -84,15 +112,25 @@ class OfficeMp4Recorder:
         self._sidebar_w = 410
         self._layout_canvas()
         self._writer: cv2.VideoWriter | None = None
+        self._temporary_path: Path | None = None
         self._frame_count = 0
         self._base_canvas: np.ndarray | None = None
 
     def start(self) -> None:
+        with tempfile.NamedTemporaryFile(
+            dir=self.output_path.parent,
+            prefix=f".{self.output_path.stem}.",
+            suffix=".mp4",
+            delete=False,
+        ) as temporary_file:
+            self._temporary_path = Path(temporary_file.name)
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         self._writer = cv2.VideoWriter(
-            str(self.output_path), fourcc, self.fps, (self.canvas_w, self.canvas_h)
+            str(self._temporary_path), fourcc, self.fps, (self.canvas_w, self.canvas_h)
         )
         if not self._writer.isOpened():
+            self._temporary_path.unlink(missing_ok=True)
+            self._temporary_path = None
             raise RuntimeError(f"Could not open video writer for '{self.output_path}'")
         self._base_canvas = self._draw_floor_plan()
 
@@ -119,6 +157,15 @@ class OfficeMp4Recorder:
         if self._writer is not None:
             self._writer.release()
             self._writer = None
+        temporary_path = self._temporary_path
+        self._temporary_path = None
+        if temporary_path is None:
+            return
+        try:
+            if self._frame_count > 0:
+                _transcode_h264(temporary_path, self.output_path)
+        finally:
+            temporary_path.unlink(missing_ok=True)
 
     def _layout_canvas(self) -> None:
         self._map_w = int(self._width_m * self.pixels_per_meter)
