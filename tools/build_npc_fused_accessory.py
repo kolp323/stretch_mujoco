@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import shutil
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -88,6 +89,25 @@ def bind_recipe_accessory(
     hashes[anchors_relative] = _sha256(anchors_path)
 
 
+def clear_derived_projection(output_dir: Path) -> None:
+    """Remove stale generated OBJ projections before rebuilding one recipe.
+
+    ``output_dir`` is a generated runtime projection, never a source asset
+    directory.  Clearing only the two tool-owned subdirectories prevents old
+    clip frames from surviving a rebuild while leaving receipts/manifests in
+    their separate configured locations untouched.
+    """
+    output_dir = output_dir.resolve()
+    if output_dir.name in {"", ".", ".."}:
+        raise ValueError("Refusing to clear an unsafe generated output directory")
+    for name in ("accessory", "frames"):
+        child = output_dir / name
+        if child.exists():
+            if not child.is_dir():
+                raise ValueError(f"Generated projection path is not a directory: {child}")
+            shutil.rmtree(child)
+
+
 def build_fused_accessory(
     *,
     recipe_path: Path,
@@ -107,6 +127,7 @@ def build_fused_accessory(
     """Materialize every derived projection from one immutable pose recipe."""
     recipe = FusedAccessoryRecipe.from_json(recipe_path)
     output_dir.mkdir(parents=True, exist_ok=True)
+    clear_derived_projection(output_dir)
     output_manifest.parent.mkdir(parents=True, exist_ok=True)
     output_population.parent.mkdir(parents=True, exist_ok=True)
     prepare = _tool_module("prepare_obj_accessory.py")

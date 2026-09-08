@@ -91,6 +91,22 @@ def test_runtime_population_resolves_paths_before_moving_projection() -> None:
     assert result["appearance_catalog"] == "/tmp/models/assets/appearance_catalog.json"
 
 
+def test_clear_derived_projection_removes_stale_obj_frames_only(tmp_path: Path) -> None:
+    module = _builder_module()
+    output_dir = tmp_path / "runtime" / "cap" / "employee"
+    (output_dir / "accessory").mkdir(parents=True)
+    (output_dir / "frames" / "sit").mkdir(parents=True)
+    (output_dir / "accessory" / "cap.obj").write_text("old")
+    (output_dir / "frames" / "sit" / "frame_999.obj").write_text("old")
+    (output_dir / "receipt.json").write_text("keep")
+
+    module.clear_derived_projection(output_dir)
+
+    assert not (output_dir / "accessory").exists()
+    assert not (output_dir / "frames").exists()
+    assert (output_dir / "receipt.json").read_text() == "keep"
+
+
 def test_recipe_accessory_binding_replaces_stale_manifest_reference(tmp_path: Path) -> None:
     module = _builder_module()
     recipe_path = tmp_path / "recipe.json"
