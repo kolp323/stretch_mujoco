@@ -1,0 +1,17 @@
+{
+  "schema_version": 2,
+  "recipe": "beautiful_hair_v1.recipe.json",
+  "source_archive": "../assets/humanoid/sources/npc/hair/beautiful_hair_v1/beautiful-hair-1.zip",
+  "source_format": "nested_zip_obj",
+  "nested_archive_member": "source/HairTest.zip",
+  "obj_member": "HairTest.obj",
+  "source_unit_scale": 1.0,
+  "source_up_axis": "y",
+  "source_manifest": "../assets/humanoid/generated/animations/manifest.json",
+  "source_population": "../office_population.production.example.json",
+  "npc_id": "npc_jordan_patell",
+  "bundle": "smplx_office_neutral_v1",
+  "output_dir": "../assets/humanoid/generated/animations/runtime/beautiful_hair_v1/npc_jordan_patell",
+  "output_manifest": "../assets/humanoid/generated/animations/manifest.beautiful_hair_v1.npc_jordan_patell.runtime.json",
+  "output_population": "../assets/humanoid/generated/animations/runtime_populations/beautiful_hair_v1/npc_jordan_patell.json"
+}

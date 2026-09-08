@@ -34,6 +34,6 @@ def test_production_roster_assigns_approved_textiles_to_distinct_npcs() -> None:
     assert population.npcs["npc_olivia_bennett"].embodiment.appearance_config.top == (
         "top_jersey_melange_v1"
     )
-    assert population.npcs["npc_wei_zhang"].embodiment.appearance_config.bottom == (
-        "bottom_jogging_melange_v1"
+    assert population.npcs["npc_wei_zhang"].embodiment.appearance_config.top == (
+        "top_jogging_melange_v1"
     )

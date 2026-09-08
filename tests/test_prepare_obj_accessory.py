@@ -1,6 +1,7 @@
 import importlib.util
 import io
 import json
+import struct
 import zipfile
 from pathlib import Path
 
@@ -26,15 +27,52 @@ def _nested_cap(path: Path) -> None:
         outer.writestr("source/cap.zip", nested.getvalue())
 
 
+def _triangle_glb(path: Path) -> None:
+    binary = struct.pack("<9f3H", 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 2)
+    document = {
+        "asset": {"version": "2.0"},
+        "scene": 0,
+        "scenes": [{"nodes": [0]}],
+        "nodes": [{"mesh": 0, "translation": [1, 2, 3]}],
+        "meshes": [{"primitives": [{"attributes": {"POSITION": 0}, "indices": 1}]}],
+        "buffers": [{"byteLength": len(binary)}],
+        "bufferViews": [
+            {"buffer": 0, "byteOffset": 0, "byteLength": 36},
+            {"buffer": 0, "byteOffset": 36, "byteLength": 6},
+        ],
+        "accessors": [
+            {"bufferView": 0, "componentType": 5126, "count": 3, "type": "VEC3"},
+            {"bufferView": 1, "componentType": 5123, "count": 3, "type": "SCALAR"},
+        ],
+    }
+    json_chunk = json.dumps(document, separators=(",", ":")).encode("utf-8")
+    json_chunk += b" " * (-len(json_chunk) % 4)
+    binary += b"\0" * (-len(binary) % 4)
+    payload = (
+        struct.pack("<4sII", b"glTF", 2, 12 + 8 + len(json_chunk) + 8 + len(binary))
+        + struct.pack("<II", len(json_chunk), 0x4E4F534A)
+        + json_chunk
+        + struct.pack("<II", len(binary), 0x004E4942)
+        + binary
+    )
+    path.write_bytes(payload)
+
+
 def test_normalized_source_cap_is_meter_z_up_and_records_nested_provenance(tmp_path: Path) -> None:
     module = _module()
     archive = tmp_path / "cap.zip"
     _nested_cap(archive)
 
     source, provenance = module._source_obj(archive)
-    normalized = module.normalized_obj(source, mesh_scale=1.0, back_tilt_degrees=0.0).decode("utf-8")
+    normalized = module.normalized_obj(source, mesh_scale=1.0, back_tilt_degrees=0.0).decode(
+        "utf-8"
+    )
     vertices = np.array(
-        [[float(value) for value in line.split()[1:4]] for line in normalized.splitlines() if line.startswith("v ")]
+        [
+            [float(value) for value in line.split()[1:4]]
+            for line in normalized.splitlines()
+            if line.startswith("v ")
+        ]
     )
 
     assert provenance["nested_archive_member"] == "source/cap.zip"
@@ -45,17 +83,45 @@ def test_normalized_source_cap_is_meter_z_up_and_records_nested_provenance(tmp_p
     assert "mtllib" not in normalized
     scaled = module.normalized_obj(source, mesh_scale=1.3, back_tilt_degrees=0.0).decode("utf-8")
     scaled_vertices = np.array(
-        [[float(value) for value in line.split()[1:4]] for line in scaled.splitlines() if line.startswith("v ")]
+        [
+            [float(value) for value in line.split()[1:4]]
+            for line in scaled.splitlines()
+            if line.startswith("v ")
+        ]
     )
     assert np.isclose(scaled_vertices[:, :2].ptp(axis=0)[0], 0.26)
     tilted = module.normalized_obj(source, mesh_scale=1.3, back_tilt_degrees=13.0).decode("utf-8")
     tilted_vertices = np.array(
-        [[float(value) for value in line.split()[1:4]] for line in tilted.splitlines() if line.startswith("v ")]
+        [
+            [float(value) for value in line.split()[1:4]]
+            for line in tilted.splitlines()
+            if line.startswith("v ")
+        ]
     )
     assert not np.allclose(tilted_vertices, scaled_vertices)
 
 
-def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, monkeypatch) -> None:
+def test_glb_source_is_converted_to_obj_with_node_transform(tmp_path: Path) -> None:
+    module = _module()
+    source_asset = tmp_path / "cap.glb"
+    _triangle_glb(source_asset)
+
+    source, provenance = module._source_obj(
+        source_asset,
+        source_format="glb",
+        nested_archive_member=None,
+        obj_member=None,
+    )
+
+    converted = source.decode("utf-8")
+    assert "v 1 2 3" in converted
+    assert "f 1 2 3" in converted
+    assert provenance["source_glb_sha256"] == provenance["source_asset_sha256"]
+
+
+def test_prepare_writes_production_receipt_and_all_clip_anchors(
+    tmp_path: Path, monkeypatch
+) -> None:
     module = _module()
     archive = tmp_path / "cap.zip"
     _nested_cap(archive)
@@ -84,7 +150,7 @@ def test_prepare_writes_preview_receipt_and_all_clip_anchors(tmp_path: Path, mon
     )
     receipt = json.loads(Path(paths["receipt"]).read_text())
 
-    assert receipt["asset_quality"] == "preview"
+    assert receipt["asset_quality"] == "production"
     assert receipt["head_clearance_m"] == -0.026
     assert receipt["back_offset_m"] == 0.098
     assert receipt["mesh_scale"] == 1.3

@@ -45,21 +45,71 @@ def build_scene_from_accessory_runtime_config(
         output_manifest=config.resolve_path(config_source, "output_manifest"),
         output_population=config.resolve_path(config_source, "output_population"),
         bundle_id=config.bundle,
+        source_format=config.source_format,
+        nested_archive_member=config.nested_archive_member,
+        obj_member=config.obj_member,
+        source_unit_scale=config.source_unit_scale,
     )
     return build_npc_scene(result["population"], output_path, include_base_scene=include_base_scene)
+
+
+def build_scene_from_accessory_runtime_configs(
+    config_paths: list[str | Path], output_path: str | Path, *, include_base_scene: bool = False
+) -> Path:
+    """Compose ordered, target-specific fused accessory projections.
+
+    Each stage receives the previous stage's manifest and population, so one
+    generated office can retain independently fused accessories on multiple
+    NPCs without replacing the base bundle used by everyone else.
+    """
+    if not config_paths:
+        raise ValueError("At least one accessory runtime config is required")
+    builder = _tool_module("build_npc_fused_accessory.py")
+    previous_manifest: Path | None = None
+    previous_population: Path | None = None
+    for config_path in config_paths:
+        config_source = Path(config_path).resolve()
+        config = FusedAccessoryRuntimeConfig.from_json(config_source)
+        result = builder.build_fused_accessory(
+            recipe_path=config.resolve_path(config_source, "recipe"),
+            source_archive=config.resolve_path(config_source, "source_archive"),
+            source_manifest=(
+                previous_manifest
+                if previous_manifest is not None
+                else config.resolve_path(config_source, "source_manifest")
+            ),
+            source_population=(
+                previous_population
+                if previous_population is not None
+                else config.resolve_path(config_source, "source_population")
+            ),
+            npc_id=config.npc_id,
+            output_dir=config.resolve_path(config_source, "output_dir"),
+            output_manifest=config.resolve_path(config_source, "output_manifest"),
+            output_population=config.resolve_path(config_source, "output_population"),
+            bundle_id=config.bundle,
+            source_format=config.source_format,
+            nested_archive_member=config.nested_archive_member,
+            obj_member=config.obj_member,
+            source_unit_scale=config.source_unit_scale,
+        )
+        previous_manifest = Path(result["manifest"])
+        previous_population = Path(result["population"])
+    assert previous_population is not None
+    return build_npc_scene(previous_population, output_path, include_base_scene=include_base_scene)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--population")
-    source.add_argument("--accessory-runtime-config")
+    source.add_argument("--accessory-runtime-config", action="append")
     parser.add_argument("--output", required=True)
     parser.add_argument("--include-base-scene", action="store_true")
     args = parser.parse_args()
     if args.accessory_runtime_config:
         print(
-            build_scene_from_accessory_runtime_config(
+            build_scene_from_accessory_runtime_configs(
                 args.accessory_runtime_config,
                 args.output,
                 include_base_scene=args.include_base_scene,

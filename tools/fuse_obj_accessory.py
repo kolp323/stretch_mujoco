@@ -11,6 +11,7 @@ relative to each other.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -36,7 +37,10 @@ def _vertices_and_faces(path: Path) -> tuple[np.ndarray, list[list[int]]]:
 
 
 def _fused_obj_with_vertices(
-    body_path: Path, accessory_path: Path, accessory_vertices: np.ndarray
+    body_path: Path,
+    accessory_path: Path,
+    accessory_vertices: np.ndarray,
+    accessory_uv: tuple[float, float] = (0.0, 0.0),
 ) -> bytes:
     """Append already-positioned accessory vertices to one body OBJ."""
     body_lines = body_path.read_text(encoding="utf-8").splitlines()
@@ -47,37 +51,48 @@ def _fused_obj_with_vertices(
     if not body_vertices or not body_faces:
         raise ValueError(f"Body OBJ '{body_path}' needs vertices and faces")
     _, accessory_faces = _vertices_and_faces(accessory_path)
-    # Cap faces use a single UV at the atlas origin. This leaves every body UV
-    # untouched while keeping the fused mesh valid for the existing body
-    # material path. A future authored cap atlas may replace this UV choice.
-    cap_uv = len(body_uvs) + 1
-    cap_vertex_offset = len(body_vertices)
+    # Accessory faces use a single identity-selected UV. This leaves every body
+    # UV untouched while keeping each fused mesh valid for the body material
+    # path until an authored accessory material pipeline is introduced.
+    accessory_uv_index = len(body_uvs) + 1
+    accessory_vertex_offset = len(body_vertices)
     output = [
         "# Fused NPC body + accessory; do not edit generated projection.",
         *body_vertices,
         *(f"v {x:.9g} {y:.9g} {z:.9g}" for x, y, z in accessory_vertices),
         *body_uvs,
-        "vt 0 0",
+        f"vt {accessory_uv[0]:.9g} {accessory_uv[1]:.9g}",
         *body_normals,
         *body_faces,
         *(
-            "f " + " ".join(f"{cap_vertex_offset + index}/{cap_uv}" for index in face)
+            "f "
+            + " ".join(f"{accessory_vertex_offset + index}/{accessory_uv_index}" for index in face)
             for face in accessory_faces
         ),
     ]
     return ("\n".join(output) + "\n").encode("utf-8")
 
 
-def fused_obj(body_path: Path, accessory_path: Path, position: list[float]) -> bytes:
+def fused_obj(
+    body_path: Path,
+    accessory_path: Path,
+    position: list[float],
+    accessory_uv: tuple[float, float] = (0.0, 0.0),
+) -> bytes:
     """Append a translated accessory to a body OBJ with one stable cap UV."""
     accessory_vertices, _ = _vertices_and_faces(accessory_path)
     return _fused_obj_with_vertices(
-        body_path, accessory_path, accessory_vertices + np.asarray(position, dtype=np.float64)
+        body_path,
+        accessory_path,
+        accessory_vertices + np.asarray(position, dtype=np.float64),
+        accessory_uv,
     )
 
 
 def _head_indices(vertices: np.ndarray) -> np.ndarray:
-    indices = np.flatnonzero((vertices[:, 2] > 1.45) & (np.hypot(vertices[:, 0], vertices[:, 1]) < 0.19))
+    indices = np.flatnonzero(
+        (vertices[:, 2] > 1.45) & (np.hypot(vertices[:, 0], vertices[:, 1]) < 0.19)
+    )
     if len(indices) < 16:
         raise ValueError("Reference body frame has too few head vertices for head-follow fusion")
     return indices
@@ -87,7 +102,11 @@ def head_follow_vertices(
     reference_head: np.ndarray, target_head: np.ndarray, reference_accessory: np.ndarray
 ) -> np.ndarray:
     """Apply the rigid head transform from a reference body frame to a target frame."""
-    if reference_head.shape != target_head.shape or reference_head.ndim != 2 or reference_head.shape[1] != 3:
+    if (
+        reference_head.shape != target_head.shape
+        or reference_head.ndim != 2
+        or reference_head.shape[1] != 3
+    ):
         raise ValueError("Head-follow frames need corresponding Nx3 vertices")
     reference_centre = reference_head.mean(axis=0)
     target_centre = target_head.mean(axis=0)
@@ -108,10 +127,17 @@ def fuse_manifest(
     output_manifest: Path,
     *,
     bundle_id: str,
+    fused_bundle_id: str | None = None,
+    accessory_uv: tuple[float, float] = (0.0, 0.0),
 ) -> dict[str, object]:
-    """Create fused frame projections and a manifest copy that references them."""
+    """Create a target-only fused bundle without modifying the source bundle."""
     source = json.loads(manifest_path.read_text(encoding="utf-8"))
-    bundle = source["bundles"][bundle_id]
+    source_bundle = source["bundles"][bundle_id]
+    fused_bundle_id = fused_bundle_id or bundle_id
+    if fused_bundle_id != bundle_id and fused_bundle_id in source["bundles"]:
+        raise ValueError(f"Fused bundle already exists: {fused_bundle_id}")
+    bundle = copy.deepcopy(source_bundle) if fused_bundle_id != bundle_id else source_bundle
+    source["bundles"][fused_bundle_id] = bundle
     anchors = json.loads(anchors_path.read_text(encoding="utf-8"))
     # The preview manifest retains the source accessory declaration for
     # provenance even though the population no longer instantiates it. Keep
@@ -156,7 +182,12 @@ def fuse_manifest(
                 reference_body[head_indices], target_body[head_indices], reference_accessory
             )
             destination.write_bytes(
-                _fused_obj_with_vertices(manifest_path.parent / relative, accessory_path, followed_accessory)
+                _fused_obj_with_vertices(
+                    manifest_path.parent / relative,
+                    accessory_path,
+                    followed_accessory,
+                    accessory_uv,
+                )
             )
             try:
                 output_relative = destination.relative_to(output_manifest.parent).as_posix()
@@ -165,7 +196,7 @@ def fuse_manifest(
             fused_paths[clip_id].append(output_relative)
             hashes[output_relative] = _sha256(destination)
         clip["frames"] = fused_paths[clip_id]
-    source["fused_accessory"] = {
+    source.setdefault("fused_accessories", {})[fused_bundle_id] = {
         "mode": "body_frame_projection",
         "head_follow": "rigid_head_alignment_v1",
         "reference_frame": "idle/0",
@@ -186,7 +217,12 @@ def fuse_manifest(
     }
     receipt_path = output_dir / "fused_accessory.receipt.json"
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-    return {"manifest": str(output_manifest), "receipt": str(receipt_path), "clips": fused_paths}
+    return {
+        "manifest": str(output_manifest),
+        "receipt": str(receipt_path),
+        "clips": fused_paths,
+        "bundle": fused_bundle_id,
+    }
 
 
 def main() -> None:
@@ -197,6 +233,8 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--output-manifest", type=Path, required=True)
     parser.add_argument("--bundle", default="smplx_office_neutral_v1")
+    parser.add_argument("--fused-bundle", required=True)
+    parser.add_argument("--accessory-uv", type=float, nargs=2, required=True)
     args = parser.parse_args()
     result = fuse_manifest(
         args.asset_manifest.resolve(),
@@ -205,6 +243,8 @@ def main() -> None:
         args.output_dir.resolve(),
         args.output_manifest.resolve(),
         bundle_id=args.bundle,
+        fused_bundle_id=args.fused_bundle,
+        accessory_uv=tuple(args.accessory_uv),
     )
     print(json.dumps(result, indent=2))
 

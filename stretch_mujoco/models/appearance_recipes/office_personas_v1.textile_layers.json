@@ -28,14 +28,14 @@
       "seed": 302
     },
     {
-      "id": "bottom_jogging_melange_v1",
+      "id": "top_jogging_melange_v1",
       "source_archive": "../../sources/npc/textures/jogging_melange_v1/jogging_melange_2k.zip",
       "source_sha256": "453766b8fb4faf13781ef0b9599cf3867fca830a164c7dc15bb417cf28dcc68d",
       "source_url": "https://polyhaven.com/a/jogging_melange",
       "license": "CC0-1.0",
       "archive_member": "textures/jogging_melange_diff_2k.jpg",
-      "mask": "appearance_sources/semantic_masks_v2/masks/pants.png",
-      "output": "appearance_sources/office_personas_v1/textiles/bottom_jogging_melange_v1.png",
+      "mask": "appearance_sources/semantic_masks_v2/masks/top.png",
+      "output": "appearance_sources/office_personas_v1/textiles/top_jogging_melange_v1.png",
       "tile_width_px": 192,
       "seed": 303
     }

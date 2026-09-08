@@ -40,6 +40,7 @@ def runtime_population_payload(
     source_population_path: Path,
     npc_id: str,
     accessory_id: str,
+    fused_bundle_id: str | None = None,
     manifest_path: Path,
 ) -> dict[str, object]:
     """Bind one NPC to fused frames and retire only its duplicate accessory geom."""
@@ -53,6 +54,8 @@ def runtime_population_payload(
     if not isinstance(raw_accessories, list):
         raise ValueError(f"NPC '{npc_id}' accessories must be a list")
     embodiment["accessories"] = [item for item in raw_accessories if item != accessory_id]
+    if fused_bundle_id is not None:
+        embodiment["bundle"] = fused_bundle_id
     config = embodiment.get("appearance_config")
     if isinstance(config, dict) and isinstance(config.get("accessories"), list):
         config["accessories"] = [item for item in config["accessories"] if item != accessory_id]
@@ -96,6 +99,10 @@ def build_fused_accessory(
     output_manifest: Path,
     output_population: Path,
     bundle_id: str,
+    source_format: str = "nested_zip_obj",
+    nested_archive_member: str | None = "source/cap.zip",
+    obj_member: str | None = "cap.obj",
+    source_unit_scale: float = 0.01,
 ) -> dict[str, str]:
     """Materialize every derived projection from one immutable pose recipe."""
     recipe = FusedAccessoryRecipe.from_json(recipe_path)
@@ -114,6 +121,11 @@ def build_fused_accessory(
         head_clearance_m=recipe.head_clearance_m,
         back_offset_m=recipe.back_offset_m,
         back_tilt_degrees=recipe.back_tilt_degrees,
+        source_format=source_format,
+        nested_archive_member=nested_archive_member,
+        obj_member=obj_member,
+        source_unit_scale=source_unit_scale,
+        source_vertical_anchor=recipe.source_vertical_anchor,
     )
     receipt_path = Path(prepared["receipt"])
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
@@ -135,6 +147,7 @@ def build_fused_accessory(
         }
     )
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+    fused_bundle_id = f"{bundle_id}__fused__{recipe.accessory_id}"
     fused = fuse.fuse_manifest(
         source_manifest.resolve(),
         Path(prepared["mesh"]),
@@ -142,23 +155,26 @@ def build_fused_accessory(
         output_dir / "frames",
         output_manifest.resolve(),
         bundle_id=bundle_id,
+        fused_bundle_id=fused_bundle_id,
+        accessory_uv=recipe.accessory_uv,
     )
     manifest = json.loads(output_manifest.read_text(encoding="utf-8"))
     bind_recipe_accessory(
         manifest,
-        bundle_id=bundle_id,
+        bundle_id=fused_bundle_id,
         recipe=recipe,
         mesh_path=Path(prepared["mesh"]),
         anchors_path=Path(prepared["anchors"]),
         manifest_path=output_manifest,
     )
-    manifest["fused_accessory"].update(
+    manifest["fused_accessories"][fused_bundle_id].update(
         {
             "recipe": str(recipe_path.resolve()),
             "recipe_sha256": recipe_sha256(recipe_path),
             "receipt": str(receipt_path.resolve()),
             "receipt_sha256": _sha256(receipt_path),
             "attachment_mode": recipe.attachment_mode,
+            "fused_bundle": fused_bundle_id,
         }
     )
     output_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -167,6 +183,7 @@ def build_fused_accessory(
         source_population_path=source_population.resolve(),
         npc_id=npc_id,
         accessory_id=recipe.accessory_id,
+        fused_bundle_id=fused_bundle_id,
         manifest_path=output_manifest,
     )
     output_population.write_text(json.dumps(population, indent=2) + "\n", encoding="utf-8")
@@ -191,6 +208,10 @@ def main() -> None:
     parser.add_argument("--output-manifest", type=Path, required=True)
     parser.add_argument("--output-population", type=Path, required=True)
     parser.add_argument("--bundle", default="smplx_office_neutral_v1")
+    parser.add_argument("--source-format", required=True)
+    parser.add_argument("--nested-archive-member")
+    parser.add_argument("--obj-member")
+    parser.add_argument("--source-unit-scale", type=float, required=True)
     args = parser.parse_args()
     result = build_fused_accessory(
         recipe_path=args.recipe,
@@ -202,6 +223,10 @@ def main() -> None:
         output_manifest=args.output_manifest,
         output_population=args.output_population,
         bundle_id=args.bundle,
+        source_format=args.source_format,
+        nested_archive_member=args.nested_archive_member,
+        obj_member=args.obj_member,
+        source_unit_scale=args.source_unit_scale,
     )
     print(json.dumps(result, indent=2))
 

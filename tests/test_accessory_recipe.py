@@ -210,6 +210,63 @@ def test_runtime_scene_build_rebuilds_recipe_every_invocation(
     assert calls[0]["recipe_path"] == tmp_path / "cap.recipe.json"
 
 
+def test_runtime_scene_build_composes_each_accessory_from_the_previous_projection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def runtime_config(name: str) -> Path:
+        path = tmp_path / f"{name}.runtime.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "recipe": f"{name}.recipe.json",
+                    "source_archive": f"{name}.zip",
+                    "source_manifest": "base_manifest.json",
+                    "source_population": "base_population.json",
+                    "npc_id": name,
+                    "bundle": "bundle",
+                    "output_dir": f"generated/{name}",
+                    "output_manifest": f"generated/{name}.manifest.json",
+                    "output_population": f"generated/{name}.population.json",
+                }
+            )
+        )
+        return path
+
+    scene_module_path = Path(__file__).parents[1] / "tools" / "build_npc_scene.py"
+    spec = importlib.util.spec_from_file_location("build_npc_scene_tool", scene_module_path)
+    assert spec and spec.loader
+    scene_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(scene_module)
+    calls: list[dict[str, object]] = []
+
+    class Builder:
+        @staticmethod
+        def build_fused_accessory(**kwargs: object) -> dict[str, str]:
+            calls.append(kwargs)
+            name = Path(str(kwargs["recipe_path"])).stem.removesuffix(".recipe")
+            return {
+                "manifest": str(tmp_path / f"generated/{name}.manifest.json"),
+                "population": str(tmp_path / f"generated/{name}.population.json"),
+            }
+
+    monkeypatch.setattr(scene_module, "_tool_module", lambda _: Builder)
+    monkeypatch.setattr(
+        scene_module,
+        "build_npc_scene",
+        lambda population, output, include_base_scene=False: Path(output),
+    )
+
+    scene_module.build_scene_from_accessory_runtime_configs(
+        [runtime_config("cap"), runtime_config("hair")], tmp_path / "office.xml"
+    )
+
+    assert calls[0]["source_manifest"] == tmp_path / "base_manifest.json"
+    assert calls[0]["source_population"] == tmp_path / "base_population.json"
+    assert calls[1]["source_manifest"] == tmp_path / "generated/cap.manifest.json"
+    assert calls[1]["source_population"] == tmp_path / "generated/cap.population.json"
+
+
 def test_builder_creates_nested_runtime_population_directory(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -263,8 +320,9 @@ def test_checked_in_baseball_cap_runtime_config_references_the_canonical_recipe(
     assert runtime.resolve_path(runtime_path, "recipe") == recipe_path
     assert recipe.accessory_id == "baseball_cap_v1"
     assert runtime.source_archive == (
-        "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap_v1.zip"
+        "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap.glb"
     )
+    assert runtime.source_format == "glb"
     assert runtime.npc_id == "npc_alex_chen"
     assert runtime.output_dir.endswith("runtime/baseball_cap_v1/npc_alex_chen")
     assert runtime.source_manifest == "../assets/humanoid/generated/animations/manifest.json"
