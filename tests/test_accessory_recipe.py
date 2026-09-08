@@ -319,6 +319,7 @@ def test_checked_in_baseball_cap_runtime_config_references_the_canonical_recipe(
 
     assert runtime.resolve_path(runtime_path, "recipe") == recipe_path
     assert recipe.accessory_id == "baseball_cap_v1"
+    assert recipe.yaw_degrees == 180.0
     assert runtime.source_archive == (
         "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap.glb"
     )

@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
 
-ACCESSORY_RECIPE_SCHEMA_VERSION = 2
+ACCESSORY_RECIPE_SCHEMA_VERSION = 3
+ACCESSORY_RUNTIME_CONFIG_SCHEMA_VERSION = 2
 
 
 @dataclass(frozen=True)
@@ -19,6 +21,7 @@ class FusedAccessoryRecipe:
     head_clearance_m: float
     back_offset_m: float
     back_tilt_degrees: float
+    yaw_degrees: float
     source_vertical_anchor: float | None
     accessory_uv: tuple[float, float]
 
@@ -40,6 +43,8 @@ class FusedAccessoryRecipe:
             "source_vertical_anchor",
             "accessory_uv",
         }
+        if payload.get("schema_version") == ACCESSORY_RECIPE_SCHEMA_VERSION:
+            required = {*required, "yaw_degrees"}
         if payload.get("schema_version") == 1:
             required = legacy_required
         unknown = set(payload) - required
@@ -49,7 +54,7 @@ class FusedAccessoryRecipe:
                 "Accessory recipe fields mismatch: "
                 f"missing={sorted(missing)}, unknown={sorted(unknown)}"
             )
-        if payload["schema_version"] not in {1, ACCESSORY_RECIPE_SCHEMA_VERSION}:
+        if payload["schema_version"] not in {1, 2, ACCESSORY_RECIPE_SCHEMA_VERSION}:
             raise ValueError("Unsupported accessory recipe schema_version")
         if not isinstance(payload["accessory_id"], str) or not payload["accessory_id"]:
             raise ValueError("Accessory recipe accessory_id must be a non-empty string")
@@ -61,6 +66,12 @@ class FusedAccessoryRecipe:
         }
         if values["mesh_scale"] <= 0 or values["back_offset_m"] < 0:
             raise ValueError("Accessory recipe has invalid scale or back offset")
+        raw_yaw_degrees = payload.get("yaw_degrees", 0.0)
+        if not isinstance(raw_yaw_degrees, (int, float)) or isinstance(raw_yaw_degrees, bool):
+            raise ValueError("Accessory recipe yaw_degrees must be finite")
+        yaw_degrees = float(raw_yaw_degrees)
+        if not math.isfinite(yaw_degrees):
+            raise ValueError("Accessory recipe yaw_degrees must be finite")
         anchor = payload.get("source_vertical_anchor")
         if anchor is not None:
             if not isinstance(anchor, (int, float)) or isinstance(anchor, bool):
@@ -80,6 +91,7 @@ class FusedAccessoryRecipe:
             str(payload["accessory_id"]),
             str(payload["attachment_mode"]),
             **values,
+            yaw_degrees=yaw_degrees,
             source_vertical_anchor=anchor,
             accessory_uv=(float(uv[0]), float(uv[1])),
         )
@@ -93,6 +105,7 @@ class FusedAccessoryRecipe:
             "head_clearance_m": self.head_clearance_m,
             "back_offset_m": self.back_offset_m,
             "back_tilt_degrees": self.back_tilt_degrees,
+            "yaw_degrees": self.yaw_degrees,
             "source_vertical_anchor": self.source_vertical_anchor,
             "accessory_uv": list(self.accessory_uv),
         }
@@ -157,7 +170,7 @@ class FusedAccessoryRuntimeConfig:
                 "Accessory runtime config fields mismatch: "
                 f"missing={sorted(missing)}, unknown={sorted(unknown)}"
             )
-        if payload["schema_version"] not in {1, ACCESSORY_RECIPE_SCHEMA_VERSION}:
+        if payload["schema_version"] not in {1, ACCESSORY_RUNTIME_CONFIG_SCHEMA_VERSION}:
             raise ValueError("Unsupported accessory runtime config schema_version")
         values = {field: payload[field] for field in required - {"schema_version"}}
         if payload["schema_version"] == 1:

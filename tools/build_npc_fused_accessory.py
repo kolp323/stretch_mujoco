@@ -121,6 +121,7 @@ def build_fused_accessory(
         head_clearance_m=recipe.head_clearance_m,
         back_offset_m=recipe.back_offset_m,
         back_tilt_degrees=recipe.back_tilt_degrees,
+        yaw_degrees=recipe.yaw_degrees,
         source_format=source_format,
         nested_archive_member=nested_archive_member,
         obj_member=obj_member,
@@ -135,6 +136,7 @@ def build_fused_accessory(
         "head_clearance_m": recipe.head_clearance_m,
         "back_offset_m": recipe.back_offset_m,
         "back_tilt_degrees": recipe.back_tilt_degrees,
+        "yaw_degrees": recipe.yaw_degrees,
     }
     for field, expected in receipt_fields.items():
         if receipt.get(field) != expected:

@@ -216,6 +216,7 @@ def normalized_obj(
     *,
     mesh_scale: float = 1.3,
     back_tilt_degrees: float = 13.0,
+    yaw_degrees: float = 0.0,
     source_unit_scale: float = 0.01,
     source_vertical_anchor: float | None = None,
 ) -> bytes:
@@ -224,8 +225,8 @@ def normalized_obj(
         raise ValueError("mesh_scale and source_unit_scale must be positive finite numbers")
     if source_unit_scale <= 0:
         raise ValueError("source_unit_scale must be positive")
-    if not np.isfinite(back_tilt_degrees):
-        raise ValueError("back_tilt_degrees must be finite")
+    if not np.isfinite(back_tilt_degrees) or not np.isfinite(yaw_degrees):
+        raise ValueError("back_tilt_degrees and yaw_degrees must be finite")
     lines = source_obj.decode("utf-8").splitlines()
     vertices = np.array(
         [[float(value) for value in line.split()[1:4]] for line in lines if line.startswith("v ")],
@@ -253,6 +254,11 @@ def normalized_obj(
         ((1.0, 0.0, 0.0), (0.0, np.cos(angle), -np.sin(angle)), (0.0, np.sin(angle), np.cos(angle)))
     )
     converted = converted @ tilt.T
+    yaw = np.deg2rad(yaw_degrees)
+    yaw_rotation = np.array(
+        ((np.cos(yaw), -np.sin(yaw), 0.0), (np.sin(yaw), np.cos(yaw), 0.0), (0.0, 0.0, 1.0))
+    )
+    converted = converted @ yaw_rotation.T
     passthrough = [line for line in lines if not line.startswith(("v ", "mtllib ", "usemtl "))]
     return (
         "# Prepared from a recipe-bound Y-up source -> metres/MuJoCo Z-up.\n"
@@ -302,6 +308,7 @@ def prepare(
     back_offset_m: float = 0.098,
     mesh_scale: float = 1.3,
     back_tilt_degrees: float = 13.0,
+    yaw_degrees: float = 0.0,
     source_format: str = "nested_zip_obj",
     nested_archive_member: str | None = SOURCE_ARCHIVE_MEMBER,
     obj_member: str | None = SOURCE_OBJ_MEMBER,
@@ -322,6 +329,7 @@ def prepare(
             source_obj,
             mesh_scale=mesh_scale,
             back_tilt_degrees=back_tilt_degrees,
+            yaw_degrees=yaw_degrees,
             source_unit_scale=source_unit_scale,
             source_vertical_anchor=source_vertical_anchor,
         )
@@ -351,6 +359,7 @@ def prepare(
         "back_offset_m": back_offset_m,
         "mesh_scale": mesh_scale,
         "back_tilt_degrees": back_tilt_degrees,
+        "yaw_degrees": yaw_degrees,
         **provenance,
         "outputs": {
             "mesh": mesh_path.name,

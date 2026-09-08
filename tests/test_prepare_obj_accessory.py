@@ -99,6 +99,17 @@ def test_normalized_source_cap_is_meter_z_up_and_records_nested_provenance(tmp_p
         ]
     )
     assert not np.allclose(tilted_vertices, scaled_vertices)
+    turned = module.normalized_obj(
+        source, mesh_scale=1.0, back_tilt_degrees=0.0, yaw_degrees=180.0
+    ).decode("utf-8")
+    turned_vertices = np.array(
+        [
+            [float(value) for value in line.split()[1:4]]
+            for line in turned.splitlines()
+            if line.startswith("v ")
+        ]
+    )
+    assert np.allclose(turned_vertices[:, :2], -vertices[:, :2])
 
 
 def test_glb_source_is_converted_to_obj_with_node_transform(tmp_path: Path) -> None:
