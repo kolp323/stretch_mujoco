@@ -117,10 +117,12 @@ def build_fused_accessory(
         source_manifest.resolve(),
         accessory_dir,
         recipe.accessory_id,
+        lateral_offset_m=recipe.lateral_offset_m,
         mesh_scale=recipe.mesh_scale,
         head_clearance_m=recipe.head_clearance_m,
         back_offset_m=recipe.back_offset_m,
         back_tilt_degrees=recipe.back_tilt_degrees,
+        roll_degrees=recipe.roll_degrees,
         yaw_degrees=recipe.yaw_degrees,
         source_format=source_format,
         nested_archive_member=nested_archive_member,
@@ -132,10 +134,12 @@ def build_fused_accessory(
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     receipt_fields = {
         "asset_id": recipe.accessory_id,
+        "lateral_offset_m": recipe.lateral_offset_m,
         "mesh_scale": recipe.mesh_scale,
         "head_clearance_m": recipe.head_clearance_m,
         "back_offset_m": recipe.back_offset_m,
         "back_tilt_degrees": recipe.back_tilt_degrees,
+        "roll_degrees": recipe.roll_degrees,
         "yaw_degrees": recipe.yaw_degrees,
     }
     for field, expected in receipt_fields.items():

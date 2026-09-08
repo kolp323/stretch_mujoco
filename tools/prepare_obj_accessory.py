@@ -216,24 +216,55 @@ def normalized_obj(
     *,
     mesh_scale: float = 1.3,
     back_tilt_degrees: float = 13.0,
+    roll_degrees: float = 0.0,
     yaw_degrees: float = 0.0,
     source_unit_scale: float = 0.01,
     source_vertical_anchor: float | None = None,
 ) -> bytes:
     """Convert a Y-up source OBJ into a metre, Z-up, head-anchored OBJ."""
-    if not np.isfinite(mesh_scale) or mesh_scale <= 0 or not np.isfinite(source_unit_scale):
-        raise ValueError("mesh_scale and source_unit_scale must be positive finite numbers")
-    if source_unit_scale <= 0:
-        raise ValueError("source_unit_scale must be positive")
-    if not np.isfinite(back_tilt_degrees) or not np.isfinite(yaw_degrees):
-        raise ValueError("back_tilt_degrees and yaw_degrees must be finite")
     lines = source_obj.decode("utf-8").splitlines()
     vertices = np.array(
         [[float(value) for value in line.split()[1:4]] for line in lines if line.startswith("v ")],
         dtype=np.float64,
     )
-    if not len(vertices):
+    converted = transform_accessory_vertices(
+        vertices,
+        mesh_scale=mesh_scale,
+        back_tilt_degrees=back_tilt_degrees,
+        roll_degrees=roll_degrees,
+        yaw_degrees=yaw_degrees,
+        source_unit_scale=source_unit_scale,
+        source_vertical_anchor=source_vertical_anchor,
+    )
+    passthrough = [line for line in lines if not line.startswith(("v ", "mtllib ", "usemtl "))]
+    return (
+        "# Prepared from a recipe-bound Y-up source -> metres/MuJoCo Z-up.\n"
+        + "\n".join([*(f"v {x:.9g} {y:.9g} {z:.9g}" for x, y, z in converted), *passthrough])
+        + "\n"
+    ).encode("utf-8")
+
+
+def transform_accessory_vertices(
+    vertices: np.ndarray,
+    *,
+    mesh_scale: float,
+    back_tilt_degrees: float,
+    roll_degrees: float,
+    yaw_degrees: float,
+    source_unit_scale: float,
+    source_vertical_anchor: float | None,
+) -> np.ndarray:
+    """Apply the authoritative source-to-head-local accessory transform."""
+    if not np.isfinite(mesh_scale) or mesh_scale <= 0 or not np.isfinite(source_unit_scale):
+        raise ValueError("mesh_scale and source_unit_scale must be positive finite numbers")
+    if source_unit_scale <= 0:
+        raise ValueError("source_unit_scale must be positive")
+    if not all(np.isfinite(value) for value in (back_tilt_degrees, roll_degrees, yaw_degrees)):
+        raise ValueError("back_tilt_degrees, roll_degrees and yaw_degrees must be finite")
+    if vertices.ndim != 2 or vertices.shape[1:] != (3,) or not len(vertices):
         raise ValueError("Source OBJ has no vertices")
+    if not np.all(np.isfinite(vertices)):
+        raise ValueError("Source OBJ vertices must be finite")
     minimum, maximum = vertices.min(axis=0), vertices.max(axis=0)
     centre = (minimum + maximum) / 2.0
     vertical_origin = minimum[1] if source_vertical_anchor is None else source_vertical_anchor
@@ -254,27 +285,50 @@ def normalized_obj(
         ((1.0, 0.0, 0.0), (0.0, np.cos(angle), -np.sin(angle)), (0.0, np.sin(angle), np.cos(angle)))
     )
     converted = converted @ tilt.T
+    roll = np.deg2rad(roll_degrees)
+    roll_rotation = np.array(
+        ((np.cos(roll), 0.0, np.sin(roll)), (0.0, 1.0, 0.0), (-np.sin(roll), 0.0, np.cos(roll)))
+    )
+    converted = converted @ roll_rotation.T
     yaw = np.deg2rad(yaw_degrees)
     yaw_rotation = np.array(
         ((np.cos(yaw), -np.sin(yaw), 0.0), (np.sin(yaw), np.cos(yaw), 0.0), (0.0, 0.0, 1.0))
     )
     converted = converted @ yaw_rotation.T
-    passthrough = [line for line in lines if not line.startswith(("v ", "mtllib ", "usemtl "))]
-    return (
-        "# Prepared from a recipe-bound Y-up source -> metres/MuJoCo Z-up.\n"
-        + "\n".join([*(f"v {x:.9g} {y:.9g} {z:.9g}" for x, y, z in converted), *passthrough])
-        + "\n"
-    ).encode("utf-8")
+    return converted
+
+
+def head_top_position(
+    points: np.ndarray,
+    *,
+    lateral_offset_m: float = 0.0,
+    head_clearance_m: float = -0.026,
+    back_offset_m: float = 0.098,
+) -> list[float]:
+    """Resolve one accessory anchor from a body frame and recipe offsets."""
+    if not all(np.isfinite(value) for value in (lateral_offset_m, head_clearance_m, back_offset_m)):
+        raise ValueError("Accessory position offsets must be finite")
+    head = points[(points[:, 2] > 1.45) & (np.hypot(points[:, 0], points[:, 1]) < 0.19)]
+    if not len(head):
+        raise ValueError("Could not identify head vertices")
+    return [
+        float(np.median(head[:, 0]) + lateral_offset_m),
+        # NPC forward is local -Y, so +Y moves an accessory backward.
+        float(np.median(head[:, 1]) + back_offset_m),
+        float(np.max(head[:, 2]) + head_clearance_m),
+    ]
 
 
 def head_top_anchors(
-    manifest_path: Path, *, head_clearance_m: float = -0.026, back_offset_m: float = 0.098
+    manifest_path: Path,
+    *,
+    lateral_offset_m: float = 0.0,
+    head_clearance_m: float = -0.026,
+    back_offset_m: float = 0.098,
 ) -> dict[str, list[dict[str, list[float]]]]:
     """Place the normalized mesh above and behind the animated crown."""
-    if not np.isfinite(head_clearance_m):
-        raise ValueError("head_clearance_m must be finite")
-    if back_offset_m < 0:
-        raise ValueError("back_offset_m must not be negative")
+    if not all(np.isfinite(value) for value in (lateral_offset_m, head_clearance_m, back_offset_m)):
+        raise ValueError("Accessory position offsets must be finite")
     payload = json.loads(manifest_path.read_text(encoding="utf-8"))
     bundle = payload["bundles"]["smplx_office_neutral_v1"]
     anchors: dict[str, list[dict[str, list[float]]]] = {}
@@ -282,19 +336,13 @@ def head_top_anchors(
         anchors[clip] = []
         for relative in item["frames"]:
             points = _read_obj(manifest_path.parent / relative).vertices
-            head = points[(points[:, 2] > 1.45) & (np.hypot(points[:, 0], points[:, 1]) < 0.19)]
-            if not len(head):
-                raise ValueError(f"Could not identify head vertices in {relative}")
-            anchors[clip].append(
-                {
-                    "position": [
-                        float(np.median(head[:, 0])),
-                        # NPC forward is local -Y, so +Y moves a hat backward.
-                        float(np.median(head[:, 1]) + back_offset_m),
-                        float(np.max(head[:, 2]) + head_clearance_m),
-                    ]
-                }
+            position = head_top_position(
+                points,
+                lateral_offset_m=lateral_offset_m,
+                head_clearance_m=head_clearance_m,
+                back_offset_m=back_offset_m,
             )
+            anchors[clip].append({"position": position})
     return anchors
 
 
@@ -304,10 +352,12 @@ def prepare(
     output_dir: Path,
     accessory_id: str,
     *,
+    lateral_offset_m: float = 0.0,
     head_clearance_m: float = -0.026,
     back_offset_m: float = 0.098,
     mesh_scale: float = 1.3,
     back_tilt_degrees: float = 13.0,
+    roll_degrees: float = 0.0,
     yaw_degrees: float = 0.0,
     source_format: str = "nested_zip_obj",
     nested_archive_member: str | None = SOURCE_ARCHIVE_MEMBER,
@@ -329,6 +379,7 @@ def prepare(
             source_obj,
             mesh_scale=mesh_scale,
             back_tilt_degrees=back_tilt_degrees,
+            roll_degrees=roll_degrees,
             yaw_degrees=yaw_degrees,
             source_unit_scale=source_unit_scale,
             source_vertical_anchor=source_vertical_anchor,
@@ -339,6 +390,7 @@ def prepare(
         json.dumps(
             head_top_anchors(
                 manifest_path,
+                lateral_offset_m=lateral_offset_m,
                 head_clearance_m=head_clearance_m,
                 back_offset_m=back_offset_m,
             ),
@@ -355,10 +407,12 @@ def prepare(
         "source_unit_scale": source_unit_scale,
         "source_vertical_anchor": source_vertical_anchor,
         "anchor_contract": "local_z_zero_at_head_top_per_animation_frame",
+        "lateral_offset_m": lateral_offset_m,
         "head_clearance_m": head_clearance_m,
         "back_offset_m": back_offset_m,
         "mesh_scale": mesh_scale,
         "back_tilt_degrees": back_tilt_degrees,
+        "roll_degrees": roll_degrees,
         "yaw_degrees": yaw_degrees,
         **provenance,
         "outputs": {

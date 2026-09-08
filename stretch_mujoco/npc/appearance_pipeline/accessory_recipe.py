@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-ACCESSORY_RECIPE_SCHEMA_VERSION = 3
+ACCESSORY_RECIPE_SCHEMA_VERSION = 4
 ACCESSORY_RUNTIME_CONFIG_SCHEMA_VERSION = 2
 
 
@@ -18,9 +18,11 @@ class FusedAccessoryRecipe:
     accessory_id: str
     attachment_mode: str
     mesh_scale: float
+    lateral_offset_m: float
     head_clearance_m: float
     back_offset_m: float
     back_tilt_degrees: float
+    roll_degrees: float
     yaw_degrees: float
     source_vertical_anchor: float | None
     accessory_uv: tuple[float, float]
@@ -38,15 +40,22 @@ class FusedAccessoryRecipe:
             "back_offset_m",
             "back_tilt_degrees",
         }
-        required = {
+        version_2_required = {
             *legacy_required,
             "source_vertical_anchor",
             "accessory_uv",
         }
-        if payload.get("schema_version") == ACCESSORY_RECIPE_SCHEMA_VERSION:
-            required = {*required, "yaw_degrees"}
-        if payload.get("schema_version") == 1:
+        version_3_required = {*version_2_required, "yaw_degrees"}
+        current_required = {*version_3_required, "lateral_offset_m", "roll_degrees"}
+        schema_version = payload.get("schema_version")
+        if schema_version == 1:
             required = legacy_required
+        elif schema_version == 2:
+            required = version_2_required
+        elif schema_version == 3:
+            required = version_3_required
+        else:
+            required = current_required
         unknown = set(payload) - required
         missing = required - set(payload)
         if unknown or missing:
@@ -54,29 +63,48 @@ class FusedAccessoryRecipe:
                 "Accessory recipe fields mismatch: "
                 f"missing={sorted(missing)}, unknown={sorted(unknown)}"
             )
-        if payload["schema_version"] not in {1, 2, ACCESSORY_RECIPE_SCHEMA_VERSION}:
+        if payload["schema_version"] not in {1, 2, 3, ACCESSORY_RECIPE_SCHEMA_VERSION}:
             raise ValueError("Unsupported accessory recipe schema_version")
         if not isinstance(payload["accessory_id"], str) or not payload["accessory_id"]:
             raise ValueError("Accessory recipe accessory_id must be a non-empty string")
         if payload["attachment_mode"] != "head_follow_fused":
             raise ValueError("Accessory recipe attachment_mode must be 'head_follow_fused'")
-        values = {
-            name: float(payload[name])
-            for name in ("mesh_scale", "head_clearance_m", "back_offset_m", "back_tilt_degrees")
-        }
-        if values["mesh_scale"] <= 0 or values["back_offset_m"] < 0:
-            raise ValueError("Accessory recipe has invalid scale or back offset")
+        numeric_fields = (
+            "mesh_scale",
+            "head_clearance_m",
+            "back_offset_m",
+            "back_tilt_degrees",
+        )
+        if not all(
+            isinstance(payload[name], (int, float)) and not isinstance(payload[name], bool)
+            for name in numeric_fields
+        ):
+            raise ValueError("Accessory recipe pose fields must be numbers")
+        values = {name: float(payload[name]) for name in numeric_fields}
+        if not all(math.isfinite(value) for value in values.values()):
+            raise ValueError("Accessory recipe pose fields must be finite")
+        if values["mesh_scale"] <= 0:
+            raise ValueError("Accessory recipe mesh_scale must be positive")
+        raw_lateral_offset_m = payload.get("lateral_offset_m", 0.0)
+        raw_roll_degrees = payload.get("roll_degrees", 0.0)
         raw_yaw_degrees = payload.get("yaw_degrees", 0.0)
-        if not isinstance(raw_yaw_degrees, (int, float)) or isinstance(raw_yaw_degrees, bool):
-            raise ValueError("Accessory recipe yaw_degrees must be finite")
+        if not all(
+            isinstance(value, (int, float)) and not isinstance(value, bool)
+            for value in (raw_lateral_offset_m, raw_roll_degrees, raw_yaw_degrees)
+        ):
+            raise ValueError("Accessory recipe offsets and rotations must be numbers")
+        lateral_offset_m = float(raw_lateral_offset_m)
+        roll_degrees = float(raw_roll_degrees)
         yaw_degrees = float(raw_yaw_degrees)
-        if not math.isfinite(yaw_degrees):
-            raise ValueError("Accessory recipe yaw_degrees must be finite")
+        if not all(math.isfinite(value) for value in (lateral_offset_m, roll_degrees, yaw_degrees)):
+            raise ValueError("Accessory recipe offsets and rotations must be finite")
         anchor = payload.get("source_vertical_anchor")
         if anchor is not None:
             if not isinstance(anchor, (int, float)) or isinstance(anchor, bool):
                 raise ValueError("Accessory recipe source_vertical_anchor must be a number or null")
             anchor = float(anchor)
+            if not math.isfinite(anchor):
+                raise ValueError("Accessory recipe source_vertical_anchor must be finite")
         uv = payload.get("accessory_uv", [0.0, 0.0])
         if (
             not isinstance(uv, list)
@@ -91,6 +119,8 @@ class FusedAccessoryRecipe:
             str(payload["accessory_id"]),
             str(payload["attachment_mode"]),
             **values,
+            lateral_offset_m=lateral_offset_m,
+            roll_degrees=roll_degrees,
             yaw_degrees=yaw_degrees,
             source_vertical_anchor=anchor,
             accessory_uv=(float(uv[0]), float(uv[1])),
@@ -102,9 +132,11 @@ class FusedAccessoryRecipe:
             "accessory_id": self.accessory_id,
             "attachment_mode": self.attachment_mode,
             "mesh_scale": self.mesh_scale,
+            "lateral_offset_m": self.lateral_offset_m,
             "head_clearance_m": self.head_clearance_m,
             "back_offset_m": self.back_offset_m,
             "back_tilt_degrees": self.back_tilt_degrees,
+            "roll_degrees": self.roll_degrees,
             "yaw_degrees": self.yaw_degrees,
             "source_vertical_anchor": self.source_vertical_anchor,
             "accessory_uv": list(self.accessory_uv),

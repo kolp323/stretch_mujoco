@@ -141,8 +141,13 @@ def test_prepare_writes_production_receipt_and_all_clip_anchors(
     captured: dict[str, float] = {}
 
     def anchors(
-        _manifest: Path, *, head_clearance_m: float, back_offset_m: float
+        _manifest: Path,
+        *,
+        lateral_offset_m: float,
+        head_clearance_m: float,
+        back_offset_m: float,
     ) -> dict[str, list[dict[str, list[int]]]]:
+        captured["lateral_offset_m"] = lateral_offset_m
         captured["head_clearance_m"] = head_clearance_m
         captured["back_offset_m"] = back_offset_m
         return {"idle": [{"position": [0, 0, 1]}]}
@@ -166,21 +171,33 @@ def test_prepare_writes_production_receipt_and_all_clip_anchors(
     assert receipt["back_offset_m"] == 0.098
     assert receipt["mesh_scale"] == 1.3
     assert receipt["back_tilt_degrees"] == 13.0
-    assert captured == {"head_clearance_m": -0.026, "back_offset_m": 0.098}
+    assert captured == {
+        "lateral_offset_m": 0.0,
+        "head_clearance_m": -0.026,
+        "back_offset_m": 0.098,
+    }
     assert receipt["outputs"]["mesh"] == "baseball_cap_v1.obj"
     assert Path(paths["mesh"]).is_file()
     assert Path(paths["anchors"]).is_file()
 
 
-def test_head_top_anchors_rejects_invalid_offsets(tmp_path: Path) -> None:
+def test_head_top_anchors_accepts_forward_offset_and_rejects_invalid_values(tmp_path: Path) -> None:
     module = _module()
     manifest = tmp_path / "manifest.json"
     manifest.write_text(json.dumps({"bundles": {"smplx_office_neutral_v1": {"clips": {}}}}))
 
     with pytest.raises(ValueError, match="must be finite"):
         module.head_top_anchors(manifest, head_clearance_m=float("nan"))
-    with pytest.raises(ValueError, match="must not be negative"):
-        module.head_top_anchors(manifest, back_offset_m=-0.001)
+    points = np.array([[0.01, 0.02, 1.6], [-0.01, 0.0, 1.7]])
+    assert np.allclose(
+        module.head_top_position(
+            points,
+            lateral_offset_m=0.03,
+            head_clearance_m=-0.01,
+            back_offset_m=-0.04,
+        ),
+        [0.03, -0.03, 1.69],
+    )
     with pytest.raises(ValueError, match="positive finite"):
         module.normalized_obj(b"v 0 0 0\nf 1 1 1\n", mesh_scale=0)
     with pytest.raises(ValueError, match="must be finite"):

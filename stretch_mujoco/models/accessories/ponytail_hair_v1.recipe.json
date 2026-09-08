@@ -1,11 +1,13 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "accessory_id": "ponytail_hair_v1",
   "attachment_mode": "head_follow_fused",
   "mesh_scale": 1.0,
+  "lateral_offset_m": 0.0,
   "head_clearance_m": -0.01,
   "back_offset_m": 0.10,
   "back_tilt_degrees": 0.0,
+  "roll_degrees": 0.0,
   "yaw_degrees": 180.0,
   "source_vertical_anchor": 163.0,
   "accessory_uv": [0.319, 0.891]
