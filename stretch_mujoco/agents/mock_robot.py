@@ -22,6 +22,9 @@ class MockRobotExecutor:
 
     completion_delay_minutes: float = 1.0
     failed_task_ids: set[str] = field(default_factory=set)
+    drop_receipt_task_ids: set[str] = field(default_factory=set)
+    duplicate_receipt_task_ids: set[str] = field(default_factory=set)
+    handover_ready_task_ids: set[str] = field(default_factory=set)
     _remaining_minutes: dict[str, float] = field(default_factory=dict, init=False)
 
     def __post_init__(self) -> None:
@@ -45,7 +48,9 @@ class MockRobotExecutor:
                 task.status = RobotTaskStatus.RUNNING
             self._remaining_minutes[task_id] -= elapsed_minutes
             if self._remaining_minutes[task_id] <= 0:
-                runtime.complete_robot_task(
+                if task_id in self.drop_receipt_task_ids:
+                    continue
+                task_result = runtime.complete_robot_task(
                     task_id,
                     success=task_id not in self.failed_task_ids,
                     error=(
@@ -54,5 +59,22 @@ class MockRobotExecutor:
                         else None
                     ),
                 )
+                if task_id in self.duplicate_receipt_task_ids:
+                    runtime.complete_robot_task(
+                        task_id, success=task_result.status == RobotTaskStatus.SUCCEEDED
+                    )
+                if (
+                    task_id in self.handover_ready_task_ids
+                    and task_result.status == RobotTaskStatus.SUCCEEDED
+                    and task_result.conversation_id is not None
+                ):
+                    runtime.record_robot_handover_receipt(
+                        task_result.conversation_id,
+                        task_id,
+                        f"{task_id}:handover",
+                        robot_release_confirmed=True,
+                        npc_attachment_confirmed=True,
+                        interaction_confirmed=True,
+                    )
                 completed.append(task_id)
         return tuple(completed)

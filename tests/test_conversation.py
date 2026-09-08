@@ -22,6 +22,9 @@ from stretch_mujoco.agents import (
     MemoryEntry,
     OfficeAgentRuntime,
     SpatialPose,
+    SocialConversationProposal,
+    SocialState,
+    TurnPolicy,
 )
 from stretch_mujoco.semantics import ObjectType, SemanticObject, SemanticWorld
 
@@ -106,6 +109,25 @@ def test_conversation_requires_distance_and_mutual_facing() -> None:
 
     with pytest.raises(ValueError, match="too far apart"):
         coordinator.start(("a", "b"), "status", 0.0, poses)
+
+
+def test_conversation_spatial_boundaries_accept_exact_limits_and_reject_overage() -> None:
+    coordinator = ConversationCoordinator(max_distance=1.0, max_facing_degrees=60.0)
+    boundary_poses = {
+        "a": SpatialPose((0.0, 0.0, 0.0), pi / 3),
+        "b": SpatialPose((1.0, 0.0, 0.0), 2 * pi / 3),
+    }
+    assert (
+        coordinator.start(("a", "b"), "boundary", 0.0, boundary_poses).status
+        == ConversationStatus.ACTIVE
+    )
+    with pytest.raises(ValueError, match="too far apart"):
+        coordinator.start(
+            ("c", "d"),
+            "too far",
+            1.0,
+            {"c": boundary_poses["a"], "d": SpatialPose((1.001, 0.0, 0.0), pi)},
+        )
 
 
 def test_conversation_contract_uses_deterministic_ids_and_rejects_repeated_participants() -> None:
@@ -296,6 +318,14 @@ def test_robot_conversation_filters_candidate_and_restores_agent_plan() -> None:
     assert session.status == ConversationStatus.ACTIVE
     assert agent.state.availability == "in_conversation"
     assert agent.state.attention_target == "stretch_3"
+    assert runtime.request_robot_task(
+        session.session_id,
+        "employee_01",
+        task="deliver",
+        object_id="document_report",
+        destination="workstation_right",
+    ).valid
+    runtime.tick(1.0)
     turn = runtime.record_conversation_candidate(
         session.session_id,
         "employee_01",
@@ -340,9 +370,9 @@ def test_llm_dialogue_is_only_a_candidate_and_uses_allowed_intent() -> None:
         {"intent": "handover_confirm", "text": "Item released at the handover point."},
     )
 
-    assert result.valid
-    assert session.transcript[0].intent == ConversationIntent.HANDOVER_CONFIRM
-    assert session.transcript[0].text == "Item released at the handover point."
+    assert not result.valid
+    assert "requires release" in result.errors[0]
+    assert not session.transcript
 
 
 def test_npc_conversation_intents_and_cooldown_are_enforced() -> None:
@@ -397,3 +427,179 @@ def test_busy_plan_is_not_interrupted_by_default() -> None:
             facing_snapshot(),
             interrupt_policy=InterruptPolicy.REJECT,
         )
+
+
+def test_conversation_terminal_cleanup_is_idempotent_and_preserves_planner_queue() -> None:
+    runtime = load_runtime()
+    runtime.drain_llm_requests()
+    agent = runtime.agents["employee_01"]
+    agent.planner.action_queue = []
+    agent.state.current_goal = "work"
+    session = runtime.start_conversation("employee_01", "stretch_3", "status", facing_snapshot())
+
+    assert agent.state.conversation_id == session.session_id
+    completed = runtime.complete_conversation(session.session_id)
+    events_after_first = tuple(
+        event for event in runtime.events if event.event == "conversation_completed"
+    )
+    assert runtime.complete_conversation(session.session_id) is completed
+    assert runtime.cancel_conversation(session.session_id) is completed
+
+    assert completed.status == ConversationStatus.COMPLETED
+    assert agent.state.conversation_id is None
+    assert agent.state.current_goal == "work"
+    assert len(
+        tuple(event for event in runtime.events if event.event == "conversation_completed")
+    ) == len(events_after_first)
+    assert not [event for event in runtime.events if event.event == "conversation_cancelled"]
+
+
+def test_round_robin_turns_and_turn_timeout_are_enforced() -> None:
+    coordinator = ConversationCoordinator(cooldown_minutes=0.0)
+    poses = {
+        "a": SpatialPose((0.0, 0.0, 0.0), 0.0),
+        "b": SpatialPose((1.0, 0.0, 0.0), pi),
+    }
+    session = coordinator.start(
+        ("a", "b"), "status", 0.0, poses, turn_policy=TurnPolicy.ROUND_ROBIN, turn_timeout=0.5
+    )
+    with pytest.raises(ValueError, match="waiting for 'a'"):
+        coordinator.record_candidate(
+            session.session_id, "b", "greeting", "Hello.", 0.0, includes_robot=False
+        )
+    coordinator.record_candidate(
+        session.session_id, "a", "greeting", "Hello.", 0.0, includes_robot=False
+    )
+    assert session.expected_speaker == "b"
+    assert coordinator.expire(0.5) == (session,)
+    assert session.status == ConversationStatus.TIMED_OUT
+    assert session.failure_reason == "turn_timeout"
+
+
+def test_busy_embodied_actions_reject_allow_interrupt_policy() -> None:
+    runtime = load_runtime()
+    runtime.drain_llm_requests()
+    runtime.submit_action(
+        {"agent_id": "employee_01", "action": "work", "target": "workstation_right"}
+    )
+    with pytest.raises(ValueError, match="Cannot interrupt"):
+        runtime.start_conversation(
+            "employee_01",
+            "stretch_3",
+            "status",
+            facing_snapshot(),
+            interrupt_policy=InterruptPolicy.ALLOW,
+        )
+
+
+def test_robot_dialogue_requires_task_and_physical_handover_receipts() -> None:
+    runtime = load_runtime()
+    runtime.drain_llm_requests()
+    session = runtime.start_conversation("employee_01", "stretch_3", "delivery", facing_snapshot())
+    with pytest.raises(ValueError, match="validated RobotTask"):
+        runtime.record_conversation_candidate(
+            session.session_id, "employee_01", "request", "Deliver it."
+        )
+
+    assert runtime.request_robot_task(
+        session.session_id,
+        "employee_01",
+        task="deliver",
+        object_id="document_report",
+        destination="workstation_right",
+    ).valid
+    runtime.tick(1.0)
+    task_id = session.robot_task_id
+    assert task_id is not None
+    assert runtime.agents["employee_01"].state.conversation_id == session.session_id
+    assert runtime.agents["employee_01"].state.availability == "in_conversation"
+    runtime.record_conversation_candidate(
+        session.session_id, "employee_01", "request", "Deliver it."
+    )
+    runtime.record_conversation_candidate(session.session_id, "stretch_3", "clarify", "Which desk?")
+    runtime.tick(0.25)
+    runtime.record_conversation_candidate(
+        session.session_id, "employee_01", "acknowledge", "The right desk."
+    )
+
+    MockRobotExecutor(
+        completion_delay_minutes=0.1,
+        duplicate_receipt_task_ids={task_id},
+        handover_ready_task_ids={task_id},
+    ).tick(runtime, 0.1)
+    assert runtime.robot_tasks[task_id].status.value == "succeeded"
+    runtime.record_conversation_candidate(
+        session.session_id, "stretch_3", "handover_confirm", "Handover complete."
+    )
+    assert len([event for event in runtime.events if event.event == "robot_task_completed"]) == 1
+
+
+def test_mock_robot_dropped_receipt_leaves_task_running() -> None:
+    runtime = load_runtime()
+    runtime.submit_action(
+        {
+            "agent_id": "employee_01",
+            "action": "request_robot",
+            "target": "stretch_3",
+            "parameters": {
+                "task": "deliver",
+                "object": "document_report",
+                "destination": "workstation_right",
+            },
+        }
+    )
+    runtime.tick(1.0)
+    task = runtime.pending_robot_tasks()[0]
+    assert MockRobotExecutor(0.1, drop_receipt_task_ids={task.task_id}).tick(runtime, 0.1) == ()
+    assert task.status.value == "running"
+
+
+def test_three_npc_social_scheduler_has_deterministic_single_winner(
+    deterministic_conversation_fixture: DeterministicConversationFixture,
+) -> None:
+    runtime = deterministic_conversation_fixture.runtime
+    proposals = [
+        SocialConversationProposal(
+            "employee_02", "employee_03", ConversationIntent.GREETING, "hello", 0.0
+        ),
+        SocialConversationProposal(
+            "employee_01", "employee_02", ConversationIntent.PROGRESS_INQUIRY, "status", 0.0
+        ),
+        SocialConversationProposal(
+            "employee_03", "employee_01", ConversationIntent.CONFLICT_RESOLUTION, "resolve", 0.0
+        ),
+    ]
+    decisions = runtime.schedule_npc_conversations(
+        proposals, deterministic_conversation_fixture.semantic_snapshot
+    )
+    assert [decision.accepted for decision in decisions] == [True, False, False]
+    assert decisions[0].proposal.initiator == "employee_01"
+    assert decisions[1].reason == "participant_busy"
+    assert decisions[2].reason == "participant_busy"
+    assert (
+        len(
+            [
+                session
+                for session in runtime.conversations.sessions.values()
+                if not session.status.terminal
+            ]
+        )
+        == 1
+    )
+
+
+def test_social_scheduler_cooldown_and_meeting_responses_are_deterministic() -> None:
+    from stretch_mujoco.agents import NpcConversationScheduler
+
+    scheduler = NpcConversationScheduler(cooldown_minutes=2.0)
+    states = {"a": SocialState(1.0, 0.0, True), "b": SocialState(1.0, 0.0, True)}
+    proposal = SocialConversationProposal(
+        "a", "b", ConversationIntent.MEETING_INVITATION, "planning", 0.0
+    )
+    assert scheduler.admit((proposal,), states, 0.0)[0].accepted
+    assert scheduler.admit((proposal,), states, 1.0)[0].reason == "cooldown"
+    invitation = scheduler.create_invitation(proposal, 1.5)
+    assert scheduler.respond_invitation(invitation.invitation_id, True, 1.0).accepted is True
+    expired = scheduler.create_invitation(proposal, 2.0)
+    assert scheduler.expire_invitations(2.0) == (expired,)
+    assert expired.accepted is False
