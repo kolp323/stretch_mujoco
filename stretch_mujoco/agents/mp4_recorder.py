@@ -24,6 +24,7 @@ STATUS_COLORS = {
     "move_to": (105, 105, 105),
     "idle": (140, 140, 140),
     "request_robot": (62, 77, 205),
+    "conversation": (182, 89, 190),
 }
 ACTION_LABELS = {
     "work": "Working",
@@ -37,6 +38,7 @@ ACTION_LABELS = {
     "pick_up": "Picking up item",
     "put_down": "Putting down item",
     "request_robot": "Requesting robot",
+    "conversation": "In conversation",
     "idle": "Idle",
 }
 ZONE_COLORS = {
@@ -65,12 +67,16 @@ class OfficeMp4Recorder:
         depth_m: float = 12.0,
         fps: int = 10,
         pixels_per_meter: int = 80,
+        title: str = "OFFICE NPC DAY",
+        subtitle: str = "Logical simulation playback",
     ) -> None:
         self.output_path = Path(output_path)
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
         if fps <= 0:
             raise ValueError("fps must be positive")
         self.fps = fps
+        self.title = title
+        self.subtitle = subtitle
         self.pixels_per_meter = min(pixels_per_meter, 60)
         self._width_m = width_m
         self._depth_m = depth_m
@@ -182,8 +188,8 @@ class OfficeMp4Recorder:
         robot_tasks: list[dict[str, Any]],
     ) -> None:
         cv2.rectangle(canvas, (0, 0), (self.canvas_w, self._header_h), (34, 43, 58), -1)
-        self._text(canvas, "OFFICE NPC DAY", (32, 34), 0.78, (255, 255, 255), thickness=2)
-        self._text(canvas, "Logical simulation playback", (32, 61), 0.43, (190, 201, 216))
+        self._text(canvas, self.title, (32, 34), 0.78, (255, 255, 255), thickness=2)
+        self._text(canvas, self.subtitle, (32, 61), 0.43, (190, 201, 216))
         hour, minute = divmod(int(minute_of_day) % (24 * 60), 60)
         self._text(
             canvas,
@@ -281,9 +287,7 @@ class OfficeMp4Recorder:
             color = (
                 (80, 169, 96)
                 if status == "succeeded"
-                else (62, 77, 205)
-                if status in {"pending", "running"}
-                else (70, 70, 210)
+                else (62, 77, 205) if status in {"pending", "running"} else (70, 70, 210)
             )
             self._chip(canvas, status.upper(), (x + 18, y), color)
             object_id = str(task.get("object", "item")).replace("_", " ")

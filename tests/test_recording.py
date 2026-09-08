@@ -135,6 +135,20 @@ def test_native_office_renderer_uses_close_unoccluded_free_camera(tmp_path: Path
         renderer.close()
 
 
+def test_native_multi_npc_scene_can_add_a_third_poseable_employee(tmp_path: Path) -> None:
+    import mujoco
+
+    scene_path = build_native_multi_npc_scene(
+        tmp_path / "native_office_three_npc.xml", employee_numbers=(1, 2, 3)
+    )
+    model = mujoco.MjModel.from_xml_path(str(scene_path))
+    assert mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "employee_03_body") >= 0
+    assert any(
+        mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) == "em03_frame_idle_00_body"
+        for geom_id in range(model.ngeom)
+    )
+
+
 def test_3d_video_transcode_uses_browser_compatible_h264(tmp_path: Path, monkeypatch) -> None:
     commands: list[list[str]] = []
 

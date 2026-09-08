@@ -98,6 +98,7 @@ def build_office_snapshot(
     npcs: dict[str, dict[str, Any]] = {}
     for agent_id, agent in runtime.agents.items():
         action = agent.state.current_action
+        conversation_id = getattr(agent.state, "conversation_id", None)
         observed = None if npc_states is None else npc_states.get(agent_id)
         if observed is None:
             position, yaw, target = _position_and_yaw(agent, location_positions)
@@ -120,15 +121,22 @@ def build_office_snapshot(
             resolved_clip = str(observed["resolved_clip"])
             phase = float(observed["clip_phase"])
             active_command_id = observed.get("active_command_id")
+        visual_action = "conversation" if conversation_id is not None else action
         agents[agent_id] = {
             "position": list(position),
             "yaw": yaw,
             "location": agent.state.location,
             "target": target,
-            "action": action,
+            # This is a display projection.  The NPC's actual action remains
+            # in ``npcs[*].logical_action`` while an active session is shown
+            # as a conversation in both offline renderers.
+            "action": visual_action,
             "animation": resolved_clip,
             "animation_phase": phase,
             "label": agent.profile.role.split()[0][:8],
+            "availability": getattr(agent.state, "availability", "available"),
+            "conversation_id": conversation_id,
+            "attention_target": getattr(agent.state, "attention_target", None),
         }
         npcs[agent_id] = {
             "pose": {"position": list(position), "quaternion": quaternion},
@@ -228,6 +236,8 @@ def _agents_projection(npcs: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
             "action": state.get("logical_action", "idle"),
             "animation": state.get("animation", {}).get("clip", "idle"),
             "animation_phase": state.get("animation", {}).get("phase", 0.0),
+            "conversation_id": state.get("conversation_id"),
+            "attention_target": state.get("attention_target"),
         }
     return projection
 

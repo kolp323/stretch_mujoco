@@ -26,10 +26,20 @@ def event_lines(snapshot: dict[str, Any]) -> list[str]:
     lines = []
     for event in snapshot.get("events", [])[-6:]:
         details = event.get("details", {})
-        detail = details.get("action", details.get("goal", ""))
+        event_name = str(event.get("event", "?"))
+        if event_name == "conversation_started":
+            detail = f"started: {details.get('topic', 'conversation')}"
+        elif event_name == "conversation_turn":
+            detail = f"says {details.get('intent', 'conversation')}"
+        elif event_name.startswith("conversation_"):
+            detail = event_name.removeprefix("conversation_").replace("_", " ")
+        elif event_name == "robot_handover_receipt":
+            detail = "handover receipt recorded"
+        else:
+            detail = details.get("action", details.get("goal", ""))
         lines.append(
             f"[{format_clock(float(event.get('time', 0)))}] "
-            f"{event.get('agent_id', '?')}: {event.get('event', '?')} {detail}".rstrip()
+            f"{event.get('agent_id', '?')}: {event_name} {detail}".rstrip()
         )
     return lines
 
@@ -67,6 +77,7 @@ def annotate_3d_frame(rgb: np.ndarray, snapshot: dict[str, Any]) -> np.ndarray:
     status_width = max(1, (width - status_x - 8) // max(1, len(agents)))
     for index, (agent_id, state) in enumerate(agents):
         action = str(state.get("action", "idle")).replace("_", " ").upper()
+        target = state.get("target") or state.get("attention_target")
         display_name = agent_id.replace("employee_", "NPC ").replace("_", " ")
         x = status_x + index * status_width
         cv2.putText(
@@ -79,6 +90,17 @@ def annotate_3d_frame(rgb: np.ndarray, snapshot: dict[str, Any]) -> np.ndarray:
             1,
             cv2.LINE_AA,
         )
+        if target:
+            cv2.putText(
+                frame,
+                f"-> {str(target).replace('_', ' ')}",
+                (x, 63),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.3,
+                (194, 207, 220),
+                1,
+                cv2.LINE_AA,
+            )
         cv2.putText(
             frame,
             action,
@@ -110,16 +132,28 @@ def render_topdown_video(
     *,
     fps: int = 10,
     scene_manifest: str | Path | None = None,
+    title: str = "OFFICE NPC DAY",
+    subtitle: str = "Logical simulation playback",
 ) -> int:
     """Render a 2-D office MP4 from snapshots without starting MuJoCo."""
-    recorder = OfficeMp4Recorder(output_path, scene_manifest, fps=fps)
+    recorder = OfficeMp4Recorder(
+        output_path, scene_manifest, fps=fps, title=title, subtitle=subtitle
+    )
     recorder.start()
     try:
         for snapshot in snapshots:
+            positions = {
+                agent_id: tuple(state.get("position", (0.0, 0.0))[:2])
+                for agent_id, state in snapshot["agents"].items()
+            }
             topdown_agents = {
                 agent_id: {
                     **state,
                     "position": tuple(state.get("position", (0.0, 0.0))[:2]),
+                    "target": state.get("target") or state.get("attention_target"),
+                    "target_position": positions.get(
+                        state.get("target") or state.get("attention_target")
+                    ),
                 }
                 for agent_id, state in snapshot["agents"].items()
             }
