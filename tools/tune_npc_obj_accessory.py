@@ -163,8 +163,34 @@ def _sample_triangles(geometry: ObjGeometry, maximum: int, *, head_only: bool) -
         if np.any(selected):
             triangles = triangles[selected]
     if len(triangles) > maximum:
-        indices = np.linspace(0, len(triangles) - 1, maximum, dtype=np.int64)
-        triangles = triangles[indices]
+        # Striding through OBJ faces creates visible stripes/holes on dense
+        # hair meshes.  Keep the largest face in each spatial cell instead so
+        # the preview remains a contiguous opaque shell while staying cheap to
+        # redraw during slider interaction.
+        points = geometry.vertices[triangles].mean(axis=1)
+        bounds = points.min(axis=0), points.max(axis=0)
+        extent = np.maximum(bounds[1] - bounds[0], 1e-9)
+        cells_per_axis = max(1, int(round(maximum ** (1.0 / 3.0))))
+        keys = np.floor((points - bounds[0]) / extent * cells_per_axis).astype(np.int64)
+        keys = np.minimum(keys, cells_per_axis - 1)
+        areas = np.linalg.norm(
+            np.cross(
+                geometry.vertices[triangles[:, 1]] - geometry.vertices[triangles[:, 0]],
+                geometry.vertices[triangles[:, 2]] - geometry.vertices[triangles[:, 0]],
+            ),
+            axis=1,
+        )
+        order = np.argsort(-areas, kind="stable")
+        selected: list[int] = []
+        occupied: set[tuple[int, int, int]] = set()
+        for index in order:
+            key = tuple(int(value) for value in keys[index])
+            if key not in occupied:
+                occupied.add(key)
+                selected.append(int(index))
+                if len(selected) == maximum:
+                    break
+        triangles = triangles[np.asarray(selected, dtype=np.int64)]
     return triangles
 
 
