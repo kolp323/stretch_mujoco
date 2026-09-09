@@ -1,7 +1,10 @@
 import json
 from pathlib import Path
 
-from examples.npc_conversation_acceptance import build_deterministic_conversation_recording
+from examples.npc_conversation_acceptance import (
+    build_deterministic_conversation_recording,
+    build_deterministic_robot_task_recording,
+)
 from stretch_mujoco.recording.snapshots import read_snapshots
 
 
@@ -48,3 +51,23 @@ def test_deterministic_conversation_recording_covers_social_and_robot_contracts(
     report = json.loads(artifacts.report_path.read_text(encoding="utf-8"))
     assert report["deterministic"] is True
     assert report["scenarios"][-1] == "robot_request_clarify_acknowledge_handover_confirm"
+
+
+def test_deterministic_robot_task_recording_is_single_npc_release_demo(tmp_path: Path) -> None:
+    artifacts = build_deterministic_robot_task_recording(tmp_path)
+
+    assert artifacts.snapshots == 7
+    assert artifacts.event_counts["robot_task_created"] == 1
+    assert artifacts.event_counts["robot_task_completed"] == 1
+    assert artifacts.event_counts["robot_handover_receipt"] == 1
+    snapshots = list(read_snapshots(artifacts.snapshot_path))
+    assert {"employee_01"} == set(snapshots[0]["agents"])
+    task = snapshots[-1]["robot_tasks"][0]
+    assert task["robot_id"] == "stretch_3"
+    assert task["status"] == "succeeded"
+
+    report = json.loads(artifacts.report_path.read_text(encoding="utf-8"))
+    assert report["scope"] == "single_npc_to_mock_robot_task_interface"
+    assert report["contract"]["requester"] == "employee_01"
+    assert report["contract"]["robot_id"] == "stretch_3"
+    assert report["contract"]["final_status"] == "succeeded"

@@ -94,11 +94,15 @@ def _employee(employee_id: str, location: str) -> EmployeeAgent:
     )
 
 
-def build_demo_runtime() -> OfficeAgentRuntime:
+def build_demo_runtime(
+    employee_ids: tuple[str, ...] = ("employee_01", "employee_02", "employee_03"),
+) -> OfficeAgentRuntime:
     """Build the no-LLM, no-visual-asset runtime used by this replay."""
+    if not employee_ids or employee_ids[0] != "employee_01":
+        raise ValueError("The deterministic demo requires employee_01")
     world = SemanticWorld.from_json(SEMANTICS_PATH)
     binding = world.object("employee_01").binding
-    for employee_id in ("employee_02", "employee_03"):
+    for employee_id in employee_ids[1:]:
         world.objects[employee_id] = SemanticObject(
             employee_id,
             ObjectType.EMPLOYEE,
@@ -107,11 +111,7 @@ def build_demo_runtime() -> OfficeAgentRuntime:
         )
     return OfficeAgentRuntime(
         world,
-        {
-            "employee_01": _employee("employee_01", "meeting_table"),
-            "employee_02": _employee("employee_02", "meeting_table"),
-            "employee_03": _employee("employee_03", "meeting_table"),
-        },
+        {employee_id: _employee(employee_id, "meeting_table") for employee_id in employee_ids},
         auto_plan=False,
         daily_events=False,
     )
@@ -361,6 +361,114 @@ def build_deterministic_conversation_recording(
     )
 
 
+def build_deterministic_robot_task_recording(
+    output_dir: str | Path,
+) -> ConversationAcceptanceArtifacts:
+    """Write the release-scoped single-NPC-to-mock-robot acceptance replay.
+
+    This is intentionally narrower than the full conversation replay: one NPC
+    submits one validated delivery request to Stretch, receives the mock
+    executor's receipt, and closes the session only after handover evidence.
+    """
+    directory = Path(output_dir)
+    directory.mkdir(parents=True, exist_ok=True)
+    runtime = build_demo_runtime(("employee_01",))
+    runtime.drain_events()
+    snapshots: list[dict[str, Any]] = []
+
+    session = runtime.start_conversation(
+        "employee_01",
+        "stretch_3",
+        "deliver report",
+        _semantic_snapshot(runtime, ROBOT_POSES),
+        timeout=20,
+    )
+    validation = runtime.request_robot_task(
+        session.session_id,
+        "employee_01",
+        task="deliver",
+        object_id="document_report",
+        destination="workstation_right",
+    )
+    if not validation.valid or session.robot_task_id is None:
+        raise RuntimeError(f"Deterministic robot request was rejected: {validation.errors}")
+    task = runtime.robot_tasks[session.robot_task_id]
+    runtime.record_conversation_candidate(
+        session.session_id, "employee_01", ConversationIntent.REQUEST, None
+    )
+    _capture(runtime, ROBOT_POSES, snapshots, runtime.drain_events())
+    _advance(runtime, ROBOT_POSES, snapshots)
+
+    runtime.record_conversation_candidate(
+        session.session_id, "stretch_3", ConversationIntent.CLARIFY, None
+    )
+    _capture(runtime, ROBOT_POSES, snapshots, runtime.drain_events())
+    _advance(runtime, ROBOT_POSES, snapshots)
+
+    runtime.record_conversation_candidate(
+        session.session_id, "employee_01", ConversationIntent.ACKNOWLEDGE, None
+    )
+    robot = MockRobotExecutor(completion_delay_minutes=0.01, handover_ready_task_ids={task.task_id})
+    if robot.tick(runtime, 0.01) != (task.task_id,):
+        raise RuntimeError("Mock robot did not complete the deterministic task")
+    _capture(runtime, ROBOT_POSES, snapshots, runtime.drain_events())
+    _advance(runtime, ROBOT_POSES, snapshots)
+
+    runtime.record_conversation_candidate(
+        session.session_id, "stretch_3", ConversationIntent.HANDOVER_CONFIRM, None
+    )
+    runtime.complete_conversation(session.session_id)
+    _capture(runtime, ROBOT_POSES, snapshots, runtime.drain_events())
+
+    snapshot_path = directory / "npc_robot_task_snapshots.jsonl"
+    with JsonlSnapshotWriter(snapshot_path) as writer:
+        for snapshot in snapshots:
+            writer.write(snapshot)
+    scene_path = build_native_multi_npc_scene(
+        directory / "native_office_one_npc.xml", employee_numbers=(1,)
+    )
+    manifest_path = write_recording_manifest(
+        directory,
+        snapshot_file=snapshot_path.name,
+        scene_xml=scene_path.name,
+        snapshot_fps=10,
+    )
+    all_events = [event for snapshot in snapshots for event in snapshot["events"]]
+    event_counts = dict(sorted(Counter(event["event"] for event in all_events).items()))
+    report_path = directory / "npc_robot_task_acceptance.json"
+    report_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "deterministic": True,
+                "scope": "single_npc_to_mock_robot_task_interface",
+                "rendering_claim": (
+                    "logical task replay; no embodied approach, turn, or talk receipt"
+                ),
+                "contract": {
+                    "requester": task.requester,
+                    "robot_id": task.robot_id,
+                    "task_id": task.task_id,
+                    "task": task.task,
+                    "object": task.object_id,
+                    "destination": task.destination,
+                    "final_status": task.status.value,
+                    "handover_receipts": sorted(task.receipt_ids),
+                },
+                "snapshot_file": snapshot_path.name,
+                "scene_xml": scene_path.name,
+                "event_counts": event_counts,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return ConversationAcceptanceArtifacts(
+        snapshot_path, manifest_path, report_path, scene_path, len(snapshots), event_counts
+    )
+
+
 @click.command()
 @click.option(
     "--output-dir",
@@ -372,25 +480,43 @@ def build_deterministic_conversation_recording(
 @click.option("--width", type=int, default=960, show_default=True)
 @click.option("--height", type=int, default=540, show_default=True)
 @click.option("--render", "render_mode", type=click.Choice(["2d", "3d", "both"]), default="both")
-def main(output_dir: Path, fps: int, width: int, height: int, render_mode: str) -> None:
+@click.option(
+    "--scenario",
+    type=click.Choice(["full", "robot-task"]),
+    default="full",
+    show_default=True,
+    help="Use robot-task for the release-scoped single-NPC interface demo.",
+)
+def main(
+    output_dir: Path, fps: int, width: int, height: int, render_mode: str, scenario: str
+) -> None:
     """Write deterministic conversation evidence and optional 2-D/3-D MP4s."""
     if fps <= 0 or width <= 0 or height <= 0:
         raise click.BadParameter("fps, width, and height must be positive")
-    artifacts = build_deterministic_conversation_recording(output_dir)
+    if scenario == "robot-task":
+        artifacts = build_deterministic_robot_task_recording(output_dir)
+        output_prefix = "npc_robot_task"
+        title = "NPC -> MOCK ROBOT TASK / 2D"
+        subtitle = "Single-NPC task-interface acceptance replay"
+    else:
+        artifacts = build_deterministic_conversation_recording(output_dir)
+        output_prefix = "conversation"
+        title = "NPC CONVERSATION / 2D"
+        subtitle = "Deterministic logical acceptance replay"
     click.echo(f"Snapshots -> {artifacts.snapshot_path} ({artifacts.snapshots} frames)")
     click.echo(f"Report -> {artifacts.report_path}")
     if render_mode in {"2d", "both"}:
-        output = output_dir / "conversation_2d.mp4"
+        output = output_dir / f"{output_prefix}_2d.mp4"
         frames = render_topdown_video(
             read_snapshots(artifacts.snapshot_path),
             output,
             fps=fps,
-            title="NPC CONVERSATION / 2D",
-            subtitle="Deterministic logical acceptance replay",
+            title=title,
+            subtitle=subtitle,
         )
         click.echo(f"2-D logical replay -> {output} ({frames} frames)")
     if render_mode in {"3d", "both"}:
-        output = output_dir / "conversation_3d.mp4"
+        output = output_dir / f"{output_prefix}_3d.mp4"
         frames = render_mujoco_video(
             read_snapshots(artifacts.snapshot_path),
             output,
