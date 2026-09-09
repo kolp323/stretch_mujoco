@@ -181,7 +181,7 @@ def run_tuner(
 
         matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.widgets import Button, RadioButtons, Slider
+    from matplotlib.widgets import Button, RadioButtons, Slider, TextBox
     from mpl_toolkits.mplot3d.art3d import Poly3DCollection
     from mpl_toolkits.mplot3d.axes3d import Axes3D
 
@@ -191,8 +191,14 @@ def run_tuner(
     accessory_triangles = _sample_triangles(
         context.source_accessory, maximum_faces, head_only=False
     )
+    # Both meshes are deliberately opaque.  Semi-transparent preview meshes make
+    # a bad fit look acceptable by letting the body show through the accessory.
     body_collection = Poly3DCollection(
-        context.body.vertices[body_triangles], facecolor="#c29a78", edgecolor="none", alpha=0.62
+        context.body.vertices[body_triangles],
+        facecolor="#c29a78",
+        edgecolor="#8a684f",
+        linewidth=0.02,
+        alpha=1.0,
     )
     axis.add_collection3d(body_collection)
     initial_accessory = transformed_accessory(context, context.recipe)
@@ -201,7 +207,7 @@ def run_tuner(
         facecolor="#2e86c1",
         edgecolor="#154360",
         linewidth=0.08,
-        alpha=0.9,
+        alpha=1.0,
     )
     axis.add_collection3d(accessory_collection)
     axis.set_xlabel("X lateral")
@@ -241,10 +247,13 @@ def run_tuner(
         ("Yaw (deg)", "yaw_degrees", -180.0, 180.0),
     )
     sliders: dict[str, Slider] = {}
+    value_boxes: dict[str, TextBox] = {}
+    updating_controls = False
     for index, (label, field, lower, upper) in enumerate(slider_specs):
         value = float(getattr(context.recipe, field))
         lower, upper = min(lower, value), max(upper, value)
-        slider_axis = figure.add_axes((0.75, 0.82 - index * 0.085, 0.21, 0.032))
+        y = 0.82 - index * 0.085
+        slider_axis = figure.add_axes((0.75, y, 0.14, 0.032))
         sliders[field] = Slider(
             slider_axis,
             label,
@@ -253,6 +262,8 @@ def run_tuner(
             valinit=value,
             valfmt="%1.4f",
         )
+        value_axis = figure.add_axes((0.90, y, 0.07, 0.032))
+        value_boxes[field] = TextBox(value_axis, "", initial=f"{value:.6g}")
 
     def selected_recipe() -> FusedAccessoryRecipe:
         return replace(
@@ -267,14 +278,41 @@ def run_tuner(
         )
 
     def update(_: object = None) -> None:
+        nonlocal updating_controls
         recipe = selected_recipe()
         vertices = transformed_accessory(context, recipe)
         accessory_collection.set_verts(vertices[accessory_triangles])
+        if not updating_controls:
+            updating_controls = True
+            try:
+                for field, box in value_boxes.items():
+                    box.set_val(f"{float(getattr(recipe, field)):.6g}")
+            finally:
+                updating_controls = False
         status.set_text(f"Loaded {recipe.accessory_id} | unsaved changes: yes")
         figure.canvas.draw_idle()
 
     for slider in sliders.values():
         slider.on_changed(update)
+
+    def edit_value(field: str, raw: str) -> None:
+        nonlocal updating_controls
+        if updating_controls:
+            return
+        try:
+            value = float(raw)
+            if not np.isfinite(value):
+                raise ValueError
+            updating_controls = True
+            sliders[field].set_val(value)
+        except (TypeError, ValueError):
+            status.set_text(f"Invalid numeric value for {field}: {raw!r}")
+            value_boxes[field].set_val(f"{float(sliders[field].val):.6g}")
+        finally:
+            updating_controls = False
+
+    for field, box in value_boxes.items():
+        box.on_submit(lambda raw, field=field: edit_value(field, raw))
 
     save_axis = figure.add_axes((0.75, 0.10, 0.10, 0.05))
     save_button = Button(save_axis, "Save recipe")
@@ -291,8 +329,13 @@ def run_tuner(
     reset_button = Button(reset_axis, "Reset")
 
     def reset(_: object = None) -> None:
+        nonlocal updating_controls
+        updating_controls = True
         for field, slider in sliders.items():
             slider.set_val(float(getattr(context.recipe, field)))
+        updating_controls = False
+        for field, slider in sliders.items():
+            value_boxes[field].set_val(f"{float(slider.val):.6g}")
         status.set_text(f"Loaded {context.recipe.accessory_id} | unsaved changes: no")
         figure.canvas.draw_idle()
 
