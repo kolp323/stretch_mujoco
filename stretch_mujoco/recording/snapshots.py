@@ -156,10 +156,13 @@ def build_office_snapshot(
     day_start_minute = runtime.minute_of_day - getattr(runtime, "elapsed_minutes", 0.0)
     robot_tasks = [
         {
+            "task_id": task.task_id,
             "status": task.status.value,
+            "robot_id": task.robot_id,
             "object": task.object_id,
             "destination": task.destination,
             "requester": task.requester,
+            "conversation_id": task.conversation_id,
         }
         for task in getattr(runtime, "robot_tasks", {}).values()
     ]

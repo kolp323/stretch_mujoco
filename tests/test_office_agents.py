@@ -73,6 +73,7 @@ def test_robot_request_creates_verified_task_and_updates_world() -> None:
 
     assert result.valid
     assert task.status == RobotTaskStatus.PENDING
+    assert task.robot_id == "stretch_3"
     assert runtime.reservations.owner("document_report") == "employee_01"
     assert runtime.world.find_relations(
         subject="document_report",

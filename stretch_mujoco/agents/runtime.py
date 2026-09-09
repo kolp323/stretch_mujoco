@@ -1146,6 +1146,7 @@ class OfficeAgentRuntime:
                 task=command.parameters["task"],
                 object_id=command.parameters["object"],
                 destination=command.parameters["destination"],
+                robot_id=str(command.target),
                 conversation_id=command.parameters.get("conversation_id"),
             )
             self.robot_tasks[task.task_id] = task
