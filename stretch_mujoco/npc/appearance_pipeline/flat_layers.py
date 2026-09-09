@@ -38,6 +38,26 @@ def generate_flat_layers(spec_path: str | Path, output_dir: str | Path) -> dict[
         source_bgr = np.array(source_rgb[::-1], dtype=np.int16)
         distance = np.max(np.abs(base.astype(np.int16) - source_bgr), axis=2)
         mask = (distance <= tolerance).astype(np.uint8) * 255
+        exclude_mask = region.get("exclude_mask")
+        if exclude_mask is not None:
+            if not isinstance(exclude_mask, str) or not exclude_mask:
+                raise ValueError(f"Region '{name}' exclude_mask must be a non-empty string")
+            exclusion = cv2.imread(str(source.parent / exclude_mask), cv2.IMREAD_GRAYSCALE)
+            if exclusion is None:
+                raise ValueError(f"Region '{name}' exclude_mask is unreadable: {exclude_mask}")
+            if exclusion.shape != mask.shape:
+                raise ValueError(f"Region '{name}' exclude_mask dimensions do not match base atlas")
+            mask[exclusion > 0] = 0
+        include_mask = region.get("include_mask")
+        if include_mask is not None:
+            if not isinstance(include_mask, str) or not include_mask:
+                raise ValueError(f"Region '{name}' include_mask must be a non-empty string")
+            inclusion = cv2.imread(str(source.parent / include_mask), cv2.IMREAD_GRAYSCALE)
+            if inclusion is None:
+                raise ValueError(f"Region '{name}' include_mask is unreadable: {include_mask}")
+            if inclusion.shape != mask.shape:
+                raise ValueError(f"Region '{name}' include_mask dimensions do not match base atlas")
+            mask[inclusion > 0] = 255
         layer = np.zeros((*base.shape[:2], 4), dtype=np.uint8)
         layer[..., :3] = target_rgb[::-1]
         layer[..., 3] = mask

@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from stretch_mujoco.npc.appearance_pipeline.catalog import AppearanceCatalog
+from stretch_mujoco.npc.appearance_pipeline.face_details import generate_face_detail_layers
 from stretch_mujoco.npc.appearance_pipeline.flat_layers import generate_flat_layers
 from stretch_mujoco.npc.appearance_pipeline.hair_layers import generate_short_hair_layers
 from stretch_mujoco.npc.appearance_pipeline.textile_layers import generate_textile_layers
@@ -76,6 +77,12 @@ def build_persona_roster(
         roster_source.parent / _required_string(roster, "hair_layer_spec"),
         _relative(root, _required_string(roster, "hair_layer_output")),
     )
+    face_detail_spec = roster.get("face_detail_spec")
+    if face_detail_spec is not None:
+        generate_face_detail_layers(
+            _relative(root, _required_string(roster, "face_detail_spec")),
+            _relative(root, _required_string(roster, "face_detail_output")),
+        )
     textile_layer_spec = roster.get("textile_layer_spec")
     if textile_layer_spec is not None:
         generate_textile_layers(

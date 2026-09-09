@@ -76,3 +76,27 @@ def test_textile_layers_reject_changed_source_archive(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="SHA-256 mismatch"):
         generate_textile_layers(spec_path, tmp_path)
+
+
+def test_textile_layers_can_exclude_a_neck_mask(tmp_path: Path) -> None:
+    _png(tmp_path / "base.png", np.zeros((4, 4, 3), dtype=np.uint8))
+    _png(tmp_path / "top.png", np.full((4, 4), 255, dtype=np.uint8))
+    neck = np.zeros((4, 4), dtype=np.uint8)
+    neck[1:3, 1:3] = 255
+    _png(tmp_path / "neck.png", neck)
+    source = np.full((2, 2, 3), (10, 20, 30), dtype=np.uint8)
+    archive = tmp_path / "source.zip"
+    with zipfile.ZipFile(archive, "w") as bundle:
+        bundle.writestr("textures/diffuse.png", cv2.imencode(".png", source)[1].tobytes())
+    spec = _spec(hashlib.sha256(archive.read_bytes()).hexdigest())
+    spec["layers"][0]["exclude_mask"] = "neck.png"
+    spec_path = tmp_path / "textiles.json"
+    spec_path.write_text(json.dumps(spec))
+
+    layer = cv2.imread(
+        str(generate_textile_layers(spec_path, tmp_path)["gingham_top_v1"]), cv2.IMREAD_UNCHANGED
+    )
+
+    assert layer is not None
+    assert not np.any(layer[..., 3][1:3, 1:3])
+    assert np.count_nonzero(layer[..., 3]) == 12

@@ -54,6 +54,18 @@ def generate_textile_layers(spec_path: str | Path, asset_root: str | Path) -> di
             raise ValueError(
                 f"Textile layer '{layer_id}' semantic mask dimensions do not match base"
             )
+        exclude_mask = layer.get("exclude_mask")
+        if exclude_mask is not None:
+            exclude_path = _rooted(
+                root, _string(exclude_mask, f"Textile layer '{layer_id}' exclude_mask")
+            )
+            exclusion = _read_mask(exclude_path)
+            if exclusion.shape != mask.shape:
+                raise ValueError(
+                    f"Textile layer '{layer_id}' exclude_mask dimensions do not match base"
+                )
+            mask = mask.copy()
+            mask[exclusion > 0] = 0
         tiled = _tile_image(
             source,
             base.shape[:2],
@@ -81,6 +93,11 @@ def generate_textile_layers(spec_path: str | Path, asset_root: str | Path) -> di
             "output": str(output.relative_to(root)),
             "output_sha256": _sha256(output.read_bytes()),
         }
+        if exclude_mask is not None:
+            receipt_layers[layer_id]["exclude_mask"] = _string(
+                exclude_mask, f"Textile layer '{layer_id}' exclude_mask"
+            )
+            receipt_layers[layer_id]["exclude_mask_sha256"] = _sha256(exclude_path.read_bytes())
     receipt = _rooted(root, _string(spec["receipt"], "Textile layer spec receipt"))
     _write_json(receipt, {"schema_version": TEXTILE_LAYER_SCHEMA_VERSION, "layers": receipt_layers})
     return outputs
@@ -108,7 +125,12 @@ def _validate_layer(layer: Mapping[str, Any]) -> None:
         "tile_width_px",
         "seed",
     }
-    _exact_fields(layer, required, "Textile layer entry")
+    allowed = required | {"exclude_mask"}
+    unknown, missing = set(layer) - allowed, required - set(layer)
+    if unknown or missing:
+        raise ValueError(
+            f"Textile layer entry fields mismatch: missing={sorted(missing)}, unknown={sorted(unknown)}"
+        )
     if not isinstance(layer["tile_width_px"], int) or layer["tile_width_px"] <= 0:
         raise ValueError("Textile layer tile_width_px must be a positive integer")
     if (

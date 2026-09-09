@@ -82,6 +82,64 @@ def generate_semantic_masks(spec_path: str | Path, output_dir: str | Path) -> Se
             normal_max=face_normal_y_max,
         ),
     )
+    neck = spec.get("neck")
+    if neck is not None:
+        neck_region = _mapping(neck, "Semantic mask neck")
+        neck_min_height = float(neck_region.get("min_height_m", 1.30))
+        neck_max_height = float(neck_region.get("max_height_m", min_height))
+        neck_radius = float(neck_region.get("horizontal_radius_m", radius))
+        front_max_y = _optional_float(neck_region, "front_max_y_m")
+        front_radius = _optional_float(neck_region, "front_horizontal_radius_m")
+        front_normal_y_max = _optional_float(neck_region, "front_normal_y_max")
+        if (
+            neck_min_height < 0
+            or neck_max_height <= neck_min_height
+            or neck_radius <= 0
+            or (front_radius is not None and front_radius <= 0)
+            or (front_radius is None) != (front_max_y is None)
+        ):
+            raise ValueError("Semantic neck thresholds are invalid")
+        masks["neck"] = _write_mask(
+            output / "neck.png",
+            _mesh_mask(
+                mesh,
+                min_height=neck_min_height,
+                max_height=neck_max_height,
+                radius=neck_radius,
+                front_max_y=front_max_y,
+                front_radius=front_radius,
+                front_normal_y_max=front_normal_y_max,
+            ),
+        )
+    sideburns = spec.get("sideburns")
+    if sideburns is not None:
+        sideburn_region = _mapping(sideburns, "Semantic mask sideburns")
+        sideburn_min_height = float(sideburn_region.get("min_height_m", 1.47))
+        sideburn_max_height = float(sideburn_region.get("max_height_m", 1.66))
+        sideburn_radius = float(sideburn_region.get("horizontal_radius_m", radius))
+        sideburn_min_abs_x = float(sideburn_region.get("min_abs_x_m", 0.085))
+        sideburn_max_abs_x = float(sideburn_region.get("max_abs_x_m", sideburn_radius))
+        sideburn_max_y = _optional_float(sideburn_region, "max_y_m")
+        if (
+            sideburn_min_height < 0
+            or sideburn_max_height <= sideburn_min_height
+            or sideburn_radius <= 0
+            or sideburn_min_abs_x < 0
+            or sideburn_max_abs_x < sideburn_min_abs_x
+        ):
+            raise ValueError("Semantic sideburn thresholds are invalid")
+        masks["sideburns"] = _write_mask(
+            output / "sideburns.png",
+            _mesh_mask(
+                mesh,
+                min_height=sideburn_min_height,
+                max_height=sideburn_max_height,
+                radius=sideburn_radius,
+                min_abs_x=sideburn_min_abs_x,
+                max_abs_x=sideburn_max_abs_x,
+                max_y=sideburn_max_y,
+            ),
+        )
     manifest_path = output / "semantic_masks.json"
     manifest = {
         "schema_version": SEMANTIC_MASK_SCHEMA_VERSION,
@@ -107,30 +165,56 @@ def _mesh_mask(
     mesh: _ObjMesh,
     *,
     min_height: float,
+    max_height: float | None = None,
     radius: float,
     min_y: float | None = None,
     max_y: float | None = None,
     normal_axis: int | None = None,
     normal_min: float | None = None,
     normal_max: float | None = None,
+    front_max_y: float | None = None,
+    front_radius: float | None = None,
+    front_normal_y_max: float | None = None,
+    min_abs_x: float | None = None,
+    max_abs_x: float | None = None,
 ) -> np.ndarray:
     mask = np.zeros((1024, 1024), dtype=np.uint8)
     for face in mesh.faces:
         vertex_ids = np.asarray([vertex_id for vertex_id, _ in face])
         centroid = mesh.vertices[vertex_ids].mean(axis=0)
-        if centroid[2] < min_height or np.linalg.norm(centroid[:2]) > radius:
+        normal: np.ndarray | None = None
+        if front_normal_y_max is not None or normal_axis is not None:
+            edges = mesh.vertices[vertex_ids[1:]] - mesh.vertices[vertex_ids[0]]
+            normal = np.cross(edges[0], edges[1])
+            length = np.linalg.norm(normal)
+            if length == 0:
+                continue
+            normal = normal / length
+        front_surface = front_radius is not None and (
+            (front_max_y is not None and centroid[1] <= front_max_y)
+            or (
+                normal is not None
+                and front_normal_y_max is not None
+                and normal[1] <= front_normal_y_max
+            )
+        )
+        radius_limit = front_radius if front_surface else radius
+        if (
+            centroid[2] < min_height
+            or (max_height is not None and centroid[2] > max_height)
+            or np.linalg.norm(centroid[:2]) > radius_limit
+            or (min_abs_x is not None and abs(centroid[0]) < min_abs_x)
+            or (max_abs_x is not None and abs(centroid[0]) > max_abs_x)
+        ):
             continue
         if min_y is not None and centroid[1] < min_y:
             continue
         if max_y is not None and centroid[1] > max_y:
             continue
         if normal_axis is not None:
-            edges = mesh.vertices[vertex_ids[1:]] - mesh.vertices[vertex_ids[0]]
-            normal = np.cross(edges[0], edges[1])
-            length = np.linalg.norm(normal)
-            if length == 0:
-                continue
-            component = normal[normal_axis] / length
+            if normal is None:
+                raise RuntimeError("Normal-dependent mesh mask did not compute a face normal")
+            component = normal[normal_axis]
             if normal_min is not None and component < normal_min:
                 continue
             if normal_max is not None and component > normal_max:

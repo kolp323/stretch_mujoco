@@ -25,11 +25,11 @@ def test_production_roster_has_ten_named_npcs_with_explicit_distinct_appearances
     )
 
 
-def test_production_roster_assigns_approved_textiles_to_distinct_npcs() -> None:
+def test_production_roster_assigns_distinct_top_layers_to_npcs() -> None:
     population = NpcPopulation.from_json(PRODUCTION_POPULATION)
 
     assert population.npcs["npc_jordan_patell"].embodiment.appearance_config.top == (
-        "top_gingham_check_v1"
+        "top_burgundy_v1"
     )
     assert population.npcs["npc_olivia_bennett"].embodiment.appearance_config.top == (
         "top_jersey_melange_v1"
