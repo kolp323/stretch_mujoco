@@ -91,6 +91,22 @@ def test_runtime_population_resolves_paths_before_moving_projection() -> None:
     assert result["appearance_catalog"] == "/tmp/models/assets/appearance_catalog.json"
 
 
+def test_clear_derived_projection_removes_stale_obj_frames_only(tmp_path: Path) -> None:
+    module = _builder_module()
+    output_dir = tmp_path / "runtime" / "cap" / "employee"
+    (output_dir / "accessory").mkdir(parents=True)
+    (output_dir / "frames" / "sit").mkdir(parents=True)
+    (output_dir / "accessory" / "cap.obj").write_text("old")
+    (output_dir / "frames" / "sit" / "frame_999.obj").write_text("old")
+    (output_dir / "receipt.json").write_text("keep")
+
+    module.clear_derived_projection(output_dir)
+
+    assert not (output_dir / "accessory").exists()
+    assert not (output_dir / "frames").exists()
+    assert (output_dir / "receipt.json").read_text() == "keep"
+
+
 def test_recipe_accessory_binding_replaces_stale_manifest_reference(tmp_path: Path) -> None:
     module = _builder_module()
     recipe_path = tmp_path / "recipe.json"
@@ -210,6 +226,63 @@ def test_runtime_scene_build_rebuilds_recipe_every_invocation(
     assert calls[0]["recipe_path"] == tmp_path / "cap.recipe.json"
 
 
+def test_runtime_scene_build_composes_each_accessory_from_the_previous_projection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def runtime_config(name: str) -> Path:
+        path = tmp_path / f"{name}.runtime.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "recipe": f"{name}.recipe.json",
+                    "source_archive": f"{name}.zip",
+                    "source_manifest": "base_manifest.json",
+                    "source_population": "base_population.json",
+                    "npc_id": name,
+                    "bundle": "bundle",
+                    "output_dir": f"generated/{name}",
+                    "output_manifest": f"generated/{name}.manifest.json",
+                    "output_population": f"generated/{name}.population.json",
+                }
+            )
+        )
+        return path
+
+    scene_module_path = Path(__file__).parents[1] / "tools" / "build_npc_scene.py"
+    spec = importlib.util.spec_from_file_location("build_npc_scene_tool", scene_module_path)
+    assert spec and spec.loader
+    scene_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(scene_module)
+    calls: list[dict[str, object]] = []
+
+    class Builder:
+        @staticmethod
+        def build_fused_accessory(**kwargs: object) -> dict[str, str]:
+            calls.append(kwargs)
+            name = Path(str(kwargs["recipe_path"])).stem.removesuffix(".recipe")
+            return {
+                "manifest": str(tmp_path / f"generated/{name}.manifest.json"),
+                "population": str(tmp_path / f"generated/{name}.population.json"),
+            }
+
+    monkeypatch.setattr(scene_module, "_tool_module", lambda _: Builder)
+    monkeypatch.setattr(
+        scene_module,
+        "build_npc_scene",
+        lambda population, output, include_base_scene=False: Path(output),
+    )
+
+    scene_module.build_scene_from_accessory_runtime_configs(
+        [runtime_config("cap"), runtime_config("hair")], tmp_path / "office.xml"
+    )
+
+    assert calls[0]["source_manifest"] == tmp_path / "base_manifest.json"
+    assert calls[0]["source_population"] == tmp_path / "base_population.json"
+    assert calls[1]["source_manifest"] == tmp_path / "generated/cap.manifest.json"
+    assert calls[1]["source_population"] == tmp_path / "generated/cap.population.json"
+
+
 def test_builder_creates_nested_runtime_population_directory(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -252,23 +325,28 @@ def test_builder_creates_nested_runtime_population_directory(
     assert output_population.parent.is_dir()
 
 
-def test_checked_in_cap_runtime_config_references_the_canonical_recipe() -> None:
+def test_checked_in_baseball_cap_runtime_config_references_the_canonical_recipe() -> None:
     models = Path(__file__).parents[1] / "stretch_mujoco/models/accessories"
-    recipe_path = models / "cap_source_v1.recipe.json"
-    runtime_path = models / "cap_source_v1.runtime.json"
+    recipe_path = models / "baseball_cap_v1.recipe.json"
+    runtime_path = models / "baseball_cap_v1.runtime.json"
 
     recipe = FusedAccessoryRecipe.from_json(recipe_path)
     runtime = FusedAccessoryRuntimeConfig.from_json(runtime_path)
 
-    assert runtime.resolve_path(runtime_path, "recipe") == recipe_path
-    assert recipe.accessory_id == "cap_source_v1"
+    assert runtime.resolve_path(runtime_path, "recipe") == recipe_path.resolve()
+    assert recipe.accessory_id == "baseball_cap_v1"
+    assert recipe.yaw_degrees == 180.0
     assert runtime.source_archive == (
-        "../assets/humanoid/sources/npc/accessories/cap_source_v1/cap_source_v1.zip"
+        "../assets/humanoid/sources/npc/accessories/baseball_cap_v1/baseball_cap.glb"
     )
-    assert runtime.output_dir.endswith("runtime/cap_source_v1/employee_01")
+    assert runtime.source_format == "glb"
+    assert runtime.npc_id == "npc_alex_chen"
+    assert runtime.output_dir.endswith("runtime/baseball_cap_v1/npc_alex_chen")
     assert runtime.source_manifest == "../assets/humanoid/generated/animations/manifest.json"
     assert runtime.output_manifest == (
         "../assets/humanoid/generated/animations/"
-        "manifest.cap_source_v1.employee_01.runtime.preview.json"
+        "manifest.baseball_cap_v1.npc_alex_chen.runtime.json"
     )
-    assert runtime.output_population.endswith("runtime_populations/cap_source_v1/employee_01.json")
+    assert runtime.output_population.endswith(
+        "runtime_populations/baseball_cap_v1/npc_alex_chen.json"
+    )

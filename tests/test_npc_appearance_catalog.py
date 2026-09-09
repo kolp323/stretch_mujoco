@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from stretch_mujoco.npc.appearance_pipeline.catalog import AppearanceCatalog
+from stretch_mujoco.npc.schema import NpcAppearance
 
 
 def _png(path: Path, color: tuple[int, int, int, int]) -> str:
@@ -40,16 +41,17 @@ def test_catalog_bakes_named_identity_and_verifies_layer_hashes(tmp_path: Path) 
                 "semantic_mask_manifest": "semantic_masks.json",
                 "semantic_mask_manifest_sha256": mask_manifest_hash,
                 "layers": {
-                    "hair_black_v1": {
-                        "category": "hair",
+                    f"{category}_v1": {
+                        "category": category,
                         "image": "hair.png",
                         "sha256": hair_hash,
                     }
+                    for category in ("skin", "hair", "top", "bottom", "shoes")
                 },
                 "identities": {
                     "alex_v1": {
                         "appearance_id": "alex_v1",
-                        "layers": ["hair_black_v1"],
+                        "layers": ["skin_v1", "hair_v1", "top_v1", "bottom_v1", "shoes_v1"],
                         "traits": {"hair_style": "short"},
                     }
                 },
@@ -62,6 +64,24 @@ def test_catalog_bakes_named_identity_and_verifies_layer_hashes(tmp_path: Path) 
 
     assert baked.appearance_id == "alex_v1"
     assert baked.textures["body"].is_file()
+    assert baked.thumbnail_path.is_file()
+    receipt = json.loads(baked.manifest_path.read_text())
+    assert receipt["seed"] == catalog.identities["alex_v1"].seed
+    assert receipt["artifacts"]["thumbnail"] == baked.thumbnail_path.name
+    catalog.validate_appearance_slots(
+        "alex_v1",
+        NpcAppearance.from_dict(
+            {
+                "skin": "skin_v1",
+                "hair": "hair_v1",
+                "top": "top_v1",
+                "bottom": "bottom_v1",
+                "shoes": "shoes_v1",
+                "accessories": [],
+                "scale": 1.0,
+            }
+        ),
+    )
     catalog.identity_for_appearance("alex_v1", "alex_v1")
     with pytest.raises(ValueError, match="not 'other_v1'"):
         catalog.identity_for_appearance("alex_v1", "other_v1")

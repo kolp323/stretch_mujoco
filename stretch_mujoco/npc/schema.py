@@ -48,6 +48,46 @@ def _require_fields(payload: Mapping[str, Any], fields: set[str], context: str) 
 
 
 @dataclass(frozen=True)
+class NpcAppearance:
+    """JSON-selectable appearance slots bound to one NPC/agent definition.
+
+    The five texture slots are stable semantic IDs.  They are composed into the
+    legacy single-body atlas today, but keeping the selection explicit permits
+    future split-mesh materials without changing population JSON again.
+    """
+
+    skin: str
+    hair: str
+    top: str
+    bottom: str
+    shoes: str
+    accessories: tuple[str, ...]
+    scale: float
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "NpcAppearance":
+        _require_fields(
+            payload,
+            {"skin", "hair", "top", "bottom", "shoes", "accessories", "scale"},
+            "NPC appearance",
+        )
+        slots = {name: payload[name] for name in ("skin", "hair", "top", "bottom", "shoes")}
+        if not all(isinstance(value, str) and value for value in slots.values()):
+            raise ValueError("NPC appearance texture slots must be non-empty string IDs")
+        raw_accessories = payload["accessories"]
+        if (
+            not isinstance(raw_accessories, list)
+            or not all(isinstance(item, str) and item for item in raw_accessories)
+            or len(set(raw_accessories)) != len(raw_accessories)
+        ):
+            raise ValueError("NPC appearance accessories must be unique non-empty string IDs")
+        scale = float(payload["scale"])
+        if not 0.1 <= scale <= 10.0:
+            raise ValueError("NPC appearance scale must be between 0.1 and 10.0")
+        return cls(**slots, accessories=tuple(raw_accessories), scale=scale)
+
+
+@dataclass(frozen=True)
 class NpcEmbodiment:
     bundle: str
     appearance: str
@@ -56,6 +96,7 @@ class NpcEmbodiment:
     scale: float = 1.0
     visual_identity: str | None = None
     accessories: tuple[str, ...] = ()
+    appearance_config: NpcAppearance | None = None
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "NpcEmbodiment":
@@ -64,16 +105,30 @@ class NpcEmbodiment:
             {"bundle", "appearance", "animation_graph", "collision_profile"},
             "NPC embodiment",
         )
-        scale = float(payload.get("scale", 1.0))
+        appearance_config = (
+            NpcAppearance.from_dict(
+                _require_mapping(payload["appearance_config"], "NPC appearance")
+            )
+            if payload.get("appearance_config") is not None
+            else None
+        )
+        scale = float(payload.get("scale", appearance_config.scale if appearance_config else 1.0))
         if not 0.1 <= scale <= 10.0:
             raise ValueError("NPC embodiment scale must be between 0.1 and 10.0")
-        raw_accessories = payload.get("accessories", [])
+        raw_accessories = payload.get(
+            "accessories", list(appearance_config.accessories) if appearance_config else []
+        )
         if (
             not isinstance(raw_accessories, list)
             or not all(isinstance(item, str) and item for item in raw_accessories)
             or len(set(raw_accessories)) != len(raw_accessories)
         ):
             raise ValueError("NPC embodiment accessories must be unique non-empty string IDs")
+        if appearance_config is not None and (
+            scale != appearance_config.scale
+            or tuple(raw_accessories) != appearance_config.accessories
+        ):
+            raise ValueError("NPC embodiment scale/accessories must match appearance_config")
         return cls(
             bundle=str(payload["bundle"]),
             appearance=str(payload["appearance"]),
@@ -86,6 +141,7 @@ class NpcEmbodiment:
                 else None
             ),
             accessories=tuple(raw_accessories),
+            appearance_config=appearance_config,
         )
 
 
@@ -108,6 +164,7 @@ class NpcSpawn:
 @dataclass(frozen=True)
 class NpcDefinition:
     npc_id: str
+    agent_id: str
     profile: EmployeeProfile
     embodiment: NpcEmbodiment
     spawn: NpcSpawn
@@ -172,6 +229,7 @@ class NpcDefinition:
                     )
         return cls(
             npc_id=npc_id,
+            agent_id=str(payload.get("agent_id", npc_id)),
             profile=EmployeeProfile(
                 role=str(profile_data["role"]),
                 department=str(profile_data["department"]),
@@ -249,6 +307,10 @@ class NpcPopulation:
                         "appearance_catalog is configured"
                     )
                 catalog.identity_for_appearance(identity_id, definition.embodiment.appearance)
+                if definition.embodiment.appearance_config is not None:
+                    catalog.validate_appearance_slots(
+                        identity_id, definition.embodiment.appearance_config
+                    )
         return cls(
             scene=str(payload["scene"]),
             asset_manifest=str(payload["asset_manifest"]),

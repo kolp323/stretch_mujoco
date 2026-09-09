@@ -11,18 +11,25 @@ import cv2
 import numpy as np
 
 
-def generate_face_detail_layers(spec_path: str | Path, output_dir: str | Path) -> dict[str, Path]:
-    """Generate freckles, brows, beard, or explicitly 2D glasses overlays.
+# The reference UV face places the lip line below the naïve geometric centre
+# used by the first facial-hair pass.  Keep every beard style on the lower
+# face, rather than allowing its moustache component to paint over the lips.
+FACIAL_HAIR_VERTICAL_OFFSET = 0.055
 
-    All drawing is clipped by a formal ``face`` mask. The glasses output is a
-    texture decal, not a replacement for a geometric glasses asset.
+
+def generate_face_detail_layers(spec_path: str | Path, output_dir: str | Path) -> dict[str, Path]:
+    """Generate freckles, brows, facial hair, or 2D glasses overlays.
+
+    Facial decals are clipped by a formal ``face`` mask. Full beards additionally
+    require the topology-derived ``sideburn_mask`` so their sideburns stay by the
+    ears on every persona rather than being guessed from the 2D face atlas.
+    The glasses output is a texture decal, not a replacement for a geometric
+    glasses asset.
     """
     source = Path(spec_path).resolve()
     spec = _mapping(json.loads(source.read_text(encoding="utf-8")), "Face detail spec")
     face_mask_path = source.parent / _string(spec.get("face_mask"), "Face detail face_mask")
-    face_mask = cv2.imread(str(face_mask_path), cv2.IMREAD_GRAYSCALE)
-    if face_mask is None:
-        raise ValueError(f"Could not decode face mask '{face_mask_path}'")
+    face_mask = _read_mask(face_mask_path, "Face detail face_mask")
     styles = _mapping(spec.get("styles"), "Face detail styles")
     if not styles:
         raise ValueError("Face detail spec must define at least one style")
@@ -36,20 +43,53 @@ def generate_face_detail_layers(spec_path: str | Path, output_dir: str | Path) -
         opacity = int(style.get("opacity", 255))
         if not 0 <= opacity <= 255:
             raise ValueError(f"Face detail style '{style_id}' opacity must be in [0, 255]")
-        artwork = np.zeros(face_mask.shape, dtype=np.uint8)
+        mask_name = style.get("mask")
+        style_mask = (
+            _read_mask(
+                source.parent / _string(mask_name, f"Face detail style '{style_id}' mask"),
+                f"Face detail style '{style_id}' mask",
+            )
+            if mask_name is not None
+            else face_mask
+        )
+        if style_mask.shape != face_mask.shape:
+            raise ValueError(
+                f"Face detail style '{style_id}' mask dimensions do not match face_mask"
+            )
+        artwork = np.zeros(style_mask.shape, dtype=np.uint8)
+        alpha_mask = style_mask
         if kind == "freckles":
             _draw_freckles(
-                artwork, face_mask, int(style.get("seed", 0)), int(style.get("count", 28))
+                artwork, style_mask, int(style.get("seed", 0)), int(style.get("count", 28))
             )
         elif kind == "brows":
-            _draw_brows(artwork, face_mask)
+            _draw_brows(artwork, style_mask)
         elif kind == "beard":
-            _draw_beard(artwork, face_mask)
+            _draw_beard(artwork, style_mask)
+        elif kind == "moustache_handlebar":
+            _draw_handlebar_moustache(artwork, style_mask)
+        elif kind == "beard_full":
+            _draw_full_beard(artwork, style_mask, include_sideburns=False)
+            sideburn_mask = _sideburn_mask(source, style, style_id, face_mask.shape)
+            artwork[sideburn_mask > 0] = 255
+            alpha_mask = np.maximum(style_mask, sideburn_mask)
+        elif kind == "beard_full_core":
+            _draw_full_beard(artwork, style_mask, include_sideburns=False)
+        elif kind == "beard_boxed":
+            _draw_boxed_beard(artwork, style_mask)
+        elif kind == "goatee":
+            _draw_goatee(
+                artwork,
+                style_mask,
+                vertical_offset=_facial_hair_vertical_offset(style, style_id),
+            )
+        elif kind == "sideburns":
+            artwork[style_mask > 0] = 255
         elif kind == "glasses_2d":
-            _draw_glasses(artwork, face_mask)
+            _draw_glasses(artwork, style_mask)
         else:
             raise ValueError(f"Face detail style '{style_id}' has unsupported kind '{kind}'")
-        alpha = np.minimum(artwork, face_mask)
+        alpha = np.minimum(artwork, alpha_mask)
         alpha = np.round(alpha.astype(np.float32) * opacity / 255).astype(np.uint8)
         layer = np.zeros((*face_mask.shape, 4), dtype=np.uint8)
         layer[..., :3] = color[::-1]
@@ -96,7 +136,7 @@ def _draw_beard(image: np.ndarray, mask: np.ndarray) -> None:
         x, y, width, height = _bounds(region)
         cv2.ellipse(
             image,
-            (x + width // 2, y + round(height * 0.84)),
+            (x + width // 2, _facial_hair_y(y, height, 0.84)),
             (max(2, round(width * 0.13)), max(2, round(height * 0.10))),
             0,
             10,
@@ -105,6 +145,159 @@ def _draw_beard(image: np.ndarray, mask: np.ndarray) -> None:
             -1,
             lineType=cv2.LINE_AA,
         )
+
+
+def _draw_handlebar_moustache(image: np.ndarray, mask: np.ndarray) -> None:
+    """Draw a classic 八字胡 whose tips sweep upward from the philtrum."""
+    for region in _decal_regions(mask):
+        x, y, width, height = _bounds(region)
+        center_x = x + round(width * 0.5)
+        center_y = _facial_hair_y(y, height, 0.64)
+        thickness = max(2, round(height * 0.042))
+        for direction in (-1, 1):
+            points = np.array(
+                [
+                    (center_x, center_y),
+                    (center_x + round(direction * width * 0.13), center_y + round(height * 0.018)),
+                    (center_x + round(direction * width * 0.24), center_y - round(height * 0.010)),
+                    (center_x + round(direction * width * 0.28), center_y - round(height * 0.075)),
+                ],
+                dtype=np.int32,
+            )
+            cv2.polylines(image, [points], False, 255, thickness, lineType=cv2.LINE_AA)
+            tip = tuple(int(value) for value in points[-1])
+            cv2.circle(image, tip, max(1, thickness // 2), 255, -1, lineType=cv2.LINE_AA)
+
+
+def _draw_full_beard(
+    image: np.ndarray,
+    mask: np.ndarray,
+    *,
+    include_sideburns: bool = True,
+) -> None:
+    """Draw jaw coverage, chin, moustache, and optional legacy sideburns."""
+    for region in _decal_regions(mask):
+        x, y, width, height = _bounds(region)
+        center_x = x + round(width * 0.5)
+        # The lower oval gives dense chin coverage; the side polygons connect it
+        # to the cheek line without extending into the eye area.
+        cv2.ellipse(
+            image,
+            (center_x, _facial_hair_y(y, height, 0.79)),
+            (max(3, round(width * 0.285)), max(3, round(height * 0.225))),
+            0,
+            0,
+            180,
+            255,
+            -1,
+            lineType=cv2.LINE_AA,
+        )
+        if not include_sideburns:
+            _draw_moustache_bar(image, x, y, width, height)
+            continue
+        for direction in (-1, 1):
+            cheek = np.array(
+                [
+                    (
+                        center_x + round(direction * width * 0.18),
+                        _facial_hair_y(y, height, 0.54),
+                    ),
+                    (
+                        center_x + round(direction * width * 0.29),
+                        _facial_hair_y(y, height, 0.50),
+                    ),
+                    (
+                        center_x + round(direction * width * 0.31),
+                        _facial_hair_y(y, height, 0.73),
+                    ),
+                    (
+                        center_x + round(direction * width * 0.20),
+                        _facial_hair_y(y, height, 0.90),
+                    ),
+                ],
+                dtype=np.int32,
+            )
+            cv2.fillConvexPoly(image, cheek, 255, lineType=cv2.LINE_AA)
+        _draw_moustache_bar(image, x, y, width, height)
+
+
+def _draw_boxed_beard(image: np.ndarray, mask: np.ndarray) -> None:
+    """Draw a neat short beard with defined, office-friendly edges."""
+    for region in _decal_regions(mask):
+        x, y, width, height = _bounds(region)
+        center_x = x + round(width * 0.5)
+        cv2.rectangle(
+            image,
+            (x + round(width * 0.31), _facial_hair_y(y, height, 0.70)),
+            (x + round(width * 0.69), _facial_hair_y(y, height, 0.89)),
+            255,
+            -1,
+            lineType=cv2.LINE_AA,
+        )
+        cv2.ellipse(
+            image,
+            (center_x, _facial_hair_y(y, height, 0.88)),
+            (max(2, round(width * 0.19)), max(2, round(height * 0.06))),
+            0,
+            0,
+            180,
+            255,
+            -1,
+            lineType=cv2.LINE_AA,
+        )
+        _draw_moustache_bar(image, x, y, width, height)
+
+
+def _draw_goatee(image: np.ndarray, mask: np.ndarray, *, vertical_offset: float) -> None:
+    """Draw a separated moustache and pointed chin goatee."""
+    for region in _decal_regions(mask):
+        x, y, width, height = _bounds(region)
+        center_x = x + round(width * 0.5)
+        goatee = np.array(
+            [
+                (center_x - round(width * 0.10), _facial_hair_y(y, height, 0.74, vertical_offset)),
+                (center_x + round(width * 0.10), _facial_hair_y(y, height, 0.74, vertical_offset)),
+                (center_x + round(width * 0.13), _facial_hair_y(y, height, 0.87, vertical_offset)),
+                (center_x, _facial_hair_y(y, height, 0.94, vertical_offset)),
+                (center_x - round(width * 0.13), _facial_hair_y(y, height, 0.87, vertical_offset)),
+            ],
+            dtype=np.int32,
+        )
+        cv2.fillConvexPoly(image, goatee, 255, lineType=cv2.LINE_AA)
+        _draw_moustache_bar(image, x, y, width, height, vertical_offset=vertical_offset)
+
+
+def _draw_moustache_bar(
+    image: np.ndarray,
+    x: int,
+    y: int,
+    width: int,
+    height: int,
+    *,
+    vertical_offset: float = FACIAL_HAIR_VERTICAL_OFFSET,
+) -> None:
+    """Add a short, gently curved moustache centered just above the mouth."""
+    center_x = x + round(width * 0.5)
+    center_y = _facial_hair_y(y, height, 0.64, vertical_offset)
+    axes = (max(2, round(width * 0.145)), max(1, round(height * 0.037)))
+    cv2.ellipse(
+        image,
+        (center_x, center_y),
+        axes,
+        0,
+        190,
+        350,
+        255,
+        -1,
+        lineType=cv2.LINE_AA,
+    )
+
+
+def _facial_hair_y(
+    y: int, height: int, normalized_y: float, vertical_offset: float = FACIAL_HAIR_VERTICAL_OFFSET
+) -> int:
+    """Map a facial-hair landmark into the lower, lip-safe UV position."""
+    return y + round(height * (normalized_y + vertical_offset))
 
 
 def _draw_glasses(image: np.ndarray, mask: np.ndarray) -> None:
@@ -173,6 +366,42 @@ def _mapping(value: object, context: str) -> Mapping[str, Any]:
     if not isinstance(value, Mapping):
         raise ValueError(f"{context} must be an object")
     return value
+
+
+def _read_mask(path: Path, context: str) -> np.ndarray:
+    mask = cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)
+    if mask is None:
+        raise ValueError(f"Could not decode {context} '{path}'")
+    return mask
+
+
+def _sideburn_mask(
+    source: Path,
+    style: Mapping[str, Any],
+    style_id: object,
+    expected_shape: tuple[int, int],
+) -> np.ndarray:
+    """Read the mandatory mesh-derived sideburn region for a full beard."""
+    mask_name = _string(style.get("sideburn_mask"), f"Face detail style '{style_id}' sideburn_mask")
+    sideburn_mask = _read_mask(
+        source.parent / mask_name, f"Face detail style '{style_id}' sideburn_mask"
+    )
+    if sideburn_mask.shape != expected_shape:
+        raise ValueError(
+            f"Face detail style '{style_id}' sideburn_mask dimensions do not match face_mask"
+        )
+    return sideburn_mask
+
+
+def _facial_hair_vertical_offset(style: Mapping[str, Any], style_id: object) -> float:
+    """Return a small, style-local downward adjustment for a facial-hair layer."""
+    value = style.get("vertical_offset", FACIAL_HAIR_VERTICAL_OFFSET)
+    if not isinstance(value, int | float):
+        raise ValueError(f"Face detail style '{style_id}' vertical_offset must be a number")
+    offset = float(value)
+    if not 0.0 <= offset <= 0.12:
+        raise ValueError(f"Face detail style '{style_id}' vertical_offset must be in [0.0, 0.12]")
+    return offset
 
 
 def _string(value: object, context: str) -> str:

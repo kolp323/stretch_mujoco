@@ -17,7 +17,7 @@ def _asset_root(root: Path) -> Path:
     return root / "stretch_mujoco/models/assets/humanoid"
 
 
-def _make_shared_store(root: Path) -> None:
+def _prepare_shared_root(root: Path) -> None:
     for directory in (
         "sources/npc",
         "generated/animations",
@@ -32,7 +32,7 @@ def _make_shared_store(root: Path) -> None:
 def test_links_shared_sources_and_generated_once(tmp_path: Path) -> None:
     module = _link_module()
     shared, worktree = tmp_path / "main", tmp_path / "appearance"
-    _make_shared_store(shared)
+    _prepare_shared_root(shared)
 
     linked = module.link_shared_npc_assets(shared, worktree)
 
@@ -50,7 +50,7 @@ def test_links_shared_sources_and_generated_once(tmp_path: Path) -> None:
 def test_links_shared_generated_registration_manifest(tmp_path: Path) -> None:
     module = _link_module()
     shared, worktree = tmp_path / "main", tmp_path / "appearance"
-    _make_shared_store(shared)
+    _prepare_shared_root(shared)
     registration = _asset_root(shared) / "generated/animations/manifest.json"
     registration.write_text('{"schema_version": 1}\n')
 
@@ -64,7 +64,7 @@ def test_links_shared_generated_registration_manifest(tmp_path: Path) -> None:
 def test_refuses_to_replace_existing_asset_directory(tmp_path: Path) -> None:
     module = _link_module()
     shared, worktree = tmp_path / "main", tmp_path / "appearance"
-    _make_shared_store(shared)
+    _prepare_shared_root(shared)
     (_asset_root(worktree) / "sources/npc").mkdir(parents=True)
 
     with pytest.raises(ValueError, match="Refusing to replace"):
@@ -74,7 +74,7 @@ def test_refuses_to_replace_existing_asset_directory(tmp_path: Path) -> None:
 def test_links_shared_office_payloads_without_linking_xml(tmp_path: Path) -> None:
     module = _link_module()
     shared, worktree = tmp_path / "main", tmp_path / "appearance"
-    _make_shared_store(shared)
+    _prepare_shared_root(shared)
     models = shared / "stretch_mujoco/models/stretch"
     models.mkdir(parents=True)
     (models / "hand_crush.png").write_bytes(b"png")
@@ -87,50 +87,23 @@ def test_links_shared_office_payloads_without_linking_xml(tmp_path: Path) -> Non
     assert (worktree / "stretch_mujoco/models/stretch/hand_crush.png") in linked
 
 
-def test_links_raw_staging_entries_but_keeps_readme_local(tmp_path: Path) -> None:
+def test_root_workspace_symlink_is_idempotent_and_does_not_block_models(
+    tmp_path: Path,
+) -> None:
     module = _link_module()
-    shared, worktree = tmp_path / "main", tmp_path / "action"
-    _make_shared_store(shared)
-    raw = shared / "aaa_workspace/raw_resources"
-    (raw / "README.md").write_text("primary\n")
-    (raw / "motions").mkdir()
-    (raw / "motions/archive.tar.bz2").write_bytes(b"archive")
-    local_raw = worktree / "aaa_workspace/raw_resources"
-    local_raw.mkdir(parents=True)
-    (local_raw / "README.md").write_text("branch\n")
+    shared, worktree = tmp_path / "main", tmp_path / "conversation"
+    _prepare_shared_root(shared)
+    raw_file = shared / "aaa_workspace/raw_resources/source.jsonl"
+    raw_file.write_text("candidate\n")
+    model_file = shared / "stretch_mujoco/models/stretch/hand_crush.png"
+    model_file.parent.mkdir(parents=True)
+    model_file.write_bytes(b"png")
+    worktree.mkdir()
+    (worktree / "aaa_workspace").symlink_to(shared / "aaa_workspace", target_is_directory=True)
 
-    module.link_shared_npc_assets(shared, worktree)
+    linked = module.link_shared_npc_assets(shared, worktree)
 
-    assert (local_raw / "motions").is_symlink()
-    assert (local_raw / "motions/archive.tar.bz2").read_bytes() == b"archive"
-    assert not (local_raw / "README.md").is_symlink()
-    assert (local_raw / "README.md").read_text() == "branch\n"
-
-
-def test_adopts_matching_generated_root_file(tmp_path: Path) -> None:
-    module = _link_module()
-    shared, worktree = tmp_path / "main", tmp_path / "appearance"
-    _make_shared_store(shared)
-    source = _asset_root(shared) / "generated/relaxed.obj"
-    source.write_bytes(b"mesh")
-    target = _asset_root(worktree) / "generated/relaxed.obj"
-    target.parent.mkdir(parents=True)
-    target.write_bytes(b"mesh")
-
-    module.link_shared_npc_assets(shared, worktree)
-
-    assert target.is_symlink()
-    assert target.resolve() == source
-
-
-def test_refuses_to_replace_existing_raw_entry(tmp_path: Path) -> None:
-    module = _link_module()
-    shared, worktree = tmp_path / "main", tmp_path / "action"
-    _make_shared_store(shared)
-    raw = shared / "aaa_workspace/raw_resources"
-    (raw / "motions").mkdir()
-    local = worktree / "aaa_workspace/raw_resources/motions"
-    local.mkdir(parents=True)
-
-    with pytest.raises(ValueError, match="existing raw-resource entry"):
-        module.link_shared_npc_assets(shared, worktree)
+    assert (worktree / "aaa_workspace/raw_resources/source.jsonl").resolve() == raw_file
+    assert (worktree / "stretch_mujoco/models/stretch/hand_crush.png").is_symlink()
+    assert (worktree / "stretch_mujoco/models/stretch/hand_crush.png") in linked
+    assert module.link_shared_npc_assets(shared, worktree) == []

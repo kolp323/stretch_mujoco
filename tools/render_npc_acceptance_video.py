@@ -3,8 +3,9 @@
 
 The input MJCF is loaded unchanged: its own lights, headlight, skybox and
 materials are the only visual environment used for review. The clip contains
-front, side and seated shots so reviewers can inspect full-body animation,
-textures and any frame-synchronised OBJ accessory geometry.
+front, rear, left, right, and top shots for both walk and sit so reviewers can
+inspect full-body animation, textures and any frame-synchronised OBJ accessory
+geometry in standing and seated poses.
 """
 
 from __future__ import annotations
@@ -23,28 +24,38 @@ import cv2
 import mujoco
 import numpy as np
 
-from stretch_mujoco.humanoid.mesh_animator import SIT_ROOT_TO_SEAT_HEIGHT
 from stretch_mujoco.npc.naming import candidate_body_names, parse_frame_geom_name
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCENE = ROOT / "stretch_mujoco" / "models" / "office_scene.xml"
+ACCEPTANCE_CAMERA_FOV = 65.0
 
 
 @dataclass(frozen=True)
 class AcceptanceShot:
-    """A required close inspection angle and the animation it exercises."""
+    """A required NPC-appearance inspection angle and animation clip."""
 
     name: str
     clip: str
     azimuth_offset: float
-    seated: bool = False
+    elevation: float
+    distance: float = 1.8
 
 
 ACCEPTANCE_SHOTS = (
-    AcceptanceShot("front", "walk", 90.0),
-    AcceptanceShot("side", "walk", 0.0),
-    AcceptanceShot("seated", "work", -45.0, seated=True),
+    AcceptanceShot("front", "walk", 90.0, -8.0),
+    AcceptanceShot("rear", "walk", -90.0, -8.0),
+    AcceptanceShot("left", "walk", 0.0, -8.0),
+    AcceptanceShot("right", "walk", 180.0, -8.0),
+    AcceptanceShot("top", "walk", 90.0, -65.0, distance=2.5),
+    # Exercise the independent sit clip from the same complete set of review
+    # angles required for the standing appearance check.
+    AcceptanceShot("seated_front", "sit", 90.0, -8.0),
+    AcceptanceShot("seated_rear", "sit", -90.0, -8.0),
+    AcceptanceShot("seated_left", "sit", 0.0, -8.0),
+    AcceptanceShot("seated_right", "sit", 180.0, -8.0),
+    AcceptanceShot("seated_top", "sit", 90.0, -65.0, distance=2.5),
 )
 
 
@@ -92,6 +103,27 @@ def _show_frame(
     return active
 
 
+def _hide_non_target_animated_geometries(model: mujoco.MjModel, npc_id: str) -> list[str]:
+    """Hide legacy and roster NPC frames that would obstruct target review.
+
+    Acceptance still loads the caller's composed office MJCF unchanged.  This
+    only changes frame-geometry alpha in the in-memory review model, leaving
+    the office's furniture, native lights, camera environment, and target NPC
+    untouched.  It prevents legacy ``humanoid_preview`` frames and other
+    roster members at shared desk spawn sites from being mistaken for a defect
+    in the NPC under review.
+    """
+    hidden_npc_ids: set[str] = set()
+    for geom_id in range(model.ngeom):
+        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or ""
+        parsed = parse_frame_geom_name(name)
+        if parsed is None or parsed[0] == npc_id:
+            continue
+        model.geom_rgba[geom_id, 3] = 0.0
+        hidden_npc_ids.add(parsed[0])
+    return sorted(hidden_npc_ids)
+
+
 def _yaw_from_xmat(xmat: np.ndarray) -> float:
     """Read the world yaw from MuJoCo's row-major rotation matrix."""
     return math.atan2(float(xmat[3]), float(xmat[0]))
@@ -106,17 +138,17 @@ def _configure_camera(
     """Frame a full body at close range, relative to the NPC's facing direction."""
     camera.type = mujoco.mjtCamera.mjCAMERA_FREE
     camera.lookat[:] = target
-    camera.distance = 3.15 if not shot.seated else 3.4
+    camera.distance = shot.distance
     camera.azimuth = math.degrees(yaw) + shot.azimuth_offset
-    camera.elevation = -8.0 if not shot.seated else -10.0
+    camera.elevation = shot.elevation
 
 
 def _annotate(rgb: np.ndarray, shot: AcceptanceShot, clip_frame: int) -> np.ndarray:
     """Label the review angle without altering the rendered scene itself."""
     image = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
-    label = f"NPC acceptance | {shot.name} | {shot.clip} frame {clip_frame:03d}"
-    cv2.rectangle(image, (18, 18), (660, 62), (20, 24, 32), thickness=-1)
-    cv2.putText(image, label, (32, 48), cv2.FONT_HERSHEY_SIMPLEX, 0.58, (235, 239, 244), 1)
+    label = f"{shot.name} | {shot.clip} {clip_frame:03d}"
+    cv2.rectangle(image, (10, 10), (150, 38), (20, 24, 32), thickness=-1)
+    cv2.putText(image, label, (16, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (235, 239, 244), 1)
     return image
 
 
@@ -148,26 +180,43 @@ def _transcode_h264(source: Path, destination: Path) -> None:
 def _frame_material_checks(
     model: mujoco.MjModel, frame_groups: FrameGroups
 ) -> dict[str, list[str]]:
-    """Check frame transparency toggles and material identity before rendering."""
+    """Check complete opaque frame slots and stable materials before rendering."""
     transparency_failures: list[str] = []
     color_failures: list[str] = []
     for clip, clip_frames in sorted(frame_groups.items()):
         reference_by_slot: dict[str, tuple[int, tuple[float, float, float]]] = {}
+        reference_slots: set[str] | None = None
         for frame, geom_ids in sorted(clip_frames.items()):
             if not geom_ids:
                 transparency_failures.append(f"{clip}/{frame}: no visible geometry")
                 continue
+            frame_slots: set[str] = set()
             for geom_id in geom_ids:
                 material_id = int(model.geom_matid[geom_id])
                 rgba = tuple(float(value) for value in model.geom_rgba[geom_id, :3])
+                alpha = float(model.geom_rgba[geom_id, 3])
                 name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or str(geom_id)
                 slot = parse_frame_geom_name(name)
                 slot_name = slot[3] if slot is not None else name
+                frame_slots.add(slot_name)
+                if not (math.isclose(alpha, 0.0) or math.isclose(alpha, 1.0)):
+                    transparency_failures.append(
+                        f"{clip}/{frame}/{slot_name}: source geometry has fractional alpha"
+                    )
                 previous = reference_by_slot.setdefault(slot_name, (material_id, rgba))
                 if previous != (material_id, rgba):
                     color_failures.append(
                         f"{clip}/{frame}/{slot_name}: material or RGB differs from prior frame"
                     )
+            if reference_slots is None:
+                reference_slots = frame_slots
+            elif frame_slots != reference_slots:
+                missing_slots = sorted(reference_slots - frame_slots)
+                extra_slots = sorted(frame_slots - reference_slots)
+                transparency_failures.append(
+                    f"{clip}/{frame}: frame slots differ from first frame "
+                    f"(missing={missing_slots}, extra={extra_slots})"
+                )
     return {"transparency_failures": transparency_failures, "color_failures": color_failures}
 
 
@@ -177,7 +226,6 @@ def render_acceptance_video(
     *,
     npc_id: str = "employee_01",
     standing_position: tuple[float, float, float] = (-1.5, -0.5, 0.0),
-    sit_site: str = "chair_right_sit",
     seconds_per_shot: float = 2.0,
     fps: int = 20,
     width: int = 1280,
@@ -205,25 +253,29 @@ def render_acceptance_video(
     mocap_id = int(model.body_mocapid[body_id])
     if mocap_id < 0:
         raise ValueError(f"NPC '{npc_id}' body is not mocap-controlled")
-    sit_site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, sit_site)
-    if sit_site_id < 0:
-        raise ValueError(f"Required sit site '{sit_site}' is missing from '{scene_path}'")
     initial_position = data.mocap_pos[mocap_id].copy()
     initial_quaternion = data.mocap_quat[mocap_id].copy()
     frame_count = max(1, round(seconds_per_shot * fps))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     material_checks = _frame_material_checks(model, frame_groups)
+    hidden_npc_ids = _hide_non_target_animated_geometries(model, npc_id)
     report: dict[str, object] = {
         "scene": str(scene_path),
         "npc_id": npc_id,
+        "acceptance_standard": "npc_appearance",
         "standing_position": list(standing_position),
         "lighting": "scene_native_only",
+        "review_visibility": {
+            "policy": "target_npc_frames_only",
+            "hidden_npc_ids": hidden_npc_ids,
+        },
         "shots": [],
         **material_checks,
     }
 
     model.vis.global_.offwidth = max(model.vis.global_.offwidth, width)
     model.vis.global_.offheight = max(model.vis.global_.offheight, height)
+    model.vis.global_.fovy = max(model.vis.global_.fovy, ACCEPTANCE_CAMERA_FOV)
     renderer = mujoco.Renderer(model, width=width, height=height)
     camera = mujoco.MjvCamera()
     scene_option = mujoco.MjvOption()
@@ -243,21 +295,18 @@ def render_acceptance_video(
             raise RuntimeError(f"Could not open video writer for '{output_path}'")
 
         for shot in ACCEPTANCE_SHOTS:
-            if shot.seated:
-                data.mocap_pos[mocap_id] = data.site_xpos[sit_site_id]
-                data.mocap_pos[mocap_id, 2] -= SIT_ROOT_TO_SEAT_HEIGHT
-                mujoco.mju_mat2Quat(data.mocap_quat[mocap_id], data.site_xmat[sit_site_id])
-            else:
-                data.mocap_pos[mocap_id] = standing_position
-                data.mocap_quat[mocap_id] = initial_quaternion
+            data.mocap_pos[mocap_id] = standing_position
+            data.mocap_quat[mocap_id] = initial_quaternion
             mujoco.mj_forward(model, data)
             target = data.xpos[body_id].copy()
-            target[2] += 0.86 if not shot.seated else 0.7
+            target[2] += 0.86
             _configure_camera(camera, target, _yaw_from_xmat(data.xmat[body_id]), shot)
             visible_pixels: list[int] = []
+            rendered_clip_frames: list[int] = []
             for video_frame in range(frame_count):
                 clip_frames = sorted(frame_groups[shot.clip])
                 selected_frame = clip_frames[video_frame % len(clip_frames)]
+                rendered_clip_frames.append(selected_frame)
                 active = _show_frame(model, frame_groups, shot.clip, selected_frame)
                 if not np.allclose(model.geom_rgba[active, 3], 1.0):
                     material_checks["transparency_failures"].append(
@@ -276,8 +325,15 @@ def render_acceptance_video(
                 {
                     "name": shot.name,
                     "clip": shot.clip,
-                    "seated": shot.seated,
+                    "camera": {
+                        "azimuth_offset": shot.azimuth_offset,
+                        "elevation": shot.elevation,
+                        "distance": shot.distance,
+                        "field_of_view": float(model.vis.global_.fovy),
+                    },
                     "frames": frame_count,
+                    "animation_frames_exercised": sorted(set(rendered_clip_frames)),
+                    "animation_passed": len(set(rendered_clip_frames)) > 1,
                     "minimum_visible_npc_pixels": min(visible_pixels),
                     "minimum_required_npc_pixels": minimum_visible_pixels,
                     "occlusion_passed": min(visible_pixels) >= minimum_visible_pixels,
@@ -300,6 +356,7 @@ def render_acceptance_video(
     report["passed"] = (
         not material_checks["transparency_failures"]
         and not material_checks["color_failures"]
+        and all(shot["animation_passed"] for shot in report["shots"])
         and all(shot["occlusion_passed"] for shot in report["shots"])
     )
     report_path = output_path.with_suffix(".acceptance.json")
@@ -319,7 +376,6 @@ def main() -> None:
         default=(-1.5, -0.5, 0.0),
         metavar=("X", "Y", "Z"),
     )
-    parser.add_argument("--sit-site", default="chair_right_sit")
     parser.add_argument("--seconds-per-shot", type=float, default=2.0)
     parser.add_argument("--fps", type=int, default=20)
     parser.add_argument("--width", type=int, default=1280)
@@ -330,7 +386,6 @@ def main() -> None:
         args.output.resolve(),
         npc_id=args.npc_id,
         standing_position=tuple(args.standing_position),
-        sit_site=args.sit_site,
         seconds_per_shot=args.seconds_per_shot,
         fps=args.fps,
         width=args.width,

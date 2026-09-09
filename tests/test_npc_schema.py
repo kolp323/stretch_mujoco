@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from stretch_mujoco.npc.schema import NpcPopulation
+from stretch_mujoco.npc.schema import NpcAppearance, NpcPopulation
 
 MODELS = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
 
@@ -91,3 +91,37 @@ def test_population_validates_visual_identity_against_catalog(tmp_path: Path) ->
     population_path.write_text(json.dumps(payload))
     with pytest.raises(ValueError, match="produces appearance"):
         NpcPopulation.from_json(population_path)
+
+
+def test_explicit_appearance_slots_bind_to_npc_agent() -> None:
+    appearance = NpcAppearance.from_dict(
+        {
+            "skin": "skin_warm_v1",
+            "hair": "hair_short_brown_v1",
+            "top": "top_teal_v1",
+            "bottom": "bottom_charcoal_v1",
+            "shoes": "shoes_black_v1",
+            "accessories": ["accessory_demo_v1"],
+            "scale": 1.0,
+        }
+    )
+    payload = json.loads((MODELS / "office_population.json").read_text())
+    npc = payload["npcs"]["employee_01"]
+    npc["agent_id"] = "agent_alex"
+    npc["embodiment"]["appearance_config"] = {
+        "skin": appearance.skin,
+        "hair": appearance.hair,
+        "top": appearance.top,
+        "bottom": appearance.bottom,
+        "shoes": appearance.shoes,
+        "accessories": list(appearance.accessories),
+        "scale": appearance.scale,
+    }
+    npc["embodiment"]["accessories"] = list(appearance.accessories)
+    npc["embodiment"]["scale"] = appearance.scale
+
+    population = NpcPopulation.from_dict(payload)
+
+    definition = population.npcs["employee_01"]
+    assert definition.agent_id == "agent_alex"
+    assert definition.embodiment.appearance_config == appearance

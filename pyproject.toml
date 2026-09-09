@@ -43,6 +43,7 @@ make_npc_short_hair_layers = "stretch_mujoco.npc.appearance_pipeline.hair_layers
 bake_npc_identity = "stretch_mujoco.npc.appearance_pipeline.catalog:main"
 make_npc_semantic_masks = "stretch_mujoco.npc.appearance_pipeline.semantic_masks:main"
 make_npc_face_details = "stretch_mujoco.npc.appearance_pipeline.face_details:main"
+make_npc_textile_layers = "stretch_mujoco.npc.appearance_pipeline.textile_layers:main"
 
 [build-system]
 requires = ["uv_build>=0.8.9,<0.9.0"]
