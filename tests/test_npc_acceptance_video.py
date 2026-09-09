@@ -6,13 +6,18 @@ import pytest
 from tools import render_npc_acceptance_video as acceptance
 
 
-def test_acceptance_shots_cover_five_npc_appearance_views() -> None:
+def test_acceptance_shots_cover_required_views_for_walk_and_sit() -> None:
     assert [(shot.name, shot.clip) for shot in acceptance.ACCEPTANCE_SHOTS] == [
         ("front", "walk"),
         ("rear", "walk"),
         ("left", "walk"),
         ("right", "walk"),
         ("top", "walk"),
+        ("seated_front", "sit"),
+        ("seated_rear", "sit"),
+        ("seated_left", "sit"),
+        ("seated_right", "sit"),
+        ("seated_top", "sit"),
     ]
 
 

@@ -3,8 +3,9 @@
 
 The input MJCF is loaded unchanged: its own lights, headlight, skybox and
 materials are the only visual environment used for review. The clip contains
-front, rear, left, right and top shots so reviewers can inspect full-body
-animation, textures and any frame-synchronised OBJ accessory geometry.
+front, rear, left, right, and top shots for both walk and sit so reviewers can
+inspect full-body animation, textures and any frame-synchronised OBJ accessory
+geometry in standing and seated poses.
 """
 
 from __future__ import annotations
@@ -48,6 +49,13 @@ ACCEPTANCE_SHOTS = (
     AcceptanceShot("left", "walk", 0.0, -8.0),
     AcceptanceShot("right", "walk", 180.0, -8.0),
     AcceptanceShot("top", "walk", 90.0, -65.0, distance=2.5),
+    # Exercise the independent sit clip from the same complete set of review
+    # angles required for the standing appearance check.
+    AcceptanceShot("seated_front", "sit", 90.0, -8.0),
+    AcceptanceShot("seated_rear", "sit", -90.0, -8.0),
+    AcceptanceShot("seated_left", "sit", 0.0, -8.0),
+    AcceptanceShot("seated_right", "sit", 180.0, -8.0),
+    AcceptanceShot("seated_top", "sit", 90.0, -65.0, distance=2.5),
 )
 
 
