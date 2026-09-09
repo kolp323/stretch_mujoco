@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "license": {
+    "name": "AMASS Dataset Copyright License for non-commercial scientific research purposes",
+    "url": "https://amass.is.tue.mpg.de/license.html"
+  },
+  "selections": [
+    {
+      "target_clip": "stand_up",
+      "source_id": "replace-with-reviewed-source-id.npz",
+      "start_frame": 0,
+      "end_frame": 480,
+      "target_fps": 8,
+      "reverse": false
+    }
+  ]
+}

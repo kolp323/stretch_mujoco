@@ -1,0 +1,17 @@
+{
+  "schema_version": 4,
+  "accessory_id": "baseball_cap_v1",
+  "attachment_mode": "head_follow_fused",
+  "mesh_scale": 1.1190504451038592,
+  "lateral_offset_m": 0.0,
+  "head_clearance_m": -0.1007630351844,
+  "back_offset_m": 0.05,
+  "back_tilt_degrees": 0.0,
+  "roll_degrees": 0.0,
+  "yaw_degrees": 180.0,
+  "source_vertical_anchor": null,
+  "accessory_uv": [
+    0.0,
+    0.0
+  ]
+}

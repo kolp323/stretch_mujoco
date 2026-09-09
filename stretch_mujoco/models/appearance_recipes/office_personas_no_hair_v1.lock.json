@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "population": "stretch_mujoco/models/office_population.production.example.json",
+  "source_hashes": {
+    "stretch_mujoco/models/accessories/baseball_cap_v1.runtime.json": "89af629846dd67c8b0717974d9222baa907cca34052cfc303d9e6185bdda2dbc",
+    "stretch_mujoco/models/appearance_recipes/office_personas_v1.roster.json": "bac62ec838926919e05008efb2c1f265b63f79317fa9817c7d8423f7bea82ddc",
+    "stretch_mujoco/models/assets/humanoid/generated/animations/appearance_catalog.json": "0686f2aa2a449fb3379b923f01ebb90bacf4f60e8e3f638e1166cc6e6109f045",
+    "stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json": "c13b380fc680578f8d933a7362a4db791716b5b869dfa6ac6aaded0c585e2ce9",
+    "stretch_mujoco/models/office_population.production.example.json": "591f191d8ec21c3dd6042ee10b77e058bc9cc8458db0381c5b4eef221ff66b8e",
+    "stretch_mujoco/models/office_scene.xml": "aff5196f402b84fdbf646457a4ad90b89869ca5d4aa1428260b1cebfdf9d615a"
+  },
+  "build": {
+    "tool": "tools/build_npc_scene.py",
+    "include_base_scene": true,
+    "accessory_runtime_configs": ["stretch_mujoco/models/accessories/baseball_cap_v1.runtime.json"],
+    "excluded_runtime_accessory_ids": ["beautiful_hair_v1", "ponytail_hair_v1"]
+  },
+  "scene": {
+    "path": "stretch_mujoco/models/.npc_no_hair_acceptance.xml",
+    "sha256": "361f4bf3e019d803af56e7ff514a5d939a651d2bcfaf890eb2c11e17f0dce37e",
+    "required_accessory_ids": ["baseball_cap_v1"],
+    "excluded_accessory_ids": ["beautiful_hair_v1", "ponytail_hair_v1"]
+  },
+  "npcs": {
+    "npc_alex_chen": {
+      "appearance": "office_sage_chin_beard_glasses_v2",
+      "visual_identity": "office_sage_chin_beard_glasses_v2",
+      "appearance_config": {"skin": "skin_warm_v2", "hair": "hair_brown_v1", "top": "top_sage_v2", "bottom": "bottom_charcoal_v2", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 1.0},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_sage_chin_beard_glasses_v2/body.png",
+      "body_sha256": "1ef43c1d721f1e6bc2da6f893e25836627ea589e0e81480ccd243a0ef5b0f1f9",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_alex_chen.mp4",
+      "video_sha256": "5c467a57876e77ff10d6fef515d31722868b06ccf996de6c68711d88e4053d47",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_alex_chen.acceptance.json",
+      "report_sha256": "091d07e53efc88aac6d9891e48f7147401ec8d4b30c9b8b0d25b7e9778184336"
+    },
+    "npc_morgan_lee": {
+      "appearance": "office_navy_handlebar_moustache_v2",
+      "visual_identity": "office_navy_handlebar_moustache_v2",
+      "appearance_config": {"skin": "skin_light_v1", "hair": "hair_black_v1", "top": "top_navy_v1", "bottom": "bottom_charcoal_v2", "shoes": "shoes_black_v1", "accessories": [], "scale": 1.0},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_navy_handlebar_moustache_v2/body.png",
+      "body_sha256": "340612bbad23f6e8a03e97787345188d346f81a46eb3f3a8e27277e0cd2a866b",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_morgan_lee.mp4",
+      "video_sha256": "bafed7726b1de303e10b3a804fd464590fe562aa8b522363f3f463adf0b1b261",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_morgan_lee.acceptance.json",
+      "report_sha256": "00a020aa9c6b08e8ec83c6ab0f0cc8db86b2b2a6018c6095bdd5fa725a021346"
+    },
+    "npc_jordan_patell": {
+      "appearance": "office_burgundy_boxed_beard_analytics_v2",
+      "visual_identity": "office_burgundy_boxed_beard_analytics_v2",
+      "appearance_config": {"skin": "skin_olive_v1", "hair": "hair_auburn_v1", "top": "top_burgundy_v1", "bottom": "bottom_navy_v1", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 1.03},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_burgundy_boxed_beard_analytics_v2/body.png",
+      "body_sha256": "8b26dc4930260acb75dbf05c566338c01024e018af056e2bce9ac6147b85dcf0",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_jordan_patell.mp4",
+      "video_sha256": "6ecaff18087acf1aa996a40a39ae5ae56286e6beb78dc4be846ccda18a736538",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_jordan_patell.acceptance.json",
+      "report_sha256": "a22b95754dc93984af6132c78ff5947471425495ba4382d0107a49c1ca8e75d3"
+    },
+    "npc_priya_narayanan": {
+      "appearance": "office_ochre_handlebar_glasses_v1",
+      "visual_identity": "office_ochre_handlebar_glasses_v1",
+      "appearance_config": {"skin": "skin_deep_v1", "hair": "hair_blonde_v1", "top": "top_ochre_v1", "bottom": "bottom_khaki_v1", "shoes": "shoes_cream_v1", "accessories": [], "scale": 0.96},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_ochre_handlebar_glasses_v1/body.png",
+      "body_sha256": "9a1f85d08f80707d05c7a95524e7742f6e5b765e315e7563f8d080a758e897bd",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_priya_narayanan.mp4",
+      "video_sha256": "83809fa4e48ba9dabb958d3af288e206399958a1de670ad624758e2ae2ccd8ca",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_priya_narayanan.acceptance.json",
+      "report_sha256": "74f03df64c039717aa4746e9b1af2c64b6c81d7422afcc9e7b425572e30cd5ed"
+    },
+    "npc_marco_silva": {
+      "appearance": "office_sage_full_beard_light_v1",
+      "visual_identity": "office_sage_full_beard_light_v1",
+      "appearance_config": {"skin": "skin_light_v1", "hair": "hair_brown_v1", "top": "top_sage_v2", "bottom": "bottom_charcoal_v2", "shoes": "shoes_black_v1", "accessories": [], "scale": 1.06},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_sage_full_beard_light_v1/body.png",
+      "body_sha256": "6c5428f9e8f3419a5358c3635a045df1d6caa93e3c3a119027f462fa965c15e0",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_marco_silva.mp4",
+      "video_sha256": "ffd4cb7bcd97ca8c9e70964adcbd6c525c409c6e5d55ab279c331fc7298eae7b",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_marco_silva.acceptance.json",
+      "report_sha256": "7186d55784a68ae7ecd8180a411bcba5bbaf043e1dc95a5f6173322204d87ae8"
+    },
+    "npc_olivia_bennett": {
+      "appearance": "office_jersey_goatee_v1",
+      "visual_identity": "office_jersey_goatee_v1",
+      "appearance_config": {"skin": "skin_olive_v1", "hair": "hair_black_v1", "top": "top_jersey_melange_v1", "bottom": "bottom_charcoal_v2", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 0.99},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_jersey_goatee_v1/body.png",
+      "body_sha256": "e2ee7e7e8f58d875b28a0f4021546eae0398eca2355fedf8570da76c8ffad46c",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_olivia_bennett.mp4",
+      "video_sha256": "f9968f9e32005741d12444c3f379141fd0263e34618c9d184c0378d84e484078",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_olivia_bennett.acceptance.json",
+      "report_sha256": "4b3e15502552569d6ae42e83ed4597d6ea62220a729312466d6760af720268ce"
+    },
+    "npc_daniel_kim": {
+      "appearance": "office_sage_auburn_boxed_glasses_v1",
+      "visual_identity": "office_sage_auburn_boxed_glasses_v1",
+      "appearance_config": {"skin": "skin_deep_v1", "hair": "hair_auburn_v1", "top": "top_sage_v2", "bottom": "bottom_khaki_v1", "shoes": "shoes_cream_v1", "accessories": [], "scale": 1.01},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_sage_auburn_boxed_glasses_v1/body.png",
+      "body_sha256": "3f865950e3aaa50ba9f33f230afc8c9bf704b428368b6b635c63f1e441a21dc2",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_daniel_kim.mp4",
+      "video_sha256": "d3cfe0093d8ea619610ea9f5c407bfa6e7be195437e6c97a9abd73f5586e171e",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_daniel_kim.acceptance.json",
+      "report_sha256": "6eda87c2fbe6884a8a91b727a4af7ec41d64f305d364f098c1c7b221cc404539"
+    },
+    "npc_samira_haddad": {
+      "appearance": "office_burgundy_handlebar_v1",
+      "visual_identity": "office_burgundy_handlebar_v1",
+      "appearance_config": {"skin": "skin_light_v1", "hair": "hair_blonde_v1", "top": "top_burgundy_v1", "bottom": "bottom_navy_v1", "shoes": "shoes_black_v1", "accessories": [], "scale": 0.97},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_burgundy_handlebar_v1/body.png",
+      "body_sha256": "173982c6c01c2149f583594f8732ee4e9c963ce1a7dff12abb3b21da1df1c5c5",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_samira_haddad.mp4",
+      "video_sha256": "21e53663db1c7e1237e22f56f8fcc16598f4d67c76f96952ffb0068866c7a075",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_samira_haddad.acceptance.json",
+      "report_sha256": "533d8262781e8a71485a75841e065bbbb806af3b22e0da15a588206be1e7cfab"
+    },
+    "npc_wei_zhang": {
+      "appearance": "office_jogging_full_beard_v1",
+      "visual_identity": "office_jogging_full_beard_v1",
+      "appearance_config": {"skin": "skin_warm_v2", "hair": "hair_auburn_v1", "top": "top_jogging_melange_v1", "bottom": "bottom_charcoal_v2", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 1.04},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_jogging_full_beard_v1/body.png",
+      "body_sha256": "942cb8d4981907c93ce4a3837504793eaea712d10c352c9dc9363a2dd1c54b55",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_wei_zhang.mp4",
+      "video_sha256": "eb30c1fd0207424e19cc1ae1e77fc3e0ae5dd1e6a4f91ede581675d460c68131",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_wei_zhang.acceptance.json",
+      "report_sha256": "b23e78721fb96633debb4df0209145624d6d3847726e8ed2f2f9b9657c48bd6f"
+    },
+    "npc_lena_fischer": {
+      "appearance": "office_olive_goatee_glasses_v1",
+      "visual_identity": "office_olive_goatee_glasses_v1",
+      "appearance_config": {"skin": "skin_olive_v1", "hair": "hair_brown_v1", "top": "top_sage_v2", "bottom": "bottom_khaki_v1", "shoes": "shoes_cream_v1", "accessories": [], "scale": 0.95},
+      "body_path": "stretch_mujoco/models/assets/humanoid/generated/animations/appearances/office_olive_goatee_glasses_v1/body.png",
+      "body_sha256": "b1f652e0b9f24a933c8d7c78d2fd4268652b30c648ba23d5de05392fc4960e5a",
+      "video_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_lena_fischer.mp4",
+      "video_sha256": "aa5280ad82bbdb6f19a78f8c98c521a872a5b0bd379d10bde185975ff650f064",
+      "report_path": "aaa_workspace/demo/10_npc_apperances/no_hair/npc_lena_fischer.acceptance.json",
+      "report_sha256": "1c1f69ea4448b24bc411bb39c89f4e7187c30702d0fa2d286be87931d91761c8"
+    }
+  }
+}

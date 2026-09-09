@@ -3,13 +3,20 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import mujoco
 
 from .assets import NpcAssetManifest
-from .naming import body_name, collision_geom_name, frame_geom_name, interaction_site_name
+from .naming import (
+    accessory_frame_geom_name,
+    body_name,
+    collision_geom_name,
+    frame_geom_name,
+    interaction_site_name,
+)
 from .schema import NpcPopulation
 
 
@@ -49,6 +56,7 @@ def build_npc_scene(
 
     mesh_names: dict[tuple[str, float, str, int], str] = {}
     material_names: dict[tuple[str, str], str] = {}
+    accessory_meshes: dict[tuple[str, str], str] = {}
     for npc_id, definition in population.npcs.items():
         bundle = manifest.bundles[definition.embodiment.bundle]
         appearance = bundle.appearances[definition.embodiment.appearance]
@@ -97,6 +105,12 @@ def build_npc_scene(
             },
         )
         first_geom = True
+        accessory_anchors = {
+            accessory_id: json.loads(
+                (manifest_path.parent / bundle.accessories[accessory_id].anchors).read_text()
+            )
+            for accessory_id in definition.embodiment.accessories
+        }
         for clip_id, clip in bundle.clips.items():
             for frame_index, frame_path in enumerate(clip.frames):
                 mesh_key = (bundle.bundle_id, definition.embodiment.scale, clip_id, frame_index)
@@ -130,6 +144,48 @@ def build_npc_scene(
                             "conaffinity": "0",
                             "group": "2",
                             "rgba": "1 1 1 1" if first_geom else "1 1 1 0",
+                        },
+                    )
+                    first_geom = False
+                for accessory_id in definition.embodiment.accessories:
+                    definition_asset = bundle.accessories[accessory_id]
+                    accessory_mesh_key = (bundle.bundle_id, accessory_id)
+                    accessory_mesh_name = accessory_meshes.get(accessory_mesh_key)
+                    if accessory_mesh_name is None:
+                        accessory_mesh_name = f"npc_accessory__{bundle.bundle_id}__{accessory_id}"
+                        ET.SubElement(
+                            asset,
+                            "mesh",
+                            {
+                                "name": accessory_mesh_name,
+                                "file": str(
+                                    (manifest_path.parent / definition_asset.mesh).resolve()
+                                ),
+                            },
+                        )
+                        accessory_meshes[accessory_mesh_key] = accessory_mesh_name
+                    try:
+                        anchor = accessory_anchors[accessory_id][clip_id][frame_index]
+                        position = anchor["position"]
+                    except (KeyError, IndexError, TypeError) as error:
+                        raise ValueError(
+                            f"Accessory '{accessory_id}' lacks anchor for {clip_id}/{frame_index}"
+                        ) from error
+                    ET.SubElement(
+                        body,
+                        "geom",
+                        {
+                            "name": accessory_frame_geom_name(
+                                npc_id, clip_id, frame_index, accessory_id
+                            ),
+                            "type": "mesh",
+                            "mesh": accessory_mesh_name,
+                            "pos": " ".join(str(float(value)) for value in position),
+                            "mass": "0",
+                            "contype": "0",
+                            "conaffinity": "0",
+                            "group": "2",
+                            "rgba": "0.04 0.04 0.05 1" if first_geom else "0.04 0.04 0.05 0",
                         },
                     )
                     first_geom = False

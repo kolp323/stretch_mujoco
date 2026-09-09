@@ -1,4 +1,5 @@
 import json
+import hashlib
 from pathlib import Path
 
 import pytest
@@ -51,3 +52,42 @@ def test_population_validates_semantic_location_and_site() -> None:
             locations={"workstation_left", "workstation_right"},
             sites={"desk_right_work_site"},
         )
+
+
+def test_population_validates_visual_identity_against_catalog(tmp_path: Path) -> None:
+    base = tmp_path / "base.png"
+    layer = tmp_path / "hair.png"
+    base.write_bytes(b"base")
+    layer.write_bytes(b"hair")
+    catalog = {
+        "schema_version": 1,
+        "texture_topology_id": "topology-v1",
+        "base": "base.png",
+        "base_sha256": hashlib.sha256(base.read_bytes()).hexdigest(),
+        "layers": {
+            "hair_v1": {
+                "category": "hair",
+                "image": "hair.png",
+                "sha256": hashlib.sha256(layer.read_bytes()).hexdigest(),
+            }
+        },
+        "identities": {"alex_v1": {"appearance_id": "alex_appearance_v1", "layers": ["hair_v1"]}},
+    }
+    (tmp_path / "catalog.json").write_text(json.dumps(catalog))
+    payload = json.loads((MODELS / "office_population.json").read_text())
+    payload["appearance_catalog"] = "catalog.json"
+    embodiment = payload["npcs"]["employee_01"]["embodiment"]
+    embodiment["appearance"] = "alex_appearance_v1"
+    embodiment["visual_identity"] = "alex_v1"
+    payload["npcs"]["employee_02"]["embodiment"]["appearance"] = "alex_appearance_v1"
+    payload["npcs"]["employee_02"]["embodiment"]["visual_identity"] = "alex_v1"
+    population_path = tmp_path / "population.json"
+    population_path.write_text(json.dumps(payload))
+
+    population = NpcPopulation.from_json(population_path)
+
+    assert population.npcs["employee_01"].embodiment.visual_identity == "alex_v1"
+    payload["npcs"]["employee_01"]["embodiment"]["appearance"] = "wrong_v1"
+    population_path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError, match="produces appearance"):
+        NpcPopulation.from_json(population_path)

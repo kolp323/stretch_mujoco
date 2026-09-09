@@ -41,6 +41,12 @@ class AppearanceManifest:
 
 
 @dataclass(frozen=True)
+class AccessoryManifest:
+    mesh: str
+    anchors: str
+
+
+@dataclass(frozen=True)
 class AssetBundle:
     bundle_id: str
     format: AssetFormat
@@ -50,6 +56,7 @@ class AssetBundle:
     height_m: float
     material_slots: tuple[str, ...]
     appearances: dict[str, AppearanceManifest]
+    accessories: dict[str, AccessoryManifest]
     clips: dict[str, ClipManifest]
     sha256: dict[str, str]
     asset_quality: str = "production"
@@ -111,6 +118,16 @@ class NpcAssetManifest:
                     textures={str(key): str(value) for key, value in textures.items()},
                     texture_topology_id=str(item["texture_topology_id"]),
                 )
+            accessories: dict[str, AccessoryManifest] = {}
+            for accessory_id, raw_accessory in _mapping(
+                raw_bundle.get("accessories", {}), f"Asset bundle '{bundle_id}' accessories"
+            ).items():
+                item = _mapping(raw_accessory, f"Accessory '{accessory_id}'")
+                if not isinstance(item.get("mesh"), str) or not isinstance(
+                    item.get("anchors"), str
+                ):
+                    raise ValueError(f"Accessory '{accessory_id}' requires mesh and anchors")
+                accessories[str(accessory_id)] = AccessoryManifest(item["mesh"], item["anchors"])
             clips_data = _mapping(raw_bundle["clips"], f"Asset bundle '{bundle_id}' clips")
             clips: dict[str, ClipManifest] = {}
             for clip_id, raw_clip in clips_data.items():
@@ -148,6 +165,7 @@ class NpcAssetManifest:
                 height_m=float(raw_bundle["height_m"]),
                 material_slots=slots,
                 appearances=appearances,
+                accessories=accessories,
                 clips=clips,
                 sha256={str(key): str(value) for key, value in hashes.items()},
                 asset_quality=str(raw_bundle.get("asset_quality", "production")),
@@ -176,6 +194,11 @@ class NpcAssetManifest:
                 errors.append(
                     f"NPC '{npc_id}' references unknown appearance "
                     f"'{definition.embodiment.appearance}' in bundle '{bundle.bundle_id}'"
+                )
+            unknown_accessories = set(definition.embodiment.accessories) - bundle.accessories.keys()
+            if unknown_accessories:
+                errors.append(
+                    f"NPC '{npc_id}' references unknown accessories: {', '.join(sorted(unknown_accessories))}"
                 )
             if not definition.embodiment.animation_graph:
                 errors.append(f"NPC '{npc_id}' must declare an animation graph")
@@ -206,11 +229,13 @@ class NpcAssetManifest:
             )
         if "idle" not in bundle.clips:
             errors.append(f"Bundle '{bundle.bundle_id}' is missing mandatory clip 'idle'")
-        if bundle.asset_quality == "production":
-            missing_clips = {"idle", "walk", "sit", "work", "eat"} - bundle.clips.keys()
+        if bundle.asset_quality in {"production", "restricted"}:
+            from .animation.graph import OFFICE_CLIPS
+
+            missing_clips = set(OFFICE_CLIPS) - bundle.clips.keys()
             if missing_clips:
                 errors.append(
-                    f"Bundle '{bundle.bundle_id}' production clips are incomplete: "
+                    f"Bundle '{bundle.bundle_id}' restricted production clips are incomplete: "
                     f"{', '.join(sorted(missing_clips))}"
                 )
         for hash_path, digest in bundle.sha256.items():
@@ -247,6 +272,8 @@ class NpcAssetManifest:
                     f"'{bundle.topology_id}'"
                 )
             referenced.extend(appearance.textures.values())
+        for accessory in bundle.accessories.values():
+            referenced.extend((accessory.mesh, accessory.anchors))
 
         topology: tuple[int, tuple[tuple[str, ...], ...]] | None = None
         for clip_id, clip in bundle.clips.items():

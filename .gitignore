@@ -53,6 +53,13 @@ MUJOCO_LOG.TXT
 # Local task tracking files; do not include them in feature PRs.
 /aaa_workspace/task/
 
+# Local raw asset staging is shared from the primary worktree, never committed.
+/aaa_workspace/raw_resources/**
+!/aaa_workspace/raw_resources/README.md
+
+# Shared experimental payloads stay local; document their layout outside them.
+/aaa_workspace/experiments/**
+
 # Temp runtime XML 
 stretch_temp_abs.xml
 
@@ -63,6 +70,8 @@ stretch_mujoco/models/assets/humanoid/private/*
 !stretch_mujoco/models/assets/humanoid/private/README.md
 stretch_mujoco/models/assets/humanoid/generated/*
 !stretch_mujoco/models/assets/humanoid/generated/README.md
+stretch_mujoco/models/assets/humanoid/sources/**
+!stretch_mujoco/models/assets/humanoid/sources/README.md
 
 # Local LLM credentials must never be committed.
 **/*.local.json

@@ -5,6 +5,7 @@ import numpy as np
 
 from stretch_mujoco.recording.native_scene import build_native_multi_npc_scene
 from stretch_mujoco.recording.renderers import (
+    MujocoSnapshotRenderer,
     _transcode_h264,
     annotate_3d_frame,
     event_lines,
@@ -89,12 +90,14 @@ def test_jsonl_snapshots_round_trip_and_render_to_2d_video(tmp_path: Path) -> No
 
     assert list(read_snapshots(input_path)) == [snapshot]
     assert event_lines(snapshot) == ["[09:00] employee_01: action_started work"]
-    assert annotate_3d_frame(np.zeros((80, 160, 3), dtype="uint8"), snapshot).shape == (
+    annotated = annotate_3d_frame(np.zeros((80, 160, 3), dtype="uint8"), snapshot)
+    assert annotated.shape == (
         80,
         160,
         3,
     )
-    assert annotate_3d_frame(np.zeros((80, 160, 3), dtype="uint8"), snapshot).sum() > 0
+    assert annotated.sum() > 0
+    assert not annotated[-1].any()
 
     output_path = tmp_path / "office.mp4"
     assert render_topdown_video(read_snapshots(input_path), output_path, fps=5) == 1
@@ -116,6 +119,20 @@ def test_native_multi_npc_scene_compiles_with_two_poseable_employees(tmp_path: P
     material_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_MATERIAL, "humanoid_employee")
     employee_geom_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, "em01_frame_idle_00_body")
     assert model.geom_matid[employee_geom_id] == material_id
+
+
+def test_native_office_renderer_uses_close_unoccluded_free_camera(tmp_path: Path) -> None:
+    scene_path = build_native_multi_npc_scene(tmp_path / "native_office_multi_npc.xml")
+    renderer = MujocoSnapshotRenderer(scene_path, width=320, height=180)
+    try:
+        assert renderer.camera.type == 0  # mjCAMERA_FREE
+        assert renderer.camera.fixedcamid == -1
+        assert renderer.camera.distance == 6.4
+        assert renderer.camera.azimuth == 90.0
+        assert renderer.camera.elevation == -63.0
+        assert renderer.camera.lookat.tolist() == [0.0, 0.15, 0.75]
+    finally:
+        renderer.close()
 
 
 def test_3d_video_transcode_uses_browser_compatible_h264(tmp_path: Path, monkeypatch) -> None:

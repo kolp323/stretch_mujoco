@@ -1,0 +1,12 @@
+{
+  "reference_mesh": "../assets/humanoid/generated/animations/humanoid_idle_00_body.obj",
+  "min_height_m": 1.67,
+  "horizontal_radius_m": 0.18,
+  "normal_z_min": 0.2,
+  "styles": {
+    "hair_brown_v1": {"rgb": [83, 55, 38]},
+    "hair_black_v1": {"rgb": [28, 23, 22]},
+    "hair_auburn_v1": {"rgb": [123, 63, 39]},
+    "hair_blonde_v1": {"rgb": [174, 130, 73]}
+  }
+}

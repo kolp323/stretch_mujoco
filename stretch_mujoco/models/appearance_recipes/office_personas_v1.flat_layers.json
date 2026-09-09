@@ -1,0 +1,19 @@
+{
+  "base": "../assets/humanoid/generated/animations/smplx_employee_diffuse.png",
+  "regions": {
+    "skin_light_v1": {"source_rgb": [184, 133, 102], "target_rgb": [224, 181, 150], "include_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "skin_warm_v2": {"source_rgb": [184, 133, 102], "target_rgb": [198, 143, 112], "include_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "skin_olive_v1": {"source_rgb": [184, 133, 102], "target_rgb": [171, 126, 87], "include_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "skin_deep_v1": {"source_rgb": [184, 133, 102], "target_rgb": [112, 73, 54], "include_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "top_sage_v2": {"source_rgb": [43, 92, 122], "target_rgb": [70, 106, 92], "exclude_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "top_navy_v1": {"source_rgb": [43, 92, 122], "target_rgb": [37, 64, 104], "exclude_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "top_burgundy_v1": {"source_rgb": [43, 92, 122], "target_rgb": [117, 50, 65], "exclude_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "top_ochre_v1": {"source_rgb": [43, 92, 122], "target_rgb": [176, 127, 44], "exclude_mask": "../assets/humanoid/generated/animations/appearance_sources/semantic_masks_v2/masks/neck.png"},
+    "bottom_charcoal_v2": {"source_rgb": [26, 36, 46], "target_rgb": [49, 52, 57]},
+    "bottom_navy_v1": {"source_rgb": [26, 36, 46], "target_rgb": [31, 48, 76]},
+    "bottom_khaki_v1": {"source_rgb": [26, 36, 46], "target_rgb": [105, 92, 62]},
+    "shoes_cognac_v2": {"source_rgb": [9, 10, 11], "target_rgb": [103, 62, 37]},
+    "shoes_black_v1": {"source_rgb": [9, 10, 11], "target_rgb": [24, 25, 28]},
+    "shoes_cream_v1": {"source_rgb": [9, 10, 11], "target_rgb": [197, 187, 165]}
+  }
+}

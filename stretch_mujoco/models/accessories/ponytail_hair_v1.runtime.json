@@ -1,0 +1,17 @@
+{
+  "schema_version": 2,
+  "recipe": "ponytail_hair_v1.recipe.json",
+  "source_archive": "../assets/humanoid/sources/npc/hair/ponytail_hair_v1/ponytail-hair-for-character.zip",
+  "source_format": "nested_zip_obj",
+  "nested_archive_member": "source/Ponytail-with flies.zip",
+  "obj_member": "Ponytail-with flies.obj",
+  "source_unit_scale": 0.01,
+  "source_up_axis": "y",
+  "source_manifest": "../assets/humanoid/generated/animations/manifest.json",
+  "source_population": "../office_population.production.example.json",
+  "npc_id": "npc_priya_narayanan",
+  "bundle": "smplx_office_neutral_v1",
+  "output_dir": "../assets/humanoid/generated/animations/runtime/ponytail_hair_v1/npc_priya_narayanan",
+  "output_manifest": "../assets/humanoid/generated/animations/manifest.ponytail_hair_v1.npc_priya_narayanan.runtime.json",
+  "output_population": "../assets/humanoid/generated/animations/runtime_populations/ponytail_hair_v1/npc_priya_narayanan.json"
+}

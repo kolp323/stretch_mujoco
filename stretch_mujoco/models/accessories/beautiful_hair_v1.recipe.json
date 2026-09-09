@@ -1,0 +1,17 @@
+{
+  "schema_version": 4,
+  "accessory_id": "beautiful_hair_v1",
+  "attachment_mode": "head_follow_fused",
+  "mesh_scale": 1.150737600678255,
+  "lateral_offset_m": -0.004451728878080097,
+  "head_clearance_m": -0.08380669775328498,
+  "back_offset_m": 0.10551972084170425,
+  "back_tilt_degrees": -19.76261127596422,
+  "roll_degrees": 2.4045680448343774,
+  "yaw_degrees": 180.0,
+  "source_vertical_anchor": 1.65,
+  "accessory_uv": [
+    0.319,
+    0.891
+  ]
+}

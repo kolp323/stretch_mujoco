@@ -28,6 +28,16 @@ def test_runtime_animation_graph_is_derived_from_validated_bundle() -> None:
     assert graph.clips["idle"].fps > 0
 
 
+def test_restricted_bundle_requires_the_complete_clip_contract(tmp_path: Path) -> None:
+    source = (MODELS / "npc_assets.example.json").read_text()
+    source = source.replace('"asset_quality": "preview"', '"asset_quality": "restricted"')
+    path = tmp_path / "manifest.json"
+    path.write_text(source)
+
+    with pytest.raises(ValueError, match="restricted production clips are incomplete"):
+        NpcAssetManifest.from_json(path)
+
+
 def test_texture_topology_mismatch_is_rejected(tmp_path: Path) -> None:
     source = (MODELS / "npc_assets.example.json").read_text()
     source = source.replace(
@@ -49,7 +59,7 @@ def test_smplx_baker_writes_formal_production_clip_contract(tmp_path: Path) -> N
     manifest = write_npc_asset_manifest(tmp_path, 1.72)
     bundle = manifest["bundles"]["smplx_office_neutral_v1"]
 
-    assert bundle["asset_quality"] == "production"
+    assert bundle["asset_quality"] == "restricted"
     assert set(bundle["clips"]) == {"idle", "walk", "sit", "work", "eat"}
     assert bundle["clips"]["sit"]["markers"] == [{"name": "seated", "phase": 0.875}]
     assert len(bundle["sha256"]["humanoid_idle_00_body.obj"]) == 64

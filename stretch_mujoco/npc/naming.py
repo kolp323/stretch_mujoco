@@ -24,6 +24,10 @@ def frame_geom_name(npc_id: str, clip: str, frame: int, material: str) -> str:
     return f"npc__{npc_id}__clip__{clip}__frame__{frame:03d}__slot__{material}"
 
 
+def accessory_frame_geom_name(npc_id: str, clip: str, frame: int, accessory_id: str) -> str:
+    return frame_geom_name(npc_id, clip, frame, f"accessory_{accessory_id}")
+
+
 def interaction_site_name(npc_id: str, role: str) -> str:
     return f"npc__{npc_id}__{role}"
 
