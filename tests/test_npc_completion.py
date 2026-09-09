@@ -2,6 +2,8 @@ import mujoco
 import numpy as np
 
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
+from stretch_mujoco.npc.binding import NpcBinding
+from stretch_mujoco.npc.locomotion import LocomotionController
 from stretch_mujoco.npc.system import NpcSystem
 
 
@@ -167,6 +169,43 @@ def test_move_waits_for_walk_marker_before_start_and_stop() -> None:
     assert state.last_receipt is not None
     assert state.last_receipt.status == CommandStatus.SUCCEEDED
     assert state.stop_marker in {"left_foot", "right_foot"}
+    np.testing.assert_allclose(data.mocap_pos[0, :2], (2.0, 0.0), atol=1e-6)
+
+
+def test_office_move_routes_around_collision_geometry() -> None:
+    model = mujoco.MjModel.from_xml_string(
+        """
+        <mujoco>
+          <worldbody>
+            <geom name="office_floor" type="box" pos="0 0 -.05" size="3 3 .05"/>
+            <body name="npc__employee_01" mocap="true">
+              <geom name="npc__employee_01__clip__idle__frame__000__slot__body"
+                    type="sphere" size=".1"/>
+              <site name="npc__employee_01__handover" pos="0 0 1"/>
+            </body>
+            <body name="blocking_desk" pos="1 0 .5">
+              <geom type="box" size=".15 .45 .5"/>
+            </body>
+            <site name="drop_site" pos="2 0 0" euler="0 0 0"/>
+          </worldbody>
+        </mujoco>
+        """
+    )
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    controller = LocomotionController(model, NpcBinding.from_model(model, "employee_01"))
+    controller.move_to("drop_site")
+    visited_y = []
+
+    for index in range(100):
+        controller.step(data, index * 0.1)
+        visited_y.append(float(data.mocap_pos[0, 1]))
+        if controller.target_site is None:
+            break
+
+    assert controller.failure_reason is None
+    assert controller.target_site is None
+    assert max(abs(value) for value in visited_y) > 0.5
     np.testing.assert_allclose(data.mocap_pos[0, :2], (2.0, 0.0), atol=1e-6)
 
 
