@@ -2,15 +2,23 @@ import mujoco
 import numpy as np
 
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
+from stretch_mujoco.npc.binding import NpcBinding
+from stretch_mujoco.npc.locomotion import LocomotionController
 from stretch_mujoco.npc.system import NpcSystem
 
 
 def _model() -> mujoco.MjModel:
-    frames = "\n".join(
-        f'<geom name="npc__employee_01__clip__sit__frame__{index:03d}__slot__body" '
-        f'type="sphere" size=".1" rgba="1 1 1 0"/>'
-        for index in range(8)
-    )
+    def frames(clip: str, count: int) -> str:
+        return "\n".join(
+            f'<geom name="npc__employee_01__clip__{clip}__frame__{index:03d}__slot__body" '
+            f'type="sphere" size=".1" rgba="1 1 1 0"/>'
+            for index in range(count)
+        )
+
+    sit_down_frames = frames("sit_down", 8)
+    seated_idle_frames = frames("seated_idle", 4)
+    stand_up_frames = frames("stand_up", 8)
+    walk_frames = frames("walk", 8)
     return mujoco.MjModel.from_xml_string(
         f"""
         <mujoco>
@@ -18,7 +26,10 @@ def _model() -> mujoco.MjModel:
             <body name="npc__employee_01" mocap="true">
               <geom name="npc__employee_01__clip__idle__frame__000__slot__body"
                     type="sphere" size=".1"/>
-              {frames}
+              {sit_down_frames}
+              {seated_idle_frames}
+              {stand_up_frames}
+              {walk_frames}
               <site name="npc__employee_01__handover" pos="0 0 1"/>
             </body>
             <body name="npc__employee_02" mocap="true" pos="0 1 0">
@@ -44,11 +55,12 @@ def _command(kind: NpcCommandKind, payload: dict[str, object], sequence: int) ->
 def test_sit_completes_at_animation_marker() -> None:
     model = _model()
     data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
     system = NpcSystem.from_model(model)
     system.submit(
         _command(
             NpcCommandKind.PLAY_ANIMATION,
-            {"clip": "sit", "completion_marker": "seated"},
+            {"clip": "sit_down", "completion_marker": "seated"},
             0,
         )
     )
@@ -59,7 +71,40 @@ def test_sit_completes_at_animation_marker() -> None:
     state = system.states(data)["employee_01"]
     assert state.last_receipt is not None
     assert state.last_receipt.status == CommandStatus.SUCCEEDED
-    assert state.clip_phase >= 0.875
+    assert state.resolved_clip == "seated_idle"
+
+
+def test_stand_up_marker_returns_to_idle_only_after_completion() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "sit_down", "completion_marker": "seated"},
+            0,
+        )
+    )
+    for index in range(10):
+        system.step(model, data, index * 0.125)
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "stand_up", "completion_marker": "standing"},
+            1,
+        )
+    )
+    for index in range(10, 17):
+        system.step(model, data, index * 0.125)
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+    assert state.resolved_clip == "stand_up"
+    assert state.requested_animation == "idle"
+    system.step(model, data, 2.5)
+    assert system.states(data)["employee_01"].resolved_clip == "idle"
 
 
 def test_attach_and_detach_receipts_follow_physical_state() -> None:
@@ -97,9 +142,212 @@ def test_missing_clip_emits_one_fallback_event() -> None:
     system.submit(_command(NpcCommandKind.PLAY_ANIMATION, {"clip": "missing", "duration": 0.2}, 0))
 
     system.step(model, data, 0.0)
-    assert system.states(data)["employee_01"].animation_events == ("clip_fallback",)
-    system.step(model, data, 0.1)
-    assert system.states(data)["employee_01"].animation_events == ()
+    state = system.states(data)["employee_01"]
+    assert state.animation_events == ("clip_fallback",)
+    assert state.animation_lifecycle == "failed"
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.FAILED
+    assert state.last_receipt.reason == "clip_unavailable:missing"
+
+
+def test_interaction_animation_rejects_unknown_target_site_and_settles_to_idle() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+
+    invalid = system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "sit_down", "target_site": "missing_interaction_site"},
+            0,
+        )
+    )
+    assert invalid.status == CommandStatus.FAILED
+    assert invalid.reason == "unknown_target_site:missing_interaction_site"
+
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "sit_down",
+                "completion_marker": "seated",
+                "arrival_clip": "idle",
+                "target_site": "drop_site",
+            },
+            1,
+        )
+    )
+    for index in range(10):
+        system.step(model, data, index * 0.125)
+    system.step(model, data, 1.5)
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+    assert state.requested_animation == "idle"
+    assert state.resolved_clip == "idle"
+
+
+def test_interaction_animation_timeout_recovers_to_idle() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        NpcCommand(
+            "interaction_timeout",
+            0,
+            "employee_01",
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "sit_down",
+                "completion_marker": "seated",
+                "target_site": "drop_site",
+            },
+            issued_at=0.0,
+            deadline=0.01,
+        )
+    )
+
+    system.step(model, data, 0.0)
+    system.step(model, data, 0.02)
+    system.step(model, data, 0.03)
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.TIMED_OUT
+    assert state.requested_animation == "idle"
+    assert state.resolved_clip == "idle"
+
+
+def test_move_waits_for_walk_marker_before_start_and_stop() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(_command(NpcCommandKind.MOVE_TO, {"site": "drop_site"}, 0))
+
+    system.step(model, data, 0.0)
+    np.testing.assert_allclose(data.mocap_pos[0, :2], (0.0, 0.0))
+    for index in range(1, 100):
+        system.step(model, data, index * 0.125)
+        state = system.states(data)["employee_01"]
+        if state.last_receipt is not None and state.last_receipt.status.terminal:
+            break
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+    assert state.stop_marker in {"left_foot", "right_foot"}
+    np.testing.assert_allclose(data.mocap_pos[0, :2], (2.0, 0.0), atol=1e-6)
+
+
+def test_office_move_routes_around_collision_geometry() -> None:
+    model = mujoco.MjModel.from_xml_string(
+        """
+        <mujoco>
+          <worldbody>
+            <geom name="office_floor" type="box" pos="0 0 -.05" size="3 3 .05"/>
+            <body name="npc__employee_01" mocap="true">
+              <geom name="npc__employee_01__clip__idle__frame__000__slot__body"
+                    type="sphere" size=".1"/>
+              <site name="npc__employee_01__handover" pos="0 0 1"/>
+            </body>
+            <body name="blocking_desk" pos="1 0 .5">
+              <geom type="box" size=".15 .45 .5"/>
+            </body>
+            <site name="drop_site" pos="2 0 0" euler="0 0 0"/>
+          </worldbody>
+        </mujoco>
+        """
+    )
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    controller = LocomotionController(model, NpcBinding.from_model(model, "employee_01"))
+    controller.move_to("drop_site")
+    visited_y = []
+
+    for index in range(100):
+        controller.step(data, index * 0.1)
+        visited_y.append(float(data.mocap_pos[0, 1]))
+        if controller.target_site is None:
+            break
+
+    assert controller.failure_reason is None
+    assert controller.target_site is None
+    assert max(abs(value) for value in visited_y) > 0.5
+    np.testing.assert_allclose(data.mocap_pos[0, :2], (2.0, 0.0), atol=1e-6)
+
+
+def test_blocked_move_replans_once_then_fails_without_location_commit() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        _command(
+            NpcCommandKind.MOVE_TO,
+            {"site": "drop_site", "speed": 0.001, "progress_timeout": 0.01, "max_replans": 1},
+            0,
+        )
+    )
+
+    for index in range(100):
+        system.step(model, data, index * 0.125)
+        state = system.states(data)["employee_01"]
+        if state.last_receipt is not None and state.last_receipt.status.terminal:
+            break
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.FAILED
+    assert state.last_receipt.reason == "route_blocked"
+    assert state.replan_attempt == 1
+    assert state.locomotion_failure == "route_blocked"
+
+
+def test_lifecycle_tracks_requested_navigation_alignment_playback_and_completion() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+
+    system.submit(_command(NpcCommandKind.MOVE_TO, {"site": "drop_site"}, 0))
+    assert system.states(data)["employee_01"].animation_lifecycle == "navigating"
+    system.submit(
+        NpcCommand(
+            "cancel_0", 1, "employee_01", NpcCommandKind.CANCEL, {"command_id": "command_0"}, 0.0
+        )
+    )
+
+    system.submit(_command(NpcCommandKind.ALIGN_TO, {"yaw": 1.0}, 2))
+    assert system.states(data)["employee_01"].animation_lifecycle == "aligning"
+    system.submit(
+        NpcCommand(
+            "cancel_1", 3, "employee_01", NpcCommandKind.CANCEL, {"command_id": "command_2"}, 0.0
+        )
+    )
+
+    system.submit(_command(NpcCommandKind.PLAY_ANIMATION, {"clip": "sit_down"}, 4))
+    assert system.states(data)["employee_01"].animation_lifecycle == "requested"
+    system.step(model, data, 0.0)
+    assert system.states(data)["employee_01"].animation_lifecycle == "playing"
+
+    system.submit(
+        NpcCommand(
+            "cancel_2", 5, "employee_01", NpcCommandKind.CANCEL, {"command_id": "command_4"}, 0.0
+        )
+    )
+    assert system.states(data)["employee_01"].animation_lifecycle == "failed"
+
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "sit_down", "completion_marker": "seated"},
+            6,
+        )
+    )
+    for index in range(1, 10):
+        system.step(model, data, index * 0.125)
+    assert system.states(data)["employee_01"].animation_lifecycle == "completed"
 
 
 def test_cancelled_attach_releases_cross_npc_object_claim() -> None:

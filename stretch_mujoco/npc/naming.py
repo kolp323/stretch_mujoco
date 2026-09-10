@@ -9,10 +9,10 @@ CANONICAL_FRAME_PATTERN = re.compile(
     r"__frame__(?P<frame>\d+)__slot__(?P<material>[a-z0-9_]+)$"
 )
 LEGACY_MULTI_FRAME_PATTERN = re.compile(
-    r"^em(?P<number>\d+)_frame_(?P<clip>[a-z]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
+    r"^em(?P<number>\d+)_frame_(?P<clip>[a-z0-9_]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
 )
 LEGACY_SINGLE_FRAME_PATTERN = re.compile(
-    r"^humanoid_preview_frame_(?P<clip>[a-z]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
+    r"^humanoid_preview_frame_(?P<clip>[a-z0-9_]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
 )
 
 

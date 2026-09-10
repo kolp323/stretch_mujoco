@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import mujoco
 
 from .animation import AnimationController, AnimationGraph, MeshSequenceBackend
+from .animation.state import AnimationLifecycle
 from .attachment import AttachmentController
 from .binding import NpcBinding
 from .locomotion import LocomotionController
@@ -20,6 +21,15 @@ def _payload_float(value: object, field: str) -> float:
         return float(value)
     except ValueError as error:
         raise ValueError(f"NPC command payload '{field}' must be numeric") from error
+
+
+def _payload_int(value: object, field: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, (int, str)):
+        raise ValueError(f"NPC command payload '{field}' must be an integer")
+    try:
+        return int(value)
+    except ValueError as error:
+        raise ValueError(f"NPC command payload '{field}' must be an integer") from error
 
 
 @dataclass
@@ -36,12 +46,16 @@ class NpcController:
         model: mujoco.MjModel,
         binding: NpcBinding,
         animation_graph: AnimationGraph | None = None,
+        simulation_seed: int = 0,
     ) -> None:
         self.model = model
         self.binding = binding
         self.locomotion = LocomotionController(model, binding)
         self.animation = AnimationController(
-            MeshSequenceBackend(model, binding), graph=animation_graph
+            MeshSequenceBackend(model, binding),
+            graph=animation_graph,
+            phase_seed=simulation_seed,
+            npc_id=binding.npc_id,
         )
         self.attachments = AttachmentController(model, binding)
         self.active_command: ActiveNpcCommand | None = None
@@ -49,6 +63,10 @@ class NpcController:
         self.revision = 0
         self._last_step_time: float | None = None
         self._animation_events: tuple[str, ...] = ()
+        self._walk_motion_started = False
+        self._move_completion_pending = False
+        self._pending_move_cancel: str | None = None
+        self._stop_marker: str | None = None
 
     def accept(self, command: NpcCommand) -> NpcCommandReceipt:
         if self.active_command is not None:
@@ -61,12 +79,35 @@ class NpcController:
             )
         try:
             if command.kind == NpcCommandKind.MOVE_TO:
+                self.animation.set_execution(command.command_id)
                 site = str(command.payload["site"])
                 speed = _payload_float(command.payload.get("speed", 1.0), "speed")
-                self.locomotion.move_to(site, speed)
+                progress_timeout = _payload_float(
+                    command.payload.get("progress_timeout", 2.0), "progress_timeout"
+                )
+                max_replans = _payload_int(command.payload.get("max_replans", 0), "max_replans")
+                self.locomotion.move_to(
+                    site,
+                    speed,
+                    progress_timeout=progress_timeout,
+                    max_replans=max_replans,
+                )
+                self._walk_motion_started = False
+                self._move_completion_pending = False
+                self._pending_move_cancel = None
+                self._stop_marker = None
+                self.animation.lifecycle = AnimationLifecycle.NAVIGATING
             elif command.kind == NpcCommandKind.PLAY_ANIMATION:
+                target_site = command.payload.get("target_site")
+                if (
+                    target_site is not None
+                    and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site)) < 0
+                ):
+                    raise ValueError(f"unknown_target_site:{target_site}")
+                self.animation.set_execution(command.command_id)
                 self.animation.request(str(command.payload["clip"]))
             elif command.kind == NpcCommandKind.INTERACTION_CUE:
+                self.animation.set_execution(command.command_id)
                 self.animation.request(str(command.payload.get("clip", "idle")))
             elif command.kind == NpcCommandKind.ATTACH_OBJECT:
                 object_name = str(command.payload["object"])
@@ -85,6 +126,7 @@ class NpcController:
                     raise ValueError(f"unknown_detach_site:{detach_site}")
             elif command.kind == NpcCommandKind.ALIGN_TO:
                 _payload_float(command.payload["yaw"], "yaw")
+                self.animation.lifecycle = AnimationLifecycle.ALIGNING
             else:
                 return NpcCommandReceipt(
                     command.command_id,
@@ -120,8 +162,19 @@ class NpcController:
                 finished_at=sim_time,
             )
         started_at = self.active_command.started_at
+        if self.active_command.command.kind == NpcCommandKind.MOVE_TO and self._walk_motion_started:
+            self._pending_move_cancel = reason
+            self.animation.request("idle")
+            return NpcCommandReceipt(
+                command_id,
+                self.binding.npc_id,
+                CommandStatus.RUNNING,
+                reason="waiting_for_foot_marker",
+                started_at=started_at,
+            )
         self.locomotion.cancel()
-        self.animation.request("idle")
+        self.animation.recover_to_idle()
+        self.animation.lifecycle = AnimationLifecycle.FAILED
         self.active_command = None
         receipt = NpcCommandReceipt(
             command_id,
@@ -153,13 +206,13 @@ class NpcController:
             and sim_time > active.command.deadline
         ):
             self.locomotion.cancel()
-            self.animation.request("idle")
+            self.animation.recover_to_idle()
             return self._finish(CommandStatus.TIMED_OUT, sim_time, "deadline_exceeded")
 
         complete = False
         if active is not None:
             if active.command.kind == NpcCommandKind.MOVE_TO:
-                complete = self.locomotion.step(data, sim_time)
+                return self._step_move(data, sim_time, active, running_receipt)
             elif active.command.kind == NpcCommandKind.ALIGN_TO:
                 dt = (
                     0.0
@@ -197,8 +250,29 @@ class NpcController:
             self.locomotion.step(data, sim_time)
 
         locomotion_state = "walk" if self.locomotion.target_site is not None else "stationary"
-        events = self.animation.step(sim_time, locomotion=locomotion_state)
+        events = self.animation.step(
+            sim_time,
+            locomotion=locomotion_state,
+            speed_scale=(self.locomotion.speed if locomotion_state == "walk" else 1.0),
+        )
+        if active is not None and active.command.kind == NpcCommandKind.MOVE_TO:
+            self.animation.lifecycle = AnimationLifecycle.NAVIGATING
+        elif active is not None and active.command.kind == NpcCommandKind.ALIGN_TO:
+            self.animation.lifecycle = AnimationLifecycle.ALIGNING
         self._animation_events = tuple(event.name for event in events)
+        if (
+            active is not None
+            and active.command.kind
+            in {NpcCommandKind.PLAY_ANIMATION, NpcCommandKind.INTERACTION_CUE}
+            and self.animation.fallback_event is not None
+        ):
+            requested_clip = str(active.command.payload.get("clip", "idle"))
+            self.animation.recover_to_idle()
+            return self._finish(
+                CommandStatus.FAILED,
+                sim_time,
+                self.animation.failure_reason or f"clip_unavailable:{requested_clip}",
+            )
         if active is not None and active.command.kind in {
             NpcCommandKind.PLAY_ANIMATION,
             NpcCommandKind.INTERACTION_CUE,
@@ -211,17 +285,74 @@ class NpcController:
         self.attachments.step(data)
         self._last_step_time = sim_time
         if complete:
-            if active is not None and active.command.kind == NpcCommandKind.MOVE_TO:
+            if active is not None:
                 arrival_clip = active.command.payload.get("arrival_clip")
                 if arrival_clip is not None:
                     self.animation.request(str(arrival_clip))
+                elif (
+                    active.command.kind
+                    in {NpcCommandKind.PLAY_ANIMATION, NpcCommandKind.INTERACTION_CUE}
+                    and active.command.payload.get("completion_marker") is not None
+                ):
+                    self.animation.settle_completed_clip()
             return self._finish(CommandStatus.SUCCEEDED, sim_time)
+        return running_receipt
+
+    def _step_move(
+        self,
+        data: mujoco.MjData,
+        sim_time: float,
+        active: ActiveNpcCommand,
+        running_receipt: NpcCommandReceipt | None,
+    ) -> NpcCommandReceipt | None:
+        """Use walk foot markers as the safe root-motion start and stop boundaries."""
+        # A deterministic random walk phase can otherwise delay the first foot
+        # marker for hundreds of seconds at a deliberately slow navigation speed.
+        # Start on the next normal-cadence footfall, then couple every subsequent
+        # walk phase increment to the actual root speed.
+        speed_scale = (
+            self.locomotion.speed if self._walk_motion_started else max(self.locomotion.speed, 1.0)
+        )
+        events = self.animation.step(sim_time, locomotion="walk", speed_scale=speed_scale)
+        self._animation_events = tuple(event.name for event in events)
+        foot_marker = next(
+            (event.name for event in events if event.name in {"left_foot", "right_foot"}), None
+        )
+        self.animation.lifecycle = AnimationLifecycle.NAVIGATING
+        if foot_marker is not None and not self._walk_motion_started:
+            self._walk_motion_started = True
+        if foot_marker is not None and self._pending_move_cancel is not None:
+            self._stop_marker = foot_marker
+            reason = self._pending_move_cancel
+            self._pending_move_cancel = None
+            self.locomotion.cancel()
+            self.animation.request("idle", force=True)
+            return self._finish(CommandStatus.CANCELLED, sim_time, reason)
+        if self._walk_motion_started and not self._move_completion_pending:
+            self.locomotion.step(data, sim_time)
+            if self.locomotion.failure_reason is not None:
+                self.animation.recover_to_idle()
+                return self._finish(CommandStatus.FAILED, sim_time, self.locomotion.failure_reason)
+            if self.locomotion.target_site is None:
+                self._move_completion_pending = True
+        if self._move_completion_pending and foot_marker is not None:
+            self._stop_marker = foot_marker
+            self.animation.request(
+                str(active.command.payload.get("arrival_clip", "idle")), force=True
+            )
+            return self._finish(CommandStatus.SUCCEEDED, sim_time)
+        self._last_step_time = sim_time
         return running_receipt
 
     def _finish(
         self, status: CommandStatus, sim_time: float, reason: str | None = None
     ) -> NpcCommandReceipt:
         assert self.active_command is not None
+        self.animation.lifecycle = (
+            AnimationLifecycle.COMPLETED
+            if status == CommandStatus.SUCCEEDED
+            else AnimationLifecycle.FAILED
+        )
         receipt = NpcCommandReceipt(
             self.active_command.command.command_id,
             self.binding.npc_id,
@@ -231,6 +362,9 @@ class NpcController:
             finished_at=sim_time,
         )
         self.active_command = None
+        self._walk_motion_started = False
+        self._move_completion_pending = False
+        self._pending_move_cancel = None
         self.last_receipt = receipt
         return receipt
 
@@ -253,6 +387,16 @@ class NpcController:
             requested_animation=self.animation.requested_clip,
             resolved_clip=self.animation.resolved_clip,
             clip_phase=self.animation.phase,
+            phase_seed=self.animation.phase_seed,
+            phase_offset=self.animation.phase_offset,
+            last_marker=(self._animation_events[-1] if self._animation_events else None),
+            pending_clip=self.animation.pending_clip,
+            deferred_interrupt=self.animation.pending_clip is not None,
+            route_revision=self.locomotion.route_revision,
+            replan_attempt=self.locomotion.replan_attempt,
+            stop_marker=self._stop_marker,
+            locomotion_failure=self.locomotion.failure_reason,
+            animation_lifecycle=self.animation.lifecycle.value,
             transition=self.animation.transition,
             animation_events=self._animation_events,
             held_objects=self.attachments.held_objects,

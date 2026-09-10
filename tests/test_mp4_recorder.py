@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 from stretch_mujoco.agents.mp4_recorder import OfficeMp4Recorder
@@ -30,3 +31,21 @@ def test_recorder_renders_status_cards_and_robot_task(tmp_path: Path) -> None:
     assert recorder._frame_count == 1
     assert output_path.exists()
     assert output_path.stat().st_size > 0
+    probe = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=codec_name,pix_fmt",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(output_path),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert probe.stdout.splitlines() == ["h264", "yuv420p"]

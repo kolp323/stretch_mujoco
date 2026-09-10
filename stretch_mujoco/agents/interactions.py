@@ -29,6 +29,7 @@ class InteractionSession:
     session_id: str = field(default_factory=lambda: f"interaction_{uuid.uuid4().hex}")
     phase_index: int = 0
     acknowledgements: set[str] = field(default_factory=set)
+    completed_phases: list[str] = field(default_factory=list)
     status: InteractionStatus = InteractionStatus.RUNNING
     error: str | None = None
 
@@ -86,6 +87,7 @@ class InteractionCoordinator:
             raise ValueError(f"Participant '{participant}' is not required for phase '{phase}'")
         session.acknowledgements.add(participant)
         if set(required) <= session.acknowledgements:
+            session.completed_phases.append(session.phase)
             session.phase_index += 1
             session.acknowledgements.clear()
             if session.phase_index == len(session.phase_requirements):

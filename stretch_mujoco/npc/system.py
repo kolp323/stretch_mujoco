@@ -19,10 +19,13 @@ class NpcSystem:
         model: mujoco.MjModel,
         npc_ids: Iterable[str],
         animation_graphs: Mapping[str, AnimationGraph] | None = None,
+        simulation_seed: int = 0,
     ) -> None:
         graphs = dict(animation_graphs or {})
         self.controllers = {
-            npc_id: NpcController(model, NpcBinding.from_model(model, npc_id), graphs.get(npc_id))
+            npc_id: NpcController(
+                model, NpcBinding.from_model(model, npc_id), graphs.get(npc_id), simulation_seed
+            )
             for npc_id in npc_ids
         }
         self._receipts: dict[str, NpcCommandReceipt] = {}
@@ -32,11 +35,13 @@ class NpcSystem:
         self._commands: dict[str, NpcCommand] = {}
 
     @classmethod
-    def from_model(cls, model: mujoco.MjModel) -> "NpcSystem":
-        return cls(model, discover_npc_ids(model))
+    def from_model(cls, model: mujoco.MjModel, *, simulation_seed: int = 0) -> "NpcSystem":
+        return cls(model, discover_npc_ids(model), simulation_seed=simulation_seed)
 
     @classmethod
-    def from_population(cls, model: mujoco.MjModel, population, manifest) -> "NpcSystem":
+    def from_population(
+        cls, model: mujoco.MjModel, population, manifest, *, simulation_seed: int = 0
+    ) -> "NpcSystem":
         """Create a system whose clip contract comes from validated population assets."""
         manifest.validate_population(population)
         graphs = {
@@ -45,7 +50,7 @@ class NpcSystem:
             )
             for npc_id, definition in population.npcs.items()
         }
-        return cls(model, population.npcs, graphs)
+        return cls(model, population.npcs, graphs, simulation_seed)
 
     def submit(self, command: NpcCommand) -> NpcCommandReceipt:
         previous = self._receipts.get(command.command_id)

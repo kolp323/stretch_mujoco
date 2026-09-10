@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -28,13 +29,21 @@ def find_model_file(model_root: Path, model_type: str, gender: str) -> Path:
         raise SmplxAssetError(f"Unsupported gender: {gender}")
 
     expected_stem = f"{model_type}_{gender}".upper()
-    candidates = sorted(
-        path
-        for path in model_root.rglob("*")
-        if path.is_file()
-        and path.suffix.lower() in {".npz", ".pkl"}
-        and path.stem.upper() == expected_stem
-    )
+    candidates: list[Path] = []
+    visited_directories: set[Path] = set()
+    for directory, directory_names, file_names in os.walk(model_root, followlinks=True):
+        resolved_directory = Path(directory).resolve()
+        if resolved_directory in visited_directories:
+            directory_names.clear()
+            continue
+        visited_directories.add(resolved_directory)
+        candidates.extend(
+            Path(directory) / file_name
+            for file_name in file_names
+            if Path(file_name).suffix.lower() in {".npz", ".pkl"}
+            and Path(file_name).stem.upper() == expected_stem
+        )
+    candidates.sort()
     if not candidates:
         expected = f"{expected_stem}.npz or {expected_stem}.pkl"
         raise SmplxAssetError(

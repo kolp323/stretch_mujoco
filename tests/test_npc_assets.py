@@ -60,6 +60,24 @@ def test_smplx_baker_writes_formal_production_clip_contract(tmp_path: Path) -> N
     bundle = manifest["bundles"]["smplx_office_neutral_v1"]
 
     assert bundle["asset_quality"] == "restricted"
-    assert set(bundle["clips"]) == {"idle", "walk", "sit", "work", "eat"}
-    assert bundle["clips"]["sit"]["markers"] == [{"name": "seated", "phase": 0.875}]
+    assert {
+        "idle",
+        "walk",
+        "sit_down",
+        "seated_idle",
+        "stand_up",
+        "work",
+        "use_computer",
+        "eat",
+        "pick_up",
+        "place",
+        "give",
+        "receive",
+        "talk",
+        "gesture_wave",
+        "gesture_point",
+    } <= set(bundle["clips"])
+    assert bundle["clips"]["sit_down"]["markers"] == [{"name": "seated", "phase": 0.875}]
+    assert bundle["clips"]["stand_up"]["markers"] == [{"name": "standing", "phase": 0.875}]
+    assert bundle["clips"]["pick_up"]["markers"] == [{"name": "grasp", "phase": 0.75}]
     assert len(bundle["sha256"]["humanoid_idle_00_body.obj"]) == 64
