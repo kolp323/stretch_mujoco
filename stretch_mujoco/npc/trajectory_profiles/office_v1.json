@@ -2,7 +2,7 @@
   "schema_version": 1,
   "profile_id": "office_v1",
   "scene": "office_scene.xml",
-  "scene_sha256": "aff5196f402b84fdbf646457a4ad90b89869ca5d4aa1428260b1cebfdf9d615a",
+  "scene_sha256": "4c4f34e91a67472064b2f4d96e23bc5c1190e0971a9dfe715426ba82f030673f",
   "anchors": {
     "workstation_left": {"site": "desk_left_work_site", "role": "workstation"},
     "workstation_right": {"site": "desk_right_work_site", "role": "workstation"},
