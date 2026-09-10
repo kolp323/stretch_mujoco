@@ -116,9 +116,15 @@ OFFICE_CLIPS: dict[str, ClipDefinition] = {
         loop=False,
         markers=(("seated", 0.875),),
     ),
+    "stand_up": ClipDefinition(
+        loop=False,
+        markers=(("standing", 0.875),),
+        completion_clip=OFFICE_COMPLETION_CLIPS["stand_up"],
+    ),
     "work": ClipDefinition(markers=(("work_cycle", 0.75),)),
     "eat": ClipDefinition(markers=(("consume", 0.625),)),
     "pick_up": ClipDefinition(loop=False, markers=(("grasp", 0.75),)),
+    "place": ClipDefinition(loop=False, markers=(("release", 0.75),)),
     "give": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
     "receive": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
     # The approved BEAT talk asset is a foot-locked full-body mesh sequence.
@@ -126,6 +132,12 @@ OFFICE_CLIPS: dict[str, ClipDefinition] = {
     # sequence, so this clip must remain directly playable until an articulated
     # backend is introduced.
     "talk": ClipDefinition(markers=(("talk_cycle", 0.75),)),
+    # The approved wave is a foot-locked full-body sequence.  The OBJ backend
+    # plays it directly; it is not represented as an unavailable body overlay.
+    "gesture_wave": ClipDefinition(
+        loop=False,
+        markers=(("gesture_wave_complete", 0.932),),
+    ),
 }
 
 # ``NpcSystem.from_model`` remains a fixture/legacy-scene entry point. These
@@ -139,11 +151,6 @@ OFFICE_COMPATIBILITY_CLIPS = {
         completion_clip=OFFICE_COMPLETION_CLIPS["sit_down"],
     ),
     "seated_idle": ClipDefinition(),
-    "stand_up": ClipDefinition(
-        loop=False,
-        markers=(("standing", 0.875),),
-        completion_clip=OFFICE_COMPLETION_CLIPS["stand_up"],
-    ),
 }
 
 OFFICE_ANIMATION_GRAPH = AnimationGraph(

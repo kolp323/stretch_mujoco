@@ -831,6 +831,12 @@ uv run mypy stretch_mujoco/humanoid/babel_intake.py
 Success: no issues found in 1 source file
 ```
 
+### 18.1 已验收动作的 production 登记（当前事实）
+
+2026-09-10 用户确认此前已审核通过 `stand_up`、`put_down` 和 `gesture_wave`，并明确授权 production 注册。这是对第 18 节自动候选审查结果的人工验收决定，而不是把尚未审查的 queue 条目直接标为完成。受限本地 intake approval record 固定三项来源和裁剪：BMLmovi Subject 11 `1005:1536` → `stand_up`，Subject 50 `573:1085` → `place`（`PUT_DOWN` 的 runtime clip），以及 Subject 14 `37:287` → `gesture_wave`；全部按 8 FPS canonical root policy 生成可复现 baker input。
+
+`bake_and_register_additional_clips()` 只接受已准备的本地 motion：它先写入并 SHA-256 登记每个 OBJ frame，之后才原子更新 production manifest，绝不生成合成帧或注册缺失文件。production manifest 现含 `stand_up/standing`（35 帧）、`place/release`（34 帧）和 `gesture_wave/gesture_wave_complete`（16 帧），三项均为非循环、in-place mesh sequence。`OFFICE_CLIPS` 与 `MujocoNpcActionDriver` 因而允许 `STAND_UP`、`PUT_DOWN`、`GESTURE_WAVE`；`GESTURE_POINT` 仍无已批准及烘焙的 mesh asset，继续在提交物理命令之前拒绝。wave 是完整 mesh sequence 的直接播放，不宣称 OBJ backend 具备尚未实现的上半身 overlay。
+
 ## 19. NPC 场景轨迹 profile（当前事实）
 
 `stretch_mujoco/npc/trajectory_profiles/office_v1.json` 是办公室 NPC 行动轨迹的受版本控制规范，schema v1 将稳定的场景语义与易变的几何投影分开：每个 anchor 固定 `site` 与 `role`，每条有向 route 固定 `from`、`to` 和允许衔接的 action 类型；profile 同时钉定目标 MJCF 的 SHA-256。profile 不保存世界坐标 waypoint；家具移动、尺寸变化或导航参数变化后，旧坐标会失效，必须由当前 MuJoCo collision geometry 重新求解。

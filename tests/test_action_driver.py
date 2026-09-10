@@ -525,20 +525,20 @@ def test_production_driver_excludes_unregistered_actions_before_submitting_comma
         {
             ActionType.MOVE_TO,
             ActionType.SIT,
+            ActionType.STAND_UP,
             ActionType.PICK_UP,
+            ActionType.PUT_DOWN,
             ActionType.HANDOVER,
             ActionType.USE_COMPUTER,
             ActionType.TALK,
+            ActionType.GESTURE_WAVE,
         }
     )
     assert {
-        ActionType.STAND_UP,
-        ActionType.PUT_DOWN,
         ActionType.GESTURE_POINT,
-        ActionType.GESTURE_WAVE,
     }.isdisjoint(driver.supported_actions)
     execution = ActionExecution(
-        command=ActionCommand("employee_01", ActionType.STAND_UP, "chair_right"),
+        command=ActionCommand("employee_01", ActionType.GESTURE_POINT, "employee_02"),
         status=ExecutionStatus.RUNNING,
     )
 
@@ -558,7 +558,9 @@ def test_runtime_rejects_candidate_without_registered_production_clip() -> None:
         action_driver=create_mujoco_action_driver(simulator),
     )
 
-    result = runtime.submit_action(ActionCommand("employee_01", ActionType.STAND_UP, "chair_right"))
+    result = runtime.submit_action(
+        ActionCommand("employee_01", ActionType.GESTURE_POINT, "employee_02")
+    )
 
     assert not result.valid
     assert any("unavailable in the active NPC asset bundle" in error for error in result.errors)

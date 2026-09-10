@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 import click
 import numpy as np
@@ -135,12 +136,12 @@ def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str
 
 
 def _load_retargeted_body_pose_clips(
-    motion_root: Path, torch: Any
+    motion_root: Path, torch: Any, clip_names: Iterable[str] = OFFICE_CLIPS
 ) -> dict[str, tuple[list[Any], list[Any]]]:
     """Load all locally selected, provenance-backed baker inputs."""
     clips: dict[str, tuple[list[Any], list[Any]]] = {}
     missing: list[str] = []
-    for clip_name in OFFICE_CLIPS:
+    for clip_name in clip_names:
         path = motion_root / f"{clip_name}.npz"
         if not path.is_file():
             missing.append(clip_name)
@@ -172,6 +173,105 @@ def _load_retargeted_body_pose_clips(
             "Restricted motion input is incomplete; missing clips: " + ", ".join(missing)
         )
     return clips
+
+
+def bake_and_register_additional_clips(
+    model_root: Path,
+    manifest_path: Path,
+    motion_root: Path,
+    clip_names: Iterable[str],
+    *,
+    gender: str = "neutral",
+) -> dict[str, Any]:
+    """Bake explicitly approved clips into an existing production bundle.
+
+    The full baker deliberately requires every office motion and rebuilds the
+    bundle from scratch.  This additive path preserves an already validated
+    bundle while promoting only named, locally prepared and user-approved
+    motion inputs.  It never creates synthetic frames or registers a clip
+    without writing and hashing every OBJ frame first.
+    """
+    selected_clips = tuple(clip_names)
+    if not selected_clips or len(set(selected_clips)) != len(selected_clips):
+        raise SmplxAssetError("Additional production clips must be a non-empty unique list")
+    unknown = set(selected_clips) - set(OFFICE_CLIPS)
+    if unknown:
+        raise SmplxAssetError(f"Unknown production clips: {', '.join(sorted(unknown))}")
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    bundles = manifest.get("bundles")
+    if not isinstance(bundles, dict):
+        raise SmplxAssetError("Production manifest has invalid bundles")
+    bundle = bundles.get("smplx_office_neutral_v1")
+    if not isinstance(bundle, dict):
+        raise SmplxAssetError("Production manifest lacks smplx_office_neutral_v1")
+    runtime_clips = bundle.get("clips")
+    hashes = bundle.get("sha256")
+    if not isinstance(runtime_clips, dict) or not isinstance(hashes, dict):
+        raise SmplxAssetError("Production manifest has incomplete clip metadata")
+
+    model_file = find_model_file(model_root, "smplx", gender)
+    smplx, torch = _load_runtime()
+    model = smplx.create(
+        str(model_file),
+        model_type="smplx",
+        gender=gender,
+        ext=model_file.suffix.lstrip("."),
+        use_pca=False,
+        batch_size=1,
+    )
+    faces = np.asarray(model.faces, dtype=np.int64)
+    texture_coordinates, texture_faces = _load_texture_topology(model_file)
+    if texture_coordinates is None or texture_faces is None:
+        raise SmplxAssetError("SMPL-X model does not contain UV topology.")
+    motions = _load_retargeted_body_pose_clips(motion_root, torch, selected_clips)
+
+    with torch.no_grad():
+        reference = model(
+            body_pose=torch.zeros((1, 63), dtype=torch.float32),
+            transl=torch.zeros((1, 3), dtype=torch.float32),
+            return_verts=True,
+        )
+    reference_vertices = _to_mujoco_coordinates(reference.vertices[0].detach().cpu().numpy())
+    scale = float(bundle["height_m"]) / float(reference_vertices[:, 2].ptp())
+    ground_offset = float(reference_vertices[:, 2].min()) * scale
+
+    for clip_name, (poses, translations) in motions.items():
+        frames: list[str] = []
+        for frame_index, (body_pose, translation) in enumerate(zip(poses, translations)):
+            with torch.no_grad():
+                result = model(body_pose=body_pose, transl=translation, return_verts=True)
+            vertices = _to_mujoco_coordinates(result.vertices[0].detach().cpu().numpy())
+            vertices *= scale
+            vertices[:, 2] -= ground_offset
+            filename = f"humanoid_{clip_name}_{frame_index:02d}_body.obj"
+            _write_obj(
+                manifest_path.parent / filename, vertices, faces, texture_coordinates, texture_faces
+            )
+            frames.append(filename)
+            hashes[filename] = hashlib.sha256(
+                (manifest_path.parent / filename).read_bytes()
+            ).hexdigest()
+        definition = OFFICE_CLIPS[clip_name]
+        runtime_clips[clip_name] = {
+            "fps": definition.fps,
+            "loop": definition.loop,
+            "root_motion": definition.root_motion,
+            "frames": frames,
+            "markers": [
+                {"name": marker_name, "phase": phase} for marker_name, phase in definition.markers
+            ],
+        }
+
+    candidate = manifest_path.with_suffix(manifest_path.suffix + ".tmp")
+    candidate.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    # Validate the complete candidate, including OBJ topology and hashes,
+    # before replacing the manifest that production populations resolve.
+    from stretch_mujoco.npc.assets import NpcAssetManifest
+
+    NpcAssetManifest.from_json(candidate)
+    os.replace(candidate, manifest_path)
+    return manifest
 
 
 def _face_material_groups(model: Any, faces: np.ndarray) -> dict[str, np.ndarray]:

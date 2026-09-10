@@ -78,6 +78,11 @@ def test_approved_interaction_registration_closes_production_clip_contract() -> 
     bundle = manifest.bundles["smplx_office_neutral_v1"]
     assert set(bundle.clips) == set(OFFICE_CLIPS)
     assert {"pick_up", "give", "receive", "talk"} <= set(bundle.clips)
+    assert bundle.clips["stand_up"].markers == ({"name": "standing", "phase": 0.875},)
+    assert bundle.clips["place"].markers == ({"name": "release", "phase": 0.75},)
+    assert bundle.clips["gesture_wave"].markers == (
+        {"name": "gesture_wave_complete", "phase": 0.932},
+    )
 
 
 def test_interaction_registrar_projects_reviewed_clips_and_hashes(tmp_path: Path) -> None:
