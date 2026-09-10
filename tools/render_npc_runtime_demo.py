@@ -213,7 +213,7 @@ def render_runtime_demo(
     model = mujoco.MjModel.from_xml_path(str(scene_path))
     data = mujoco.MjData(model)
     mujoco.mj_forward(model, data)
-    system = NpcSystem.from_model(model, simulation_seed=7)
+    system = NpcSystem.from_model(model, simulation_seed=7, scene_path=scene_path)
     controller = system.controllers.get(npc_id)
     if controller is None:
         raise ValueError(f"Unknown NPC '{npc_id}'")

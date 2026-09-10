@@ -25,6 +25,7 @@ import mujoco
 import numpy as np
 
 from stretch_mujoco.npc.naming import candidate_body_names, parse_frame_geom_name
+from stretch_mujoco.npc.schema import NpcPopulation
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,6 +61,17 @@ ACCEPTANCE_SHOTS = (
 
 
 FrameGroups = dict[str, dict[int, list[int]]]
+_HIDDEN_SEQUENCE_GROUP = 5
+_VISIBLE_SEQUENCE_GROUP = 2
+
+
+def _set_sequence_visibility(model: mujoco.MjModel, geom_ids: list[int], visible: bool) -> None:
+    """Hide sequence frames through a disabled MuJoCo geom group as well as alpha."""
+    model.geom_rgba[geom_ids, 3] = 1.0 if visible else 0.0
+    if hasattr(model, "geom_group"):
+        model.geom_group[geom_ids] = _VISIBLE_SEQUENCE_GROUP if visible else _HIDDEN_SEQUENCE_GROUP
+    if hasattr(model, "geom_castshadow"):
+        model.geom_castshadow[geom_ids] = int(visible)
 
 
 def _discover_frames(
@@ -97,9 +109,9 @@ def _show_frame(
         raise ValueError(f"NPC clip '{clip}' has no frame {frame}")
     for clip_frames in frame_groups.values():
         for geom_ids in clip_frames.values():
-            model.geom_rgba[geom_ids, 3] = 0.0
+            _set_sequence_visibility(model, geom_ids, False)
     active = frame_groups[clip][frame]
-    model.geom_rgba[active, 3] = 1.0
+    _set_sequence_visibility(model, active, True)
     return active
 
 
@@ -119,7 +131,7 @@ def _hide_non_target_animated_geometries(model: mujoco.MjModel, npc_id: str) -> 
         parsed = parse_frame_geom_name(name)
         if parsed is None or parsed[0] == npc_id:
             continue
-        model.geom_rgba[geom_id, 3] = 0.0
+        _set_sequence_visibility(model, [geom_id], False)
         hidden_npc_ids.add(parsed[0])
     return sorted(hidden_npc_ids)
 
@@ -281,6 +293,11 @@ def render_acceptance_video(
     scene_option = mujoco.MjvOption()
     mujoco.mjv_defaultOption(scene_option)
     scene_option.flags[mujoco.mjtVisFlag.mjVIS_RANGEFINDER] = False
+    scene_option.geomgroup[_HIDDEN_SEQUENCE_GROUP] = False
+    scene_option.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT] = False
+    scene_option.flags[mujoco.mjtVisFlag.mjVIS_CONTACTFORCE] = False
+    scene_option.flags[mujoco.mjtVisFlag.mjVIS_CONTACTSPLIT] = False
+    scene_option.flags[mujoco.mjtVisFlag.mjVIS_CONSTRAINT] = False
     temporary_path: Path | None = None
     writer: cv2.VideoWriter | None = None
     try:
@@ -364,11 +381,164 @@ def render_acceptance_video(
     return report
 
 
+def render_population_overview_video(
+    scene_path: Path,
+    population_path: Path,
+    output_path: Path,
+    *,
+    seconds: float = 3.0,
+    fps: int = 20,
+    width: int = 1280,
+    height: int = 720,
+) -> dict[str, object]:
+    """Render every production NPC together; no roster member is hidden.
+
+    This is deliberately separate from close-up asset acceptance.  Its purpose
+    is to prove the composed scene's initial population placement, visibility,
+    and lack of review-only occlusion masking.
+    """
+    if seconds <= 0 or fps <= 0 or width <= 0 or height <= 0:
+        raise ValueError("seconds, fps, width, and height must be positive")
+    population = NpcPopulation.from_json(population_path)
+    model = mujoco.MjModel.from_xml_path(str(scene_path))
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    roster_ids = set(population.npcs)
+    robot_root = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base_link")
+
+    def belongs_to_robot(body_id: int) -> bool:
+        while body_id > 0:
+            if body_id == robot_root:
+                return True
+            body_id = int(model.body_parentid[body_id])
+        return False
+
+    # The overview certifies roster co-existence, not Stretch contact debugging.
+    # Disable the unrelated robot's visual/collision geoms so its contact debug
+    # artifacts cannot be mistaken for NPC overlap or occlusion.
+    if robot_root >= 0:
+        for geom_id in range(model.ngeom):
+            if belongs_to_robot(int(model.geom_bodyid[geom_id])):
+                _set_sequence_visibility(model, [geom_id], False)
+                model.geom_contype[geom_id] = 0
+                model.geom_conaffinity[geom_id] = 0
+        mujoco.mj_forward(model, data)
+    # A composed production scene can retain the legacy preview actor.  It is
+    # not part of the roster proof and must not leak its inactive frames into
+    # the overview (which would make visual evidence ambiguous).
+    for geom_id in range(model.ngeom):
+        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or ""
+        parsed = parse_frame_geom_name(name)
+        if parsed is not None and parsed[0] not in roster_ids:
+            _set_sequence_visibility(model, [geom_id], False)
+    active_by_npc: dict[str, list[int]] = {}
+    for npc_id in population.npcs:
+        body_id = _body_id(model, npc_id)
+        frames = _discover_frames(model, npc_id, body_id=body_id)
+        if not frames:
+            raise ValueError(f"NPC '{npc_id}' has no mesh-sequence frames")
+        for clip_frames in frames.values():
+            for geom_ids in clip_frames.values():
+                _set_sequence_visibility(model, geom_ids, False)
+        clip = "idle" if "idle" in frames else sorted(frames)[0]
+        frame = min(frames[clip])
+        active_by_npc[npc_id] = frames[clip][frame]
+        _set_sequence_visibility(model, active_by_npc[npc_id], True)
+
+    camera_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_CAMERA, "office_overview")
+    if camera_id < 0:
+        raise ValueError("Population overview requires camera 'office_overview'")
+    model.vis.global_.offwidth = max(model.vis.global_.offwidth, width)
+    model.vis.global_.offheight = max(model.vis.global_.offheight, height)
+    renderer = mujoco.Renderer(model, width=width, height=height)
+    camera = mujoco.MjvCamera()
+    camera.type = mujoco.mjtCamera.mjCAMERA_FIXED
+    camera.fixedcamid = camera_id
+    option = mujoco.MjvOption()
+    mujoco.mjv_defaultOption(option)
+    option.geomgroup[_HIDDEN_SEQUENCE_GROUP] = False
+    option.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT] = False
+    option.flags[mujoco.mjtVisFlag.mjVIS_CONTACTFORCE] = False
+    option.flags[mujoco.mjtVisFlag.mjVIS_CONTACTSPLIT] = False
+    option.flags[mujoco.mjtVisFlag.mjVIS_CONSTRAINT] = False
+    temporary_path: Path | None = None
+    writer: cv2.VideoWriter | None = None
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    visible_pixels: dict[str, list[int]] = {npc_id: [] for npc_id in active_by_npc}
+    try:
+        with tempfile.NamedTemporaryFile(
+            dir=output_path.parent, prefix=f".{output_path.stem}.", suffix=".mp4", delete=False
+        ) as temporary_file:
+            temporary_path = Path(temporary_file.name)
+        writer = cv2.VideoWriter(
+            str(temporary_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (width, height)
+        )
+        if not writer.isOpened():
+            raise RuntimeError(f"Could not open video writer for '{output_path}'")
+        for _ in range(max(1, round(seconds * fps))):
+            renderer.update_scene(data, camera=camera, scene_option=option)
+            image = cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR)
+            cv2.rectangle(image, (16, 16), (590, 52), (20, 24, 32), thickness=-1)
+            cv2.putText(
+                image,
+                "10-NPC production roster | all frame geoms visible",
+                (30, 40),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.55,
+                (235, 239, 244),
+                1,
+            )
+            writer.write(image)
+            renderer.enable_segmentation_rendering()
+            renderer.update_scene(data, camera=camera, scene_option=option)
+            segmentation = renderer.render()
+            renderer.disable_segmentation_rendering()
+            for npc_id, geom_ids in active_by_npc.items():
+                visible_pixels[npc_id].append(int(np.isin(segmentation[..., 0], geom_ids).sum()))
+    finally:
+        if writer is not None:
+            writer.release()
+        renderer.close()
+    if temporary_path is None:
+        raise RuntimeError("Population overview writer was not initialized")
+    try:
+        _transcode_h264(temporary_path, output_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+    required_pixels = int(width * height * 0.0001)
+    report = {
+        "scene": str(scene_path),
+        "population": str(population_path),
+        "output": str(output_path),
+        "frames": max(1, round(seconds * fps)),
+        "review_visibility": {
+            "policy": "all_roster_npc_frames_visible",
+            "hidden_npc_ids": [],
+            "hidden_non_roster_entities": ["stretch_3"] if robot_root >= 0 else [],
+        },
+        "npcs": {
+            npc_id: {
+                "minimum_visible_pixels": min(pixels),
+                "minimum_required_pixels": required_pixels,
+                "visible": min(pixels) >= required_pixels,
+            }
+            for npc_id, pixels in visible_pixels.items()
+        },
+    }
+    report["passed"] = all(result["visible"] for result in report["npcs"].values())
+    output_path.with_suffix(".population-overview.json").write_text(
+        json.dumps(report, indent=2) + "\n", encoding="utf-8"
+    )
+    return report
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scene", type=Path, default=DEFAULT_SCENE)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--npc-id", default="employee_01")
+    parser.add_argument("--population", type=Path)
+    parser.add_argument("--population-overview", action="store_true")
     parser.add_argument(
         "--standing-position",
         type=float,
@@ -381,16 +551,29 @@ def main() -> None:
     parser.add_argument("--width", type=int, default=1280)
     parser.add_argument("--height", type=int, default=720)
     args = parser.parse_args()
-    report = render_acceptance_video(
-        args.scene.resolve(),
-        args.output.resolve(),
-        npc_id=args.npc_id,
-        standing_position=tuple(args.standing_position),
-        seconds_per_shot=args.seconds_per_shot,
-        fps=args.fps,
-        width=args.width,
-        height=args.height,
-    )
+    if args.population_overview:
+        if args.population is None:
+            parser.error("--population-overview requires --population")
+        report = render_population_overview_video(
+            args.scene.resolve(),
+            args.population.resolve(),
+            args.output.resolve(),
+            seconds=args.seconds_per_shot,
+            fps=args.fps,
+            width=args.width,
+            height=args.height,
+        )
+    else:
+        report = render_acceptance_video(
+            args.scene.resolve(),
+            args.output.resolve(),
+            npc_id=args.npc_id,
+            standing_position=tuple(args.standing_position),
+            seconds_per_shot=args.seconds_per_shot,
+            fps=args.fps,
+            width=args.width,
+            height=args.height,
+        )
     print(
         f"Acceptance MP4 saved -> {args.output} ({report['frames']} frames; passed={report['passed']})"
     )

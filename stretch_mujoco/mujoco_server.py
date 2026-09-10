@@ -366,7 +366,7 @@ class MujocoServer:
             self.mjmodel.actuator_ctrlrange[actuator_id] = (-40.0, 40.0)
 
         self.mjdata = MjData(self.mjmodel)
-        self.npc_system = NpcSystem.from_model(self.mjmodel)
+        self.npc_system = NpcSystem.from_model(self.mjmodel, scene_path=scene_xml_path)
         self._object_visibility_state: dict[str, bool] = {}
         self._object_geom_defaults: dict[int, tuple[float, int, int]] = {}
         self._grasp_attachment_object = ""

@@ -3,6 +3,7 @@
   "scene": "office_scene.xml",
   "asset_manifest": "assets/humanoid/generated/animations/manifest.json",
   "appearance_catalog": "assets/humanoid/generated/animations/appearance_catalog.json",
+  "trajectory_profile": "../npc/trajectory_profiles/office_v1.json",
   "clock": {"start": "09:00", "minutes_per_second": 1.0},
   "npcs": {
     "npc_alex_chen": {
@@ -25,8 +26,8 @@
       },
       "spawn": {
         "location": "workstation_left",
-        "site": "desk_left_work_site",
-        "yaw": 3.1415926
+        "site": "npc_spawn_alex_chen",
+        "yaw": 0.0
       },
       "capabilities": ["locomotion", "sit", "object_handover", "use_computer"],
       "needs": {"hunger": 0.22, "thirst": 0.3, "fatigue": 0.18},
@@ -51,8 +52,8 @@
       },
       "spawn": {
         "location": "workstation_right",
-        "site": "desk_right_work_site",
-        "yaw": 3.1415926
+        "site": "npc_spawn_morgan_lee",
+        "yaw": 0.0
       },
       "capabilities": ["locomotion", "sit", "object_handover", "use_computer"],
       "needs": {"hunger": 0.35, "thirst": 0.25, "fatigue": 0.3},
@@ -62,49 +63,49 @@
       "agent_id": "agent_jordan_patell",
       "profile": {"display_name": "Jordan Patell", "role": "Data Analyst", "department": "Analytics", "personality": {"conscientiousness": 0.82, "sociability": 0.53}, "preferences": {"chair": "chair_left", "workstation": "workstation_left"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_burgundy_boxed_beard_analytics_v2", "visual_identity": "office_burgundy_boxed_beard_analytics_v2", "accessories": [], "appearance_config": {"skin": "skin_olive_v1", "hair": "hair_auburn_v1", "top": "top_burgundy_v1", "bottom": "bottom_navy_v1", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 1.03}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 1.03},
-      "spawn": {"location": "workstation_left", "site": "desk_left_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "conversation", "use_computer"], "needs": {"hunger": 0.28, "thirst": 0.22, "fatigue": 0.25}, "schedule": []
+      "spawn": {"location": "workstation_left", "site": "npc_spawn_jordan_patell", "yaw": 0.0}, "capabilities": ["locomotion", "sit", "conversation", "use_computer"], "needs": {"hunger": 0.28, "thirst": 0.22, "fatigue": 0.25}, "schedule": []
     },
     "npc_priya_narayanan": {
       "agent_id": "agent_priya_narayanan",
       "profile": {"display_name": "Priya Narayanan", "role": "Experience Designer", "department": "Design", "personality": {"conscientiousness": 0.71, "sociability": 0.91}, "preferences": {"chair": "chair_right", "workstation": "workstation_right"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_ochre_handlebar_glasses_v1", "visual_identity": "office_ochre_handlebar_glasses_v1", "accessories": [], "appearance_config": {"skin": "skin_deep_v1", "hair": "hair_blonde_v1", "top": "top_ochre_v1", "bottom": "bottom_khaki_v1", "shoes": "shoes_cream_v1", "accessories": [], "scale": 0.96}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 0.96},
-      "spawn": {"location": "workstation_right", "site": "desk_right_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "conversation", "use_computer"], "needs": {"hunger": 0.2, "thirst": 0.38, "fatigue": 0.21}, "schedule": []
+      "spawn": {"location": "workstation_right", "site": "npc_spawn_priya_narayanan", "yaw": 0.0}, "capabilities": ["locomotion", "sit", "conversation", "use_computer"], "needs": {"hunger": 0.2, "thirst": 0.38, "fatigue": 0.21}, "schedule": []
     },
     "npc_marco_silva": {
       "agent_id": "agent_marco_silva",
       "profile": {"display_name": "Marco Silva", "role": "Facilities Lead", "department": "Operations", "personality": {"conscientiousness": 0.78, "sociability": 0.67}, "preferences": {"chair": "chair_left", "workstation": "workstation_left"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_sage_full_beard_light_v1", "visual_identity": "office_sage_full_beard_light_v1", "accessories": [], "appearance_config": {"skin": "skin_light_v1", "hair": "hair_brown_v1", "top": "top_sage_v2", "bottom": "bottom_charcoal_v2", "shoes": "shoes_black_v1", "accessories": [], "scale": 1.06}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 1.06},
-      "spawn": {"location": "workstation_left", "site": "desk_left_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "object_handover"], "needs": {"hunger": 0.4, "thirst": 0.29, "fatigue": 0.36}, "schedule": []
+      "spawn": {"location": "workstation_left", "site": "npc_spawn_marco_silva", "yaw": 0.0}, "capabilities": ["locomotion", "sit", "object_handover"], "needs": {"hunger": 0.4, "thirst": 0.29, "fatigue": 0.36}, "schedule": []
     },
     "npc_olivia_bennett": {
       "agent_id": "agent_olivia_bennett",
       "profile": {"display_name": "Olivia Bennett", "role": "Finance Partner", "department": "Finance", "personality": {"conscientiousness": 0.9, "sociability": 0.47}, "preferences": {"chair": "chair_right", "workstation": "workstation_right"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_jersey_goatee_v1", "visual_identity": "office_jersey_goatee_v1", "accessories": [], "appearance_config": {"skin": "skin_olive_v1", "hair": "hair_black_v1", "top": "top_jersey_melange_v1", "bottom": "bottom_charcoal_v2", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 0.99}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 0.99},
-      "spawn": {"location": "workstation_right", "site": "desk_right_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "use_computer"], "needs": {"hunger": 0.24, "thirst": 0.2, "fatigue": 0.32}, "schedule": []
+      "spawn": {"location": "workstation_right", "site": "npc_spawn_olivia_bennett", "yaw": 0.0}, "capabilities": ["locomotion", "sit", "use_computer"], "needs": {"hunger": 0.24, "thirst": 0.2, "fatigue": 0.32}, "schedule": []
     },
     "npc_daniel_kim": {
       "agent_id": "agent_daniel_kim",
       "profile": {"display_name": "Daniel Kim", "role": "Research Engineer", "department": "Engineering", "personality": {"conscientiousness": 0.86, "sociability": 0.58}, "preferences": {"chair": "chair_left", "workstation": "workstation_left"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_sage_auburn_boxed_glasses_v1", "visual_identity": "office_sage_auburn_boxed_glasses_v1", "accessories": [], "appearance_config": {"skin": "skin_deep_v1", "hair": "hair_auburn_v1", "top": "top_sage_v2", "bottom": "bottom_khaki_v1", "shoes": "shoes_cream_v1", "accessories": [], "scale": 1.01}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 1.01},
-      "spawn": {"location": "workstation_left", "site": "desk_left_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "conversation", "use_computer"], "needs": {"hunger": 0.18, "thirst": 0.27, "fatigue": 0.43}, "schedule": []
+      "spawn": {"location": "workstation_left", "site": "npc_spawn_daniel_kim", "yaw": 0.0}, "capabilities": ["locomotion", "sit", "conversation", "use_computer"], "needs": {"hunger": 0.18, "thirst": 0.27, "fatigue": 0.43}, "schedule": []
     },
     "npc_samira_haddad": {
       "agent_id": "agent_samira_haddad",
       "profile": {"display_name": "Samira Haddad", "role": "People Partner", "department": "People", "personality": {"conscientiousness": 0.73, "sociability": 0.93}, "preferences": {"chair": "chair_right", "workstation": "workstation_right"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_burgundy_handlebar_v1", "visual_identity": "office_burgundy_handlebar_v1", "accessories": [], "appearance_config": {"skin": "skin_light_v1", "hair": "hair_blonde_v1", "top": "top_burgundy_v1", "bottom": "bottom_navy_v1", "shoes": "shoes_black_v1", "accessories": [], "scale": 0.97}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 0.97},
-      "spawn": {"location": "workstation_right", "site": "desk_right_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "conversation"], "needs": {"hunger": 0.31, "thirst": 0.34, "fatigue": 0.19}, "schedule": []
+      "spawn": {"location": "workstation_right", "site": "npc_spawn_samira_haddad", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "conversation"], "needs": {"hunger": 0.31, "thirst": 0.34, "fatigue": 0.19}, "schedule": []
     },
     "npc_wei_zhang": {
       "agent_id": "agent_wei_zhang",
       "profile": {"display_name": "Wei Zhang", "role": "Security Engineer", "department": "Engineering", "personality": {"conscientiousness": 0.88, "sociability": 0.44}, "preferences": {"chair": "chair_left", "workstation": "workstation_left"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_jogging_full_beard_v1", "visual_identity": "office_jogging_full_beard_v1", "accessories": [], "appearance_config": {"skin": "skin_warm_v2", "hair": "hair_auburn_v1", "top": "top_jogging_melange_v1", "bottom": "bottom_charcoal_v2", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 1.04}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 1.04},
-      "spawn": {"location": "workstation_left", "site": "desk_left_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "object_handover"], "needs": {"hunger": 0.27, "thirst": 0.23, "fatigue": 0.39}, "schedule": []
+      "spawn": {"location": "workstation_left", "site": "npc_spawn_wei_zhang", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "object_handover"], "needs": {"hunger": 0.27, "thirst": 0.23, "fatigue": 0.39}, "schedule": []
     },
     "npc_lena_fischer": {
       "agent_id": "agent_lena_fischer",
       "profile": {"display_name": "Lena Fischer", "role": "Customer Researcher", "department": "Research", "personality": {"conscientiousness": 0.76, "sociability": 0.84}, "preferences": {"chair": "chair_right", "workstation": "workstation_right"}},
       "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_olive_goatee_glasses_v1", "visual_identity": "office_olive_goatee_glasses_v1", "accessories": [], "appearance_config": {"skin": "skin_olive_v1", "hair": "hair_brown_v1", "top": "top_sage_v2", "bottom": "bottom_khaki_v1", "shoes": "shoes_cream_v1", "accessories": [], "scale": 0.95}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 0.95},
-      "spawn": {"location": "workstation_right", "site": "desk_right_work_site", "yaw": 3.1415926}, "capabilities": ["locomotion", "sit", "conversation"], "needs": {"hunger": 0.21, "thirst": 0.31, "fatigue": 0.24}, "schedule": []
+      "spawn": {"location": "workstation_right", "site": "npc_spawn_lena_fischer", "yaw": 0.0}, "capabilities": ["locomotion", "sit", "conversation"], "needs": {"hunger": 0.21, "thirst": 0.31, "fatigue": 0.24}, "schedule": []
     }
   }
 }

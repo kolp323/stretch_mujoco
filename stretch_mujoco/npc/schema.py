@@ -257,6 +257,7 @@ class NpcPopulation:
     npcs: dict[str, NpcDefinition]
     clock: dict[str, Any]
     appearance_catalog: str | None = None
+    trajectory_profile: str | None = None
     source_path: Path | None = None
 
     @classmethod
@@ -292,6 +293,11 @@ class NpcPopulation:
             if payload.get("appearance_catalog") is not None
             else None
         )
+        trajectory_profile = (
+            str(payload["trajectory_profile"])
+            if payload.get("trajectory_profile") is not None
+            else None
+        )
         if appearance_catalog is not None:
             if source_path is None:
                 raise ValueError("Population appearance_catalog requires a source path")
@@ -317,6 +323,7 @@ class NpcPopulation:
             npcs=npcs,
             clock=dict(_require_mapping(payload["clock"], "Population clock")),
             appearance_catalog=appearance_catalog,
+            trajectory_profile=trajectory_profile,
             source_path=source_path,
         )
 

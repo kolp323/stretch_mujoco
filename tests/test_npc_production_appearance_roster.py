@@ -23,6 +23,7 @@ def test_production_roster_has_ten_named_npcs_with_explicit_distinct_appearances
         for definition in population.npcs.values()
         if definition.embodiment.appearance_config is not None
     )
+    assert population.trajectory_profile == "../npc/trajectory_profiles/office_v1.json"
 
 
 def test_production_roster_assigns_distinct_top_layers_to_npcs() -> None:

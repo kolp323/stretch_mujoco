@@ -102,6 +102,7 @@ class OfficeAgentRuntime:
         llm_provider_config: LLMProviderConfig | None = None,
         action_driver: object | None = None,
         population_npc_ids: Iterable[str] | None = None,
+        trajectory_profile_path: Path | None = None,
     ) -> None:
         if state_machine_hz <= 0 or needs_hz <= 0:
             raise ValueError("Agent update frequencies must be positive")
@@ -132,6 +133,7 @@ class OfficeAgentRuntime:
         self.population_npc_ids = (
             None if population_npc_ids is None else frozenset(population_npc_ids)
         )
+        self.trajectory_profile_path = trajectory_profile_path
         self.office_event_generator = DailyOfficeEventGenerator(seed)
         self.daily_events_enabled = daily_events
         self.daily_office_events: list[DailyOfficeEvent] = []
@@ -178,12 +180,18 @@ class OfficeAgentRuntime:
             }
             world.register_population_npcs(population.npcs)
             population_npc_ids = population.npcs.keys()
+            trajectory_profile_path = (
+                None
+                if population.trajectory_profile is None
+                else population.resolve_path(population.trajectory_profile)
+            )
         elif version == 1:
             agents = {
                 agent_id: EmployeeAgent.from_dict(agent_id, definition)
                 for agent_id, definition in payload.get("employees", {}).items()
             }
             population_npc_ids = None
+            trajectory_profile_path = None
         else:
             raise ValueError(
                 f"Unsupported office agent schema_version {version!r}; expected 1 or 2"
@@ -212,6 +220,7 @@ class OfficeAgentRuntime:
             llm_provider_config=llm_provider_config,
             action_driver=action_driver,
             population_npc_ids=population_npc_ids,
+            trajectory_profile_path=trajectory_profile_path,
         )
 
     def llm_config_summary(self) -> dict[str, Any]:

@@ -122,7 +122,7 @@ def render_trajectory_tour(
     clearance = profile.audit_npc_clearance(model, data, npc_id)
     audit_by_route = {audit.route_id: audit for audit in clearance}
 
-    system = NpcSystem.from_model(model, simulation_seed=7)
+    system = NpcSystem.from_model(model, simulation_seed=7, scene_path=scene_path)
     controller = system.controllers.get(npc_id)
     if controller is None:
         raise ValueError(f"Unknown NPC '{npc_id}'")

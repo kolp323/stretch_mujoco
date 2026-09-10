@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 from collections import deque
+from pathlib import Path
 from typing import Iterable, Mapping
 
 import mujoco
 
 from .animation import AnimationGraph
 from .binding import NpcBinding, discover_npc_ids
-from .controller import NpcController
+from .controller import NpcController, TrajectoryRouteContract
+from .trajectory_profile import NpcTrajectoryProfile
 from .protocol import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt, NpcRuntimeState
 
 
@@ -20,11 +22,16 @@ class NpcSystem:
         npc_ids: Iterable[str],
         animation_graphs: Mapping[str, AnimationGraph] | None = None,
         simulation_seed: int = 0,
+        trajectory_routes: Mapping[str, TrajectoryRouteContract] | None = None,
     ) -> None:
         graphs = dict(animation_graphs or {})
         self.controllers = {
             npc_id: NpcController(
-                model, NpcBinding.from_model(model, npc_id), graphs.get(npc_id), simulation_seed
+                model,
+                NpcBinding.from_model(model, npc_id),
+                graphs.get(npc_id),
+                simulation_seed,
+                trajectory_routes,
             )
             for npc_id in npc_ids
         }
@@ -35,12 +42,30 @@ class NpcSystem:
         self._commands: dict[str, NpcCommand] = {}
 
     @classmethod
-    def from_model(cls, model: mujoco.MjModel, *, simulation_seed: int = 0) -> "NpcSystem":
-        return cls(model, discover_npc_ids(model), simulation_seed=simulation_seed)
+    def from_model(
+        cls,
+        model: mujoco.MjModel,
+        *,
+        simulation_seed: int = 0,
+        scene_path: str | Path | None = None,
+    ) -> "NpcSystem":
+        routes = cls._scene_trajectory_routes(model, scene_path)
+        return cls(
+            model,
+            discover_npc_ids(model),
+            simulation_seed=simulation_seed,
+            trajectory_routes=routes,
+        )
 
     @classmethod
     def from_population(
-        cls, model: mujoco.MjModel, population, manifest, *, simulation_seed: int = 0
+        cls,
+        model: mujoco.MjModel,
+        population,
+        manifest,
+        *,
+        simulation_seed: int = 0,
+        scene_path: str | Path | None = None,
     ) -> "NpcSystem":
         """Create a system whose clip contract comes from validated population assets."""
         manifest.validate_population(population)
@@ -50,7 +75,63 @@ class NpcSystem:
             )
             for npc_id, definition in population.npcs.items()
         }
-        return cls(model, population.npcs, graphs, simulation_seed)
+        profile_scene = scene_path
+        if profile_scene is None and getattr(population, "source_path", None) is not None:
+            profile_scene = population.resolve_path(population.scene)
+        routes = cls._scene_trajectory_routes(model, profile_scene)
+        return cls(model, population.npcs, graphs, simulation_seed, routes)
+
+    @staticmethod
+    def _scene_trajectory_routes(
+        model: mujoco.MjModel, scene_path: str | Path | None
+    ) -> dict[str, TrajectoryRouteContract]:
+        profile_id = NpcSystem._custom_text(model, "npc_trajectory_profile")
+        if profile_id is None:
+            return {}
+        if scene_path is None:
+            raise ValueError("npc_trajectory_profile_requires_scene_path")
+        profile_path = Path(__file__).with_name("trajectory_profiles") / f"{profile_id}.json"
+        if not profile_path.is_file():
+            raise ValueError(f"npc_trajectory_profile_missing:{profile_id}")
+        profile = NpcTrajectoryProfile.from_json(profile_path)
+        profile.validate_scene(NpcSystem._profile_scene_path(Path(scene_path), profile.scene))
+        data = mujoco.MjData(model)
+        mujoco.mj_forward(model, data)
+        profile.preflight(model, data)
+        return {
+            route.route_id: TrajectoryRouteContract(
+                route.route_id,
+                profile.anchors[route.destination].site,
+                frozenset(route.actions),
+            )
+            for route in profile.routes
+        }
+
+    @staticmethod
+    def _custom_text(model: mujoco.MjModel, name: str) -> str | None:
+        text_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_TEXT, name)
+        if text_id < 0:
+            return None
+        start = int(model.text_adr[text_id])
+        size = int(model.text_size[text_id])
+        return bytes(model.text_data[start : start + size]).rstrip(b"\0").decode("utf-8")
+
+    @staticmethod
+    def _profile_scene_path(scene_path: Path, expected_name: str) -> Path:
+        """Find the profile's source scene through a generated wrapper include."""
+        scene_path = scene_path.resolve()
+        if scene_path.name == expected_name:
+            return scene_path
+        import xml.etree.ElementTree as ET
+
+        root = ET.parse(scene_path).getroot()
+        for include in root.findall("include"):
+            candidate = Path(include.attrib.get("file", ""))
+            if not candidate.is_absolute():
+                candidate = scene_path.parent / candidate
+            if candidate.name == expected_name and candidate.is_file():
+                return candidate.resolve()
+        raise ValueError(f"npc_trajectory_profile_scene_source_missing:{expected_name}")
 
     def submit(self, command: NpcCommand) -> NpcCommandReceipt:
         previous = self._receipts.get(command.command_id)

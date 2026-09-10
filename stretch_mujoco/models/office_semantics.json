@@ -154,6 +154,56 @@
       "owner": "workstation_right",
       "site": "desk_right_work_site"
     },
+    "npc_spawn_alex_chen": {
+      "role": "human_stand_site",
+      "owner": "workstation_left",
+      "site": "npc_spawn_alex_chen"
+    },
+    "npc_spawn_morgan_lee": {
+      "role": "human_stand_site",
+      "owner": "workstation_right",
+      "site": "npc_spawn_morgan_lee"
+    },
+    "npc_spawn_jordan_patell": {
+      "role": "human_stand_site",
+      "owner": "workstation_left",
+      "site": "npc_spawn_jordan_patell"
+    },
+    "npc_spawn_priya_narayanan": {
+      "role": "human_stand_site",
+      "owner": "workstation_right",
+      "site": "npc_spawn_priya_narayanan"
+    },
+    "npc_spawn_marco_silva": {
+      "role": "human_stand_site",
+      "owner": "workstation_left",
+      "site": "npc_spawn_marco_silva"
+    },
+    "npc_spawn_olivia_bennett": {
+      "role": "human_stand_site",
+      "owner": "workstation_right",
+      "site": "npc_spawn_olivia_bennett"
+    },
+    "npc_spawn_daniel_kim": {
+      "role": "human_stand_site",
+      "owner": "workstation_left",
+      "site": "npc_spawn_daniel_kim"
+    },
+    "npc_spawn_samira_haddad": {
+      "role": "human_stand_site",
+      "owner": "workstation_right",
+      "site": "npc_spawn_samira_haddad"
+    },
+    "npc_spawn_wei_zhang": {
+      "role": "human_stand_site",
+      "owner": "workstation_left",
+      "site": "npc_spawn_wei_zhang"
+    },
+    "npc_spawn_lena_fischer": {
+      "role": "human_stand_site",
+      "owner": "workstation_right",
+      "site": "npc_spawn_lena_fischer"
+    },
     "cabinet_open": {
       "role": "cabinet_open_site",
       "owner": "storage_cabinet",

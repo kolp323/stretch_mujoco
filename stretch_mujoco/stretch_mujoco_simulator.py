@@ -424,10 +424,21 @@ class StretchMujocoSimulator:
         )
         if embodied:
             from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
+            from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 
+            trajectory_profile = (
+                None
+                if self.agent_runtime.trajectory_profile_path is None
+                else NpcTrajectoryProfile.from_json(self.agent_runtime.trajectory_profile_path)
+            )
             self.agent_runtime.action_driver = create_mujoco_action_driver(
                 self,
                 npc_ids=self.agent_runtime.population_npc_ids,
+                trajectory_profile=trajectory_profile,
+                agent_locations={
+                    agent_id: agent.state.location
+                    for agent_id, agent in self.agent_runtime.agents.items()
+                },
             )
         return self.agent_runtime
 

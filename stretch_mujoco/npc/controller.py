@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Mapping
 
 import mujoco
 
@@ -38,6 +39,15 @@ class ActiveNpcCommand:
     started_at: float | None = None
 
 
+@dataclass(frozen=True)
+class TrajectoryRouteContract:
+    """The controller-facing projection of one preflighted profile route."""
+
+    route_id: str
+    destination_site: str
+    actions: frozenset[str]
+
+
 class NpcController:
     """Compose independent locomotion and animation state for a single NPC."""
 
@@ -47,10 +57,12 @@ class NpcController:
         binding: NpcBinding,
         animation_graph: AnimationGraph | None = None,
         simulation_seed: int = 0,
+        trajectory_routes: Mapping[str, TrajectoryRouteContract] | None = None,
     ) -> None:
         self.model = model
         self.binding = binding
         self.locomotion = LocomotionController(model, binding)
+        self.trajectory_routes = dict(trajectory_routes or {})
         self.animation = AnimationController(
             MeshSequenceBackend(model, binding),
             graph=animation_graph,
@@ -86,6 +98,7 @@ class NpcController:
                     command.payload.get("progress_timeout", 2.0), "progress_timeout"
                 )
                 max_replans = _payload_int(command.payload.get("max_replans", 0), "max_replans")
+                self._validate_trajectory_route(command, site)
                 self.locomotion.move_to(
                     site,
                     speed,
@@ -101,7 +114,8 @@ class NpcController:
                 target_site = command.payload.get("target_site")
                 if (
                     target_site is not None
-                    and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site)) < 0
+                    and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site))
+                    < 0
                 ):
                     raise ValueError(f"unknown_target_site:{target_site}")
                 self.animation.set_execution(command.command_id)
@@ -149,6 +163,17 @@ class NpcController:
             command.npc_id,
             CommandStatus.ACCEPTED,
         )
+
+    def _validate_trajectory_route(self, command: NpcCommand, site: str) -> None:
+        """Reject a declared profile route whose target/action contract drifted."""
+        route_id = command.payload.get("trajectory_route")
+        if route_id is None:
+            return
+        route = self.trajectory_routes.get(str(route_id))
+        if route is None:
+            raise ValueError(f"trajectory_route_unknown:{route_id}")
+        if route.destination_site != site or "move_to" not in route.actions:
+            raise ValueError(f"trajectory_route_contract_mismatch:{route_id}")
 
     def cancel(
         self, command_id: str, sim_time: float, reason: str = "cancelled"

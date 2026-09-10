@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from stretch_mujoco.npc.protocol import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt
+from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 
 from .actions import ActionExecution, ActionType, ExecutionStatus
 from .action_recipes import ACTION_RECIPES, ActionRecipe
@@ -120,6 +121,8 @@ class MujocoNpcActionDriver:
         seat_yaws: dict[str, float] | None = None,
         interaction_yaws: dict[str, float] | None = None,
         available_clips: set[str] | None = None,
+        trajectory_profile: NpcTrajectoryProfile | None = None,
+        agent_locations: dict[str, str] | None = None,
         timeout_seconds: float = 30.0,
     ) -> None:
         self.simulator = simulator
@@ -132,6 +135,9 @@ class MujocoNpcActionDriver:
         self.seat_yaws = dict(seat_yaws or {})
         self.interaction_yaws = dict(interaction_yaws or {})
         self.available_clips = None if available_clips is None else set(available_clips)
+        self.trajectory_profile = trajectory_profile
+        self.agent_locations = dict(agent_locations or {})
+        self._movement_destinations: dict[str, tuple[str, str]] = {}
         self.timeout_seconds = timeout_seconds
         self._sequences: dict[str, int] = {}
         self._receipts: dict[str, NpcCommandReceipt] = {}
@@ -178,11 +184,15 @@ class MujocoNpcActionDriver:
             deadline=issued_at + self._timeout_for(command.action),
         )
         handle = self.simulator.submit_npc_command(npc_command)
+        if kind == NpcCommandKind.MOVE_TO:
+            self._remember_movement(handle, command.agent_id, str(payload["site"]))
         return DriverResult(ExecutionStatus.RUNNING, phase, handle=handle)
 
     def poll(self, execution: ActionExecution) -> DriverResult:
         for new_receipt in self.simulator.pull_npc_receipts():
             self._receipts[new_receipt.command_id] = new_receipt
+            if new_receipt.status == CommandStatus.SUCCEEDED:
+                self._record_arrival(new_receipt.command_id)
         workflow = self._handovers.get(execution.execution_id)
         sit = self._sits.get(execution.execution_id)
         object_workflow = self._objects.get(execution.execution_id)
@@ -271,17 +281,49 @@ class MujocoNpcActionDriver:
             site = self.location_sites.get(str(command.target))
             if site is None:
                 raise ValueError(f"No NPC site configured for location '{command.target}'")
-            return NpcCommandKind.MOVE_TO, self._move_payload(site), "navigate"
+            return (
+                NpcCommandKind.MOVE_TO,
+                self._move_payload(site, agent_id=command.agent_id, action=command.action),
+                "navigate",
+            )
         raise ValueError(f"Unsupported embodied action '{command.action.value}'")
 
     def _timeout_for(self, action: ActionType) -> float:
         configured = ACTION_RECIPES[action].timeout_seconds
         return self.timeout_seconds if configured is None else configured
 
-    @staticmethod
-    def _move_payload(site: str) -> dict[str, object]:
+    def _move_payload(
+        self,
+        site: str,
+        *,
+        agent_id: str | None = None,
+        action: ActionType | None = None,
+    ) -> dict[str, object]:
         """Every embodied approach has a named target and one local replan."""
-        return {"site": site, "arrival_clip": "idle", "max_replans": 1}
+        payload: dict[str, object] = {"site": site, "arrival_clip": "idle", "max_replans": 1}
+        if self.trajectory_profile is not None and agent_id is not None and action is not None:
+            route = self.trajectory_profile.route_for(
+                self.agent_locations.get(agent_id), site, action.value
+            )
+            if route is not None:
+                payload["trajectory_route"] = route.route_id
+        return payload
+
+    def _remember_movement(self, command_id: str, npc_id: str, site: str) -> None:
+        self._movement_destinations[command_id] = (npc_id, site)
+
+    def _record_arrival(self, command_id: str) -> None:
+        movement = self._movement_destinations.pop(command_id, None)
+        if movement is None or self.trajectory_profile is None:
+            return
+        npc_id, site = movement
+        anchors = [
+            anchor_id
+            for anchor_id, anchor in self.trajectory_profile.anchors.items()
+            if anchor.site == site
+        ]
+        if len(anchors) == 1:
+            self.agent_locations[npc_id] = anchors[0]
 
     def _start_recipe(self, execution: ActionExecution) -> DriverResult:
         assert execution.command is not None
@@ -302,7 +344,9 @@ class MujocoNpcActionDriver:
             execution.execution_id,
             "approach",
             NpcCommandKind.MOVE_TO,
-            self._move_payload(sites[command.target]),
+            self._move_payload(
+                sites[command.target], agent_id=command.agent_id, action=command.action
+            ),
             timeout_seconds=recipe.timeout_seconds,
         )
         self._recipes[execution.execution_id] = _RecipeWorkflow(
@@ -391,7 +435,7 @@ class MujocoNpcActionDriver:
             execution.execution_id,
             "approach",
             NpcCommandKind.MOVE_TO,
-            self._move_payload(approach_site),
+            self._move_payload(approach_site, agent_id=command.agent_id, action=command.action),
             timeout_seconds=recipe.timeout_seconds,
         )
         self._objects[execution.execution_id] = _ObjectWorkflow(
@@ -487,7 +531,7 @@ class MujocoNpcActionDriver:
             execution.execution_id,
             "approach_seat",
             NpcCommandKind.MOVE_TO,
-            self._move_payload(site),
+            self._move_payload(site, agent_id=command.agent_id, action=command.action),
             timeout_seconds=ACTION_RECIPES[ActionType.SIT].timeout_seconds,
         )
         self._sits[execution.execution_id] = _SitWorkflow(seat, yaw, "approach_seat", handle)
@@ -589,10 +633,14 @@ class MujocoNpcActionDriver:
             available_clips=self.available_clips,
         )
         if not object_name or error is not None:
-            return DriverResult(ExecutionStatus.FAILED, "prepare", error=error or "handover_missing_object")
+            return DriverResult(
+                ExecutionStatus.FAILED, "prepare", error=error or "handover_missing_object"
+            )
         role_sites = self.handover_role_sites.get((command.agent_id, receiver))
         if role_sites is None:
-            return DriverResult(ExecutionStatus.FAILED, "prepare", error="handover_missing_role_sites")
+            return DriverResult(
+                ExecutionStatus.FAILED, "prepare", error="handover_missing_role_sites"
+            )
         timeout_seconds = self._timeout_for(ActionType.HANDOVER)
         issued_at = float(self.simulator.pull_status().time)
         session = self.interactions.start(
@@ -665,14 +713,18 @@ class MujocoNpcActionDriver:
                 workflow.command_ids = self._submit_handover_stage(
                     execution.execution_id,
                     "rollback",
-                    ((
-                        workflow.giver,
-                        NpcCommandKind.ATTACH_OBJECT,
-                        {"object": workflow.object_name, "interaction_id": workflow.session_id},
-                    ),),
+                    (
+                        (
+                            workflow.giver,
+                            NpcCommandKind.ATTACH_OBJECT,
+                            {"object": workflow.object_name, "interaction_id": workflow.session_id},
+                        ),
+                    ),
                     timeout_seconds=self._timeout_for(ActionType.HANDOVER),
                 )
-                return DriverResult(ExecutionStatus.RUNNING, workflow.stage, self._workflow_handle(workflow))
+                return DriverResult(
+                    ExecutionStatus.RUNNING, workflow.stage, self._workflow_handle(workflow)
+                )
             self.interactions.fail(workflow.session_id, failed.reason or failed.status.value)
             self._cancel_workflow_commands(workflow)
             self._handovers.pop(execution.execution_id, None)
@@ -686,7 +738,9 @@ class MujocoNpcActionDriver:
             receipt is not None and receipt.status == CommandStatus.SUCCEEDED
             for receipt in receipts.values()
         ):
-            return DriverResult(ExecutionStatus.RUNNING, workflow.stage, self._workflow_handle(workflow))
+            return DriverResult(
+                ExecutionStatus.RUNNING, workflow.stage, self._workflow_handle(workflow)
+            )
         timeout_seconds = self._timeout_for(ActionType.HANDOVER)
         if workflow.stage == "rendezvous":
             self.interactions.acknowledge(workflow.session_id, workflow.giver, "rendezvous")
@@ -696,8 +750,16 @@ class MujocoNpcActionDriver:
                 execution.execution_id,
                 "aligned",
                 (
-                    (workflow.giver, NpcCommandKind.ALIGN_TO, {"yaw": workflow.giver_yaw, "target_site": workflow.giver_site}),
-                    (workflow.receiver, NpcCommandKind.ALIGN_TO, {"yaw": workflow.receiver_yaw, "target_site": workflow.receiver_site}),
+                    (
+                        workflow.giver,
+                        NpcCommandKind.ALIGN_TO,
+                        {"yaw": workflow.giver_yaw, "target_site": workflow.giver_site},
+                    ),
+                    (
+                        workflow.receiver,
+                        NpcCommandKind.ALIGN_TO,
+                        {"yaw": workflow.receiver_yaw, "target_site": workflow.receiver_site},
+                    ),
                 ),
                 timeout_seconds=timeout_seconds,
             )
@@ -709,8 +771,28 @@ class MujocoNpcActionDriver:
                 execution.execution_id,
                 "ready",
                 (
-                    (workflow.giver, NpcCommandKind.PLAY_ANIMATION, {"clip": "give", "completion_marker": "handover_ready", "interaction_id": workflow.session_id, "arrival_clip": "idle", "target_site": workflow.giver_site}),
-                    (workflow.receiver, NpcCommandKind.PLAY_ANIMATION, {"clip": "receive", "completion_marker": "handover_ready", "interaction_id": workflow.session_id, "arrival_clip": "idle", "target_site": workflow.receiver_site}),
+                    (
+                        workflow.giver,
+                        NpcCommandKind.PLAY_ANIMATION,
+                        {
+                            "clip": "give",
+                            "completion_marker": "handover_ready",
+                            "interaction_id": workflow.session_id,
+                            "arrival_clip": "idle",
+                            "target_site": workflow.giver_site,
+                        },
+                    ),
+                    (
+                        workflow.receiver,
+                        NpcCommandKind.PLAY_ANIMATION,
+                        {
+                            "clip": "receive",
+                            "completion_marker": "handover_ready",
+                            "interaction_id": workflow.session_id,
+                            "arrival_clip": "idle",
+                            "target_site": workflow.receiver_site,
+                        },
+                    ),
                 ),
                 timeout_seconds=timeout_seconds,
             )
@@ -721,7 +803,13 @@ class MujocoNpcActionDriver:
             workflow.command_ids = self._submit_handover_stage(
                 execution.execution_id,
                 "release",
-                ((workflow.giver, NpcCommandKind.DETACH_OBJECT, {"object": workflow.object_name, "interaction_id": workflow.session_id}),),
+                (
+                    (
+                        workflow.giver,
+                        NpcCommandKind.DETACH_OBJECT,
+                        {"object": workflow.object_name, "interaction_id": workflow.session_id},
+                    ),
+                ),
                 timeout_seconds=timeout_seconds,
             )
         elif workflow.stage == "release":
@@ -731,21 +819,36 @@ class MujocoNpcActionDriver:
             workflow.command_ids = self._submit_handover_stage(
                 execution.execution_id,
                 "receive",
-                ((workflow.receiver, NpcCommandKind.ATTACH_OBJECT, {"object": workflow.object_name, "interaction_id": workflow.session_id}),),
+                (
+                    (
+                        workflow.receiver,
+                        NpcCommandKind.ATTACH_OBJECT,
+                        {"object": workflow.object_name, "interaction_id": workflow.session_id},
+                    ),
+                ),
                 timeout_seconds=timeout_seconds,
             )
         elif workflow.stage == "rollback":
             self._handovers.pop(execution.execution_id, None)
-            return DriverResult(ExecutionStatus.FAILED, "terminal", self._workflow_handle(workflow), workflow.failure_error)
+            return DriverResult(
+                ExecutionStatus.FAILED,
+                "terminal",
+                self._workflow_handle(workflow),
+                workflow.failure_error,
+            )
         else:
             session = self.interactions.acknowledge(
                 workflow.session_id, workflow.receiver, "received"
             )
             self._handovers.pop(execution.execution_id, None)
             if session.status.value == "succeeded":
-                return DriverResult(ExecutionStatus.SUCCEEDED, "completed", self._workflow_handle(workflow))
+                return DriverResult(
+                    ExecutionStatus.SUCCEEDED, "completed", self._workflow_handle(workflow)
+                )
             return DriverResult(ExecutionStatus.FAILED, "terminal", self._workflow_handle(workflow))
-        return DriverResult(ExecutionStatus.RUNNING, workflow.stage, self._workflow_handle(workflow))
+        return DriverResult(
+            ExecutionStatus.RUNNING, workflow.stage, self._workflow_handle(workflow)
+        )
 
     def _submit_handover_stage(
         self,
@@ -790,7 +893,10 @@ class MujocoNpcActionDriver:
             deadline=issued_at
             + (self.timeout_seconds if timeout_seconds is None else timeout_seconds),
         )
-        return self.simulator.submit_npc_command(command)
+        handle = self.simulator.submit_npc_command(command)
+        if kind == NpcCommandKind.MOVE_TO:
+            self._remember_movement(handle, npc_id, str(payload["site"]))
+        return handle
 
     def cancel(self, execution: ActionExecution, reason: str) -> DriverResult:
         workflow = self._handovers.pop(execution.execution_id, None)

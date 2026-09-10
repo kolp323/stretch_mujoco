@@ -11,6 +11,8 @@ from stretch_mujoco.npc.trajectory_profile import (
     TrajectoryProfileError,
     TrajectoryRoute,
 )
+from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
+from stretch_mujoco.npc.system import NpcSystem
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -114,3 +116,47 @@ def test_profile_preflight_rejects_missing_anchor_site() -> None:
 
     with pytest.raises(TrajectoryProfileError, match="trajectory_anchor_site_missing"):
         profile.preflight(model, data)
+
+
+def test_scene_profile_is_preflighted_and_enforced_by_the_runtime_controller() -> None:
+    model = mujoco.MjModel.from_xml_path(str(OFFICE_SCENE))
+    system = NpcSystem.from_model(model, scene_path=OFFICE_SCENE)
+
+    controller = system.controllers["employee_01"]
+    assert set(controller.trajectory_routes) == {
+        "workstation_left_to_meeting",
+        "workstation_right_to_meeting",
+        "meeting_to_snacks",
+        "snacks_to_storage",
+    }
+    accepted = system.submit(
+        NpcCommand(
+            "profile_route_ok",
+            0,
+            "employee_01",
+            NpcCommandKind.MOVE_TO,
+            {
+                "site": "meeting_human_stand_site",
+                "trajectory_route": "workstation_left_to_meeting",
+            },
+            0.0,
+        )
+    )
+    assert accepted.status == CommandStatus.ACCEPTED
+    system.controllers["employee_01"].active_command = None
+
+    rejected = system.submit(
+        NpcCommand(
+            "profile_route_wrong_target",
+            1,
+            "employee_01",
+            NpcCommandKind.MOVE_TO,
+            {
+                "site": "snack_human_stand_site",
+                "trajectory_route": "workstation_left_to_meeting",
+            },
+            0.0,
+        )
+    )
+    assert rejected.status == CommandStatus.FAILED
+    assert rejected.reason == "trajectory_route_contract_mismatch:workstation_left_to_meeting"

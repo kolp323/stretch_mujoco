@@ -846,6 +846,20 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python tools/validate_npc_trajectorie
 
 receipt 中的 waypoint 是此次构建的审计投影，不能作为后续场景或运行时的事实源；运行时 `LocomotionController` 仍会从实时 geometry 重规划。新场景应先提供明确的、面向人的 interaction/navigation site，再复制并按新场景创建独立的版本化 profile，更新该场景的 SHA-256，最后把上述 preflight 加入该场景的 CI。不存在 anchor、floor 不符合导航约定、profile 与 scene 名或 SHA-256 不匹配，或任一 route 不可达时，命令均会以稳定错误码失败，禁止把未确认路线发布给 NPC 行为层。
 
+`office_scene.xml` 通过 `custom/text:npc_trajectory_profile=office_v1` 显式登记该契约。`MujocoServer` 启动时读取该登记，解析生成 wrapper 中的原始 `office_scene.xml` include，核对 SHA-256 并 preflight 全部路线；scene bytes、profile 或 anchor 漂移会使启动失败。`MujocoNpcActionDriver` 同时接收 production roster 的初始逻辑位置：当动作与 profile 的 source/destination/action 一一匹配时，它会在 `MOVE_TO` payload 写入 `trajectory_route`；`NpcController` 会拒绝 route ID、目标 site 或动作许可不一致的命令，然后才在实时 geometry 上重规划。
+
+production roster 的十名 NPC 现在各自引用一个 `npc_spawn_*` scene site。scene builder 的回归测试要求十个初始 XY 坐标均不同、任意两者距离至少 0.5 m、生成 NPC 之间零初始接触。使用下列命令渲染多人总览；它不会隐藏任何 roster NPC，并为每个人写入 segmentation 可见像素审计：
+
+```bash
+PYTHONPATH=. MUJOCO_GL=egl .venv/bin/python tools/build_npc_scene.py \
+  --population stretch_mujoco/models/office_population.production.example.json \
+  --output stretch_mujoco/models/.population_overview.xml --include-base-scene
+PYTHONPATH=. MUJOCO_GL=egl .venv/bin/python tools/render_npc_acceptance_video.py \
+  --scene stretch_mujoco/models/.population_overview.xml \
+  --population stretch_mujoco/models/office_population.production.example.json \
+  --population-overview --output /tmp/npc_population_overview.mp4
+```
+
 preflight 还会用 `LocomotionController` 逐 10 ms 推进每条 route，包含每个渐进转向姿态；MuJoCo 必须报告 NPC collision proxy 与所有非 `office_floor` 场景 geom 零接触，否则以 `trajectory_route_collision` 拒绝。`office_v1` 当前分别审计了 336、315、554、674 个 move/turn pose，均为零接触；JSON receipt 对每条 route 写入采样数与 `collision_free: true`。
 
 可用以下命令生成实际 controller 驱动的路线巡回视频。四条 route 依次由真实 `MOVE_TO` 命令执行；路线之间的 source 切换明确标为静态 placement，不会伪造穿模移动。renderer 在开始写 MP4 前强制运行上述路径与转向碰撞审计，并把每条 route 的审计采样数写入画面 HUD 和 sidecar report：

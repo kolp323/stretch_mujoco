@@ -18,9 +18,13 @@ from stretch_mujoco.agents.action_recipes import ACTION_RECIPES
 from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt
 from stretch_mujoco.npc.system import NpcSystem
+from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 from stretch_mujoco.semantics import SemanticWorld
 
 MODELS = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
+OFFICE_PROFILE = (
+    Path(__file__).resolve().parents[1] / "stretch_mujoco/npc/trajectory_profiles/office_v1.json"
+)
 
 
 class FakeSimulator:
@@ -259,9 +263,7 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
         simulator,
         {},
         handover_sites={"employee_02": "employee_02_handover_site"},
-        handover_role_sites={
-            ("employee_01", "employee_02"): ("giver_stand", "receiver_stand")
-        },
+        handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
         interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
     )
     execution = ActionExecution(
@@ -298,7 +300,9 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
         assert result.phase == expected_phase
 
     simulator.receipts.append(
-        NpcCommandReceipt(simulator.command.command_id, simulator.command.npc_id, CommandStatus.SUCCEEDED)
+        NpcCommandReceipt(
+            simulator.command.command_id, simulator.command.npc_id, CommandStatus.SUCCEEDED
+        )
     )
     result = driver.poll(execution)
 
@@ -324,7 +328,12 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
     assert simulator.commands[6].payload["interaction_id"] == "handover_1"
     assert simulator.commands[7].payload["interaction_id"] == "handover_1"
     assert driver.interactions.sessions["handover_1"].completed_phases == [
-        "rendezvous", "aligned", "giver_ready", "receiver_ready", "released", "received"
+        "rendezvous",
+        "aligned",
+        "giver_ready",
+        "receiver_ready",
+        "released",
+        "received",
     ]
 
 
@@ -337,7 +346,9 @@ def test_handover_contract_completes_on_real_npc_controllers_and_returns_to_idle
 
     # A preceding pickup owns the free object before the handover starts.
     system.submit(
-        NpcCommand("preheld", 0, "employee_01", NpcCommandKind.ATTACH_OBJECT, {"object": "parcel"}, 0.0)
+        NpcCommand(
+            "preheld", 0, "employee_01", NpcCommandKind.ATTACH_OBJECT, {"object": "parcel"}, 0.0
+        )
     )
     system.step(model, data, 0.0)
     system.drain_receipts()
@@ -345,9 +356,7 @@ def test_handover_contract_completes_on_real_npc_controllers_and_returns_to_idle
         simulator,
         {},
         handover_sites={"employee_02": "npc__employee_02__handover"},
-        handover_role_sites={
-            ("employee_01", "employee_02"): ("giver_stand", "receiver_stand")
-        },
+        handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
         interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
         available_clips={"give", "receive"},
     )
@@ -458,9 +467,7 @@ def test_handover_session_timeout_cancels_current_physical_stage() -> None:
         simulator,
         {},
         handover_sites={"employee_02": "employee_02_handover_site"},
-        handover_role_sites={
-            ("employee_01", "employee_02"): ("giver_stand", "receiver_stand")
-        },
+        handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
         interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
     )
     execution = ActionExecution(
@@ -489,9 +496,7 @@ def test_handover_session_timeout_cancels_current_physical_stage() -> None:
 
 def test_production_handover_uses_population_npc_ids_and_generic_role_sites() -> None:
     simulator = FakeSimulator()
-    driver = create_mujoco_action_driver(
-        simulator, npc_ids={"npc_alex_chen", "npc_morgan_lee"}
-    )
+    driver = create_mujoco_action_driver(simulator, npc_ids={"npc_alex_chen", "npc_morgan_lee"})
     execution = ActionExecution(
         execution_id="production_handover",
         command=ActionCommand(
@@ -527,15 +532,32 @@ def test_production_driver_rejects_unregistered_clip_before_submitting_command()
     assert simulator.commands == []
 
 
+def test_driver_attaches_declared_trajectory_route_for_matching_agent_transition() -> None:
+    simulator = FakeSimulator()
+    driver = create_mujoco_action_driver(
+        simulator,
+        trajectory_profile=NpcTrajectoryProfile.from_json(OFFICE_PROFILE),
+        agent_locations={"employee_01": "workstation_left"},
+    )
+    execution = ActionExecution(
+        execution_id="profile_move",
+        command=ActionCommand("employee_01", ActionType.MOVE_TO, "meeting_table"),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.status == ExecutionStatus.RUNNING
+    assert simulator.commands[0].payload["trajectory_route"] == "workstation_left_to_meeting"
+
+
 def test_handover_receive_failure_reattaches_to_giver_before_reporting_failure() -> None:
     simulator = FakeSimulator()
     driver = MujocoNpcActionDriver(
         simulator,
         {},
         handover_sites={"employee_02": "employee_02_handover_site"},
-        handover_role_sites={
-            ("employee_01", "employee_02"): ("giver_stand", "receiver_stand")
-        },
+        handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
         interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
     )
     execution = ActionExecution(
@@ -736,5 +758,9 @@ def test_robot_handover_prepares_npc_before_accepting_release() -> None:
     session = bridge.poll(handover.session.session_id)
     assert session.status.value == "succeeded"
     assert session.completed_phases == [
-        "rendezvous", "aligned", "receiver_ready", "released", "received"
+        "rendezvous",
+        "aligned",
+        "receiver_ready",
+        "released",
+        "received",
     ]

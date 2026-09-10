@@ -16,10 +16,15 @@ from .action_recipes import (
 )
 from .drivers import MujocoNpcActionDriver, NpcSimulatorClient
 from stretch_mujoco.npc.animation import OFFICE_CLIPS
+from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 
 
 def create_mujoco_action_driver(
-    simulator: NpcSimulatorClient, *, npc_ids: Iterable[str] | None = None
+    simulator: NpcSimulatorClient,
+    *,
+    npc_ids: Iterable[str] | None = None,
+    trajectory_profile: NpcTrajectoryProfile | None = None,
+    agent_locations: dict[str, str] | None = None,
 ) -> MujocoNpcActionDriver:
     handover_sites = OFFICE_HANDOVER_SITES
     handover_role_sites = OFFICE_HANDOVER_ROLE_SITES
@@ -37,4 +42,6 @@ def create_mujoco_action_driver(
         seat_yaws=OFFICE_SEAT_YAWS,
         interaction_yaws=interaction_yaws,
         available_clips=set(OFFICE_CLIPS),
+        trajectory_profile=trajectory_profile,
+        agent_locations=agent_locations,
     )

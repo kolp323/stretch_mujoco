@@ -63,6 +63,7 @@ class NpcTrajectoryProfile:
     scene_sha256: str
     anchors: dict[str, TrajectoryAnchor]
     routes: tuple[TrajectoryRoute, ...]
+    source_path: Path | None = None
 
     @classmethod
     def from_json(cls, path: str | Path) -> "NpcTrajectoryProfile":
@@ -118,7 +119,26 @@ class NpcTrajectoryProfile:
                 raise TrajectoryProfileError(f"trajectory_route_invalid:{route_id or '<unnamed>'}")
             route_ids.add(route_id)
             routes.append(TrajectoryRoute(route_id, source_anchor, destination, tuple(actions)))
-        return cls(profile_id, scene, scene_sha256, anchors, tuple(routes))
+        return cls(profile_id, scene, scene_sha256, anchors, tuple(routes), source.resolve())
+
+    def route_for(
+        self, source_anchor: str | None, destination_site: str, action: str
+    ) -> TrajectoryRoute | None:
+        """Return the one declared route that authorizes this driver transition."""
+        if source_anchor is None:
+            return None
+        matches = [
+            route
+            for route in self.routes
+            if route.source == source_anchor
+            and self.anchors[route.destination].site == destination_site
+            and action in route.actions
+        ]
+        if len(matches) > 1:
+            raise TrajectoryProfileError(
+                f"trajectory_route_ambiguous:{source_anchor}:{destination_site}:{action}"
+            )
+        return matches[0] if matches else None
 
     def validate_scene(self, scene: str | Path) -> None:
         """Reject applying a profile to a different named scene asset."""
