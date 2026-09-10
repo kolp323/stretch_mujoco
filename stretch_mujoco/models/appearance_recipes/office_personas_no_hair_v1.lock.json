@@ -5,9 +5,9 @@
     "stretch_mujoco/models/accessories/baseball_cap_v1.runtime.json": "89af629846dd67c8b0717974d9222baa907cca34052cfc303d9e6185bdda2dbc",
     "stretch_mujoco/models/appearance_recipes/office_personas_v1.roster.json": "bac62ec838926919e05008efb2c1f265b63f79317fa9817c7d8423f7bea82ddc",
     "stretch_mujoco/models/assets/humanoid/generated/animations/appearance_catalog.json": "0686f2aa2a449fb3379b923f01ebb90bacf4f60e8e3f638e1166cc6e6109f045",
-    "stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json": "c13b380fc680578f8d933a7362a4db791716b5b869dfa6ac6aaded0c585e2ce9",
+    "stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json": "2cdd0c56cc2871862e8afa6f004b7301f5c030c218c78dd1f4abf8f692e76a35",
     "stretch_mujoco/models/office_population.production.example.json": "591f191d8ec21c3dd6042ee10b77e058bc9cc8458db0381c5b4eef221ff66b8e",
-    "stretch_mujoco/models/office_scene.xml": "aff5196f402b84fdbf646457a4ad90b89869ca5d4aa1428260b1cebfdf9d615a"
+    "stretch_mujoco/models/office_scene.xml": "9c443703dd371a72752abf46d495930b5c448c6144c26bed2f5f339267dde840"
   },
   "build": {
     "tool": "tools/build_npc_scene.py",

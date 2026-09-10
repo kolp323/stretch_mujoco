@@ -186,4 +186,4 @@ def test_write_babel_candidates_records_missing_contract_clips(tmp_path: Path) -
     assert document["review_status"] == "pending_visual_review"
     assert document["selection_policy"] == "exact_babel_frame_label_only"
     assert "walk" not in document["missing_office_clips"]
-    assert "use_computer" in document["missing_office_clips"]
+    assert "give" in document["missing_office_clips"]

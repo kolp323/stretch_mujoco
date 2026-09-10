@@ -12,7 +12,7 @@ from .navigation import OfficeNavigationMesh
 
 
 FRAME_GEOM_NAME_PATTERN = re.compile(
-    r"^humanoid_preview_frame_(?P<clip>[a-z]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
+    r"^humanoid_preview_frame_(?P<clip>[a-z_]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
 )
 SIT_ROOT_TO_SEAT_HEIGHT = 0.500
 APPROACH_DISTANCE = 0.28

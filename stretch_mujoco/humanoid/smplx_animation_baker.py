@@ -25,6 +25,56 @@ from .amass_intake import AmassIntakeError, canonicalize_vertical_translation
 MATERIAL_GROUPS = ("body",)
 
 
+def register_approved_interaction_clips(
+    manifest_path: Path, approved_clips_path: Path
+) -> dict[str, Any]:
+    """Merge reviewed mesh sequences into their owning production manifest.
+
+    ``approved_interaction_clips.json`` owns review provenance; the production
+    manifest owns only runtime clip metadata and file digests.  Keeping that
+    projection explicit prevents approved frames from being visible in MJCF
+    while remaining unavailable to production population validation.
+    """
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    approved = json.loads(approved_clips_path.read_text(encoding="utf-8"))
+    bundle_id = approved.get("bundle_id")
+    bundles = manifest.get("bundles")
+    if not isinstance(bundle_id, str) or not isinstance(bundles, dict):
+        raise SmplxAssetError("Approved interaction registration has invalid bundle metadata")
+    bundle = bundles.get(bundle_id)
+    if not isinstance(bundle, dict):
+        raise SmplxAssetError(f"Production manifest has no bundle '{bundle_id}'")
+    for field in ("topology_id", "coordinate_system", "unit"):
+        if approved.get(field) != bundle.get(field):
+            raise SmplxAssetError(f"Approved interaction {field} does not match '{bundle_id}'")
+    clips = approved.get("clips")
+    if not isinstance(clips, dict) or not clips:
+        raise SmplxAssetError("Approved interaction registration has no clips")
+    runtime_clips = bundle.get("clips")
+    hashes = bundle.get("sha256")
+    if not isinstance(runtime_clips, dict) or not isinstance(hashes, dict):
+        raise SmplxAssetError(f"Production manifest bundle '{bundle_id}' is incomplete")
+    for clip_id, source_clip in clips.items():
+        if not isinstance(clip_id, str) or not isinstance(source_clip, dict):
+            raise SmplxAssetError("Approved interaction clip metadata is invalid")
+        required = ("fps", "loop", "root_motion", "frames", "markers")
+        if any(field not in source_clip for field in required):
+            raise SmplxAssetError(f"Approved interaction clip '{clip_id}' is incomplete")
+        frames = source_clip["frames"]
+        if not isinstance(frames, list) or not all(isinstance(frame, str) for frame in frames):
+            raise SmplxAssetError(f"Approved interaction clip '{clip_id}' has invalid frames")
+        for frame in frames:
+            path = manifest_path.parent / frame
+            if not path.is_file():
+                raise SmplxAssetError(
+                    f"Approved interaction clip '{clip_id}' frame is missing: {frame}"
+                )
+            hashes[frame] = hashlib.sha256(path.read_bytes()).hexdigest()
+        runtime_clips[clip_id] = {field: source_clip[field] for field in required}
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest
+
+
 def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str, Any]:
     """Write the distributable contract for already baked, locally licensed frames."""
     texture_name = "smplx_employee_diffuse.png"

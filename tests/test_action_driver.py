@@ -15,6 +15,7 @@ from stretch_mujoco.agents import (
 )
 from stretch_mujoco.agents.drivers import MujocoNpcActionDriver
 from stretch_mujoco.agents.action_recipes import ACTION_RECIPES
+from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt
 from stretch_mujoco.npc.system import NpcSystem
 from stretch_mujoco.semantics import SemanticWorld
@@ -199,7 +200,7 @@ def test_sit_approaches_aligns_and_marks_seated_before_semantic_commit() -> None
     )
     agent = runtime.agents["employee_01"]
 
-    assert ACTION_RECIPES[ActionType.SIT].animation == "sit_down"
+    assert ACTION_RECIPES[ActionType.SIT].animation == "sit"
 
     result = runtime.submit_action(ActionCommand("employee_01", ActionType.SIT, "chair_right"))
     assert result.valid
@@ -486,6 +487,32 @@ def test_handover_session_timeout_cancels_current_physical_stage() -> None:
     ]
 
 
+def test_production_handover_uses_population_npc_ids_and_generic_role_sites() -> None:
+    simulator = FakeSimulator()
+    driver = create_mujoco_action_driver(
+        simulator, npc_ids={"npc_alex_chen", "npc_morgan_lee"}
+    )
+    execution = ActionExecution(
+        execution_id="production_handover",
+        command=ActionCommand(
+            "npc_alex_chen", ActionType.HANDOVER, "npc_morgan_lee", {"object": "parcel"}
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.phase == "rendezvous"
+    assert {command.npc_id for command in simulator.commands} == {
+        "npc_alex_chen",
+        "npc_morgan_lee",
+    }
+    assert {str(command.payload["site"]) for command in simulator.commands} == {
+        "npc_handover_giver_stand_site",
+        "npc_handover_receiver_stand_site",
+    }
+
+
 def test_handover_receive_failure_reattaches_to_giver_before_reporting_failure() -> None:
     simulator = FakeSimulator()
     driver = MujocoNpcActionDriver(
@@ -572,7 +599,7 @@ def test_use_computer_recipe_requires_complete_contract_then_orders_commands() -
         simulator,
         {"workstation_left": "desk_site"},
         interaction_yaws={"workstation_left": 3.14},
-        available_clips={"use_computer"},
+        available_clips={"work"},
     )
     assert driver.start(execution).phase == "approach"
     for kind, phase in (("align_to", "align"), ("play_animation", "play"), (None, "completed")):
@@ -585,8 +612,8 @@ def test_use_computer_recipe_requires_complete_contract_then_orders_commands() -
             assert simulator.command.kind.value == kind
     assert result.status == ExecutionStatus.SUCCEEDED
     assert simulator.commands[-1].payload == {
-        "clip": "use_computer",
-        "completion_marker": "computer_cycle",
+        "clip": "work",
+        "completion_marker": "work_cycle",
         "arrival_clip": "idle",
         "target_site": "desk_site",
     }
@@ -624,7 +651,6 @@ def test_talk_cue_requires_participant_site_then_carries_gaze_contract() -> None
         "arrival_clip": "idle",
         "target_site": "employee_02_conversation_site",
         "gaze_target": "employee_02",
-        "upper_body_overlay": True,
     }
 
 

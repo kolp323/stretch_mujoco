@@ -499,5 +499,10 @@
           size="0.025" rgba="0 0 0 0"/>
     <site name="employee_02_handover_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
           size="0.025" rgba="0 0 0 0"/>
+    <!-- Production roster roles: deliberately independent of NPC IDs. -->
+    <site name="npc_handover_giver_stand_site" pos="-0.35 -1.20 0" euler="0 0 0"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_handover_receiver_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
+          size="0.025" rgba="0 0 0 0"/>
   </worldbody>
 </mujoco>

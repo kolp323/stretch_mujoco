@@ -2,7 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from stretch_mujoco.humanoid.smplx_animation_baker import write_npc_asset_manifest
+from stretch_mujoco.humanoid.smplx_animation_baker import (
+    register_approved_interaction_clips,
+    write_npc_asset_manifest,
+)
 from stretch_mujoco.npc.animation import OFFICE_CLIPS
 from stretch_mujoco.npc.assets import NpcAssetManifest
 from stretch_mujoco.npc.schema import NpcPopulation
@@ -60,24 +63,37 @@ def test_smplx_baker_writes_formal_production_clip_contract(tmp_path: Path) -> N
     bundle = manifest["bundles"]["smplx_office_neutral_v1"]
 
     assert bundle["asset_quality"] == "restricted"
-    assert {
-        "idle",
-        "walk",
-        "sit_down",
-        "seated_idle",
-        "stand_up",
-        "work",
-        "use_computer",
-        "eat",
-        "pick_up",
-        "place",
-        "give",
-        "receive",
-        "talk",
-        "gesture_wave",
-        "gesture_point",
-    } <= set(bundle["clips"])
-    assert bundle["clips"]["sit_down"]["markers"] == [{"name": "seated", "phase": 0.875}]
-    assert bundle["clips"]["stand_up"]["markers"] == [{"name": "standing", "phase": 0.875}]
+    assert set(bundle["clips"]) == set(OFFICE_CLIPS)
+    assert bundle["clips"]["sit"]["markers"] == [{"name": "seated", "phase": 0.875}]
     assert bundle["clips"]["pick_up"]["markers"] == [{"name": "grasp", "phase": 0.75}]
     assert len(bundle["sha256"]["humanoid_idle_00_body.obj"]) == 64
+
+
+def test_approved_interaction_registration_closes_production_clip_contract() -> None:
+    population = NpcPopulation.from_json(MODELS / "office_population.production.example.json")
+    manifest_path = MODELS / "assets/humanoid/generated/animations/manifest.json"
+    manifest = NpcAssetManifest.from_json(manifest_path)
+
+    manifest.validate_population(population)
+    bundle = manifest.bundles["smplx_office_neutral_v1"]
+    assert set(bundle.clips) == set(OFFICE_CLIPS)
+    assert {"pick_up", "give", "receive", "talk"} <= set(bundle.clips)
+
+
+def test_interaction_registrar_projects_reviewed_clips_and_hashes(tmp_path: Path) -> None:
+    frame = tmp_path / "humanoid_give_00_body.obj"
+    frame.write_text("v 0 0 0\n")
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(
+        '{"bundles":{"bundle":{"topology_id":"topology","coordinate_system":"mujoco_z_up","unit":"meter","clips":{},"sha256":{}}}}'
+    )
+    approved_path = tmp_path / "approved.json"
+    approved_path.write_text(
+        '{"bundle_id":"bundle","topology_id":"topology","coordinate_system":"mujoco_z_up","unit":"meter","clips":{"give":{"fps":8,"loop":false,"root_motion":"in_place","frames":["humanoid_give_00_body.obj"],"markers":[{"name":"handover_ready","phase":0.6}]}}}'
+    )
+
+    registered = register_approved_interaction_clips(manifest_path, approved_path)
+
+    bundle = registered["bundles"]["bundle"]
+    assert bundle["clips"]["give"]["markers"] == [{"name": "handover_ready", "phase": 0.6}]
+    assert len(bundle["sha256"]["humanoid_give_00_body.obj"]) == 64

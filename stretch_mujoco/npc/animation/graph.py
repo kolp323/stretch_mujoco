@@ -11,6 +11,12 @@ if TYPE_CHECKING:
     from ..assets import AssetBundle
 
 
+OFFICE_COMPLETION_CLIPS = {
+    "sit_down": "seated_idle",
+    "stand_up": "idle",
+}
+
+
 @dataclass(frozen=True)
 class ClipDefinition:
     fps: float = 8.0
@@ -97,17 +103,36 @@ class AnimationGraph:
         )
 
 
-OFFICE_COMPLETION_CLIPS = {
-    "sit_down": "seated_idle",
-    "stand_up": "idle",
-}
-
+# Production mesh-sequence contract. Every entry must have registered OBJ
+# frames in the production manifest; candidate labels stay in the AMASS/BABEL
+# review queues until they have approved, baked assets.
 OFFICE_CLIPS: dict[str, ClipDefinition] = {
     "idle": ClipDefinition(),
     "walk": ClipDefinition(
         markers=(("left_foot", 0.25), ("right_foot", 0.75)),
         safe_marker="right_foot",
     ),
+    "sit": ClipDefinition(
+        loop=False,
+        markers=(("seated", 0.875),),
+    ),
+    "work": ClipDefinition(markers=(("work_cycle", 0.75),)),
+    "eat": ClipDefinition(markers=(("consume", 0.625),)),
+    "pick_up": ClipDefinition(loop=False, markers=(("grasp", 0.75),)),
+    "give": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
+    "receive": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
+    # The approved BEAT talk asset is a foot-locked full-body mesh sequence.
+    # MeshSequenceBackend cannot combine an upper-body overlay with an idle
+    # sequence, so this clip must remain directly playable until an articulated
+    # backend is introduced.
+    "talk": ClipDefinition(markers=(("talk_cycle", 0.75),)),
+}
+
+# ``NpcSystem.from_model`` remains a fixture/legacy-scene entry point. These
+# definitions support historical synthetic clips without making them part of
+# the strict production bundle contract above. Production systems are created
+# with ``NpcSystem.from_population`` and receive only manifest-registered clips.
+OFFICE_COMPATIBILITY_CLIPS = {
     "sit_down": ClipDefinition(
         loop=False,
         markers=(("seated", 0.875),),
@@ -119,33 +144,11 @@ OFFICE_CLIPS: dict[str, ClipDefinition] = {
         markers=(("standing", 0.875),),
         completion_clip=OFFICE_COMPLETION_CLIPS["stand_up"],
     ),
-    "work": ClipDefinition(markers=(("work_cycle", 0.75),)),
-    "use_computer": ClipDefinition(markers=(("computer_cycle", 0.75),)),
-    "eat": ClipDefinition(markers=(("consume", 0.625),)),
-    "pick_up": ClipDefinition(loop=False, markers=(("grasp", 0.75),)),
-    "place": ClipDefinition(loop=False, markers=(("release", 0.75),)),
-    "give": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
-    "receive": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
-    # The approved BEAT talk asset is a foot-locked full-body mesh sequence.
-    # MeshSequenceBackend cannot combine an upper-body overlay with an idle
-    # sequence, so this clip must remain directly playable until an articulated
-    # backend is introduced.
-    "talk": ClipDefinition(markers=(("talk_cycle", 0.75),)),
-    "gesture_wave": ClipDefinition(
-        loop=False,
-        markers=(("gesture_wave_complete", 0.932),),
-        upper_body_overlay=True,
-    ),
-    "gesture_point": ClipDefinition(
-        loop=False,
-        markers=(("gesture_point_complete", 0.75),),
-        upper_body_overlay=True,
-    ),
 }
 
 OFFICE_ANIMATION_GRAPH = AnimationGraph(
     graph_id="office_humanoid_v1",
     initial_clip="idle",
     fallback_clip="idle",
-    clips=OFFICE_CLIPS,
+    clips={**OFFICE_CLIPS, **OFFICE_COMPATIBILITY_CLIPS},
 )

@@ -19,7 +19,9 @@ def test_office_humanoid_exposes_all_baked_clips() -> None:
     model = mujoco.MjModel.from_xml_path(str(OFFICE_SCENE_PATH))
     animator = HumanoidMeshAnimator(model)
 
-    assert animator.available_clips == ("eat", "idle", "sit", "walk", "work")
+    assert animator.available_clips == (
+        "eat", "give", "idle", "pick_up", "receive", "sit", "talk", "walk", "work"
+    )
     assert animator.is_available
     assert tuple(animator.geom_ids) == ("body",)
 

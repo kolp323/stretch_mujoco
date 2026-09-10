@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Iterable
 from dataclasses import dataclass
+
+from stretch_mujoco.npc.naming import interaction_site_name
 
 from .actions import ActionType
 
@@ -53,7 +56,7 @@ ACTION_RECIPES = {
         "walk", "pose_and_yaw", target_kind="location", approach_required=True, timeout_seconds=30.0
     ),
     ActionType.SIT: ActionRecipe(
-        "sit_down",
+        "sit",
         "seat_pose_and_marker",
         target_kind="chair",
         interaction_site_key="seat",
@@ -71,13 +74,13 @@ ACTION_RECIPES = {
     ),
     ActionType.WORK: ActionRecipe("work", "minimum_duration", timeout_seconds=900.0),
     ActionType.USE_COMPUTER: ActionRecipe(
-        "use_computer",
-        "computer_cycle",
+        "work",
+        "work_cycle",
         "location",
         "workstation",
         "site",
         True,
-        "computer_cycle",
+        "work_cycle",
         "marker_only",
         30.0,
         "safe_marker",
@@ -233,6 +236,31 @@ OFFICE_HANDOVER_ROLE_SITES = {
         "employee_01_handover_stand_site",
     ),
 }
+
+
+def production_handover_bindings(
+    npc_ids: Iterable[str],
+) -> tuple[dict[str, str], dict[tuple[str, str], tuple[str, str]], dict[str, float]]:
+    """Derive handover bindings from production population IDs, not legacy names."""
+    participants = tuple(sorted(set(npc_ids)))
+    if len(participants) < 2:
+        raise ValueError("Production handover bindings require at least two NPC IDs")
+    handover_sites = {
+        npc_id: interaction_site_name(npc_id, "handover") for npc_id in participants
+    }
+    role_sites = {
+        (giver, receiver): (
+            "npc_handover_giver_stand_site",
+            "npc_handover_receiver_stand_site",
+        )
+        for giver in participants
+        for receiver in participants
+        if giver != receiver
+    }
+    # Ordered role sites own facing direction: the workflow makes each receiver
+    # face the giver, so every prospective giver has the canonical +X yaw.
+    yaws = {npc_id: 0.0 for npc_id in participants}
+    return handover_sites, role_sites, yaws
 
 
 def animation_for_action(action: str) -> str:

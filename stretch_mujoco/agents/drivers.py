@@ -339,7 +339,6 @@ class MujocoNpcActionDriver:
             }
             if workflow.recipe.target_kind == "participant":
                 payload["gaze_target"] = execution.command.target
-                payload["upper_body_overlay"] = True
         else:
             self._recipes.pop(execution.execution_id, None)
             return DriverResult(ExecutionStatus.SUCCEEDED, "completed", workflow.command_id)
@@ -537,8 +536,8 @@ class MujocoNpcActionDriver:
                 workflow.stage,
                 NpcCommandKind.PLAY_ANIMATION,
                 {
-                    "clip": "sit_down",
-                    "completion_marker": "seated",
+                    "clip": ACTION_RECIPES[ActionType.SIT].animation,
+                    "completion_marker": ACTION_RECIPES[ActionType.SIT].completion_marker,
                     "target_site": self.location_sites[workflow.seat],
                 },
                 timeout_seconds=ACTION_RECIPES[ActionType.SIT].timeout_seconds,
