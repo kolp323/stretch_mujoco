@@ -42,6 +42,7 @@ class AnimationController:
         self.phase = 0.0
         self.transition: str | None = None
         self.fallback_event: AnimationEvent | None = None
+        self.failure_reason: str | None = None
         self._fallback_request: str | None = None
         self._last_time: float | None = None
         self._pending_reset = False
@@ -53,6 +54,7 @@ class AnimationController:
         self._cycle = 0
         self._deferred_clip: str | None = None
         self._pending_events: list[AnimationEvent] = []
+        self._speed_scale = 1.0
 
     def request(self, clip: str, *, force: bool = False) -> None:
         """Request a clip without interrupting an unsafe mesh frame sequence."""
@@ -103,7 +105,7 @@ class AnimationController:
         return AnimationState(
             self.resolved_clip,
             self.phase,
-            definition.speed,
+            definition.speed * self._speed_scale,
             definition.loop,
             upper_body_overlay=self.resolved_clip if definition.upper_body_overlay else None,
             lifecycle=self.lifecycle,
@@ -117,9 +119,16 @@ class AnimationController:
         return completion_clip
 
     def step(
-        self, sim_time: float, *, locomotion: str = "stationary"
+        self,
+        sim_time: float,
+        *,
+        locomotion: str = "stationary",
+        speed_scale: float = 1.0,
     ) -> tuple[AnimationEvent, ...]:
+        if speed_scale <= 0:
+            raise ValueError("Animation speed_scale must be positive")
         requested = "walk" if locomotion == "walk" else self.requested_clip
+        self._speed_scale = speed_scale if locomotion == "walk" else 1.0
         clips = self.backend.available_clips
         resolved = requested if requested in clips else self.graph.fallback_clip
         if resolved not in clips:
@@ -127,6 +136,7 @@ class AnimationController:
         events = self._pending_events
         self._pending_events = []
         self.fallback_event = None
+        self.failure_reason = None
         if resolved != requested and self._fallback_request != requested:
             self.fallback_event = AnimationEvent("clip_fallback", requested, self.phase)
             events.append(self.fallback_event)
@@ -152,7 +162,13 @@ class AnimationController:
         if self.lifecycle not in {AnimationLifecycle.COMPLETED, AnimationLifecycle.FAILED}:
             self.lifecycle = AnimationLifecycle.PLAYING
         definition = self.clips.get(self.resolved_clip, ClipDefinition())
-        next_phase = self.phase + dt * clip_fps * definition.speed / max(
+        if definition.upper_body_overlay and "upper_body_overlay" not in self.backend.capabilities:
+            self.fallback_event = AnimationEvent(
+                "overlay_unavailable", self.resolved_clip, self.phase
+            )
+            self.failure_reason = "overlay_backend_unavailable"
+            events.append(self.fallback_event)
+        next_phase = self.phase + dt * clip_fps * definition.speed * self._speed_scale / max(
             _frame_count(self.backend, self.resolved_clip), 1
         )
         if definition.loop:

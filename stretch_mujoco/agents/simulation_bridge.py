@@ -2,7 +2,15 @@
 
 from __future__ import annotations
 
-from .action_recipes import OFFICE_LOCATION_SITES, OFFICE_PLACEMENT_SITES, OFFICE_SEAT_YAWS
+from .action_recipes import (
+    OFFICE_LOCATION_SITES,
+    OFFICE_OBJECT_APPROACH_SITES,
+    OFFICE_PLACEMENT_SITES,
+    OFFICE_SEAT_YAWS,
+    OFFICE_HANDOVER_SITES,
+    OFFICE_HANDOVER_ROLE_SITES,
+    OFFICE_INTERACTION_YAWS,
+)
 from .drivers import MujocoNpcActionDriver, NpcSimulatorClient
 
 
@@ -11,5 +19,9 @@ def create_mujoco_action_driver(simulator: NpcSimulatorClient) -> MujocoNpcActio
         simulator,
         OFFICE_LOCATION_SITES,
         OFFICE_PLACEMENT_SITES,
+        object_approach_sites=OFFICE_OBJECT_APPROACH_SITES,
+        handover_sites=OFFICE_HANDOVER_SITES,
+        handover_role_sites=OFFICE_HANDOVER_ROLE_SITES,
         seat_yaws=OFFICE_SEAT_YAWS,
+        interaction_yaws=OFFICE_INTERACTION_YAWS,
     )

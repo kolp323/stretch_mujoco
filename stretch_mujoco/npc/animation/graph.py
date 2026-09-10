@@ -126,9 +126,21 @@ OFFICE_CLIPS: dict[str, ClipDefinition] = {
     "place": ClipDefinition(loop=False, markers=(("release", 0.75),)),
     "give": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
     "receive": ClipDefinition(loop=False, markers=(("handover_ready", 0.6),)),
-    "talk": ClipDefinition(upper_body_overlay=True),
-    "gesture_wave": ClipDefinition(loop=False, upper_body_overlay=True),
-    "gesture_point": ClipDefinition(loop=False, upper_body_overlay=True),
+    # The approved BEAT talk asset is a foot-locked full-body mesh sequence.
+    # MeshSequenceBackend cannot combine an upper-body overlay with an idle
+    # sequence, so this clip must remain directly playable until an articulated
+    # backend is introduced.
+    "talk": ClipDefinition(markers=(("talk_cycle", 0.75),)),
+    "gesture_wave": ClipDefinition(
+        loop=False,
+        markers=(("gesture_wave_complete", 0.932),),
+        upper_body_overlay=True,
+    ),
+    "gesture_point": ClipDefinition(
+        loop=False,
+        markers=(("gesture_point_complete", 0.75),),
+        upper_body_overlay=True,
+    ),
 }
 
 OFFICE_ANIMATION_GRAPH = AnimationGraph(

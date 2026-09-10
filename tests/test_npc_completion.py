@@ -150,6 +150,75 @@ def test_missing_clip_emits_one_fallback_event() -> None:
     assert state.last_receipt.reason == "clip_unavailable:missing"
 
 
+def test_interaction_animation_rejects_unknown_target_site_and_settles_to_idle() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+
+    invalid = system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "sit_down", "target_site": "missing_interaction_site"},
+            0,
+        )
+    )
+    assert invalid.status == CommandStatus.FAILED
+    assert invalid.reason == "unknown_target_site:missing_interaction_site"
+
+    system.submit(
+        _command(
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "sit_down",
+                "completion_marker": "seated",
+                "arrival_clip": "idle",
+                "target_site": "drop_site",
+            },
+            1,
+        )
+    )
+    for index in range(10):
+        system.step(model, data, index * 0.125)
+    system.step(model, data, 1.5)
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+    assert state.requested_animation == "idle"
+    assert state.resolved_clip == "idle"
+
+
+def test_interaction_animation_timeout_recovers_to_idle() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        NpcCommand(
+            "interaction_timeout",
+            0,
+            "employee_01",
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "sit_down",
+                "completion_marker": "seated",
+                "target_site": "drop_site",
+            },
+            issued_at=0.0,
+            deadline=0.01,
+        )
+    )
+
+    system.step(model, data, 0.0)
+    system.step(model, data, 0.02)
+    system.step(model, data, 0.03)
+
+    state = system.states(data)["employee_01"]
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.TIMED_OUT
+    assert state.requested_animation == "idle"
+    assert state.resolved_clip == "idle"
+
+
 def test_move_waits_for_walk_marker_before_start_and_stop() -> None:
     model = _model()
     data = mujoco.MjData(model)

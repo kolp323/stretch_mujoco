@@ -1,13 +1,25 @@
-from stretch_mujoco.npc.animation import AnimationController, AnimationGraph, ClipDefinition
+from stretch_mujoco.npc.animation import (
+    OFFICE_CLIPS,
+    AnimationController,
+    AnimationGraph,
+    ClipDefinition,
+)
 from stretch_mujoco.npc.animation.state import InterruptPolicy
 
 
 class Backend:
     capabilities = frozenset({"mesh_sequence"})
-    available_clips = ("idle", "walk", "wave")
+    available_clips = ("idle", "talk", "walk", "wave")
 
     def sample(self, clip: str, phase: float) -> None:
         self.last_sample = (clip, phase)
+
+
+def test_registered_talk_is_directly_playable_on_mesh_sequence_backend() -> None:
+    """The BEAT talk asset is full-body; it is not a synthetic upper-body overlay."""
+    assert OFFICE_CLIPS["talk"].upper_body_overlay is False
+    assert OFFICE_CLIPS["talk"].loop is True
+    assert OFFICE_CLIPS["talk"].markers == (("talk_cycle", 0.75),)
 
 
 def test_safe_marker_defers_interrupt_and_seeded_phase_is_reproducible() -> None:
@@ -59,6 +71,42 @@ def test_speed_metadata_controls_phase_progression() -> None:
     controller.step(0.0)
     controller.step(0.25)
     assert controller.phase == 0.5
+
+
+def test_walk_phase_rate_tracks_navigation_speed() -> None:
+    graph = AnimationGraph(
+        "walk_speed",
+        "idle",
+        "idle",
+        {"idle": ClipDefinition(), "walk": ClipDefinition(fps=1.0)},
+    )
+    controller = AnimationController(Backend(), graph)
+    controller.request("walk")
+    controller.step(0.0, locomotion="walk", speed_scale=2.0)
+    initial_phase = controller.phase
+    controller.step(0.25, locomotion="walk", speed_scale=2.0)
+
+    assert (controller.phase - initial_phase) % 1.0 == 0.5
+    assert controller.state.speed == 2.0
+
+
+def test_upper_body_overlay_fails_on_mesh_sequence_backend() -> None:
+    graph = AnimationGraph(
+        "overlay",
+        "idle",
+        "idle",
+        {
+            "idle": ClipDefinition(),
+            "talk": ClipDefinition(upper_body_overlay=True),
+        },
+    )
+    controller = AnimationController(Backend(), graph)
+    controller.request("talk")
+
+    events = controller.step(0.0)
+
+    assert [event.name for event in events] == ["overlay_unavailable"]
+    assert controller.failure_reason == "overlay_backend_unavailable"
 
 
 def test_uninterruptible_clip_defers_until_its_terminal_phase() -> None:

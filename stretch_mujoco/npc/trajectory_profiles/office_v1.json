@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "profile_id": "office_v1",
+  "scene": "office_scene.xml",
+  "scene_sha256": "aff5196f402b84fdbf646457a4ad90b89869ca5d4aa1428260b1cebfdf9d615a",
+  "anchors": {
+    "workstation_left": {"site": "desk_left_work_site", "role": "workstation"},
+    "workstation_right": {"site": "desk_right_work_site", "role": "workstation"},
+    "meeting_table": {"site": "meeting_human_stand_site", "role": "meeting"},
+    "snack_counter": {"site": "snack_human_stand_site", "role": "snack"},
+    "storage_cabinet": {"site": "cabinet_human_stand_site", "role": "storage"}
+  },
+  "routes": [
+    {"route_id": "workstation_left_to_meeting", "from": "workstation_left", "to": "meeting_table", "actions": ["move_to", "attend_meeting"]},
+    {"route_id": "workstation_right_to_meeting", "from": "workstation_right", "to": "meeting_table", "actions": ["move_to", "attend_meeting"]},
+    {"route_id": "meeting_to_snacks", "from": "meeting_table", "to": "snack_counter", "actions": ["move_to", "pick_up"]},
+    {"route_id": "snacks_to_storage", "from": "snack_counter", "to": "storage_cabinet", "actions": ["move_to", "put_down"]}
+  ]
+}

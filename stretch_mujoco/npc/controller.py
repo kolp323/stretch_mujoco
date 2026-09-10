@@ -98,6 +98,12 @@ class NpcController:
                 self._stop_marker = None
                 self.animation.lifecycle = AnimationLifecycle.NAVIGATING
             elif command.kind == NpcCommandKind.PLAY_ANIMATION:
+                target_site = command.payload.get("target_site")
+                if (
+                    target_site is not None
+                    and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site)) < 0
+                ):
+                    raise ValueError(f"unknown_target_site:{target_site}")
                 self.animation.set_execution(command.command_id)
                 self.animation.request(str(command.payload["clip"]))
             elif command.kind == NpcCommandKind.INTERACTION_CUE:
@@ -244,7 +250,11 @@ class NpcController:
             self.locomotion.step(data, sim_time)
 
         locomotion_state = "walk" if self.locomotion.target_site is not None else "stationary"
-        events = self.animation.step(sim_time, locomotion=locomotion_state)
+        events = self.animation.step(
+            sim_time,
+            locomotion=locomotion_state,
+            speed_scale=(self.locomotion.speed if locomotion_state == "walk" else 1.0),
+        )
         if active is not None and active.command.kind == NpcCommandKind.MOVE_TO:
             self.animation.lifecycle = AnimationLifecycle.NAVIGATING
         elif active is not None and active.command.kind == NpcCommandKind.ALIGN_TO:
@@ -259,7 +269,9 @@ class NpcController:
             requested_clip = str(active.command.payload.get("clip", "idle"))
             self.animation.recover_to_idle()
             return self._finish(
-                CommandStatus.FAILED, sim_time, f"clip_unavailable:{requested_clip}"
+                CommandStatus.FAILED,
+                sim_time,
+                self.animation.failure_reason or f"clip_unavailable:{requested_clip}",
             )
         if active is not None and active.command.kind in {
             NpcCommandKind.PLAY_ANIMATION,
@@ -294,7 +306,14 @@ class NpcController:
         running_receipt: NpcCommandReceipt | None,
     ) -> NpcCommandReceipt | None:
         """Use walk foot markers as the safe root-motion start and stop boundaries."""
-        events = self.animation.step(sim_time, locomotion="walk")
+        # A deterministic random walk phase can otherwise delay the first foot
+        # marker for hundreds of seconds at a deliberately slow navigation speed.
+        # Start on the next normal-cadence footfall, then couple every subsequent
+        # walk phase increment to the actual root speed.
+        speed_scale = (
+            self.locomotion.speed if self._walk_motion_started else max(self.locomotion.speed, 1.0)
+        )
+        events = self.animation.step(sim_time, locomotion="walk", speed_scale=speed_scale)
         self._animation_events = tuple(event.name for event in events)
         foot_marker = next(
             (event.name for event in events if event.name in {"left_foot", "right_foot"}), None
