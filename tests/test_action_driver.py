@@ -518,9 +518,25 @@ def test_production_handover_uses_population_npc_ids_and_generic_role_sites() ->
     }
 
 
-def test_production_driver_rejects_unregistered_clip_before_submitting_command() -> None:
+def test_production_driver_excludes_unregistered_actions_before_submitting_command() -> None:
     simulator = FakeSimulator()
     driver = create_mujoco_action_driver(simulator)
+    assert driver.supported_actions == frozenset(
+        {
+            ActionType.MOVE_TO,
+            ActionType.SIT,
+            ActionType.PICK_UP,
+            ActionType.HANDOVER,
+            ActionType.USE_COMPUTER,
+            ActionType.TALK,
+        }
+    )
+    assert {
+        ActionType.STAND_UP,
+        ActionType.PUT_DOWN,
+        ActionType.GESTURE_POINT,
+        ActionType.GESTURE_WAVE,
+    }.isdisjoint(driver.supported_actions)
     execution = ActionExecution(
         command=ActionCommand("employee_01", ActionType.STAND_UP, "chair_right"),
         status=ExecutionStatus.RUNNING,
@@ -528,7 +544,24 @@ def test_production_driver_rejects_unregistered_clip_before_submitting_command()
 
     result = driver.start(execution)
 
-    assert result.error == "recipe_clip_unavailable"
+    assert result.error == "unsupported_action"
+    assert simulator.commands == []
+
+
+def test_runtime_rejects_candidate_without_registered_production_clip() -> None:
+    simulator = FakeSimulator()
+    world = SemanticWorld.from_json(MODELS / "office_semantics.json")
+    runtime = OfficeAgentRuntime.from_json(
+        world,
+        MODELS / "office_agents.json",
+        auto_plan=False,
+        action_driver=create_mujoco_action_driver(simulator),
+    )
+
+    result = runtime.submit_action(ActionCommand("employee_01", ActionType.STAND_UP, "chair_right"))
+
+    assert not result.valid
+    assert any("unavailable in the active NPC asset bundle" in error for error in result.errors)
     assert simulator.commands == []
 
 

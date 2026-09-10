@@ -14,6 +14,21 @@ from .action_recipes import ACTION_RECIPES, ActionRecipe
 from .interactions import InteractionCoordinator
 
 
+EMBODIED_ACTION_REQUIRED_CLIPS: dict[ActionType, frozenset[str]] = {
+    ActionType.MOVE_TO: frozenset({ACTION_RECIPES[ActionType.MOVE_TO].animation}),
+    ActionType.SIT: frozenset({ACTION_RECIPES[ActionType.SIT].animation}),
+    ActionType.STAND_UP: frozenset({ACTION_RECIPES[ActionType.STAND_UP].animation}),
+    ActionType.PICK_UP: frozenset({ACTION_RECIPES[ActionType.PICK_UP].animation}),
+    ActionType.PUT_DOWN: frozenset({ACTION_RECIPES[ActionType.PUT_DOWN].animation}),
+    # A handover cannot complete unless both participants' clips are available.
+    ActionType.HANDOVER: frozenset({"give", "receive"}),
+    ActionType.USE_COMPUTER: frozenset({ACTION_RECIPES[ActionType.USE_COMPUTER].animation}),
+    ActionType.TALK: frozenset({ACTION_RECIPES[ActionType.TALK].animation}),
+    ActionType.GESTURE_POINT: frozenset({ACTION_RECIPES[ActionType.GESTURE_POINT].animation}),
+    ActionType.GESTURE_WAVE: frozenset({ACTION_RECIPES[ActionType.GESTURE_WAVE].animation}),
+}
+
+
 @dataclass(frozen=True)
 class DriverResult:
     status: ExecutionStatus
@@ -67,6 +82,7 @@ class _RecipeWorkflow:
 
 
 class ActionDriver(Protocol):
+    candidate_actions: frozenset[ActionType]
     supported_actions: frozenset[ActionType]
 
     def start(self, execution: ActionExecution) -> DriverResult: ...
@@ -93,20 +109,9 @@ class NpcSimulatorClient(Protocol):
 class MujocoNpcActionDriver:
     """Lower embodied actions into commands and wait for physical receipts."""
 
-    supported_actions = frozenset(
-        {
-            ActionType.MOVE_TO,
-            ActionType.SIT,
-            ActionType.STAND_UP,
-            ActionType.PICK_UP,
-            ActionType.PUT_DOWN,
-            ActionType.HANDOVER,
-            ActionType.USE_COMPUTER,
-            ActionType.TALK,
-            ActionType.GESTURE_POINT,
-            ActionType.GESTURE_WAVE,
-        }
-    )
+    # These are the actions this driver knows how to lower.  ``supported_actions``
+    # is narrowed per instance when a production animation manifest is supplied.
+    candidate_actions = frozenset(EMBODIED_ACTION_REQUIRED_CLIPS)
 
     def __init__(
         self,
@@ -135,6 +140,15 @@ class MujocoNpcActionDriver:
         self.seat_yaws = dict(seat_yaws or {})
         self.interaction_yaws = dict(interaction_yaws or {})
         self.available_clips = None if available_clips is None else set(available_clips)
+        self.supported_actions = (
+            self.candidate_actions
+            if self.available_clips is None
+            else frozenset(
+                action
+                for action, required_clips in EMBODIED_ACTION_REQUIRED_CLIPS.items()
+                if required_clips <= self.available_clips
+            )
+        )
         self.trajectory_profile = trajectory_profile
         self.agent_locations = dict(agent_locations or {})
         self._movement_destinations: dict[str, tuple[str, str]] = {}

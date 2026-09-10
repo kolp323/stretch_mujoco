@@ -261,12 +261,22 @@ class OfficeAgentRuntime:
         ):
             errors.append(f"Target '{target}' does not exist")
 
+        candidate_actions = getattr(self.action_driver, "candidate_actions", frozenset())
+        supported_actions = getattr(self.action_driver, "supported_actions", frozenset())
+        if (
+            self.action_driver is not None
+            and command.action in candidate_actions
+            and command.action not in supported_actions
+        ):
+            errors.append(
+                f"Action '{command.action.value}' is unavailable in the active NPC asset bundle"
+            )
+
         if command.action == ActionType.MOVE_TO:
             self._require_target(target, errors)
         elif command.action == ActionType.SIT:
             self._require_type(target, ObjectType.CHAIR, errors)
-            supported = getattr(self.action_driver, "supported_actions", frozenset())
-            if self.action_driver is None or ActionType.SIT not in supported:
+            if self.action_driver is None or ActionType.SIT not in supported_actions:
                 self._require_location(agent, target, errors)
             self._require_available(target, command.agent_id, errors)
         elif command.action == ActionType.STAND_UP:
