@@ -6,7 +6,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 from stretch_mujoco.semantics import ObjectType, RelationType, SemanticWorld
 
@@ -101,6 +101,7 @@ class OfficeAgentRuntime:
         daily_events: bool = True,
         llm_provider_config: LLMProviderConfig | None = None,
         action_driver: object | None = None,
+        population_npc_ids: Iterable[str] | None = None,
     ) -> None:
         if state_machine_hz <= 0 or needs_hz <= 0:
             raise ValueError("Agent update frequencies must be positive")
@@ -126,6 +127,11 @@ class OfficeAgentRuntime:
         self.llm = EventDrivenLLMGateway(llm_daily_budget)
         self.llm_provider_config = llm_provider_config
         self.action_driver = action_driver
+        # ``None`` preserves the legacy schema-v1 employee configuration.
+        # Schema-v2 callers use this to select population-aware MuJoCo bindings.
+        self.population_npc_ids = (
+            None if population_npc_ids is None else frozenset(population_npc_ids)
+        )
         self.office_event_generator = DailyOfficeEventGenerator(seed)
         self.daily_events_enabled = daily_events
         self.daily_office_events: list[DailyOfficeEvent] = []
@@ -170,11 +176,14 @@ class OfficeAgentRuntime:
                 npc_id: EmployeeAgent.from_definition(definition)
                 for npc_id, definition in population.npcs.items()
             }
+            world.register_population_npcs(population.npcs)
+            population_npc_ids = population.npcs.keys()
         elif version == 1:
             agents = {
                 agent_id: EmployeeAgent.from_dict(agent_id, definition)
                 for agent_id, definition in payload.get("employees", {}).items()
             }
+            population_npc_ids = None
         else:
             raise ValueError(
                 f"Unsupported office agent schema_version {version!r}; expected 1 or 2"
@@ -202,6 +211,7 @@ class OfficeAgentRuntime:
             daily_events=bool(payload.get("daily_events", True)),
             llm_provider_config=llm_provider_config,
             action_driver=action_driver,
+            population_npc_ids=population_npc_ids,
         )
 
     def llm_config_summary(self) -> dict[str, Any]:

@@ -231,6 +231,47 @@ class SemanticWorld:
         if errors:
             raise SemanticValidationError("; ".join(errors))
 
+    def register_population_npcs(self, npc_ids: Iterable[str]) -> None:
+        """Bind schema-v2 NPC identities to the generated MuJoCo body contract.
+
+        Population bodies are generated per scene and therefore must not be
+        permanently declared in the legacy two-employee office semantics file.
+        Registering them while loading a schema-v2 population makes the semantic
+        graph use the same canonical IDs and handover sites as the scene builder.
+        """
+        for npc_id in npc_ids:
+            body = f"npc__{npc_id}"
+            handover_site = f"npc__{npc_id}__handover"
+            existing = self.objects.get(npc_id)
+            if existing is not None:
+                if (
+                    existing.object_type != ObjectType.EMPLOYEE
+                    or existing.binding != SemanticBinding(BindingKind.BODY, body)
+                ):
+                    raise SemanticValidationError(
+                        f"NPC '{npc_id}' conflicts with an existing semantic binding"
+                    )
+            else:
+                self.objects[npc_id] = SemanticObject(
+                    object_id=npc_id,
+                    object_type=ObjectType.EMPLOYEE,
+                    binding=SemanticBinding(BindingKind.BODY, body),
+                )
+            point_id = f"{npc_id}_handover"
+            existing_point = self.interaction_points.get(point_id)
+            point = InteractionPoint(
+                point_id=point_id,
+                role=InteractionRole.HANDOVER,
+                owner=npc_id,
+                site=handover_site,
+            )
+            if existing_point is not None and existing_point != point:
+                raise SemanticValidationError(
+                    f"NPC '{npc_id}' conflicts with an existing handover interaction point"
+                )
+            self.interaction_points[point_id] = point
+        self._validate_graph()
+
     def validate_model(self, model: mujoco.MjModel) -> None:
         errors: list[str] = []
         for semantic_object in self.objects.values():

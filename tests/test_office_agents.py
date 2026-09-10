@@ -31,6 +31,21 @@ def test_action_protocol_is_closed_and_rejects_unknown_actions() -> None:
         raise AssertionError("Unknown action was accepted")
 
 
+def test_population_runtime_registers_generated_npc_semantics() -> None:
+    world = SemanticWorld.from_json(MODELS_PATH / "office_semantics.json")
+    runtime = OfficeAgentRuntime.from_json(
+        world,
+        MODELS_PATH / "office_population.production.example.json",
+        auto_plan=False,
+    )
+
+    assert runtime.population_npc_ids == frozenset(runtime.agents)
+    alex = world.object("npc_alex_chen")
+    assert alex.object_type.value == "Employee"
+    assert alex.binding.name == "npc__npc_alex_chen"
+    assert world.interaction_points["npc_alex_chen_handover"].site == "npc__npc_alex_chen__handover"
+
+
 def test_action_validation_checks_location_and_target() -> None:
     runtime = load_runtime()
 

@@ -414,18 +414,21 @@ class StretchMujocoSimulator:
             if self.semantic_world.source_path is None:
                 raise ValueError("Cannot infer the office agent configuration path")
             config_path = str(self.semantic_world.source_path.with_name("office_agents.json"))
-        action_driver = None
-        if embodied:
-            from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
-
-            action_driver = create_mujoco_action_driver(self)
+        # Load the roster before assembling the bridge: schema-v2 populations
+        # must use their generated NPC IDs, whereas schema-v1 keeps legacy sites.
         self.agent_runtime = OfficeAgentRuntime.from_json(
             self.semantic_world,
             config_path,
             seed=seed,
             auto_plan=auto_plan,
-            action_driver=action_driver,
         )
+        if embodied:
+            from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
+
+            self.agent_runtime.action_driver = create_mujoco_action_driver(
+                self,
+                npc_ids=self.agent_runtime.population_npc_ids,
+            )
         return self.agent_runtime
 
     def is_reached_set_position(self, actuator: str | Actuators, position_tolerance: float = 0.05):
