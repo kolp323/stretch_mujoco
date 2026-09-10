@@ -513,6 +513,20 @@ def test_production_handover_uses_population_npc_ids_and_generic_role_sites() ->
     }
 
 
+def test_production_driver_rejects_unregistered_clip_before_submitting_command() -> None:
+    simulator = FakeSimulator()
+    driver = create_mujoco_action_driver(simulator)
+    execution = ActionExecution(
+        command=ActionCommand("employee_01", ActionType.STAND_UP, "chair_right"),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.error == "recipe_clip_unavailable"
+    assert simulator.commands == []
+
+
 def test_handover_receive_failure_reattaches_to_giver_before_reporting_failure() -> None:
     simulator = FakeSimulator()
     driver = MujocoNpcActionDriver(

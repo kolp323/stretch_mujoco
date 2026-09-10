@@ -552,6 +552,15 @@ class MujocoNpcActionDriver:
         target_site = self.location_sites.get(str(command.target))
         if target_site is None:
             return DriverResult(ExecutionStatus.FAILED, "prepare", error="recipe_missing_site")
+        recipe = ACTION_RECIPES[ActionType.STAND_UP]
+        error = recipe.validate(
+            target=command.target,
+            location_sites={str(command.target): target_site},
+            yaws=self.interaction_yaws,
+            available_clips=self.available_clips,
+        )
+        if error is not None:
+            return DriverResult(ExecutionStatus.FAILED, "prepare", error=error)
         handle = self._submit_stage(
             command.agent_id,
             execution.execution_id,
@@ -563,7 +572,7 @@ class MujocoNpcActionDriver:
                 "arrival_clip": "idle",
                 "target_site": target_site,
             },
-            timeout_seconds=ACTION_RECIPES[ActionType.STAND_UP].timeout_seconds,
+            timeout_seconds=recipe.timeout_seconds,
         )
         return DriverResult(ExecutionStatus.RUNNING, "stand_transition", handle)
 
