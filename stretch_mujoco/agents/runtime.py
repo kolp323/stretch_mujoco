@@ -14,6 +14,8 @@ from .actions import (
     ActionCommand,
     ActionExecution,
     ActionType,
+    ConversationReceipt,
+    ConversationRequest,
     ExecutionStatus,
     RobotTask,
     RobotTaskStatus,
@@ -21,10 +23,13 @@ from .actions import (
     ValidationResult,
 )
 from .employee import EmployeeAgent
+from .dialogue_policy import DialoguePolicy
 from .conversation import (
     DEFAULT_MAX_OBSERVATION_AGE,
     ConversationCoordinator,
     ConversationEvent,
+    DialogueAct,
+    DialogueCandidate,
     ConversationIntent,
     ConversationParticipantKind,
     ConversationPerception,
@@ -117,6 +122,8 @@ class OfficeAgentRuntime:
         daily_events: bool = True,
         llm_provider_config: LLMProviderConfig | None = None,
         action_driver: object | None = None,
+        interaction_driver: object | None = None,
+        conversation_policy: DialoguePolicy | None = None,
         population_npc_ids: Iterable[str] | None = None,
         trajectory_profile_path: Path | None = None,
         conversation_max_observation_age: float = DEFAULT_MAX_OBSERVATION_AGE,
@@ -155,6 +162,8 @@ class OfficeAgentRuntime:
         self.llm = EventDrivenLLMGateway(llm_daily_budget)
         self.llm_provider_config = llm_provider_config
         self.action_driver = action_driver
+        self.interaction_driver = interaction_driver
+        self.conversation_policy = conversation_policy or DialoguePolicy(runtime_seed=seed)
         # ``None`` preserves the legacy schema-v1 employee configuration.
         # Schema-v2 callers use this to select population-aware MuJoCo bindings.
         self.population_npc_ids = (
@@ -170,6 +179,10 @@ class OfficeAgentRuntime:
         self._utility_decision_count = 0
         self._consecutive_failures: dict[str, int] = {}
         self._committed_execution_ids: set[str] = set()
+        self._participant_reservations: dict[str, str] = {}
+        self._event_sequence = 0
+        self._applied_event_ids: set[str] = set()
+        self._conversation_receipts: dict[str, ConversationReceipt] = {}
         for agent in self.agents.values():
             agent.validate_identity(world)
             world.object(agent.state.location)
@@ -433,7 +446,13 @@ class OfficeAgentRuntime:
         self._advance_clock(minutes)
 
         for session in self.conversations.expire(self.elapsed_minutes):
-            self._close_conversation(session, ConversationEvent.TIMED_OUT.value)
+            if any(
+                self._participant_reservations.get(participant) == session.session_id
+                for participant in session.participants
+            ):
+                self._finish_conversation(session.session_id, "conversation_turn_timeout")
+            else:
+                self._close_conversation(session, ConversationEvent.TIMED_OUT.value)
 
         for agent in self.agents.values():
             agent.perception.update(agent.agent_id, semantic_snapshot)
@@ -490,6 +509,25 @@ class OfficeAgentRuntime:
         """Apply a schedule draft or closed action after normal validation."""
         agent = self.agents[request.agent_id]
         errors: list[str] = []
+        effects = [key for key in ("schedule", "action", "dialogue") if key in response]
+        if len(effects) > 1:
+            return ValidationResult(False, ("ambiguous_llm_response",))
+        if "dialogue" in response and isinstance(response["dialogue"], dict):
+            payload = response["dialogue"]
+            try:
+                candidate = DialogueCandidate(
+                    request_id=str(payload.get("request_id", request.request_id)),
+                    session_id=str(payload["session_id"]),
+                    turn_id=str(payload["turn_id"]),
+                    speaker=str(payload["speaker"]),
+                    listener=str(payload["listener"]),
+                    act=DialogueAct(str(payload["act"])),
+                    text=str(payload["text"]),
+                    proposed_at=self.elapsed_minutes,
+                )
+            except (KeyError, TypeError, ValueError) as error:
+                return ValidationResult(False, (f"invalid_dialogue_candidate:{error}",))
+            return self.submit_dialogue_candidate(candidate)
         if request.trigger == LLMTrigger.DIALOGUE and "session_id" in request.context:
             try:
                 entry = self.record_conversation_candidate(
@@ -567,6 +605,175 @@ class OfficeAgentRuntime:
             agent_id,
             {"partner": partner, "topic": topic},
         )
+
+    def begin_conversation(self, request: ConversationRequest) -> ConversationReceipt:
+        """Atomically reserve participants and begin an embodied conversation.
+
+        New callers use this strict entry point.  The older ``start_conversation``
+        remains a logical/mock compatibility adapter and is intentionally not
+        upgraded to claim an embodied preparation receipt.
+        """
+        prior = self._conversation_receipts.get(request.session_id)
+        if prior is not None:
+            session = self.conversations.sessions.get(request.session_id)
+            if (
+                session is not None
+                and session.participants == request.participants
+                and session.topic == request.topic
+            ):
+                return prior
+            return ConversationReceipt(request.session_id, False, "rejected", "session_id_conflict")
+        if len(request.participants) < 2 or len(request.participants) != len(
+            set(request.participants)
+        ):
+            receipt = ConversationReceipt(
+                request.session_id, False, "rejected", "invalid_participants"
+            )
+            self._conversation_receipts[request.session_id] = receipt
+            return receipt
+        if not request.topic.strip() or request.timeout <= 0 or request.max_turns <= 0:
+            receipt = ConversationReceipt(
+                request.session_id, False, "rejected", "invalid_conversation_request"
+            )
+            self._conversation_receipts[request.session_id] = receipt
+            return receipt
+        if self.interaction_driver is None:
+            return ConversationReceipt(
+                request.session_id, False, "rejected", "physical_driver_required"
+            )
+        if request.semantic_snapshot is None:
+            return ConversationReceipt(
+                request.session_id, False, "rejected", "observation_required"
+            )
+        for participant in request.participants:
+            if participant not in self.world.objects:
+                return ConversationReceipt(
+                    request.session_id, False, "rejected", "unknown_participant"
+                )
+            if participant in self._participant_reservations:
+                return ConversationReceipt(
+                    request.session_id, False, "rejected", "participant_busy"
+                )
+        agent_participants = tuple(
+            participant for participant in request.participants if participant in self.agents
+        )
+        if any(self.agents[participant].executor.is_busy for participant in agent_participants):
+            return ConversationReceipt(request.session_id, False, "rejected", "participant_busy")
+        try:
+            perception = self._conversation_perception(
+                request.semantic_snapshot, request.participants
+            )
+            session = self.conversations.start(
+                request.participants,
+                request.topic,
+                self.elapsed_minutes,
+                perception.poses,
+                timeout=request.timeout,
+                session_id=request.session_id,
+                max_turns=request.max_turns,
+                parent_event_id=request.correlation_id,
+            )
+            self.conversations.mark_approaching(session.session_id)
+            for participant in request.participants:
+                self._participant_reservations[participant] = session.session_id
+            self._lock_conversation_agents(session)
+            result = self.interaction_driver.prepare_conversation(session)
+            if result.status == ExecutionStatus.SUCCEEDED:
+                self.conversations.mark_aligned(session.session_id, (result.handle or "ready",))
+                receipt = ConversationReceipt(
+                    session.session_id, True, "ready", correlation_id=request.correlation_id
+                )
+            elif result.status == ExecutionStatus.RUNNING:
+                receipt = ConversationReceipt(
+                    session.session_id, True, "approaching", correlation_id=request.correlation_id
+                )
+            else:
+                raise RuntimeError(result.error or "conversation_prepare_failed")
+        except (KeyError, RuntimeError, ValueError) as error:
+            session = self.conversations.sessions.get(request.session_id)
+            if session is not None:
+                self.conversations.fail(session.session_id, str(error))
+                self._finish_conversation(session.session_id, "conversation_prepare_failed")
+            else:
+                for participant in request.participants:
+                    self._participant_reservations.pop(participant, None)
+            receipt = ConversationReceipt(request.session_id, False, "failed", str(error))
+        self._conversation_receipts[request.session_id] = receipt
+        return receipt
+
+    def conversation(self, session_id: str) -> ConversationSession:
+        return self.conversations.sessions[session_id]
+
+    def active_conversations(self) -> tuple[ConversationSession, ...]:
+        return tuple(
+            session
+            for session in self.conversations.sessions.values()
+            if not session.status.terminal
+        )
+
+    def submit_dialogue_candidate(self, candidate: DialogueCandidate) -> ValidationResult:
+        """Commit a turn only after the interaction driver returns a real receipt."""
+        try:
+            session = self.conversation(candidate.session_id)
+            sanitized = self.conversation_policy.validate_and_sanitize(
+                candidate, session, self.world, now=self.elapsed_minutes
+            )
+            self.conversations.propose(sanitized.candidate)
+            if self.interaction_driver is None:
+                raise RuntimeError("physical_driver_required")
+            turn = session.dialogue_turns[sanitized.candidate.turn_id]
+            result = self.interaction_driver.play_turn(session, turn)
+            if result.status != ExecutionStatus.SUCCEEDED:
+                self.conversations.reject_turn(
+                    session.session_id, turn.turn_id, result.error or result.status.value
+                )
+                return ValidationResult(False, (result.error or "turn_physical_receipt_required",))
+            execution_id = result.handle or f"conversation:{session.session_id}:{turn.turn_id}"
+            self.conversations.mark_turn_started(session.session_id, turn.turn_id, execution_id)
+            self.conversations.commit_turn(session.session_id, turn.turn_id, self.elapsed_minutes)
+            self.conversation_policy.note_committed(sanitized.candidate, self.elapsed_minutes)
+            event_id = self._new_event_id()
+            for participant in session.participants:
+                agent = self.agents.get(participant)
+                if agent is not None:
+                    self._remember(
+                        agent,
+                        "dialogue_turn_committed",
+                        {
+                            "event_id": event_id,
+                            "session_id": session.session_id,
+                            "turn_id": turn.turn_id,
+                            "text": turn.text,
+                            "fallback_used": sanitized.fallback_used,
+                        },
+                    )
+            self._emit(
+                "dialogue_turn_committed",
+                sanitized.candidate.speaker,
+                {
+                    "session_id": session.session_id,
+                    "turn_id": turn.turn_id,
+                    "listener": turn.listener,
+                    "act": turn.act.value,
+                    "text": turn.text,
+                    "fallback_used": sanitized.fallback_used,
+                },
+                event_id=event_id,
+                correlation_id=session.parent_event_id or session.session_id,
+            )
+            if session.turn >= session.max_turns:
+                self._finish_conversation(session.session_id, "max_turns_reached")
+            return ValidationResult(True)
+        except (KeyError, RuntimeError, ValueError) as error:
+            return ValidationResult(False, (str(error),))
+
+    def interrupt_conversation(self, session_id: str, reason: str) -> ConversationReceipt:
+        session = self.conversation(session_id)
+        self.conversations.interrupt(session_id, reason, self.elapsed_minutes)
+        self._finish_conversation(session_id, reason)
+        receipt = ConversationReceipt(session.session_id, True, session.status.value, reason)
+        self._conversation_receipts[session_id] = receipt
+        return receipt
 
     def start_conversation(
         self,
@@ -1541,6 +1748,72 @@ class OfficeAgentRuntime:
                 },
             )
 
+    def _lock_conversation_agents(self, session: ConversationSession) -> None:
+        locks: dict[str, tuple[str | None, AgentAvailability, str]] = {}
+        for participant in session.participants:
+            agent = self.agents.get(participant)
+            if agent is None:
+                continue
+            partner = next(
+                candidate for candidate in session.participants if candidate != participant
+            )
+            locks[participant] = (
+                agent.state.attention_target,
+                AgentAvailability(agent.state.availability),
+                agent.state.current_goal,
+            )
+            agent.state.begin_conversation(session.session_id, partner)
+        self._conversation_locks[session.session_id] = locks
+
+    def _finish_conversation(self, session_id: str, reason: str) -> None:
+        """Single cleanup path for receipt failure, timeout, completion, and interruption."""
+        session = self.conversations.sessions.get(session_id)
+        if session is None:
+            return
+        if not session.status.terminal:
+            self.conversations.fail(session_id, reason)
+        if self.interaction_driver is not None:
+            cancel = getattr(self.interaction_driver, "cancel_conversation", None)
+            if callable(cancel):
+                cancel(session_id, reason)
+        for participant in session.participants:
+            if self._participant_reservations.get(participant) == session_id:
+                del self._participant_reservations[participant]
+        locks = self._conversation_locks.pop(session_id, {})
+        event_id = self._new_event_id()
+        for participant, (attention, availability, goal) in locks.items():
+            agent = self.agents[participant]
+            if agent.state.conversation_id == session_id:
+                agent.state.conversation_id = None
+                agent.state.attention_target = attention
+                agent.state.set_availability(availability)
+                agent.state.current_goal = goal
+                if session.status == ConversationStatus.COMPLETED:
+                    agent.state.record_success()
+                else:
+                    agent.state.record_failure(reason)
+                self._remember(
+                    agent,
+                    "conversation_terminal",
+                    {
+                        "event_id": event_id,
+                        "session_id": session_id,
+                        "status": session.status.value,
+                        "reason": reason,
+                    },
+                )
+                self._emit(
+                    "conversation_terminal",
+                    participant,
+                    {"session_id": session_id, "status": session.status.value, "reason": reason},
+                    event_id=event_id,
+                    correlation_id=session.parent_event_id or session_id,
+                )
+
+    def _new_event_id(self) -> str:
+        self._event_sequence += 1
+        return f"evt_{self.seed}_{self._event_sequence:08d}"
+
     def _validate_robot_dialogue_turn(
         self, session: ConversationSession, intent: ConversationIntent | str
     ) -> None:
@@ -1578,5 +1851,25 @@ class OfficeAgentRuntime:
     def _remember(self, agent: EmployeeAgent, event: str, details: dict[str, Any]) -> None:
         agent.memory.remember(MemoryEntry(self.elapsed_minutes, event, details))
 
-    def _emit(self, event: str, agent_id: str, details: dict[str, Any]) -> None:
-        self.events.append(RuntimeEvent(self.elapsed_minutes, event, agent_id, details))
+    def _emit(
+        self,
+        event: str,
+        agent_id: str,
+        details: dict[str, Any],
+        *,
+        event_id: str | None = None,
+        correlation_id: str | None = None,
+        causation_id: str | None = None,
+    ) -> RuntimeEvent:
+        resolved_event_id = event_id or self._new_event_id()
+        runtime_event = RuntimeEvent(
+            self.elapsed_minutes,
+            event,
+            agent_id,
+            details,
+            resolved_event_id,
+            correlation_id,
+            causation_id,
+        )
+        self.events.append(runtime_event)
+        return runtime_event

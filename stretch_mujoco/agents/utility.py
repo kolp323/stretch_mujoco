@@ -23,6 +23,25 @@ class UtilityGoal(str, Enum):
     REQUEST_ROBOT = "request_robot"
     MEETING = "meeting"
     WAIT = "wait"
+    RESPOND_TO_CONVERSATION = "respond_to_conversation"
+    INITIATE_SOCIAL = "initiate_social"
+    RECOVER_FROM_FAILURE = "recover_from_failure"
+
+
+@dataclass(frozen=True)
+class UtilityContext:
+    schedule_urgency: float = 0.0
+    task_priority: float = 0.0
+    hunger: float = 0.0
+    thirst: float = 0.0
+    fatigue: float = 0.0
+    social_energy: float = 1.0
+    stress: float = 0.0
+    pending_invitation_priority: float = 0.0
+    consecutive_failures: int = 0
+    resource_availability: float = 1.0
+    cooldown_remaining: float = 0.0
+    repetition_penalty: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -40,7 +59,15 @@ class UtilitySystem:
         agent: "EmployeeAgent",
         world: SemanticWorld,
         schedule_item: "ScheduleItem | None",
+        context: UtilityContext | None = None,
     ) -> tuple[UtilityScore, ...]:
+        context = context or UtilityContext(
+            hunger=agent.needs.hunger,
+            thirst=agent.needs.thirst,
+            fatigue=agent.needs.fatigue,
+            social_energy=agent.state.social_energy,
+            stress=agent.state.stress,
+        )
         conscientiousness = agent.profile.personality.get("conscientiousness", 0.5)
         patience = agent.profile.personality.get("patience", 0.5)
         work_urgency = 0.85 if schedule_item and schedule_item.activity == "work" else 0.18
@@ -89,8 +116,8 @@ class UtilitySystem:
                 {"thirst": agent.needs.thirst, "availability": drink_availability},
             ),
             UtilityGoal.REST: (
-                agent.needs.fatigue * (1.1 - 0.2 * conscientiousness),
-                {"fatigue": agent.needs.fatigue},
+                agent.needs.fatigue * (1.1 - 0.2 * conscientiousness) + context.stress * 0.45,
+                {"fatigue": agent.needs.fatigue, "stress": context.stress},
             ),
             UtilityGoal.REQUEST_ROBOT: (
                 remote_need * (0.9 + 0.1 * patience) - leaving_cost,
@@ -101,10 +128,35 @@ class UtilitySystem:
                 {"urgency": meeting_urgency},
             ),
             UtilityGoal.WAIT: (0.08, {"baseline": 0.08}),
+            UtilityGoal.RESPOND_TO_CONVERSATION: (
+                (
+                    context.pending_invitation_priority
+                    if context.social_energy >= 0.1 and context.cooldown_remaining <= 0
+                    else 0.0
+                ),
+                {
+                    "invitation": context.pending_invitation_priority,
+                    "social_energy": context.social_energy,
+                },
+            ),
+            UtilityGoal.INITIATE_SOCIAL: (
+                (
+                    max(0.0, context.social_energy - context.stress) * 0.2
+                    if context.cooldown_remaining <= 0
+                    else 0.0
+                ),
+                {"social_energy": context.social_energy, "stress": context.stress},
+            ),
+            UtilityGoal.RECOVER_FROM_FAILURE: (
+                min(1.0, context.consecutive_failures * 0.15 + context.stress * 0.5),
+                {"failures": float(context.consecutive_failures), "stress": context.stress},
+            ),
         }
         scores = []
         for goal, (base_score, factors) in raw.items():
-            repetition_penalty = agent.planner.recent_goals.count(goal.value) * 0.08
+            repetition_penalty = (
+                agent.planner.recent_goals.count(goal.value) * 0.08 + context.repetition_penalty
+            )
             factors = dict(factors)
             factors["repetition_penalty"] = repetition_penalty
             scores.append(UtilityScore(goal, max(0.0, base_score - repetition_penalty), factors))

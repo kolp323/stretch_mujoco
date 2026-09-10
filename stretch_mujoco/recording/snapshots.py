@@ -10,7 +10,7 @@ from typing import Any, Iterable, Mapping
 from stretch_mujoco.agents.action_recipes import animation_for_action
 from stretch_mujoco.agents.actions import RuntimeEvent
 
-SNAPSHOT_SCHEMA_VERSION = 2
+SNAPSHOT_SCHEMA_VERSION = 3
 
 DEFAULT_LOCATION_YAWS = {
     "workstation_left": math.pi,
@@ -93,7 +93,7 @@ def build_office_snapshot(
     events: Iterable[RuntimeEvent] = (),
     npc_states: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Build schema-v2 state, preferring observed simulator state when supplied."""
+    """Build schema-v3 state, preferring observed simulator state when supplied."""
     agents: dict[str, dict[str, Any]] = {}
     npcs: dict[str, dict[str, Any]] = {}
     for agent_id, agent in runtime.agents.items():
@@ -149,8 +149,15 @@ def build_office_snapshot(
                 if getattr(agent.state, "held_object", None) is None
                 else [agent.state.held_object]
             ),
-            "interaction_id": None,
+            "interaction_id": conversation_id,
             "active_command_id": active_command_id,
+            "availability": str(getattr(agent.state, "availability", "available")),
+            "attention_target": getattr(agent.state, "attention_target", None),
+            "conversation_id": conversation_id,
+            "social_energy": getattr(agent.state, "social_energy", 1.0),
+            "stress": getattr(agent.state, "stress", 0.0),
+            "blocked_reason": getattr(agent.state, "blocked_reason", None),
+            "last_failure": getattr(agent.state, "last_failure", None),
         }
 
     day_start_minute = runtime.minute_of_day - getattr(runtime, "elapsed_minutes", 0.0)
@@ -166,6 +173,37 @@ def build_office_snapshot(
         }
         for task in getattr(runtime, "robot_tasks", {}).values()
     ]
+    conversations = []
+    coordinator = getattr(runtime, "conversations", None)
+    sessions = getattr(coordinator, "sessions", {})
+    for session in sessions.values():
+        latest = next(
+            (
+                turn
+                for turn in reversed(list(getattr(session, "dialogue_turns", {}).values()))
+                if turn.status.value == "committed"
+            ),
+            None,
+        )
+        conversations.append(
+            {
+                "session_id": session.session_id,
+                "participants": list(session.participants),
+                "topic": session.topic,
+                "phase": getattr(session.phase, "value", str(session.phase)),
+                "status": session.status.value,
+                "turn": session.turn,
+                "latest_committed_turn": (
+                    None
+                    if latest is None
+                    else {
+                        "speaker": latest.speaker,
+                        "act": latest.act.value,
+                        "text": latest.text,
+                    }
+                ),
+            }
+        )
     return {
         "schema_version": SNAPSHOT_SCHEMA_VERSION,
         "sim_time": float(getattr(runtime, "elapsed_minutes", 0.0)),
@@ -175,6 +213,7 @@ def build_office_snapshot(
         # from ``npcs``/runtime state and is not authoritative.
         "agents": agents,
         "robot_tasks": robot_tasks,
+        "conversations": conversations,
         "events": [_event_to_dict(event, day_start_minute) for event in events],
     }
 
@@ -194,6 +233,8 @@ def read_snapshots(path: str | Path, *, upgrade_v1: bool = False) -> Iterable[di
                 # Accept legacy archives without mutating their payload. New
                 # writers emit v2; legacy renderers can continue to replay v1.
                 yield adapt_snapshot_v1(snapshot) if upgrade_v1 else snapshot
+            elif version == 2 and "npcs" in snapshot:
+                yield adapt_snapshot_v2(snapshot)
             elif version == SNAPSHOT_SCHEMA_VERSION and "npcs" in snapshot:
                 snapshot.setdefault("agents", _agents_projection(snapshot["npcs"]))
                 yield snapshot
@@ -221,7 +262,22 @@ def adapt_snapshot_v1(snapshot: Mapping[str, Any]) -> dict[str, Any]:
             "held_objects": [],
             "interaction_id": None,
         }
-    return {**snapshot, "schema_version": SNAPSHOT_SCHEMA_VERSION, "npcs": npcs, "agents": agents}
+    return {
+        **snapshot,
+        "schema_version": SNAPSHOT_SCHEMA_VERSION,
+        "npcs": npcs,
+        "agents": agents,
+        "conversations": [],
+    }
+
+
+def adapt_snapshot_v2(snapshot: Mapping[str, Any]) -> dict[str, Any]:
+    """Project v2 recordings to v3 without inventing completed dialogue."""
+    upgraded = dict(snapshot)
+    upgraded["schema_version"] = SNAPSHOT_SCHEMA_VERSION
+    upgraded.setdefault("conversations", [])
+    upgraded.setdefault("agents", _agents_projection(upgraded["npcs"]))
+    return upgraded
 
 
 def _agents_projection(npcs: Mapping[str, Any]) -> dict[str, dict[str, Any]]:

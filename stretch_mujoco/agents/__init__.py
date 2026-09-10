@@ -4,17 +4,21 @@ from .actions import (
     ActionCommand,
     ActionExecution,
     ActionType,
+    ConversationReceipt,
+    ConversationRequest,
     ExecutionStatus,
     RobotTask,
     RobotTaskStatus,
     RuntimeEvent,
     ValidationResult,
 )
-from .drivers import ActionDriver, DriverResult, MujocoNpcActionDriver
-from .employee import BehaviorPlan, EmployeeAgent, EmployeePlanner
+from .drivers import ActionDriver, DriverResult, InteractionDriver, MujocoNpcActionDriver
+from .employee import BehaviorPlan, EmployeeAgent, EmployeePlanner, PlanCheckpoint
 from .conversation import (
     CONVERSATION_SCHEMA_VERSION,
     ConversationCoordinator,
+    ConversationPhase,
+    ConversationInterruptPolicy,
     ConversationErrorCode,
     ConversationEvent,
     ConversationIntent,
@@ -26,6 +30,9 @@ from .conversation import (
     ConversationStatus,
     ConversationTerminalReason,
     ConversationTurn,
+    DialogueAct,
+    DialogueCandidate,
+    DialogueTurn,
     InterruptPolicy,
     MeetingInvitation,
     NpcConversationScheduler,
@@ -35,6 +42,7 @@ from .conversation import (
     SpatialPose,
     TurnPolicy,
 )
+from .dialogue_policy import DialoguePolicy, DialoguePolicyConfig, SanitizedDialogue
 from .events import DailyOfficeEvent, DailyOfficeEventGenerator
 from .interactions import InteractionCoordinator, InteractionSession, InteractionStatus
 from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
@@ -51,7 +59,7 @@ from .models import (
 )
 from .robot_handover import RobotHandover, RobotToNpcHandoverBridge
 from .runtime import OfficeAgentRuntime, ReservationManager
-from .utility import UtilityGoal, UtilityScore, UtilitySystem
+from .utility import UtilityContext, UtilityGoal, UtilityScore, UtilitySystem
 
 __all__ = [
     "ActionCommand",
@@ -62,6 +70,10 @@ __all__ = [
     "AgentMemory",
     "BehaviorPlan",
     "ConversationCoordinator",
+    "ConversationReceipt",
+    "ConversationRequest",
+    "ConversationPhase",
+    "ConversationInterruptPolicy",
     "ConversationErrorCode",
     "ConversationEvent",
     "ConversationIntent",
@@ -73,6 +85,11 @@ __all__ = [
     "ConversationStatus",
     "ConversationTerminalReason",
     "ConversationTurn",
+    "DialogueAct",
+    "DialogueCandidate",
+    "DialoguePolicy",
+    "DialoguePolicyConfig",
+    "DialogueTurn",
     "DailyOfficeEvent",
     "DailyOfficeEventGenerator",
     "CONVERSATION_SCHEMA_VERSION",
@@ -95,10 +112,12 @@ __all__ = [
     "MujocoNpcActionDriver",
     "NpcConversationScheduler",
     "InteractionCoordinator",
+    "InteractionDriver",
     "InteractionSession",
     "InteractionStatus",
     "InterruptPolicy",
     "OfficeAgentRuntime",
+    "PlanCheckpoint",
     "OpenAICompatibleProvider",
     "ReservationManager",
     "RobotHandover",
@@ -107,12 +126,14 @@ __all__ = [
     "SocialConversationDecision",
     "SocialConversationProposal",
     "SocialState",
+    "SanitizedDialogue",
     "TurnPolicy",
     "RobotTask",
     "RobotTaskStatus",
     "RuntimeEvent",
     "ValidationResult",
     "UtilityGoal",
+    "UtilityContext",
     "UtilityScore",
     "UtilitySystem",
 ]

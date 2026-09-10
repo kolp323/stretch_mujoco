@@ -153,6 +153,8 @@ class EmployeeState:
     conversation_id: str | None = None
     social_energy: float = 1.0
     stress: float = 0.0
+    animation_clip: str = "idle"
+    animation_lifecycle: str = "completed"
 
     def __post_init__(self) -> None:
         self.set_availability(self.availability)
@@ -184,3 +186,40 @@ class EmployeeState:
         self.thirst = needs.thirst
         self.fatigue = needs.fatigue
         self.mood = max(-1.0, min(1.0, 1.0 - (sum((self.hunger, self.thirst, self.fatigue)) / 1.5)))
+
+    def begin_conversation(self, session_id: str, partner: str) -> None:
+        if not session_id or not partner:
+            raise ValueError("Conversation session and partner are required")
+        if self.conversation_id not in {None, session_id}:
+            raise ValueError("Employee is already in another conversation")
+        self.conversation_id = session_id
+        self.attention_target = partner
+        self.set_availability(AgentAvailability.IN_CONVERSATION)
+        self.animation_state = "idle"
+        self.animation_clip = "idle"
+        self.animation_lifecycle = "running"
+
+    def finish_conversation(self) -> None:
+        self.conversation_id = None
+        self.attention_target = None
+        if self.availability == AgentAvailability.IN_CONVERSATION:
+            self.set_availability(AgentAvailability.AVAILABLE)
+        self.animation_lifecycle = "completed"
+
+    def record_success(self, stress_delta: float = -0.02) -> None:
+        self.stress = min(1.0, max(0.0, self.stress + stress_delta))
+        self.last_failure = None
+        self.blocked_reason = None
+
+    def record_failure(self, reason: str, stress_delta: float = 0.05) -> None:
+        self.stress = min(1.0, max(0.0, self.stress + stress_delta))
+        self.last_failure = reason
+        self.blocked_reason = reason
+
+    def advance_social(self, minutes: float, conversing: bool) -> None:
+        if minutes < 0:
+            raise ValueError("Social time cannot move backwards")
+        # Conversation is mildly restorative; solitary work slowly consumes
+        # social capacity. Both projections are bounded by construction.
+        delta = minutes * (0.003 if conversing else -0.0005)
+        self.social_energy = min(1.0, max(0.0, self.social_energy + delta))

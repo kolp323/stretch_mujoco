@@ -120,6 +120,83 @@ class ConversationIntent(str, Enum):
     CONFLICT_RESOLUTION = "conflict_resolution"
 
 
+class ConversationPhase(str, Enum):
+    REQUESTED = "requested"
+    APPROACHING = "approaching"
+    ALIGNING = "aligning"
+    WAITING_FOR_TURN = "waiting_for_turn"
+    WAITING_FOR_LLM = "waiting_for_llm"
+    PLAYING_TURN = "playing_turn"
+    RECOVERING = "recovering"
+    TERMINAL = "terminal"
+
+
+class DialogueAct(str, Enum):
+    STATEMENT = "statement"
+    CLARIFY = "clarify"
+    ACKNOWLEDGE = "acknowledge"
+    GREETING = "greeting"
+    PROGRESS_QUERY = "progress_query"
+    MEETING_INVITE = "meeting_invite"
+    CONFLICT_RESOLUTION = "conflict_resolution"
+    REQUEST = "request"
+    HANDOVER_CONFIRM = "handover_confirm"
+
+
+class ConversationInterruptPolicy(str, Enum):
+    FINISH_TURN = "finish_turn"
+    IMMEDIATE = "immediate"
+    REJECT_WHILE_HANDOVER = "reject_while_handover"
+
+
+class TurnStatus(str, Enum):
+    PROPOSED = "proposed"
+    ACCEPTED = "accepted"
+    PLAYING = "playing"
+    COMMITTED = "committed"
+    REJECTED = "rejected"
+    FAILED = "failed"
+
+
+@dataclass(frozen=True)
+class DialogueCandidate:
+    request_id: str
+    session_id: str
+    turn_id: str
+    speaker: str
+    listener: str
+    act: DialogueAct
+    text: str
+    proposed_at: float
+
+
+@dataclass
+class DialogueTurn:
+    turn_id: str
+    ordinal: int
+    speaker: str
+    listener: str
+    act: DialogueAct
+    text: str
+    status: TurnStatus
+    llm_request_id: str | None
+    execution_id: str | None
+    proposed_at: float
+    started_at: float | None = None
+    completed_at: float | None = None
+    fallback_used: bool = False
+    error: str | None = None
+
+
+@dataclass(frozen=True)
+class ConversationTransition:
+    session_id: str
+    phase: ConversationPhase
+    status: ConversationStatus
+    turn_id: str | None = None
+    reason: str | None = None
+
+
 @dataclass(frozen=True)
 class SocialState:
     """Read-only social inputs; the scheduler never mutates agent state."""
@@ -478,6 +555,13 @@ class ConversationSession:
     failure_reason: str | None = None
     robot_task_id: str | None = None
     handover_receipts: frozenset[str] = frozenset()
+    phase: ConversationPhase = ConversationPhase.REQUESTED
+    active_turn_id: str | None = None
+    max_turns: int = 8
+    parent_event_id: str | None = None
+    suspended_plan_ids: dict[str, str] = field(default_factory=dict)
+    error: str | None = None
+    dialogue_turns: dict[str, DialogueTurn] = field(default_factory=dict)
 
     @property
     def deadline(self) -> float:
@@ -506,6 +590,8 @@ class ConversationCoordinator:
         self.sessions: dict[str, ConversationSession] = {}
         self._last_message_at: dict[str, float] = {}
         self._next_session_number = 1
+        self._seen_request_ids: set[str] = set()
+        self._seen_turn_ids: set[str] = set()
 
     def start(
         self,
@@ -519,6 +605,9 @@ class ConversationCoordinator:
         participant_kinds: Mapping[str, ConversationParticipantKind | str] | None = None,
         turn_policy: TurnPolicy = TurnPolicy.ROUND_ROBIN,
         turn_timeout: float | None = None,
+        session_id: str | None = None,
+        max_turns: int = 8,
+        parent_event_id: str | None = None,
     ) -> ConversationSession:
         participant_tuple = tuple(dict.fromkeys(participants))
         if len(participant_tuple) != 2:
@@ -527,13 +616,16 @@ class ConversationCoordinator:
             raise ValueError("Conversation topic and timeout must be positive")
         if turn_timeout is not None and turn_timeout <= 0:
             raise ValueError("Conversation turn timeout must be positive")
+        if max_turns <= 0:
+            raise ValueError("Conversation max_turns must be positive")
         first, second = participant_tuple
         if first not in poses or second not in poses:
             raise ValueError("Conversation requires semantic poses for both participants")
         if not self._can_speak(poses[first], poses[second]):
             raise ValueError("Participants are too far apart or are not facing each other")
         if any(
-            not session.status.terminal
+            session.session_id != session_id
+            and not session.status.terminal
             and set(session.participants).intersection(participant_tuple)
             for session in self.sessions.values()
         ):
@@ -546,8 +638,14 @@ class ConversationCoordinator:
             )
             for participant in participant_tuple
         )
+        resolved_session_id = session_id or f"conversation_{self._next_session_number:06d}"
+        existing = self.sessions.get(resolved_session_id)
+        if existing is not None:
+            if existing.participants != participant_tuple or existing.topic != topic.strip():
+                raise ValueError("session_id_conflict")
+            return existing
         session = ConversationSession(
-            session_id=f"conversation_{self._next_session_number:06d}",
+            session_id=resolved_session_id,
             participants=participant_tuple,
             topic=topic.strip(),
             turn=0,
@@ -561,6 +659,9 @@ class ConversationCoordinator:
                 participant_tuple[0] if turn_policy == TurnPolicy.ROUND_ROBIN else None
             ),
             turn_deadline=(started_at + turn_timeout if turn_timeout is not None else None),
+            phase=ConversationPhase.WAITING_FOR_TURN,
+            max_turns=max_turns,
+            parent_event_id=parent_event_id,
         )
         self._next_session_number += 1
         self.sessions[session.session_id] = session
@@ -613,6 +714,131 @@ class ConversationCoordinator:
             )
         return entry
 
+    def mark_approaching(self, session_id: str) -> ConversationTransition:
+        return self._set_phase(session_id, ConversationPhase.APPROACHING)
+
+    def mark_aligned(
+        self, session_id: str, receipt_ids: Iterable[str] = ()
+    ) -> ConversationTransition:
+        session = self._active(session_id)
+        if session.phase not in {ConversationPhase.APPROACHING, ConversationPhase.ALIGNING}:
+            raise ValueError("conversation_not_preparing")
+        session.phase = ConversationPhase.WAITING_FOR_TURN
+        session.handover_receipts = frozenset(receipt_ids)
+        return ConversationTransition(session_id, session.phase, session.status)
+
+    def propose(self, candidate: DialogueCandidate) -> ConversationTransition:
+        session = self._active(candidate.session_id)
+        if session.phase != ConversationPhase.WAITING_FOR_TURN:
+            raise ValueError("conversation_not_ready_for_turn")
+        if candidate.request_id in self._seen_request_ids:
+            turn = session.dialogue_turns.get(candidate.turn_id)
+            return ConversationTransition(
+                session.session_id,
+                session.phase,
+                session.status,
+                candidate.turn_id,
+                None if turn is not None else "duplicate_request",
+            )
+        if candidate.turn_id in self._seen_turn_ids:
+            raise ValueError("duplicate_turn_id")
+        if candidate.speaker != session.expected_speaker:
+            raise ValueError("unexpected_speaker")
+        if (
+            candidate.listener not in session.participants
+            or candidate.listener == candidate.speaker
+        ):
+            raise ValueError("invalid_listener")
+        if session.turn >= session.max_turns:
+            raise ValueError("max_turns_reached")
+        self._seen_request_ids.add(candidate.request_id)
+        self._seen_turn_ids.add(candidate.turn_id)
+        session.dialogue_turns[candidate.turn_id] = DialogueTurn(
+            candidate.turn_id,
+            session.turn + 1,
+            candidate.speaker,
+            candidate.listener,
+            candidate.act,
+            candidate.text,
+            TurnStatus.ACCEPTED,
+            candidate.request_id,
+            None,
+            candidate.proposed_at,
+        )
+        session.active_turn_id = candidate.turn_id
+        session.phase = ConversationPhase.WAITING_FOR_LLM
+        return ConversationTransition(
+            session.session_id, session.phase, session.status, candidate.turn_id
+        )
+
+    def mark_turn_started(
+        self, session_id: str, turn_id: str, execution_id: str
+    ) -> ConversationTransition:
+        session = self._active(session_id)
+        turn = self._active_dialogue_turn(session, turn_id)
+        if not execution_id:
+            raise ValueError("missing_execution_id")
+        turn.status = TurnStatus.PLAYING
+        turn.execution_id = execution_id
+        turn.started_at = turn.started_at or turn.proposed_at
+        session.phase = ConversationPhase.PLAYING_TURN
+        return ConversationTransition(session_id, session.phase, session.status, turn_id)
+
+    def commit_turn(
+        self, session_id: str, turn_id: str, completed_at: float
+    ) -> ConversationTransition:
+        session = self._active(session_id)
+        turn = self._active_dialogue_turn(session, turn_id)
+        if turn.status != TurnStatus.PLAYING:
+            raise ValueError("turn_not_playing")
+        turn.status = TurnStatus.COMMITTED
+        turn.completed_at = completed_at
+        session.turn += 1
+        session.active_turn_id = None
+        session.expected_speaker = turn.listener
+        session.phase = ConversationPhase.WAITING_FOR_TURN
+        return ConversationTransition(session_id, session.phase, session.status, turn_id)
+
+    def reject_turn(self, session_id: str, turn_id: str, reason: str) -> ConversationTransition:
+        session = self._active(session_id)
+        turn = self._active_dialogue_turn(session, turn_id)
+        turn.status = TurnStatus.REJECTED
+        turn.error = reason
+        session.active_turn_id = None
+        session.phase = ConversationPhase.WAITING_FOR_TURN
+        return ConversationTransition(session_id, session.phase, session.status, turn_id, reason)
+
+    def interrupt(self, session_id: str, reason: str, now: float) -> ConversationTransition:
+        del now
+        session = self._terminal(session_id, ConversationStatus.CANCELLED, reason)
+        session.phase = ConversationPhase.TERMINAL
+        return ConversationTransition(session_id, session.phase, session.status, reason=reason)
+
+    def check_deadlines(self, now: float) -> tuple[ConversationTransition, ...]:
+        transitions: list[ConversationTransition] = []
+        for session in self.expire(now):
+            session.phase = ConversationPhase.TERMINAL
+            transitions.append(
+                ConversationTransition(
+                    session.session_id, session.phase, session.status, reason=session.error
+                )
+            )
+        return tuple(transitions)
+
+    def _set_phase(self, session_id: str, phase: ConversationPhase) -> ConversationTransition:
+        session = self._active(session_id)
+        session.phase = phase
+        return ConversationTransition(session_id, phase, session.status)
+
+    @staticmethod
+    def _active_dialogue_turn(session: ConversationSession, turn_id: str) -> DialogueTurn:
+        if session.active_turn_id != turn_id:
+            raise ValueError("turn_not_active")
+        try:
+            return session.dialogue_turns[turn_id]
+        except KeyError as error:
+            raise ValueError("unknown_turn") from error
+
     def complete(self, session_id: str) -> ConversationSession:
         session = self._session(session_id)
         if session.status.terminal:
@@ -622,6 +848,7 @@ class ConversationCoordinator:
         session.status = ConversationStatus.COMPLETING
         session.status = ConversationStatus.COMPLETED
         session.terminal_reason = ConversationTerminalReason.COMPLETED
+        session.phase = ConversationPhase.TERMINAL
         return session
 
     def cancel(self, session_id: str, reason: str = "cancelled") -> ConversationSession:
@@ -641,6 +868,7 @@ class ConversationCoordinator:
             ):
                 session.status = ConversationStatus.TIMED_OUT
                 session.terminal_reason = ConversationTerminalReason.TIMED_OUT
+                session.phase = ConversationPhase.TERMINAL
                 if session.turn_deadline is not None and now >= session.turn_deadline:
                     session.failure_reason = "turn_timeout"
                 expired.append(session)
@@ -669,6 +897,8 @@ class ConversationCoordinator:
         session.status = status
         session.terminal_reason = ConversationTerminalReason(status.value)
         session.failure_reason = reason
+        session.error = reason
+        session.phase = ConversationPhase.TERMINAL
         return session
 
     def _can_speak(self, first: SpatialPose, second: SpatialPose) -> bool:

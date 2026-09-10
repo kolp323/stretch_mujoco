@@ -121,3 +121,36 @@ class RuntimeEvent:
     event: str
     agent_id: str
     details: dict[str, Any] = field(default_factory=dict)
+    # IDs are optional for schema-v1 readers, but all new runtime emissions
+    # populate them so a physical receipt can be replayed without duplication.
+    event_id: str = ""
+    correlation_id: str | None = None
+    causation_id: str | None = None
+
+
+@dataclass(frozen=True)
+class ConversationRequest:
+    """Validated public input for a conversation transaction.
+
+    ``semantic_snapshot`` is deliberately optional: embodied callers supply an
+    interaction driver, while the compatibility path supplies an observation
+    snapshot to retain the pre-existing logical conversation API.
+    """
+
+    session_id: str
+    participants: tuple[str, ...]
+    topic: str
+    timeout: float = 45.0
+    max_turns: int = 8
+    interrupt_policy: str = "finish_turn"
+    correlation_id: str | None = None
+    semantic_snapshot: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True)
+class ConversationReceipt:
+    session_id: str
+    accepted: bool
+    status: str
+    error: str | None = None
+    correlation_id: str | None = None

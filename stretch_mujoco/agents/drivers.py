@@ -10,6 +10,7 @@ from stretch_mujoco.npc.protocol import CommandStatus, NpcCommand, NpcCommandKin
 from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 
 from .actions import ActionExecution, ActionType, ExecutionStatus
+from .conversation import ConversationSession, DialogueTurn
 from .action_recipes import ACTION_RECIPES, ActionRecipe
 from .interactions import InteractionCoordinator
 
@@ -90,6 +91,23 @@ class ActionDriver(Protocol):
     def poll(self, execution: ActionExecution) -> DriverResult: ...
 
     def cancel(self, execution: ActionExecution, reason: str) -> DriverResult: ...
+
+
+class InteractionDriver(Protocol):
+    """Receipt-owning bridge used by the strict conversation runtime path.
+
+    Implementations may return ``RUNNING`` while movement/alignment is in
+    progress, but may return ``SUCCEEDED`` only after every participant's
+    physical receipt and range/yaw gate have been checked.
+    """
+
+    def prepare_conversation(self, session: ConversationSession) -> DriverResult: ...
+
+    def play_turn(self, session: ConversationSession, turn: DialogueTurn) -> DriverResult: ...
+
+    def poll_conversation(self, session_id: str) -> DriverResult: ...
+
+    def cancel_conversation(self, session_id: str, reason: str) -> DriverResult: ...
 
 
 class SimulatorStatus(Protocol):

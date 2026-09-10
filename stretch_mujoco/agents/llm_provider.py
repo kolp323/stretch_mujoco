@@ -105,7 +105,9 @@ class OpenAICompatibleProvider:
         elif request.trigger.value == "dialogue":
             allowed_intents = request.context.get("allowed_intents", [])
             contract = (
-                'Return exactly {"intent": "allowed_intent", "text": "brief office reply"}. '
+                'Return exactly {"dialogue": {"session_id": "...", "turn_id": "...", '
+                '"speaker": "...", "listener": "...", "act": "acknowledge", '
+                '"text": "brief office reply"}}. The IDs must echo context; do not add actions. '
                 "The runtime will filter sensitive content, constrain length, and may replace text. "
                 f"Allowed intents: {allowed_intents}."
             )

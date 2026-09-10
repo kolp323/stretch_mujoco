@@ -31,6 +31,13 @@ class BehaviorPlan:
     actions: tuple[ActionCommand, ...]
 
 
+@dataclass(frozen=True)
+class PlanCheckpoint:
+    plan: BehaviorPlan | None
+    remaining_actions: tuple[ActionCommand, ...]
+    goal: str
+
+
 @dataclass
 class EmployeePlanner:
     utility: UtilitySystem = field(default_factory=UtilitySystem)
@@ -73,6 +80,34 @@ class EmployeePlanner:
     def clear_plan(self) -> None:
         self.action_queue.clear()
         self.current_plan = None
+
+    def suspend(self, plan_id: str = "") -> PlanCheckpoint:
+        del plan_id  # IDs are carried by the owning conversation session.
+        return PlanCheckpoint(
+            self.current_plan,
+            tuple(self.action_queue),
+            "" if self.current_plan is None else self.current_plan.goal.value,
+        )
+
+    def resume(self, checkpoint: PlanCheckpoint, world: SemanticWorld, now: float) -> bool:
+        del now
+        # Revalidate targets that are semantic objects; commands with an agent
+        # target remain valid only when the caller's session lock has released.
+        if any(
+            command.target is not None
+            and command.target not in world.objects
+            and command.action
+            not in {ActionType.TALK, ActionType.GESTURE_POINT, ActionType.GESTURE_WAVE}
+            for command in checkpoint.remaining_actions
+        ):
+            return False
+        self.current_plan = checkpoint.plan
+        self.action_queue = list(checkpoint.remaining_actions)
+        return True
+
+    def invalidate(self, reason: str = "invalidated") -> None:
+        del reason
+        self.clear_plan()
 
     def _build_plan(
         self,

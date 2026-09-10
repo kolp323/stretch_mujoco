@@ -8,6 +8,11 @@ from stretch_mujoco.agents import (
     AgentAvailability,
     AgentMemory,
     ConversationCoordinator,
+    ConversationRequest,
+    DialogueAct,
+    DialogueCandidate,
+    DialoguePolicy,
+    DialoguePolicyConfig,
     ConversationErrorCode,
     ConversationIntent,
     ConversationObservationSource,
@@ -26,6 +31,8 @@ from stretch_mujoco.agents import (
     SocialState,
     TurnPolicy,
 )
+from stretch_mujoco.agents.drivers import DriverResult
+from stretch_mujoco.agents.actions import ExecutionStatus
 from stretch_mujoco.semantics import ObjectType, SemanticObject, SemanticWorld
 
 
@@ -109,6 +116,60 @@ def test_conversation_requires_distance_and_mutual_facing() -> None:
 
     with pytest.raises(ValueError, match="too far apart"):
         coordinator.start(("a", "b"), "status", 0.0, poses)
+
+
+class _ReadyConversationDriver:
+    def prepare_conversation(self, _session: object) -> DriverResult:
+        return DriverResult(ExecutionStatus.SUCCEEDED, "ready", "prepare-1")
+
+    def play_turn(self, _session: object, _turn: object) -> DriverResult:
+        return DriverResult(ExecutionStatus.SUCCEEDED, "played", "turn-1")
+
+    def cancel_conversation(self, _session_id: str, _reason: str) -> DriverResult:
+        return DriverResult(ExecutionStatus.SUCCEEDED, "cancelled")
+
+
+def test_strict_conversation_commits_only_after_driver_receipt(
+    deterministic_conversation_fixture: DeterministicConversationFixture,
+) -> None:
+    runtime = deterministic_conversation_fixture.runtime
+    runtime.interaction_driver = _ReadyConversationDriver()
+    receipt = runtime.begin_conversation(
+        ConversationRequest(
+            "session-receipt",
+            ("employee_01", "employee_02"),
+            "status",
+            semantic_snapshot=deterministic_conversation_fixture.semantic_snapshot,
+        )
+    )
+    assert receipt.accepted and receipt.status == "ready"
+    assert runtime.agents["employee_01"].state.conversation_id == "session-receipt"
+    candidate = DialogueCandidate(
+        "request-1",
+        "session-receipt",
+        "turn-1",
+        "employee_01",
+        "employee_02",
+        DialogueAct.GREETING,
+        "Hello.",
+        0.0,
+    )
+    assert runtime.submit_dialogue_candidate(candidate).valid
+    session = runtime.conversation("session-receipt")
+    assert session.dialogue_turns["turn-1"].status.value == "committed"
+    assert any(event.event == "dialogue_turn_committed" for event in runtime.events)
+
+
+def test_dialogue_policy_fallback_is_deterministic() -> None:
+    policy = DialoguePolicy(DialoguePolicyConfig(max_chars=20), runtime_seed=7)
+    candidate = DialogueCandidate("r", "s", "t", "a", "b", DialogueAct.GREETING, "", 0.0)
+    session = ConversationCoordinator().start(
+        ("a", "b"), "topic", 0.0, {"a": SpatialPose((0, 0, 0), 0), "b": SpatialPose((1, 0, 0), pi)}
+    )
+    session.session_id = "s"
+    first = policy.validate_and_sanitize(candidate, session)
+    second = policy.validate_and_sanitize(candidate, session)
+    assert first.fallback_used and first.candidate.text == second.candidate.text
 
 
 def test_conversation_spatial_boundaries_accept_exact_limits_and_reject_overage() -> None:
