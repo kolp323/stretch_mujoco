@@ -280,6 +280,115 @@
             material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
       <geom name="humanoid_preview_frame_eat_07_body" type="mesh" mesh="humanoid_eat_07_body"
             material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <!-- Approved interaction clips; only one frame is visible at runtime. -->
+      <geom name="humanoid_preview_frame_pick_up_00_body" type="mesh" mesh="humanoid_pick_up_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_01_body" type="mesh" mesh="humanoid_pick_up_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_02_body" type="mesh" mesh="humanoid_pick_up_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_03_body" type="mesh" mesh="humanoid_pick_up_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_04_body" type="mesh" mesh="humanoid_pick_up_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_05_body" type="mesh" mesh="humanoid_pick_up_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_06_body" type="mesh" mesh="humanoid_pick_up_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_07_body" type="mesh" mesh="humanoid_pick_up_07_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_08_body" type="mesh" mesh="humanoid_pick_up_08_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_09_body" type="mesh" mesh="humanoid_pick_up_09_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_10_body" type="mesh" mesh="humanoid_pick_up_10_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_11_body" type="mesh" mesh="humanoid_pick_up_11_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_00_body" type="mesh" mesh="humanoid_give_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_01_body" type="mesh" mesh="humanoid_give_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_02_body" type="mesh" mesh="humanoid_give_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_03_body" type="mesh" mesh="humanoid_give_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_04_body" type="mesh" mesh="humanoid_give_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_05_body" type="mesh" mesh="humanoid_give_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_06_body" type="mesh" mesh="humanoid_give_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_00_body" type="mesh" mesh="humanoid_receive_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_01_body" type="mesh" mesh="humanoid_receive_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_02_body" type="mesh" mesh="humanoid_receive_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_03_body" type="mesh" mesh="humanoid_receive_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_04_body" type="mesh" mesh="humanoid_receive_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_05_body" type="mesh" mesh="humanoid_receive_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_06_body" type="mesh" mesh="humanoid_receive_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_07_body" type="mesh" mesh="humanoid_receive_07_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_08_body" type="mesh" mesh="humanoid_receive_08_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_09_body" type="mesh" mesh="humanoid_receive_09_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_10_body" type="mesh" mesh="humanoid_receive_10_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_11_body" type="mesh" mesh="humanoid_receive_11_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_12_body" type="mesh" mesh="humanoid_receive_12_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_13_body" type="mesh" mesh="humanoid_receive_13_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_14_body" type="mesh" mesh="humanoid_receive_14_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_15_body" type="mesh" mesh="humanoid_receive_15_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_16_body" type="mesh" mesh="humanoid_receive_16_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_17_body" type="mesh" mesh="humanoid_receive_17_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_18_body" type="mesh" mesh="humanoid_receive_18_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_19_body" type="mesh" mesh="humanoid_receive_19_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_20_body" type="mesh" mesh="humanoid_receive_20_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_21_body" type="mesh" mesh="humanoid_receive_21_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_22_body" type="mesh" mesh="humanoid_receive_22_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_23_body" type="mesh" mesh="humanoid_receive_23_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <!-- Registered BEAT full-body talk clip; only one frame is visible at runtime. -->
+      <geom name="humanoid_preview_frame_talk_00_body" type="mesh" mesh="humanoid_talk_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_01_body" type="mesh" mesh="humanoid_talk_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_02_body" type="mesh" mesh="humanoid_talk_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_03_body" type="mesh" mesh="humanoid_talk_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_04_body" type="mesh" mesh="humanoid_talk_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_05_body" type="mesh" mesh="humanoid_talk_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_06_body" type="mesh" mesh="humanoid_talk_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_07_body" type="mesh" mesh="humanoid_talk_07_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_08_body" type="mesh" mesh="humanoid_talk_08_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_09_body" type="mesh" mesh="humanoid_talk_09_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_10_body" type="mesh" mesh="humanoid_talk_10_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_11_body" type="mesh" mesh="humanoid_talk_11_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_12_body" type="mesh" mesh="humanoid_talk_12_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_13_body" type="mesh" mesh="humanoid_talk_13_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_14_body" type="mesh" mesh="humanoid_talk_14_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_15_body" type="mesh" mesh="humanoid_talk_15_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_16_body" type="mesh" mesh="humanoid_talk_16_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_17_body" type="mesh" mesh="humanoid_talk_17_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_18_body" type="mesh" mesh="humanoid_talk_18_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_19_body" type="mesh" mesh="humanoid_talk_19_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_20_body" type="mesh" mesh="humanoid_talk_20_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_21_body" type="mesh" mesh="humanoid_talk_21_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_22_body" type="mesh" mesh="humanoid_talk_22_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_23_body" type="mesh" mesh="humanoid_talk_23_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_24_body" type="mesh" mesh="humanoid_talk_24_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_25_body" type="mesh" mesh="humanoid_talk_25_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_26_body" type="mesh" mesh="humanoid_talk_26_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_27_body" type="mesh" mesh="humanoid_talk_27_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_28_body" type="mesh" mesh="humanoid_talk_28_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_29_body" type="mesh" mesh="humanoid_talk_29_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_30_body" type="mesh" mesh="humanoid_talk_30_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_31_body" type="mesh" mesh="humanoid_talk_31_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_32_body" type="mesh" mesh="humanoid_talk_32_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_33_body" type="mesh" mesh="humanoid_talk_33_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_34_body" type="mesh" mesh="humanoid_talk_34_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_35_body" type="mesh" mesh="humanoid_talk_35_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_36_body" type="mesh" mesh="humanoid_talk_36_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_37_body" type="mesh" mesh="humanoid_talk_37_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_38_body" type="mesh" mesh="humanoid_talk_38_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_39_body" type="mesh" mesh="humanoid_talk_39_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_40_body" type="mesh" mesh="humanoid_talk_40_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_41_body" type="mesh" mesh="humanoid_talk_41_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_42_body" type="mesh" mesh="humanoid_talk_42_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_43_body" type="mesh" mesh="humanoid_talk_43_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_44_body" type="mesh" mesh="humanoid_talk_44_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_45_body" type="mesh" mesh="humanoid_talk_45_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_46_body" type="mesh" mesh="humanoid_talk_46_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_47_body" type="mesh" mesh="humanoid_talk_47_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_48_body" type="mesh" mesh="humanoid_talk_48_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_49_body" type="mesh" mesh="humanoid_talk_49_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_50_body" type="mesh" mesh="humanoid_talk_50_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_51_body" type="mesh" mesh="humanoid_talk_51_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_52_body" type="mesh" mesh="humanoid_talk_52_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_53_body" type="mesh" mesh="humanoid_talk_53_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_54_body" type="mesh" mesh="humanoid_talk_54_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_55_body" type="mesh" mesh="humanoid_talk_55_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_56_body" type="mesh" mesh="humanoid_talk_56_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_57_body" type="mesh" mesh="humanoid_talk_57_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_58_body" type="mesh" mesh="humanoid_talk_58_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_59_body" type="mesh" mesh="humanoid_talk_59_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_60_body" type="mesh" mesh="humanoid_talk_60_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_61_body" type="mesh" mesh="humanoid_talk_61_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_62_body" type="mesh" mesh="humanoid_talk_62_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_63_body" type="mesh" mesh="humanoid_talk_63_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
       <geom name="humanoid_preview_collision_torso" type="capsule"
             fromto="0 0 0.72 0 0 1.38" size="0.16" rgba="0 0 0 0"
             friction="0.8 0.01 0.001"/>
@@ -385,5 +494,10 @@
       <geom name="plant_leaf_1" type="ellipsoid" pos="0.13 0 0.78" size="0.18 0.07 0.28" euler="0 0.55 0" material="plant"/>
       <geom name="plant_leaf_2" type="ellipsoid" pos="-0.13 0 0.73" size="0.18 0.07 0.25" euler="0 -0.55 0" material="plant"/>
     </body>
+    <!-- Separate roots keep two actors outside each other's collision proxies. -->
+    <site name="employee_01_handover_stand_site" pos="-0.35 -1.20 0" euler="0 0 0"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="employee_02_handover_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
+          size="0.025" rgba="0 0 0 0"/>
   </worldbody>
 </mujoco>

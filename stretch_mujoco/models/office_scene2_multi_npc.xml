@@ -356,6 +356,11 @@
 
     <!-- Stretch robot handover sites -->
     <site name="stretch_handover_site" pos="-0.7 -3.8 1.02" size="0.025" rgba="0 0 0 0"/>
+    <!-- Separate roots keep two actors outside each other's collision proxies. -->
+    <site name="employee_01_handover_stand_site" pos="-0.35 -1.20 0" euler="0 0 0"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="employee_02_handover_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
+          size="0.025" rgba="0 0 0 0"/>
 
     <!-- Door -->
     <body name="office_door" pos="-8 -6 0"/>
