@@ -60,6 +60,69 @@ def test_action_validation_checks_location_and_target() -> None:
     assert "does not exist" in missing_result.errors[0]
 
 
+def test_work_session_inserts_sit_and_stand_using_the_workstation_chair_contract() -> None:
+    runtime = load_runtime()
+    agent = runtime.agents["employee_01"]
+
+    result = runtime.submit_action(
+        ActionCommand("employee_01", ActionType.WORK, "workstation_right")
+    )
+
+    assert result.valid
+    assert agent.executor.command == ActionCommand("employee_01", ActionType.MOVE_TO, "chair_right")
+    assert [command.action for command in agent.planner.action_queue] == [
+        ActionType.SIT,
+        ActionType.WORK,
+        ActionType.STAND_UP,
+        ActionType.IDLE,
+    ]
+    assert agent.planner.action_queue[1].parameters["_desk_work_seat"] == "chair_right"
+
+    runtime.tick(3.0)
+    assert agent.executor.command is not None
+    assert agent.executor.command.action == ActionType.SIT
+    runtime.tick(0.5)
+    assert agent.state.location == "chair_right"
+    assert runtime.world.find_relations(
+        subject="chair_right", relation=RelationType.OCCUPIED_BY, object_id="employee_01"
+    )
+    assert agent.executor.command is not None
+    assert agent.executor.command.action == ActionType.WORK
+
+    runtime.tick(15.0)
+    assert agent.executor.command is not None
+    assert agent.executor.command.action == ActionType.STAND_UP
+    runtime.tick(0.5)
+    assert not runtime.world.find_relations(
+        subject="chair_right", relation=RelationType.OCCUPIED_BY, object_id="employee_01"
+    )
+    assert agent.executor.command is not None
+    assert agent.executor.command.action == ActionType.IDLE
+
+
+def test_work_rejects_scene_without_one_unambiguous_workstation_chair_relation() -> None:
+    runtime = load_runtime()
+    runtime.world.remove_relation("chair_right", RelationType.NEAR, "workstation_right")
+
+    missing = runtime.submit_action(
+        ActionCommand("employee_01", ActionType.WORK, "workstation_right")
+    )
+
+    assert not missing.valid
+    assert "requires exactly one Chair --NEAR--> Workstation relation; found 0" in missing.errors[0]
+
+    runtime = load_runtime()
+    runtime.world.add_relation("chair_left", RelationType.NEAR, "workstation_right")
+    ambiguous = runtime.submit_action(
+        ActionCommand("employee_01", ActionType.WORK, "workstation_right")
+    )
+
+    assert not ambiguous.valid
+    assert (
+        "requires exactly one Chair --NEAR--> Workstation relation; found 2" in ambiguous.errors[0]
+    )
+
+
 def test_reservations_reject_conflicting_agents() -> None:
     reservations = ReservationManager()
 

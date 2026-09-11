@@ -238,6 +238,14 @@ class NpcAssetManifest:
                     f"Bundle '{bundle.bundle_id}' restricted production clips are incomplete: "
                     f"{', '.join(sorted(missing_clips))}"
                 )
+        sit_clip = bundle.clips.get("sit") or bundle.clips.get("sit_down")
+        stand_up_clip = bundle.clips.get("stand_up")
+        if sit_clip is not None and stand_up_clip is not None:
+            if stand_up_clip.frames != tuple(reversed(sit_clip.frames)):
+                errors.append(
+                    f"Bundle '{bundle.bundle_id}' stand_up frames must be the reverse of "
+                    "its registered sit sequence"
+                )
         for hash_path, digest in bundle.sha256.items():
             if len(digest) != 64 or any(
                 character not in "0123456789abcdefABCDEF" for character in digest

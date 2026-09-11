@@ -12,6 +12,7 @@ from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 from .actions import ActionExecution, ActionType, ExecutionStatus
 from .conversation import ConversationSession, DialogueTurn
 from .action_recipes import ACTION_RECIPES, ActionRecipe
+from .desk_work import WORK_DURATION_SECONDS_PARAMETER, WORK_SESSION_SEAT_PARAMETER
 from .interactions import InteractionCoordinator
 
 
@@ -19,6 +20,7 @@ EMBODIED_ACTION_REQUIRED_CLIPS: dict[ActionType, frozenset[str]] = {
     ActionType.MOVE_TO: frozenset({ACTION_RECIPES[ActionType.MOVE_TO].animation}),
     ActionType.SIT: frozenset({ACTION_RECIPES[ActionType.SIT].animation}),
     ActionType.STAND_UP: frozenset({ACTION_RECIPES[ActionType.STAND_UP].animation}),
+    ActionType.WORK: frozenset({ACTION_RECIPES[ActionType.WORK].animation}),
     ActionType.PICK_UP: frozenset({ACTION_RECIPES[ActionType.PICK_UP].animation}),
     ActionType.PUT_DOWN: frozenset({ACTION_RECIPES[ActionType.PUT_DOWN].animation}),
     # A handover cannot complete unless both participants' clips are available.
@@ -189,6 +191,8 @@ class MujocoNpcActionDriver:
             return self._start_sit(execution)
         if command.action == ActionType.STAND_UP:
             return self._start_stand_up(execution)
+        if command.action == ActionType.WORK:
+            return self._start_desk_work(execution)
         if command.action in {
             ActionType.USE_COMPUTER,
             ActionType.TALK,
@@ -651,6 +655,40 @@ class MujocoNpcActionDriver:
             timeout_seconds=recipe.timeout_seconds,
         )
         return DriverResult(ExecutionStatus.RUNNING, "stand_transition", handle)
+
+    def _start_desk_work(self, execution: ActionExecution) -> DriverResult:
+        """Play work in the seat established by the preceding sit receipt."""
+        assert execution.command is not None
+        command = execution.command
+        seat = command.parameters.get(WORK_SESSION_SEAT_PARAMETER)
+        duration = command.parameters.get(WORK_DURATION_SECONDS_PARAMETER)
+        if not isinstance(seat, str) or seat not in self.location_sites:
+            return DriverResult(
+                ExecutionStatus.FAILED, "prepare", error="desk_work_missing_seat_site"
+            )
+        if (
+            not isinstance(duration, (int, float))
+            or isinstance(duration, bool)
+            or not math.isfinite(duration)
+            or duration <= 0
+        ):
+            return DriverResult(
+                ExecutionStatus.FAILED, "prepare", error="desk_work_invalid_duration"
+            )
+        handle = self._submit_stage(
+            command.agent_id,
+            execution.execution_id,
+            "work",
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": ACTION_RECIPES[ActionType.WORK].animation,
+                "duration": float(duration),
+                "arrival_clip": "seated_idle",
+                "target_site": self.location_sites[seat],
+            },
+            timeout_seconds=ACTION_RECIPES[ActionType.WORK].timeout_seconds,
+        )
+        return DriverResult(ExecutionStatus.RUNNING, "work", handle)
 
     def _start_handover(self, execution: ActionExecution) -> DriverResult:
         assert execution.command is not None

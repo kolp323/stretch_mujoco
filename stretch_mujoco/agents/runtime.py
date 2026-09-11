@@ -47,6 +47,13 @@ from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
 from .llm_config import LLMProviderConfig
 from .llm_provider import OpenAICompatibleProvider
 from .models import AgentAvailability, EmployeeSchedule, MemoryEntry, ScheduleItem
+from .desk_work import (
+    WORK_DURATION_SECONDS_PARAMETER,
+    WORK_SESSION_SEAT_PARAMETER,
+    chair_for_workstation,
+    desk_work_session_actions,
+    is_desk_work_session,
+)
 
 ACTION_DURATIONS_MINUTES = {
     ActionType.IDLE: 1.0,
@@ -128,8 +135,8 @@ class OfficeAgentRuntime:
         trajectory_profile_path: Path | None = None,
         conversation_max_observation_age: float = DEFAULT_MAX_OBSERVATION_AGE,
     ) -> None:
-        if state_machine_hz <= 0 or needs_hz <= 0:
-            raise ValueError("Agent update frequencies must be positive")
+        if state_machine_hz <= 0 or needs_hz <= 0 or minutes_per_second <= 0:
+            raise ValueError("Agent update frequencies and clock rate must be positive")
         if (
             utility_interval_seconds[0] <= 0
             or utility_interval_seconds[1] < utility_interval_seconds[0]
@@ -330,7 +337,39 @@ class OfficeAgentRuntime:
                 errors.append("Agent is not occupying the target chair")
         elif command.action == ActionType.WORK:
             self._require_type(target, ObjectType.WORKSTATION, errors)
-            self._require_location(agent, target, errors)
+            if target in self.world.objects:
+                try:
+                    chair = chair_for_workstation(self.world, target)
+                except ValueError as error:
+                    errors.append(str(error))
+                else:
+                    if is_desk_work_session(command):
+                        if command.parameters.get(WORK_SESSION_SEAT_PARAMETER) != chair:
+                            errors.append("Desk work session seat does not match workstation")
+                        self._require_location(agent, chair, errors)
+                        if not self.world.find_relations(
+                            subject=chair,
+                            relation=RelationType.OCCUPIED_BY,
+                            object_id=command.agent_id,
+                        ):
+                            errors.append(
+                                "Agent must be seated at the workstation chair before work"
+                            )
+                        duration = command.parameters.get(WORK_DURATION_SECONDS_PARAMETER)
+                        if (
+                            not isinstance(duration, (int, float))
+                            or isinstance(duration, bool)
+                            or not math.isfinite(duration)
+                            or duration <= 0
+                        ):
+                            errors.append(
+                                "Desk work session duration must be a positive finite number"
+                            )
+                    elif not self.reservations.is_available(chair, command.agent_id):
+                        errors.append(
+                            f"Target '{chair}' is reserved by "
+                            f"'{self.reservations.owner(chair)}'"
+                        )
         elif command.action == ActionType.REST:
             self._require_type(target, ObjectType.CHAIR, errors)
             self._require_location(agent, target, errors)
@@ -385,6 +424,8 @@ class OfficeAgentRuntime:
             self._normalize_target(command.target),
             parameters,
         )
+        if normalized.action == ActionType.WORK and not is_desk_work_session(normalized):
+            return self._submit_desk_work_session(normalized)
         validation = self.validate_action(normalized)
         if not validation.valid:
             self._emit(
@@ -436,6 +477,47 @@ class OfficeAgentRuntime:
             }:
                 self._fail_action(agent, result.error or result.status.value)
         return validation
+
+    def _submit_desk_work_session(self, command: ActionCommand) -> ValidationResult:
+        """Expand a public work request into receipt-gated seated work actions."""
+        validation = self.validate_action(command)
+        if not validation.valid:
+            self._emit(
+                "action_rejected",
+                command.agent_id,
+                {"action": command.action.value, "errors": list(validation.errors)},
+            )
+            if command.agent_id in self.agents:
+                self._record_failure(
+                    command.agent_id,
+                    {"action": command.action.value, "errors": validation.errors},
+                )
+            return validation
+        agent = self.agents[command.agent_id]
+        if agent.planner.action_queue:
+            return ValidationResult(False, ("Agent has a pending plan",))
+        assert command.target is not None
+        try:
+            actions = desk_work_session_actions(
+                agent,
+                self.world,
+                command.target,
+                duration_seconds=ACTION_DURATIONS_MINUTES[ActionType.WORK]
+                / self.minutes_per_second,
+            )
+        except ValueError as error:
+            return ValidationResult(False, (str(error),))
+        chair = str(actions[-2].target)
+        self._emit(
+            "desk_work_session_started",
+            command.agent_id,
+            {"workstation": command.target, "chair": chair},
+        )
+        agent.planner.action_queue.extend(actions[1:])
+        first_result = self.submit_action(actions[0])
+        if not first_result.valid:
+            agent.planner.clear_plan()
+        return first_result
 
     def tick(
         self, seconds: float, semantic_snapshot: dict[str, Any] | None = None
@@ -1384,6 +1466,7 @@ class OfficeAgentRuntime:
             self.world.replace_relation(target, RelationType.OCCUPIED_BY, agent.agent_id)
         elif action == ActionType.STAND_UP:
             self.world.remove_relation(target, RelationType.OCCUPIED_BY, agent.agent_id)
+            self.reservations.release(target, agent.agent_id)
         elif action == ActionType.REST:
             agent.needs.fatigue = max(0.0, agent.needs.fatigue - 0.35)
         elif action == ActionType.EAT:

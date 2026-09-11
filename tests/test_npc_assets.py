@@ -85,6 +85,52 @@ def test_approved_interaction_registration_closes_production_clip_contract() -> 
     )
 
 
+def test_registered_stand_up_frames_are_the_reversed_sit_sequence() -> None:
+    manifest_paths = (
+        MODELS / "assets/humanoid/generated/animations/manifest.json",
+        MODELS
+        / "assets/humanoid/generated/animations/manifest.beautiful_hair_v1.npc_jordan_patell.runtime.json",
+        MODELS
+        / "assets/humanoid/generated/animations/manifest.ponytail_hair_v1.npc_priya_narayanan.runtime.json",
+    )
+    for manifest_path in manifest_paths:
+        manifest = NpcAssetManifest.from_json(manifest_path)
+        for bundle in manifest.bundles.values():
+            sit = bundle.clips.get("sit") or bundle.clips.get("sit_down")
+            stand_up = bundle.clips.get("stand_up")
+            if sit is not None and stand_up is not None:
+                assert stand_up.frames == tuple(reversed(sit.frames))
+
+
+def test_asset_loader_rejects_a_stand_up_sequence_that_is_not_reversed_sit(tmp_path: Path) -> None:
+    for name in ("idle.obj", "sit_00.obj", "sit_01.obj"):
+        (tmp_path / name).write_text("v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n")
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(
+        """
+        {
+          "schema_version": 1,
+          "bundles": {
+            "bundle": {
+              "format": "mesh_sequence", "topology_id": "test", "coordinate_system": "mujoco_z_up",
+              "unit": "meter", "height_m": 1.7, "material_slots": ["body"], "asset_quality": "preview",
+              "appearances": {},
+              "clips": {
+                "idle": {"fps": 8, "loop": true, "root_motion": "in_place", "frames": ["idle.obj"]},
+                "sit": {"fps": 8, "loop": false, "root_motion": "in_place", "frames": ["sit_00.obj", "sit_01.obj"]},
+                "stand_up": {"fps": 8, "loop": false, "root_motion": "in_place", "frames": ["sit_00.obj", "sit_01.obj"]}
+              },
+              "sha256": {}
+            }
+          }
+        }
+        """
+    )
+
+    with pytest.raises(ValueError, match="stand_up frames must be the reverse"):
+        NpcAssetManifest.from_json(manifest_path)
+
+
 def test_interaction_registrar_projects_reviewed_clips_and_hashes(tmp_path: Path) -> None:
     frame = tmp_path / "humanoid_give_00_body.obj"
     frame.write_text("v 0 0 0\n")

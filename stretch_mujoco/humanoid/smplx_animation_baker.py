@@ -76,6 +76,41 @@ def register_approved_interaction_clips(
     return manifest
 
 
+def register_stand_up_as_reversed_sit(manifest_path: Path) -> dict[str, Any]:
+    """Replace every registered stand-up sequence with the corresponding reversed sit clip.
+
+    The external action name and its completion marker remain ``stand_up``;
+    only the frame ownership changes.  This is deliberately a manifest-level
+    replacement so all newly composed scenes receive the corrected sequence.
+    """
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    bundles = manifest.get("bundles")
+    if not isinstance(bundles, dict):
+        raise SmplxAssetError("NPC asset manifest has no bundles mapping")
+    for bundle_id, bundle in bundles.items():
+        if not isinstance(bundle, dict):
+            raise SmplxAssetError(f"NPC asset manifest bundle '{bundle_id}' is invalid")
+        clips = bundle.get("clips")
+        if not isinstance(clips, dict) or "stand_up" not in clips:
+            continue
+        sit = clips.get("sit") or clips.get("sit_down")
+        stand_up = clips["stand_up"]
+        if not isinstance(sit, dict) or not isinstance(stand_up, dict):
+            raise SmplxAssetError(f"NPC asset manifest bundle '{bundle_id}' has invalid sit clips")
+        frames = sit.get("frames")
+        if not isinstance(frames, list) or not all(isinstance(frame, str) for frame in frames):
+            raise SmplxAssetError(f"NPC asset manifest bundle '{bundle_id}' has invalid sit frames")
+        stand_up["frames"] = list(reversed(frames))
+
+    candidate = manifest_path.with_suffix(manifest_path.suffix + ".tmp")
+    candidate.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    from stretch_mujoco.npc.assets import NpcAssetManifest
+
+    NpcAssetManifest.from_json(candidate)
+    os.replace(candidate, manifest_path)
+    return manifest
+
+
 def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str, Any]:
     """Write the distributable contract for already baked, locally licensed frames."""
     texture_name = "smplx_employee_diffuse.png"
@@ -85,6 +120,10 @@ def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str
         ]
         for clip_name in OFFICE_CLIPS
     }
+    # ``stand_up`` is intentionally derived from the registered sit sequence;
+    # do not make a newly baked raw stand-up motion part of the runtime asset
+    # contract.
+    clip_files["stand_up"] = list(reversed(clip_files["sit"]))
     missing = [clip_name for clip_name, paths in clip_files.items() if not paths]
     if not (output_dir / texture_name).is_file():
         missing.append(texture_name)

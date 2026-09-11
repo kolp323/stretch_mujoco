@@ -526,6 +526,7 @@ def test_production_driver_excludes_unregistered_actions_before_submitting_comma
             ActionType.MOVE_TO,
             ActionType.SIT,
             ActionType.STAND_UP,
+            ActionType.WORK,
             ActionType.PICK_UP,
             ActionType.PUT_DOWN,
             ActionType.HANDOVER,
@@ -546,6 +547,47 @@ def test_production_driver_excludes_unregistered_actions_before_submitting_comma
 
     assert result.error == "unsupported_action"
     assert simulator.commands == []
+
+
+def test_driver_reads_desk_work_sites_and_seat_yaws_from_scene_semantics() -> None:
+    simulator = FakeSimulator()
+    world = SemanticWorld.from_json(MODELS / "office_semantics.json")
+
+    driver = create_mujoco_action_driver(simulator, world=world)
+
+    assert driver.location_sites["workstation_right"] == "desk_right_work_site"
+    assert driver.location_sites["chair_right"] == "chair_right_sit"
+    assert driver.seat_yaws["chair_right"] == pytest.approx(math.pi)
+
+
+def test_desk_work_driver_plays_at_the_seated_chair_until_session_duration() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {"chair_right": "chair_right_sit"},
+        available_clips={"work"},
+    )
+    execution = ActionExecution(
+        execution_id="desk_work_1",
+        command=ActionCommand(
+            "employee_01",
+            ActionType.WORK,
+            "workstation_right",
+            {"_desk_work_seat": "chair_right", "_desk_work_duration_seconds": 15.0},
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.phase == "work"
+    assert simulator.command.kind == NpcCommandKind.PLAY_ANIMATION
+    assert simulator.command.payload == {
+        "clip": "work",
+        "duration": 15.0,
+        "arrival_clip": "seated_idle",
+        "target_site": "chair_right_sit",
+    }
 
 
 def test_runtime_rejects_candidate_without_registered_production_clip() -> None:

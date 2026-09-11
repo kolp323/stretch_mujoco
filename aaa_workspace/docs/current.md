@@ -835,7 +835,7 @@ Success: no issues found in 1 source file
 
 2026-09-10 用户确认此前已审核通过 `stand_up`、`put_down` 和 `gesture_wave`，并明确授权 production 注册。这是对第 18 节自动候选审查结果的人工验收决定，而不是把尚未审查的 queue 条目直接标为完成。受限本地 intake approval record 固定三项来源和裁剪：BMLmovi Subject 11 `1005:1536` → `stand_up`，Subject 50 `573:1085` → `place`（`PUT_DOWN` 的 runtime clip），以及 Subject 14 `37:287` → `gesture_wave`；全部按 8 FPS canonical root policy 生成可复现 baker input。
 
-`bake_and_register_additional_clips()` 只接受已准备的本地 motion：它先写入并 SHA-256 登记每个 OBJ frame，之后才原子更新 production manifest，绝不生成合成帧或注册缺失文件。production manifest 现含 `stand_up/standing`（35 帧）、`place/release`（34 帧）和 `gesture_wave/gesture_wave_complete`（16 帧），三项均为非循环、in-place mesh sequence。`OFFICE_CLIPS` 与 `MujocoNpcActionDriver` 因而允许 `STAND_UP`、`PUT_DOWN`、`GESTURE_WAVE`；`GESTURE_POINT` 仍无已批准及烘焙的 mesh asset，继续在提交物理命令之前拒绝。wave 是完整 mesh sequence 的直接播放，不宣称 OBJ backend 具备尚未实现的上半身 overlay。
+`bake_and_register_additional_clips()` 只接受已准备的本地 motion：它先写入并 SHA-256 登记每个 OBJ frame，之后才原子更新 production manifest，绝不生成合成帧或注册缺失文件。production manifest 的 `stand_up` 现直接注册为 `sit`（或 production 的 `sit_down`）的逆序帧；配饰派生 manifest 亦同。`stand_up` 的动作名和 `standing` marker 不变，但严格 manifest loader 会拒绝任何重新登记原始 stand-up OBJ 序列的 bundle；`MeshSequenceBackend` 仅为旧的已生成场景保留相同的兼容解析。`OFFICE_CLIPS` 与 `MujocoNpcActionDriver` 因而允许 `STAND_UP`、`PUT_DOWN`、`GESTURE_WAVE`；`GESTURE_POINT` 仍无已批准及烘焙的 mesh asset，继续在提交物理命令之前拒绝。wave 是完整 mesh sequence 的直接播放，不宣称 OBJ backend 具备尚未实现的上半身 overlay。
 
 ## 19. NPC 场景轨迹 profile（当前事实）
 
@@ -867,6 +867,12 @@ PYTHONPATH=. MUJOCO_GL=egl .venv/bin/python tools/render_npc_acceptance_video.py
 ```
 
 preflight 还会用 `LocomotionController` 逐 10 ms 推进每条 route，包含每个渐进转向姿态；MuJoCo 必须报告 NPC collision proxy 与所有非 `office_floor` 场景 geom 零接触，否则以 `trajectory_route_collision` 拒绝。`office_v1` 当前分别审计了 336、315、554、674 个 move/turn pose，均为零接触；JSON receipt 对每条 route 写入采样数与 `collision_free: true`。
+
+## 20. 工位 work 会话（当前事实）
+
+`OfficeAgentRuntime.submit_action(WORK)` 现在是一个 receipt-gated 的工位会话入口，而不是直接在 desk 位置播放 work。它把日程、LLM 和 API 的同一 public `WORK` 请求统一展开为 `MOVE_TO(chair) → SIT(chair) → WORK(workstation) → STAND_UP(chair) → IDLE`；只有 `SIT` 的物理回执成功并提交 `OCCUPIED_BY` 后，内部 work 命令才会被接受。work 结束后，`STAND_UP` 成功才释放椅子占用和 reservation，因此不会出现工作中站着、或失败时提前释放座位的状态。
+
+椅子不是由 `chair_right` 一类名字或坐标猜测：场景必须恰好声明一条 `Chair --NEAR--> Workstation` 关系。缺少或多条关联均会以稳定验证错误拒绝 work。实体桥接还从语义 interaction point 读取每个 `desk_work_site` 和 `chair_sit_site`；chair site 必须显式给出有限 `attributes.yaw`，否则 driver 在新场景装配期失败。因而迁移场景只需提供新的对象 ID、上述关系和 sites/yaw，不需要修改 office 专用动作代码。实体 `WORK` 在前序 sit 已确立的 chair site 播放并保持 `seated_idle`，不会再导航到 desk site 使 NPC 离开椅子。
 
 可用以下命令生成实际 controller 驱动的路线巡回视频。四条 route 依次由真实 `MOVE_TO` 命令执行；路线之间的 source 切换明确标为静态 placement，不会伪造穿模移动。renderer 在开始写 MP4 前强制运行上述路径与转向碰撞审计，并把每条 route 的审计采样数写入画面 HUD 和 sidecar report：
 

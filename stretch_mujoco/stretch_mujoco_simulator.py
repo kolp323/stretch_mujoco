@@ -439,6 +439,7 @@ class StretchMujocoSimulator:
                     agent_id: agent.state.location
                     for agent_id, agent in self.agent_runtime.agents.items()
                 },
+                world=self.semantic_world,
             )
         return self.agent_runtime
 

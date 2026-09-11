@@ -125,23 +125,11 @@ class EmployeePlanner:
                 if schedule_item and schedule_item.activity == "work"
                 else agent.profile.preferences.get("workstation", "workstation_right")
             )
-            actions = EmployeePlanner._move_if_needed(agent, location)
-            computers = [
-                computer.object_id
-                for computer in world.objects_of_type(ObjectType.COMPUTER)
-                if world.find_relations(
-                    subject=computer.object_id,
-                    relation=RelationType.ON,
-                    object_id=location,
-                )
-            ]
-            use_computer = computers and (seed + day + self.decision_count) % 2
-            if use_computer:
-                actions.append(ActionCommand(agent.agent_id, ActionType.USE_COMPUTER, computers[0]))
-                variant = "computer_work"
-            else:
-                actions.append(ActionCommand(agent.agent_id, ActionType.WORK, location))
-                variant = "desk_work"
+            # Work is expanded by the runtime into the portable chair session
+            # contract.  Keeping only this public action here ensures planner,
+            # LLM, and API work requests share one transition path.
+            actions = [ActionCommand(agent.agent_id, ActionType.WORK, location)]
+            variant = "desk_work"
         elif goal in {UtilityGoal.EAT, UtilityGoal.DRINK}:
             object_id = agent.profile.preferences.get(
                 "snack" if goal == UtilityGoal.EAT else "drink",

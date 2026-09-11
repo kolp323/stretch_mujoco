@@ -148,12 +148,14 @@
     "chair_left_sit": {
       "role": "chair_sit_site",
       "owner": "chair_left",
-      "site": "chair_left_sit"
+      "site": "chair_left_sit",
+      "attributes": {"yaw": 3.141592653589793}
     },
     "chair_right_sit": {
       "role": "chair_sit_site",
       "owner": "chair_right",
-      "site": "chair_right_sit"
+      "site": "chair_right_sit",
+      "attributes": {"yaw": 3.141592653589793}
     },
     "desk_left_work": {
       "role": "desk_work_site",
