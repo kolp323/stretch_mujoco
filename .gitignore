@@ -16,14 +16,21 @@ wheels/
 
 # Other
 .mypy_cache/
+.ruff_cache/
 .vscode/
 .idea/
 .claude/
 .codex/
 .agents/
 .pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+site/
 MUJOCO_LOG.TXT
 *.mp4
+*.avi
+*.mov
 *.png
 *.jpg
 /output/
@@ -36,6 +43,9 @@ MUJOCO_LOG.TXT
 *.npz
 *.jsonl
 *.log
+*.partial
+*.tmp
+*.bak
 
 # Local model/checkpoint files.
 *.ckpt
@@ -46,9 +56,15 @@ MUJOCO_LOG.TXT
 # Local diagnostic dumps and generated recordings.
 /yjw@*
 /outputs/
+/aaa_workspace/demo/
 /stretch_mujoco/recording/*.jsonl
 /stretch_mujoco/recording/*.mp4
 /stretch_mujoco/recording/recording_manifest.json
+
+# The CesiumMan preview bundle is a redistributable, hash-pinned runtime
+# fixture.  Keep its source texture with the OBJ and manifest; all generated
+# humanoid textures remain ignored below.
+!stretch_mujoco/models/assets/humanoid/cesium_man.png
 
 # Local task tracking files; do not include them in feature PRs.
 /aaa_workspace/task/
@@ -63,6 +79,7 @@ MUJOCO_LOG.TXT
 # Temp runtime XML 
 stretch_temp_abs.xml
 stretch_mujoco/models/.npc_*.xml
+stretch_mujoco/models/.*.xml
 
 # Licensed humanoid model parameters must not be redistributed.
 models_smplx_*.zip
