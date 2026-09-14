@@ -30,10 +30,7 @@ MODELS = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
 OFFICE_PROFILE = (
     Path(__file__).resolve().parents[1] / "stretch_mujoco/npc/trajectory_profiles/office_v1.json"
 )
-DEMO_HANDOVER_POPULATION = (
-    Path(__file__).resolve().parents[1]
-    / "aaa_workspace/demo/new_demo/production_npc_handover_population.json"
-)
+PRODUCTION_POPULATION = MODELS / "office_population.production.example.json"
 
 
 class FakeSimulator:
@@ -421,8 +418,8 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
     ]
 
 
-def test_demo_handover_roles_use_close_opposing_stations() -> None:
-    population = json.loads(DEMO_HANDOVER_POPULATION.read_text(encoding="utf-8"))
+def test_production_handover_roles_use_close_opposing_stations() -> None:
+    population = json.loads(PRODUCTION_POPULATION.read_text(encoding="utf-8"))
     handover = population["interaction_templates"]["handover"]
 
     assert handover["giver"] == {
