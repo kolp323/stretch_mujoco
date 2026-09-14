@@ -43,7 +43,21 @@ class GraspIKCandidate:
         task_error = (
             self.position_error * 100.0 + self.orientation_error * 0.2 - self.confidence * 0.05
         )
-        wrist_posture = abs(float(self.joints[3])) * 0.02 + abs(float(self.joints[4])) * 0.01
+        # A parallel-jaw gripper is symmetric under a 180 degree rotation about its
+        # own approach axis, so callers typically also IK-solve each candidate's
+        # ``pose @ diag([-1, -1, 1, 1])`` twin (same grasp, wrist rolled by pi) to
+        # give the solver more reachable options. Both twins land on nearly
+        # identical position/orientation error, so without a roll term here the
+        # twin that wins is essentially numerical noise -- which silently picks
+        # the "upside down" wrist_roll ~= +-pi solution as often as the natural
+        # wrist_roll ~= 0 one. Penalizing |wrist_roll| breaks that tie toward the
+        # smaller, more natural rotation from the (wrist_roll = 0) rest posture,
+        # while staying far too small to override a genuine task_error difference.
+        wrist_posture = (
+            abs(float(self.joints[3])) * 0.02
+            + abs(float(self.joints[4])) * 0.01
+            + abs(float(self.joints[5])) * 0.01
+        )
         return task_error + wrist_posture
 
 

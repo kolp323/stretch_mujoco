@@ -1,0 +1,147 @@
+{
+  "scene_count": 10,
+  "source_dataset": "HSSD",
+  "scene_split": "scenes-uncluttered",
+  "scenes": [
+    {
+      "scene_id": "home_01_102344115",
+      "hssd_scene_id": "102344115",
+      "title": "Simplified Home 01",
+      "mjcf": "home_01_102344115.xml",
+      "manifest": "home_01_102344115.json",
+      "preview": "home_01_102344115.png",
+      "object_count": 44,
+      "robot_initial_pose": [
+        -3.772879756930626,
+        3.494294986128807,
+        0.0
+      ]
+    },
+    {
+      "scene_id": "home_02_103997919_171031233",
+      "hssd_scene_id": "103997919_171031233",
+      "title": "Simplified Home 02",
+      "mjcf": "home_02_103997919_171031233.xml",
+      "manifest": "home_02_103997919_171031233.json",
+      "preview": "home_02_103997919_171031233.png",
+      "object_count": 82,
+      "robot_initial_pose": [
+        -3.0176430943725103,
+        4.564071493489402,
+        1.5707963267948966
+      ]
+    },
+    {
+      "scene_id": "home_03_107734119_175999932",
+      "hssd_scene_id": "107734119_175999932",
+      "title": "Simplified Home 03",
+      "mjcf": "home_03_107734119_175999932.xml",
+      "manifest": "home_03_107734119_175999932.json",
+      "preview": "home_03_107734119_175999932.png",
+      "object_count": 60,
+      "robot_initial_pose": [
+        -3.660714634827205,
+        11.17285784653255,
+        3.141592653589793
+      ]
+    },
+    {
+      "scene_id": "home_04_103997970_171031287",
+      "hssd_scene_id": "103997970_171031287",
+      "title": "Simplified Home 04",
+      "mjcf": "home_04_103997970_171031287.xml",
+      "manifest": "home_04_103997970_171031287.json",
+      "preview": "home_04_103997970_171031287.png",
+      "object_count": 74,
+      "robot_initial_pose": [
+        -8.952975362549754,
+        3.237142066029551,
+        4.71238898038469
+      ]
+    },
+    {
+      "scene_id": "home_05_102344094",
+      "hssd_scene_id": "102344094",
+      "title": "Simplified Home 05",
+      "mjcf": "home_05_102344094.xml",
+      "manifest": "home_05_102344094.json",
+      "preview": "home_05_102344094.png",
+      "object_count": 95,
+      "robot_initial_pose": [
+        -6.801957130432129,
+        1.5975644247872487,
+        0.0
+      ]
+    },
+    {
+      "scene_id": "home_06_104348082_171512994",
+      "hssd_scene_id": "104348082_171512994",
+      "title": "Simplified Home 06",
+      "mjcf": "home_06_104348082_171512994.xml",
+      "manifest": "home_06_104348082_171512994.json",
+      "preview": "home_06_104348082_171512994.png",
+      "object_count": 120,
+      "robot_initial_pose": [
+        -3.7395078263112485,
+        3.55320419787703,
+        1.5707963267948966
+      ]
+    },
+    {
+      "scene_id": "home_07_104348463_171513588",
+      "hssd_scene_id": "104348463_171513588",
+      "title": "Simplified Home 07",
+      "mjcf": "home_07_104348463_171513588.xml",
+      "manifest": "home_07_104348463_171513588.json",
+      "preview": "home_07_104348463_171513588.png",
+      "object_count": 67,
+      "robot_initial_pose": [
+        -2.2093299627304077,
+        12.95712947845459,
+        3.141592653589793
+      ]
+    },
+    {
+      "scene_id": "home_08_102344193",
+      "hssd_scene_id": "102344193",
+      "title": "Simplified Home 08",
+      "mjcf": "home_08_102344193.xml",
+      "manifest": "home_08_102344193.json",
+      "preview": "home_08_102344193.png",
+      "object_count": 67,
+      "robot_initial_pose": [
+        -6.877304553985596,
+        8.700261116027832,
+        4.71238898038469
+      ]
+    },
+    {
+      "scene_id": "home_09_107734110_175999914",
+      "hssd_scene_id": "107734110_175999914",
+      "title": "Simplified Home 09",
+      "mjcf": "home_09_107734110_175999914.xml",
+      "manifest": "home_09_107734110_175999914.json",
+      "preview": "home_09_107734110_175999914.png",
+      "object_count": 60,
+      "robot_initial_pose": [
+        -6.76812702205336,
+        8.039285986551217,
+        0.0
+      ]
+    },
+    {
+      "scene_id": "home_10_104862513_172226580",
+      "hssd_scene_id": "104862513_172226580",
+      "title": "Simplified Home 10",
+      "mjcf": "home_10_104862513_172226580.xml",
+      "manifest": "home_10_104862513_172226580.json",
+      "preview": "home_10_104862513_172226580.png",
+      "object_count": 109,
+      "robot_initial_pose": [
+        8.29731011390686,
+        -4.991529941558838,
+        1.5707963267948966
+      ]
+    }
+  ]
+}

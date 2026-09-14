@@ -54,10 +54,10 @@
       -4.7,
       3.141592653589793
     ],
-    "minimum_clearance_m": 2.4071411950671475,
+    "minimum_clearance_m": 2.407141215022081,
     "body": "base_link"
   },
-  "asset_instance_count": 23,
+  "asset_instance_count": 32,
   "assets": [
     {
       "instance": 0,
@@ -66,27 +66,64 @@
       "category": "workstation_pods",
       "position": [
         -5.5,
-        -1.3750202154861746,
+        0.0,
         0.0
       ],
       "yaw": 1.5707963267948966,
-      "collision_radius": 3.0794247792316884
+      "collision_radius": 3.07085545822203
     },
     {
       "instance": 1,
-      "asset_id": "new_cb_desk_2400",
-      "name": "CB Desk 2400 Workstation Pod",
-      "category": "workstation_pods",
+      "asset_id": "snack_soda_can",
+      "name": "Soda Can",
+      "category": "interactive_objects",
+      "object_id": "snack_soda_can_001",
+      "body": "snack_soda_can_001",
       "position": [
-        -5.5,
-        1.3750202154861746,
-        0.0
+        -6.300199317680587,
+        -1.2324791692549606,
+        0.6079650023642938
       ],
       "yaw": 1.5707963267948966,
-      "collision_radius": 3.0794247792316884
+      "euler_correction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.157,
+      "dynamic": true,
+      "graspable": true,
+      "support": "asset_000_new_cb_d",
+      "grasp_site": "snack_soda_can_001_grasp_site",
+      "collision_radius": 0.049497476363073785
     },
     {
       "instance": 2,
+      "asset_id": "043_book",
+      "name": "043_book",
+      "category": "interactive_objects",
+      "object_id": "043_book_002",
+      "body": "043_book_002",
+      "position": [
+        -4.699800682319414,
+        1.23247924407673,
+        0.5531140748932809
+      ],
+      "yaw": 1.5707963267948966,
+      "euler_correction": [
+        1.5707963267948966,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 1.06,
+      "dynamic": true,
+      "graspable": true,
+      "support": "asset_000_new_cb_d",
+      "grasp_site": "043_book_002_grasp_site",
+      "collision_radius": 0.09328607004690706
+    },
+    {
+      "instance": 3,
       "asset_id": "procedural_Office Plant",
       "name": "Office Plant",
       "category": "props/plants",
@@ -99,7 +136,7 @@
       "collision_radius": 0.2
     },
     {
-      "instance": 3,
+      "instance": 4,
       "asset_id": "procedural_Waste Bin",
       "name": "Waste Bin",
       "category": "props/trash_bins",
@@ -112,7 +149,7 @@
       "collision_radius": 0.18
     },
     {
-      "instance": 4,
+      "instance": 5,
       "asset_id": "procedural_Area Rug",
       "name": "Area Rug",
       "category": "decoration/rugs",
@@ -125,7 +162,7 @@
       "collision_radius": 0.0
     },
     {
-      "instance": 5,
+      "instance": 6,
       "asset_id": "new_teaming_table",
       "name": "Teaming Meeting Table",
       "category": "meeting_tables",
@@ -135,23 +172,23 @@
         0.0
       ],
       "yaw": 0.0,
-      "collision_radius": 1.6311335493901054
+      "collision_radius": 1.6295808579126012
     },
     {
-      "instance": 6,
+      "instance": 7,
       "asset_id": "new_imac_27",
       "name": "iMac 27",
       "category": "displays",
       "position": [
         4.5,
         -3.5,
-        0.725
+        0.6836258878081257
       ],
       "yaw": 0.0,
       "collision_radius": 0.0
     },
     {
-      "instance": 7,
+      "instance": 8,
       "asset_id": "new_stance_chair",
       "name": "Stance Meeting Chair",
       "category": "meeting_chairs",
@@ -161,10 +198,10 @@
         0.0
       ],
       "yaw": -1.5707963267948966,
-      "collision_radius": 0.4739576892135551
+      "collision_radius": 0.473957669258622
     },
     {
-      "instance": 8,
+      "instance": 9,
       "asset_id": "new_stance_chair",
       "name": "Stance Meeting Chair",
       "category": "meeting_chairs",
@@ -174,10 +211,10 @@
         0.0
       ],
       "yaw": -0.5235987755982989,
-      "collision_radius": 0.4739576892135551
+      "collision_radius": 0.473957669258622
     },
     {
-      "instance": 9,
+      "instance": 10,
       "asset_id": "new_stance_chair",
       "name": "Stance Meeting Chair",
       "category": "meeting_chairs",
@@ -187,10 +224,10 @@
         0.0
       ],
       "yaw": 0.5235987755982987,
-      "collision_radius": 0.4739576892135551
+      "collision_radius": 0.473957669258622
     },
     {
-      "instance": 10,
+      "instance": 11,
       "asset_id": "new_stance_chair",
       "name": "Stance Meeting Chair",
       "category": "meeting_chairs",
@@ -200,10 +237,10 @@
         0.0
       ],
       "yaw": 1.5707963267948966,
-      "collision_radius": 0.4739576892135551
+      "collision_radius": 0.473957669258622
     },
     {
-      "instance": 11,
+      "instance": 12,
       "asset_id": "new_stance_chair",
       "name": "Stance Meeting Chair",
       "category": "meeting_chairs",
@@ -213,10 +250,10 @@
         0.0
       ],
       "yaw": 2.617993877991494,
-      "collision_radius": 0.4739576892135551
+      "collision_radius": 0.473957669258622
     },
     {
-      "instance": 12,
+      "instance": 13,
       "asset_id": "new_stance_chair",
       "name": "Stance Meeting Chair",
       "category": "meeting_chairs",
@@ -226,10 +263,10 @@
         0.0
       ],
       "yaw": 3.6651914291880923,
-      "collision_radius": 0.4739576892135551
+      "collision_radius": 0.473957669258622
     },
     {
-      "instance": 13,
+      "instance": 14,
       "asset_id": "new_dry_wipe_module",
       "name": "Double Dry Wipe Board",
       "category": "whiteboards",
@@ -239,10 +276,10 @@
         0.0
       ],
       "yaw": 1.5707963267948966,
-      "collision_radius": 1.0334516140661798
+      "collision_radius": 1.0307877559748173
     },
     {
-      "instance": 14,
+      "instance": 15,
       "asset_id": "procedural_Office Plant",
       "name": "Office Plant",
       "category": "props/plants",
@@ -255,7 +292,7 @@
       "collision_radius": 0.2
     },
     {
-      "instance": 15,
+      "instance": 16,
       "asset_id": "procedural_Area Rug",
       "name": "Area Rug",
       "category": "decoration/rugs",
@@ -268,7 +305,7 @@
       "collision_radius": 0.0
     },
     {
-      "instance": 16,
+      "instance": 17,
       "asset_id": "9a0e617b83c901d346ce9fb020b49bf91442273c",
       "name": "Tufted Curved Settee, Navy",
       "category": "legacy_sofas",
@@ -278,10 +315,10 @@
         0.0
       ],
       "yaw": 0.0,
-      "collision_radius": 0.7835309498443843
+      "collision_radius": 0.7946364776694846
     },
     {
-      "instance": 17,
+      "instance": 18,
       "asset_id": "9a0e617b83c901d346ce9fb020b49bf91442273c",
       "name": "Tufted Curved Settee, Navy",
       "category": "legacy_sofas",
@@ -291,10 +328,10 @@
         0.0
       ],
       "yaw": 3.141592653589793,
-      "collision_radius": 0.7835309498443843
+      "collision_radius": 0.7946364776694846
     },
     {
-      "instance": 18,
+      "instance": 19,
       "asset_id": "procedural_Office Plant",
       "name": "Office Plant",
       "category": "props/plants",
@@ -307,7 +344,207 @@
       "collision_radius": 0.2
     },
     {
-      "instance": 19,
+      "instance": 20,
+      "asset_id": "075_bread",
+      "name": "075_bread",
+      "category": "interactive_objects",
+      "object_id": "075_bread_020",
+      "body": "075_bread_020",
+      "position": [
+        7.785899791615925,
+        2.2871994527445105,
+        0.7818328627464762
+      ],
+      "yaw": 1.7651575197298937,
+      "euler_correction": [
+        1.5707963267948966,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.9058,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "075_bread_020_grasp_site",
+      "collision_radius": 0.10765865872015634
+    },
+    {
+      "instance": 21,
+      "asset_id": "038_milk-box",
+      "name": "038_milk-box",
+      "category": "interactive_objects",
+      "object_id": "038_milk-box_021",
+      "body": "038_milk-box_021",
+      "position": [
+        7.67040464726452,
+        2.0592034248044526,
+        0.7819690524642835
+      ],
+      "yaw": 1.9190862194982024,
+      "euler_correction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.8473,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "038_milk-box_021_grasp_site",
+      "collision_radius": 0.07633622197653647
+    },
+    {
+      "instance": 22,
+      "asset_id": "035_apple",
+      "name": "035_apple",
+      "category": "interactive_objects",
+      "object_id": "035_apple_022",
+      "body": "035_apple_022",
+      "position": [
+        7.681098803911632,
+        2.5319980468002385,
+        0.8187978703272268
+      ],
+      "yaw": 1.8597273438379829,
+      "euler_correction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.147,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "035_apple_022_grasp_site",
+      "collision_radius": 0.05635264716430991
+    },
+    {
+      "instance": 23,
+      "asset_id": "001_bottle",
+      "name": "001_bottle",
+      "category": "interactive_objects",
+      "object_id": "001_bottle_023",
+      "body": "001_bottle_023",
+      "position": [
+        7.719812671216133,
+        3.105356144930155,
+        0.7800620420338998
+      ],
+      "yaw": 1.2163123479922962,
+      "euler_correction": [
+        3.141592653589793,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.487,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "001_bottle_023_grasp_site",
+      "collision_radius": 0.05159347348163969
+    },
+    {
+      "instance": 24,
+      "asset_id": "025_chips-tub",
+      "name": "025_chips-tub",
+      "category": "interactive_objects",
+      "object_id": "025_chips-tub_024",
+      "body": "025_chips-tub_024",
+      "position": [
+        7.793478728052555,
+        1.8052269046957756,
+        0.7816447518882798
+      ],
+      "yaw": 1.4200488555459265,
+      "euler_correction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.3835,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "025_chips-tub_024_grasp_site",
+      "collision_radius": 0.05380917166668275
+    },
+    {
+      "instance": 25,
+      "asset_id": "green_apple",
+      "name": "green_apple",
+      "category": "interactive_objects",
+      "object_id": "green_apple_025",
+      "body": "green_apple_025",
+      "position": [
+        7.610192800392481,
+        1.6851944740563758,
+        0.7807200315387735
+      ],
+      "yaw": 1.7613164718642054,
+      "euler_correction": [
+        1.5707963267948966,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.1014,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "green_apple_025_grasp_site",
+      "collision_radius": 0.05419063426823178
+    },
+    {
+      "instance": 26,
+      "asset_id": "001_bottle",
+      "name": "001_bottle",
+      "category": "interactive_objects",
+      "object_id": "001_bottle_026",
+      "body": "001_bottle_026",
+      "position": [
+        7.796380150721193,
+        3.3965799094547453,
+        0.7800620420338998
+      ],
+      "yaw": 1.6774554582713128,
+      "euler_correction": [
+        3.141592653589793,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.487,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "001_bottle_026_grasp_site",
+      "collision_radius": 0.05159347348163969
+    },
+    {
+      "instance": 27,
+      "asset_id": "071_can",
+      "name": "071_can",
+      "category": "interactive_objects",
+      "object_id": "071_can_027",
+      "body": "071_can_027",
+      "position": [
+        7.593193136236222,
+        3.1625835994102403,
+        0.7809224438999471
+      ],
+      "yaw": 1.626490042445326,
+      "euler_correction": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mass_kg": 0.1571,
+      "dynamic": true,
+      "graspable": true,
+      "support": "snack_counter",
+      "grasp_site": "071_can_027_grasp_site",
+      "collision_radius": 0.044014487135663576
+    },
+    {
+      "instance": 28,
       "asset_id": "procedural_Snack Counter",
       "name": "Snack Counter",
       "category": "furniture/snack_counter",
@@ -317,10 +554,10 @@
         0.0
       ],
       "yaw": 1.5707963267948966,
-      "collision_radius": 0.95
+      "collision_radius": 1.2
     },
     {
-      "instance": 20,
+      "instance": 29,
       "asset_id": "procedural_Snack Storage Cabinet",
       "name": "Snack Storage Cabinet",
       "category": "furniture/storage",
@@ -333,7 +570,7 @@
       "collision_radius": 0.62
     },
     {
-      "instance": 21,
+      "instance": 30,
       "asset_id": "procedural_Waste Bin",
       "name": "Waste Bin",
       "category": "props/trash_bins",
@@ -346,7 +583,7 @@
       "collision_radius": 0.18
     },
     {
-      "instance": 22,
+      "instance": 31,
       "asset_id": "procedural_Office Plant",
       "name": "Office Plant",
       "category": "props/plants",

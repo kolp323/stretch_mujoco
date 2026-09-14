@@ -1,0 +1,4633 @@
+{
+  "scene_id": "home_05_102344094",
+  "title": "Simplified Home 05",
+  "source_dataset": "HSSD",
+  "hssd_scene_id": "102344094",
+  "hssd_scene_split": "scenes-uncluttered",
+  "layout": "imported_hssd_home",
+  "simplification": {
+    "uncluttered": true,
+    "stage_alpha": 1.0
+  },
+  "object_count": 95,
+  "unique_template_count": 73,
+  "category_counts": {
+    "default": 40,
+    "plant": 9,
+    "floor_covering": 2,
+    "seating_furniture": 6,
+    "decor": 5,
+    "storage_furniture": 18,
+    "lighting": 9,
+    "support_furniture": 6
+  },
+  "bounds_mujoco": [
+    [
+      -12.090579986572266,
+      -2.469219923019409,
+      -0.0024557714350521564
+    ],
+    [
+      -2.5854899883270264,
+      6.686610221862793,
+      3.657807443361725
+    ]
+  ],
+  "zones": [
+    {
+      "type": "home",
+      "bounds": [
+        -12.090579986572266,
+        -2.5854899883270264,
+        -2.469219923019409,
+        6.686610221862793
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "object_id": "hssd_object_000",
+      "asset_id": "c5ff5698a48415c704891bf4b3356c31ac773721",
+      "template_name": "c5ff5698a48415c704891bf4b3356c31ac773721",
+      "name": "c5ff5698a48415c704891bf4b3356c31ac773721",
+      "category": "default",
+      "semantic_name": "Samsung Black Touch Microwave.",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.0397801,
+        -2.0985801,
+        1.3478095
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.32999992917421755,
+          -0.12999982883775382,
+          1.0912231452891774e-08
+        ],
+        [
+          0.32999992917421755,
+          0.12999966335250437,
+          0.4447599296399116
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.369780029174217,
+          -2.228579763352504,
+          1.3478095109122317
+        ],
+        [
+          -5.709780170825782,
+          -1.9685802711622462,
+          1.7925694296399117
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_001",
+      "asset_id": "cb47ce31bd4309c8b3c99a1d53db43f7046cb489",
+      "template_name": "cb47ce31bd4309c8b3c99a1d53db43f7046cb489",
+      "name": "cb47ce31bd4309c8b3c99a1d53db43f7046cb489",
+      "category": "plant",
+      "semantic_name": "plant",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -6.5417604,
+        2.8694796,
+        0.0010001
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.32000108658745885,
+          -0.2900337315319181,
+          0.0028734583280519118
+        ],
+        [
+          0.32000112004970016,
+          0.29003377322353424,
+          1.579999424317789
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.831794274932371,
+          2.5494784212285033,
+          0.003873558328051912
+        ],
+        [
+          -6.251726566759236,
+          3.189480812233751,
+          1.580999524317789
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_002",
+      "asset_id": "13ac4d595be0f72326bd7c3ca6590daa5f67feb4",
+      "template_name": "13ac4d595be0f72326bd7c3ca6590daa5f67feb4",
+      "name": "13ac4d595be0f72326bd7c3ca6590daa5f67feb4",
+      "category": "floor_covering",
+      "semantic_name": "PERSISK rug",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -4.7598099,
+        3.2567596,
+        1.9418075680732727e-07
+      ],
+      "rotation": [
+        0.9999951071704805,
+        0.0,
+        0.0,
+        -0.0031281999775696337
+      ],
+      "local_bounds": [
+        [
+          -0.905000038708508,
+          -1.255004038621056,
+          3.652293292312425e-09
+        ],
+        [
+          0.9049998845879434,
+          1.255004038621056,
+          0.01500000225265827
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.672643995501594,
+          1.9961181098681509,
+          1.978330500996397e-07
+        ],
+        [
+          -3.8469759586159533,
+          4.517401091096085,
+          0.015000196433415077
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_003",
+      "asset_id": "d6128825db57eb2c2c2c097ce60d96e551c66e1a",
+      "template_name": "d6128825db57eb2c2c2c097ce60d96e551c66e1a",
+      "name": "d6128825db57eb2c2c2c097ce60d96e551c66e1a",
+      "category": "seating_furniture",
+      "semantic_name": "OTB LIAM BARSTOOL",
+      "found_in": "dining room",
+      "support_surface": false,
+      "position": [
+        -5.1883101,
+        0.3124099,
+        2.9802322387695312e-08
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.16195812821388245,
+          -0.16195815801620483,
+          4.496154701882915e-07
+        ],
+        [
+          0.16195814311504364,
+          0.16195812821388245,
+          0.7619999647140503
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.3502682431150435,
+          0.15045177178611757,
+          4.794177925759868e-07
+        ],
+        [
+          -5.026351971786117,
+          0.47436805801620485,
+          0.7619999945163727
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_004",
+      "asset_id": "8a23d4dba7ca9708fabac4a582ceeebc06bcf103",
+      "template_name": "8a23d4dba7ca9708fabac4a582ceeebc06bcf103",
+      "name": "8a23d4dba7ca9708fabac4a582ceeebc06bcf103",
+      "category": "default",
+      "semantic_name": "Flat TV",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -8.1093406,
+        2.8858897,
+        0.8799999
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.49503947473846077,
+          -0.035008707361258565,
+          0.008562738912799768
+        ],
+        [
+          0.495039427334404,
+          0.03500872800270095,
+          0.7299597357896328
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.144349464704147,
+          2.3908502615384855,
+          0.8885626389127997
+        ],
+        [
+          -8.074331714654425,
+          3.3809291858655777,
+          1.6099596357896329
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_005",
+      "asset_id": "1d438cf2a0be5706ffdbd1489fbfb27f712589a0",
+      "template_name": "1d438cf2a0be5706ffdbd1489fbfb27f712589a0",
+      "name": "1d438cf2a0be5706ffdbd1489fbfb27f712589a0",
+      "category": "default",
+      "semantic_name": "Flat TV",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -6.881,
+        3.9193699,
+        1.7500001
+      ],
+      "rotation": [
+        0.5000002499999826,
+        0.4999998499999825,
+        0.4999999499999725,
+        0.4999999499999725
+      ],
+      "local_bounds": [
+        [
+          -0.6291432976722717,
+          -0.40148401260375977,
+          0.0010512551525607705
+        ],
+        [
+          0.6291433572769165,
+          0.40148404240608215,
+          0.07723765075206757
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.879949031269763,
+          3.2902264262866447,
+          1.3485158361594887
+        ],
+        [
+          -6.803762062825617,
+          4.548513417660236,
+          2.151484424958375
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_006",
+      "asset_id": "6e8ba0503682447c09014295ae4e35b1f3fc1f5f",
+      "template_name": "6e8ba0503682447c09014295ae4e35b1f3fc1f5f",
+      "name": "6e8ba0503682447c09014295ae4e35b1f3fc1f5f",
+      "category": "decor",
+      "semantic_name": "Picture Frame",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -3.0351948,
+        3.0314097,
+        1.7776601
+      ],
+      "rotation": [
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
+      ],
+      "local_bounds": [
+        [
+          -0.7459486722946167,
+          -0.4000641703605652,
+          -5.899154343707674e-17
+        ],
+        [
+          0.7459494471549988,
+          0.40004226565361023,
+          0.019312025979161263
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.0545071697829775,
+          2.2854602070450065,
+          1.3775958550446399
+        ],
+        [
+          -3.0351944562025213,
+          3.777358412298814,
+          2.1777024460420904
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_007",
+      "asset_id": "1a570da5ae0c4d1d51c94be81d7248f155a0dcef",
+      "template_name": "1a570da5ae0c4d1d51c94be81d7248f155a0dcef",
+      "name": "1a570da5ae0c4d1d51c94be81d7248f155a0dcef",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen tall cabinet",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -7.6182599,
+        -2.0196197,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          0.198424975,
+          -0.29784455898995993,
+          0.0022813845653124154
+        ],
+        [
+          -0.198424975,
+          0.299633830463618,
+          2.909978458406258
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.816684875,
+          -2.3192535304636177,
+          0.0022812653560228646
+        ],
+        [
+          -7.419834925,
+          -1.72177514101004,
+          2.9099783391969685
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_008",
+      "asset_id": "1a570da5ae0c4d1d51c94be81d7248f155a0dcef",
+      "template_name": "1a570da5ae0c4d1d51c94be81d7248f155a0dcef",
+      "name": "1a570da5ae0c4d1d51c94be81d7248f155a0dcef",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen tall cabinet",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -7.2214097,
+        -2.0196197,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          0.198424975,
+          -0.29784455898995993,
+          0.0022813845653124154
+        ],
+        [
+          -0.198424975,
+          0.299633830463618,
+          2.909978458406258
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.419834675,
+          -2.3192535304636177,
+          0.0022812653560228646
+        ],
+        [
+          -7.022984725,
+          -1.72177514101004,
+          2.9099783391969685
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_009",
+      "asset_id": "479e8fe5599af35ba70e86d2f46e66c778c9c170",
+      "template_name": "479e8fe5599af35ba70e86d2f46e66c778c9c170",
+      "name": "479e8fe5599af35ba70e86d2f46e66c778c9c170",
+      "category": "default",
+      "semantic_name": "Grab Rail, Black",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -7.971209,
+        -0.8036435,
+        1.1654899
+      ],
+      "rotation": [
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
+      ],
+      "local_bounds": [
+        [
+          -0.40999906580684187,
+          -0.02548570421243608,
+          -4.915848875303552e-18
+        ],
+        [
+          0.4100002683298826,
+          0.025502956028357893,
+          0.05999703437892721
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.031206165024344,
+          -1.2136437888775404,
+          1.1400041547876874
+        ],
+        [
+          -7.971208869349042,
+          -0.39364443164288243,
+          1.190992915027464
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_010",
+      "asset_id": "8088521c5cbf546ce2c19f9363d16f5b9cadf774",
+      "template_name": "8088521c5cbf546ce2c19f9363d16f5b9cadf774",
+      "name": "8088521c5cbf546ce2c19f9363d16f5b9cadf774",
+      "category": "seating_furniture",
+      "semantic_name": "Foundry Metal Side Chair",
+      "found_in": "dining room",
+      "support_surface": false,
+      "position": [
+        -7.51265,
+        4.0972495,
+        2.384185791015625e-07
+      ],
+      "rotation": [
+        0.7040150033074801,
+        0.0,
+        0.0,
+        0.7101850991945471
+      ],
+      "local_bounds": [
+        [
+          -0.2368280589580536,
+          -0.25513020157814026,
+          -0.0020236209966242313
+        ],
+        [
+          0.23682726919651031,
+          0.25508490204811096,
+          0.8540834188461304
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.76979168654472,
+          3.858204649961638,
+          -0.0020233825780451298
+        ],
+        [
+          -7.255463008758545,
+          4.33629395557927,
+          0.8540836572647095
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_011",
+      "asset_id": "8088521c5cbf546ce2c19f9363d16f5b9cadf774",
+      "template_name": "8088521c5cbf546ce2c19f9363d16f5b9cadf774",
+      "name": "8088521c5cbf546ce2c19f9363d16f5b9cadf774",
+      "category": "seating_furniture",
+      "semantic_name": "Foundry Metal Side Chair",
+      "found_in": "dining room",
+      "support_surface": false,
+      "position": [
+        -3.8491599,
+        -0.9550598,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.7138595748191661,
+        0.0,
+        0.0,
+        0.700288874279036
+      ],
+      "local_bounds": [
+        [
+          -0.2368280589580536,
+          -0.25513020157814026,
+          -0.0020236209966242313
+        ],
+        [
+          0.23682726919651031,
+          0.25508490204811096,
+          0.8540834188461304
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -4.108742788370301,
+          -1.1967404436786315,
+          -0.0020236806012690067
+        ],
+        [
+          -3.589531735598511,
+          -0.7133808152800731,
+          0.8540833592414856
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_012",
+      "asset_id": "xxxx93e3ad59x9588x46a3x8114x5aa2d5fb9660",
+      "template_name": "xxxx93e3ad59x9588x46a3x8114x5aa2d5fb9660",
+      "name": "xxxx93e3ad59x9588x46a3x8114x5aa2d5fb9660",
+      "category": "default",
+      "semantic_name": "Woven Wall Decor",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.0310001,
+        4.3427195,
+        1.7316501
+      ],
+      "rotation": [
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
+      ],
+      "local_bounds": [
+        [
+          -0.2846571207046509,
+          -0.5016499757766724,
+          0.0
+        ],
+        [
+          0.2846571207046509,
+          0.5016499757766724,
+          0.04406163841485977
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.075061974306954,
+          4.058062315911867,
+          1.2300000957576604
+        ],
+        [
+          -7.030999864107902,
+          4.627376670869644,
+          2.2333001174608302
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_013",
+      "asset_id": "xxxx93e3ad59x9588x46a3x8114x5aa2d5fb9660",
+      "template_name": "xxxx93e3ad59x9588x46a3x8114x5aa2d5fb9660",
+      "name": "xxxx93e3ad59x9588x46a3x8114x5aa2d5fb9660",
+      "category": "default",
+      "semantic_name": "Woven Wall Decor",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -3.85449,
+        -2.31922,
+        1.4616496
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.7071067311865435,
+        0.7071068311865479
+      ],
+      "local_bounds": [
+        [
+          -0.2846571207046509,
+          -0.5016499757766724,
+          0.0
+        ],
+        [
+          0.2846571207046509,
+          0.5016499757766724,
+          0.04406163841485977
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -4.139147120704651,
+          -2.319220070944023,
+          0.9599996242233327
+        ],
+        [
+          -3.5698328792953493,
+          -2.2751582906411176,
+          1.9632995820079244
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_014",
+      "asset_id": "xxxx1fc8d1e9x38f3x47d6x9788xf59661ddf711",
+      "template_name": "xxxx1fc8d1e9x38f3x47d6x9788xf59661ddf711",
+      "name": "xxxx1fc8d1e9x38f3x47d6x9788xf59661ddf711",
+      "category": "plant",
+      "semantic_name": "Artificial Snake Plant in Pot",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -8.0952501,
+        -1.31024,
+        0.7499997
+      ],
+      "rotation": [
+        0.710185498928068,
+        0.0,
+        0.0,
+        -0.7040146000704044
+      ],
+      "local_bounds": [
+        [
+          -0.11751508712768555,
+          -0.11180953681468964,
+          0.0
+        ],
+        [
+          0.11751508712768555,
+          0.11180953681468964,
+          0.44252416491508484
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.208080919850593,
+          -1.4287263612104084,
+          0.7499997
+        ],
+        [
+          -7.982419280149405,
+          -1.1917536387895917,
+          1.1925238649150849
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_015",
+      "asset_id": "xxxx21770864xa692x4944x9c4dx4e8c8a75e7d1",
+      "template_name": "xxxx21770864xa692x4944x9c4dx4e8c8a75e7d1",
+      "name": "xxxx21770864xa692x4944x9c4dx4e8c8a75e7d1",
+      "category": "plant",
+      "semantic_name": "Artificial Potted Single Succulent Plant",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -9.7743902,
+        -0.0795399,
+        0.8799998
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.07070686668157578,
+          -0.06885360926389694,
+          0.0
+        ],
+        [
+          0.07070686668157578,
+          0.06885360926389694,
+          0.21154530346393585
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.845097066681575,
+          -0.14839350926389694,
+          0.8799998
+        ],
+        [
+          -9.703683333318423,
+          -0.010686290736103055,
+          1.0915451034639359
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_016",
+      "asset_id": "xxxx8fef0b6fx2748x49e1xb5cbx543d7b04c65a",
+      "template_name": "xxxx8fef0b6fx2748x49e1xb5cbx543d7b04c65a",
+      "name": "xxxx8fef0b6fx2748x49e1xb5cbx543d7b04c65a",
+      "category": "default",
+      "semantic_name": "Palos Basket on Stand",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -3.2636401,
+        1.4145996,
+        8.940696716308594e-08
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.2284516990184784,
+          -0.22821393609046936,
+          0.0
+        ],
+        [
+          0.2284516990184784,
+          0.22821393609046936,
+          0.45942410826683044
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.4920917990184783,
+          1.1863856639095307,
+          8.940696716308594e-08
+        ],
+        [
+          -3.0351884009815215,
+          1.6428135360904694,
+          0.4594241976737976
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_017",
+      "asset_id": "xxxx1f169f22xb11fx4651xa88cx373ab6dfef2e",
+      "template_name": "xxxx1f169f22xb11fx4651xa88cx373ab6dfef2e",
+      "name": "xxxx1f169f22xb11fx4651xa88cx373ab6dfef2e",
+      "category": "default",
+      "semantic_name": "Malloe Tall Black Basket with Handles",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -8.2018098,
+        -1.0649899,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.25209999084472656,
+          -0.23810000717639923,
+          0.0
+        ],
+        [
+          0.25209999084472656,
+          0.23810000717639923,
+          0.5842000246047974
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.439909887303616,
+          -1.3170899665222007,
+          -5.960464477539063e-08
+        ],
+        [
+          -7.963709712696383,
+          -0.8128898334777994,
+          0.5841999650001526
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_018",
+      "asset_id": "351070467d2910bb7e87e4b40e9187047e5f5c19",
+      "template_name": "351070467d2910bb7e87e4b40e9187047e5f5c19",
+      "name": "351070467d2910bb7e87e4b40e9187047e5f5c19",
+      "category": "default",
+      "semantic_name": "Atmosphere-bamboo Pet Bed",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -6.1174798,
+        4.7353997,
+        2.8312206268310547e-07
+      ],
+      "rotation": [
+        0.9041946021837954,
+        0.0,
+        0.0,
+        0.4271207339636976
+      ],
+      "local_bounds": [
+        [
+          -0.23351812362670898,
+          -0.23348338901996613,
+          -1.0077704928335152e-06
+        ],
+        [
+          0.2335181087255478,
+          0.23348399996757507,
+          0.2609669864177704
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.446138674259755,
+          4.406736529798796,
+          -7.246484301504097e-07
+        ],
+        [
+          -5.788821407100758,
+          5.064063246726212,
+          0.26096726953983307
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_019",
+      "asset_id": "1fe511dcd67a0734285715e4ab4f6ea4c5b3a75c",
+      "template_name": "1fe511dcd67a0734285715e4ab4f6ea4c5b3a75c",
+      "name": "1fe511dcd67a0734285715e4ab4f6ea4c5b3a75c",
+      "category": "lighting",
+      "semantic_name": "Boda single light ceiling pendant",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -5.3087,
+        -0.46116,
+        3.6575999
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.07499995082616806,
+          -0.07500000298023224,
+          -1.3799992799758911
+        ],
+        [
+          0.07499995082616806,
+          0.07500000298023224,
+          7.676333666495339e-07
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.383700026818143,
+          -0.536159974664096,
+          2.277600620024109
+        ],
+        [
+          -5.2336999731818565,
+          -0.386160025335904,
+          3.6576006676333668
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_020",
+      "asset_id": "1fe511dcd67a0734285715e4ab4f6ea4c5b3a75c",
+      "template_name": "1fe511dcd67a0734285715e4ab4f6ea4c5b3a75c",
+      "name": "1fe511dcd67a0734285715e4ab4f6ea4c5b3a75c",
+      "category": "lighting",
+      "semantic_name": "Boda single light ceiling pendant",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -5.8846101,
+        -0.44435,
+        3.6575999
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.07499995082616806,
+          -0.07500000298023224,
+          -1.3799992799758911
+        ],
+        [
+          0.07499995082616806,
+          0.07500000298023224,
+          7.676333666495339e-07
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.959610126818143,
+          -0.519349974664096,
+          2.277600620024109
+        ],
+        [
+          -5.809610073181856,
+          -0.369350025335904,
+          3.6576006676333668
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_021",
+      "asset_id": "43e120bb77cbdb8fadcac1cc33aeacce57e738c5",
+      "template_name": "43e120bb77cbdb8fadcac1cc33aeacce57e738c5",
+      "name": "43e120bb77cbdb8fadcac1cc33aeacce57e738c5",
+      "category": "support_furniture",
+      "semantic_name": "Batamba Console Table",
+      "found_in": "living room",
+      "support_surface": true,
+      "position": [
+        -3.8682198,
+        -2.2292196,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.49500493353138564,
+          -0.0900000512809366,
+          1.469376415320216e-08
+        ],
+        [
+          0.4950046984514534,
+          0.08999989992484898,
+          0.7886923762313723
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -4.363224498451453,
+          -2.319219499924849,
+          -1.0451552539757909e-07
+        ],
+        [
+          -3.373214866468614,
+          -2.1392195487190633,
+          0.7886922570220828
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_022",
+      "asset_id": "506c458cbfc61d313e7505e4e363d238b7ba55e7",
+      "template_name": "506c458cbfc61d313e7505e4e363d238b7ba55e7",
+      "name": "506c458cbfc61d313e7505e4e363d238b7ba55e7",
+      "category": "plant",
+      "semantic_name": "plant",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -6.6410098,
+        3.4132397,
+        0.5100002
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.14561036229133606,
+          -0.13109561800956726,
+          -0.0004492446896620095
+        ],
+        [
+          0.12529431283473969,
+          0.12898635864257812,
+          0.467772901058197
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.769996204923235,
+          3.267629296041361,
+          0.509550955310338
+        ],
+        [
+          -6.509914142167011,
+          3.5385340538316385,
+          0.977773101058197
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_023",
+      "asset_id": "c075ced257f48c753d22d3bd3400186d6de319da",
+      "template_name": "c075ced257f48c753d22d3bd3400186d6de319da",
+      "name": "c075ced257f48c753d22d3bd3400186d6de319da",
+      "category": "storage_furniture",
+      "semantic_name": "> Cube Storage Unit",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -11.6905794,
+        -1.1529698,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.6000000238418579,
+          -0.2500000298023224,
+          -4.940493041917098e-17
+        ],
+        [
+          0.6000000238418579,
+          0.2500000298023224,
+          0.8799999952316284
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.940579620505765,
+          -1.7529699033016066,
+          -5.960464482479556e-08
+        ],
+        [
+          -11.440579179494236,
+          -0.5529696966983934,
+          0.8799999356269836
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_024",
+      "asset_id": "e6df36f9715e7dbb8c856dfc123e0fef19bd7fb7",
+      "template_name": "e6df36f9715e7dbb8c856dfc123e0fef19bd7fb7",
+      "name": "e6df36f9715e7dbb8c856dfc123e0fef19bd7fb7",
+      "category": "default",
+      "semantic_name": "Catherine fabric shower curtain",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -9.7134799,
+        -1.6308808,
+        1.1994297
+      ],
+      "rotation": [
+        0.5000002499999826,
+        0.4999998499999825,
+        0.4999999499999725,
+        0.4999999499999725
+      ],
+      "local_bounds": [
+        [
+          -0.0951925660165429,
+          -1.1700128568904997,
+          0.03147538866913915
+        ],
+        [
+          0.08490449649986027,
+          1.1700127116495966,
+          1.746795781774807
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.682004998374424,
+          -1.7260741833807745,
+          0.029416821738049048
+        ],
+        [
+          -7.966683633239363,
+          -1.5459758417900926,
+          2.3694431484448146
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_025",
+      "asset_id": "f63203ce3955e3df53c4e59d9e73f9fff3a6c351",
+      "template_name": "f63203ce3955e3df53c4e59d9e73f9fff3a6c351",
+      "name": "f63203ce3955e3df53c4e59d9e73f9fff3a6c351",
+      "category": "default",
+      "semantic_name": "Towel Rail",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -6.6169695,
+        0.1235797,
+        0.0
+      ],
+      "rotation": [
+        0.0043632003542779215,
+        0.0,
+        0.0,
+        0.9999904811960304
+      ],
+      "local_bounds": [
+        [
+          -0.18566574156284332,
+          -0.16853119432926178,
+          -0.002420090837404132
+        ],
+        [
+          0.18553517758846283,
+          0.1824425905942917,
+          1.7762025594711304
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.804089665327402,
+          -0.0604761223227535,
+          -0.002420090837404132
+        ],
+        [
+          -6.42984017093212,
+          0.2937235163919053,
+          1.7762025594711304
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_026",
+      "asset_id": "f1889a63bcd92db795556274f8222178905195a6",
+      "template_name": "f1889a63bcd92db795556274f8222178905195a6",
+      "name": "f1889a63bcd92db795556274f8222178905195a6",
+      "category": "lighting",
+      "semantic_name": "Denver Bathroom Ceiling Light",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -7.42666,
+        4.2622294,
+        2.7999999
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.08500000089406967,
+          -0.08500000089406967,
+          -0.23000046610832214
+        ],
+        [
+          0.08500000089406967,
+          0.08500000089406967,
+          -6.846011757488668e-08
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.511660027910387,
+          4.177229372089613,
+          2.569999433891678
+        ],
+        [
+          -7.341659972089613,
+          4.347229427910387,
+          2.7999998315398824
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_027",
+      "asset_id": "f1889a63bcd92db795556274f8222178905195a6",
+      "template_name": "f1889a63bcd92db795556274f8222178905195a6",
+      "name": "f1889a63bcd92db795556274f8222178905195a6",
+      "category": "lighting",
+      "semantic_name": "Denver Bathroom Ceiling Light",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -8.8236598,
+        -0.75725,
+        2.7999997
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.08500000089406967,
+          -0.08500000089406967,
+          -0.23000046610832214
+        ],
+        [
+          0.08500000089406967,
+          0.08500000089406967,
+          -6.846011757488668e-08
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.908659827910387,
+          -0.8422500279103873,
+          2.5699992338916777
+        ],
+        [
+          -8.738659772089612,
+          -0.6722499720896127,
+          2.7999996315398823
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_028",
+      "asset_id": "971bbfb3d7669679af893639f97ff157e0b343c0",
+      "template_name": "971bbfb3d7669679af893639f97ff157e0b343c0",
+      "name": "971bbfb3d7669679af893639f97ff157e0b343c0",
+      "category": "lighting",
+      "semantic_name": "TABLE LAMP-PORTER",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -3.2384901,
+        4.8323593,
+        0.61
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.20329605042934418,
+          -0.20329605042934418,
+          -3.6223602242757558e-12
+        ],
+        [
+          0.20329605042934418,
+          0.20329606533050537,
+          0.7193512320518494
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.441786215044763,
+          4.629063184955237,
+          0.6099999999963777
+        ],
+        [
+          -3.0351939700540758,
+          5.035655415044768,
+          1.3293512320518492
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_029",
+      "asset_id": "defe405f45ef55bfc876b2d25b30762478d9a819",
+      "template_name": "defe405f45ef55bfc876b2d25b30762478d9a819",
+      "name": "defe405f45ef55bfc876b2d25b30762478d9a819",
+      "category": "storage_furniture",
+      "semantic_name": "Laurel Night Stand - Walnut",
+      "found_in": "bedroom",
+      "support_surface": false,
+      "position": [
+        -11.5697202,
+        1.7449798,
+        8.940696716308594e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.2751100957393646,
+          -0.1950000524520874,
+          -1.94264124786514e-08
+        ],
+        [
+          0.2751100957393646,
+          0.19499996304512024,
+          0.5202999711036682
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.76472025048585,
+          1.4698696422820126,
+          6.998055468443454e-08
+        ],
+        [
+          -11.374720060107185,
+          2.020089957717959,
+          0.5203000605106354
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_030",
+      "asset_id": "defe405f45ef55bfc876b2d25b30762478d9a819",
+      "template_name": "defe405f45ef55bfc876b2d25b30762478d9a819",
+      "name": "defe405f45ef55bfc876b2d25b30762478d9a819",
+      "category": "storage_furniture",
+      "semantic_name": "Laurel Night Stand - Walnut",
+      "found_in": "bedroom",
+      "support_surface": false,
+      "position": [
+        -11.6080598,
+        4.6119394,
+        2.682209014892578e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.2751100957393646,
+          -0.1950000524520874,
+          -1.94264124786514e-08
+        ],
+        [
+          0.2751100957393646,
+          0.19499996304512024,
+          0.5202999711036682
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.803059850485848,
+          4.336829242282012,
+          2.487944890106064e-07
+        ],
+        [
+          -11.413059660107184,
+          4.887049557717959,
+          0.5203002393245697
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_031",
+      "asset_id": "223c0f130bcd4b3d546f7044d30ff62d90563177",
+      "template_name": "223c0f130bcd4b3d546f7044d30ff62d90563177",
+      "name": "223c0f130bcd4b3d546f7044d30ff62d90563177",
+      "category": "storage_furniture",
+      "semantic_name": "Allistair Dresser",
+      "found_in": "bedroom,living room",
+      "support_surface": false,
+      "position": [
+        -8.2210645,
+        2.9065847,
+        1.7881393432617188e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.6350188255310059,
+          -0.2549586594104767,
+          -3.3638536933722207e-07
+        ],
+        [
+          0.635312557220459,
+          0.25438934564590454,
+          0.8947809934616089
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.476023361244263,
+          2.2712720617437476,
+          -1.575714350110502e-07
+        ],
+        [
+          -7.966674952426952,
+          3.5416036063858485,
+          0.8947811722755432
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_032",
+      "asset_id": "e76fc6fbfe3be64fc2092a113f79920cc290d281",
+      "template_name": "e76fc6fbfe3be64fc2092a113f79920cc290d281",
+      "name": "e76fc6fbfe3be64fc2092a113f79920cc290d281",
+      "category": "default",
+      "semantic_name": "DialyzeDirect Kitchen - Counter Top",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -7.2959942,
+        3.9365997,
+        0.6569501
+      ],
+      "rotation": [
+        0.003342400715822987,
+        0.0,
+        0.0,
+        0.9999944141631268
+      ],
+      "local_bounds": [
+        [
+          -0.2649998585235298,
+          -0.3949998956017911,
+          8.37999810502748e-05
+        ],
+        [
+          0.26500026042973995,
+          0.3949998956017911,
+          0.12510037900404333
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.563629020571612,
+          3.539837168454993,
+          0.6570338999810502
+        ],
+        [
+          -7.0283597813256184,
+          4.333362234231656,
+          0.7820504790040433
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_033",
+      "asset_id": "e76fc6fbfe3be64fc2092a113f79920cc290d281",
+      "template_name": "e76fc6fbfe3be64fc2092a113f79920cc290d281",
+      "name": "e76fc6fbfe3be64fc2092a113f79920cc290d281",
+      "category": "default",
+      "semantic_name": "DialyzeDirect Kitchen - Counter Top",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -7.3041853,
+        4.6647696,
+        0.6600002
+      ],
+      "rotation": [
+        0.9999868993719454,
+        0.0,
+        0.0,
+        0.005118699491364814
+      ],
+      "local_bounds": [
+        [
+          -0.26499996070552473,
+          -0.3649999552310228,
+          8.37999810502748e-05
+        ],
+        [
+          0.26500036261188986,
+          0.3649999552310228,
+          0.12510037900404333
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.572907975350723,
+          4.297075896770982,
+          0.6600839999810503
+        ],
+        [
+          -7.035462222763973,
+          5.032463307343439,
+          0.7851005790040434
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_034",
+      "asset_id": "e91f9db75c0e3679b4bdd1d012ceb0819bb287f5",
+      "template_name": "e91f9db75c0e3679b4bdd1d012ceb0819bb287f5",
+      "name": "e91f9db75c0e3679b4bdd1d012ceb0819bb287f5",
+      "category": "default",
+      "semantic_name": "Envy Bed",
+      "found_in": "bedroom",
+      "support_surface": false,
+      "position": [
+        -10.7873144,
+        3.1788249,
+        1.7881393432617188e-07
+      ],
+      "rotation": [
+        0.7067866762203582,
+        0.0,
+        0.0,
+        0.707426741307804
+      ],
+      "local_bounds": [
+        [
+          -0.9285526802714824,
+          -1.1431925394583702,
+          -0.0014770450262914412
+        ],
+        [
+          0.9285997083268046,
+          1.143180737741065,
+          1.7185246084596753
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.931335227301206,
+          2.249237805929782,
+          -0.001476866212357115
+        ],
+        [
+          -9.643281813555586,
+          4.108459032789054,
+          1.7185247872736096
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_035",
+      "asset_id": "xxxx23a21e73x9c18x4952x8be6xb20ff7b1871a",
+      "template_name": "xxxx23a21e73x9c18x4952x8be6xb20ff7b1871a",
+      "name": "xxxx23a21e73x9c18x4952x8be6xb20ff7b1871a",
+      "category": "default",
+      "semantic_name": "White Sand Hour Glass",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -11.6300096,
+        4.7216095,
+        0.5200002
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.08024592697620392,
+          -0.08024588227272034,
+          4.689186372530685e-09
+        ],
+        [
+          0.08024592697620392,
+          0.08024588227272034,
+          0.20320001244544983
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.710255507778006,
+          4.641363547518522,
+          0.5200002046891864
+        ],
+        [
+          -11.549763692221992,
+          4.801855452481477,
+          0.7232002124454499
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_036",
+      "asset_id": "xxxx2141c61dx697dx461ax968fx8097100c35c2",
+      "template_name": "xxxx2141c61dx697dx461ax968fx8097100c35c2",
+      "name": "xxxx2141c61dx697dx461ax968fx8097100c35c2",
+      "category": "default",
+      "semantic_name": "Shaillee Small Matte Black Canister",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -9.7692794,
+        -0.22402,
+        0.8799998
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.0635002851486206,
+          -0.0635003000497818,
+          0.0
+        ],
+        [
+          0.0635002851486206,
+          0.0635003000497818,
+          0.13316211104393005
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.83277972023265,
+          -0.2875203053314942,
+          0.8799998
+        ],
+        [
+          -9.70577907976735,
+          -0.1605196946685058,
+          1.01316191104393
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_037",
+      "asset_id": "xxxx4cb1866bx512fx47e3x82cfxf399d67915fb",
+      "template_name": "xxxx4cb1866bx512fx47e3x82cfxf399d67915fb",
+      "name": "xxxx4cb1866bx512fx47e3x82cfxf399d67915fb",
+      "category": "decor",
+      "semantic_name": "Icon 8x10 Black Picture Frame",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.75918,
+        -1.2516299,
+        1.4899996
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.20415885746479034,
+          -0.00999938603490591,
+          0.0
+        ],
+        [
+          0.20415885746479034,
+          0.009999381378293037,
+          0.5108933448791504
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.769179446267955,
+          -1.4557887606429756,
+          1.4899996
+        ],
+        [
+          -7.749180549075431,
+          -1.047471039357026,
+          2.0008929448791504
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_038",
+      "asset_id": "xxxx4cb1866bx512fx47e3x82cfxf399d67915fb",
+      "template_name": "xxxx4cb1866bx512fx47e3x82cfxf399d67915fb",
+      "name": "xxxx4cb1866bx512fx47e3x82cfxf399d67915fb",
+      "category": "decor",
+      "semantic_name": "Icon 8x10 Black Picture Frame",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.75918,
+        -1.2516299,
+        0.7899999
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.20415885746479034,
+          -0.00999938603490591,
+          0.0
+        ],
+        [
+          0.20415885746479034,
+          0.009999381378293037,
+          0.5108933448791504
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.769179446267955,
+          -1.4557887606429756,
+          0.7899999
+        ],
+        [
+          -7.749180549075431,
+          -1.047471039357026,
+          1.3008932448791504
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_039",
+      "asset_id": "048d80c36ddc6ac63785ca08ccf231431195717c",
+      "template_name": "048d80c36ddc6ac63785ca08ccf231431195717c",
+      "name": "048d80c36ddc6ac63785ca08ccf231431195717c",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen cabinet with sink, double",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.5072402,
+        -0.5014498,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.3999231159687042,
+          -0.3182898726477027,
+          -0.0005431365066788159
+        ],
+        [
+          0.4000951945781708,
+          0.3182898726477027,
+          1.1933368441954375
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.907163315968704,
+          -0.8197396726477026,
+          -0.0005431961113235913
+        ],
+        [
+          -6.107145005421829,
+          -0.18315992735229725,
+          1.1933367845907927
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_040",
+      "asset_id": "573d7dcc478330c40f3b05b9473a2fda1236c3e4",
+      "template_name": "573d7dcc478330c40f3b05b9473a2fda1236c3e4",
+      "name": "573d7dcc478330c40f3b05b9473a2fda1236c3e4",
+      "category": "default",
+      "semantic_name": "Toilet",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -9.5440101,
+        -1.2287298,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.196854829788208,
+          -0.3121338486671448,
+          7.300247671082616e-05
+        ],
+        [
+          0.19685481488704681,
+          0.3122250735759735,
+          0.8317213654518127
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.856235236144116,
+          -1.4255847289965327,
+          7.294287206605077e-05
+        ],
+        [
+          -9.231876188764717,
+          -1.0318748858756337,
+          0.831721305847168
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_041",
+      "asset_id": "8f6e341ec8585f6ec95bdccfd3925b569454c5ea",
+      "template_name": "8f6e341ec8585f6ec95bdccfd3925b569454c5ea",
+      "name": "8f6e341ec8585f6ec95bdccfd3925b569454c5ea",
+      "category": "default",
+      "semantic_name": "Cooke & Lewis Shaftesbury Acrylic Rectangular Straight Bath (L)1600mm (W)700mm",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -8.9266805,
+        -1.9892199,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.32999864756673575,
+          -0.9600035296440125,
+          -1.76468135489587e-16
+        ],
+        [
+          0.32999895691564085,
+          0.959891308888793,
+          1.906969642714882
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.88668413453043,
+          -2.319219162042261,
+          -1.192092897272494e-07
+        ],
+        [
+          -7.966789086224691,
+          -1.6592209473423125,
+          1.9069695235055923
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_042",
+      "asset_id": "532681f45088722a5cd947ee4cb4a35441a75f1f",
+      "template_name": "532681f45088722a5cd947ee4cb4a35441a75f1f",
+      "name": "532681f45088722a5cd947ee4cb4a35441a75f1f",
+      "category": "seating_furniture",
+      "semantic_name": "Domino Dining Chair",
+      "found_in": "dining room",
+      "support_surface": false,
+      "position": [
+        -3.3273301,
+        -1.5609599,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.2666619122028351,
+          -0.36941447854042053,
+          -1.2104784730126994e-07
+        ],
+        [
+          0.2666739821434021,
+          0.34351861476898193,
+          1.039475440979004
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.5940040821434023,
+          -1.904478514768982,
+          -2.402571368520512e-07
+        ],
+        [
+          -3.060668187797165,
+          -1.1915454214595795,
+          1.0394753217697144
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_043",
+      "asset_id": "532681f45088722a5cd947ee4cb4a35441a75f1f",
+      "template_name": "532681f45088722a5cd947ee4cb4a35441a75f1f",
+      "name": "532681f45088722a5cd947ee4cb4a35441a75f1f",
+      "category": "seating_furniture",
+      "semantic_name": "Domino Dining Chair",
+      "found_in": "dining room",
+      "support_surface": false,
+      "position": [
+        -3.2817904,
+        -0.5475707,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.9999833655286222,
+        0.0,
+        0.0,
+        -0.005767899622056321
+      ],
+      "local_bounds": [
+        [
+          -0.2666619122028351,
+          -0.36941447854042053,
+          -1.2104784730126994e-07
+        ],
+        [
+          0.2666739821434021,
+          0.34351861476898193,
+          1.039475440979004
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.552695989605281,
+          -0.9200368450356304,
+          -1.8065249207666056e-07
+        ],
+        [
+          -3.011171465773767,
+          -0.2009988349282154,
+          1.0394753813743591
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_044",
+      "asset_id": "3afd8e1677d04159831b7b4b8a4fc5e1cd762fa4",
+      "template_name": "3afd8e1677d04159831b7b4b8a4fc5e1cd762fa4",
+      "name": "3afd8e1677d04159831b7b4b8a4fc5e1cd762fa4",
+      "category": "default",
+      "semantic_name": "Lexington Home Brands # La Jolla Woven Round Mirror",
+      "found_in": "bedroom",
+      "support_surface": false,
+      "position": [
+        -2.7361648,
+        -0.99062,
+        1.7499996
+      ],
+      "rotation": [
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
+      ],
+      "local_bounds": [
+        [
+          -0.5321871638298035,
+          -0.5309500694274902,
+          -0.0006715846247971058
+        ],
+        [
+          0.5321874022483826,
+          0.5309435129165649,
+          0.07616429775953293
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -2.812329416700659,
+          -1.522807478192659,
+          1.2190494771523817
+        ],
+        [
+          -2.7354928964359657,
+          -0.4584327828743857,
+          2.280943188984529
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_045",
+      "asset_id": "0fd0807c7a9f3d4d201d01a82bd0bdb788e5307c",
+      "template_name": "0fd0807c7a9f3d4d201d01a82bd0bdb788e5307c",
+      "name": "0fd0807c7a9f3d4d201d01a82bd0bdb788e5307c",
+      "category": "floor_covering",
+      "semantic_name": "Gobi Runner",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -6.2329349,
+        -1.1795448,
+        -7.031485438346863e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.37193769216537476,
+          -1.2095144987106323,
+          -0.002455701120197773
+        ],
+        [
+          0.37235212326049805,
+          1.2092875242233276,
+          0.009659736417233944
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.442449516926905,
+          -1.5518973076914522,
+          -0.0024557714350521564
+        ],
+        [
+          -5.023647257428678,
+          -0.8076067234758124,
+          0.00965966610237956
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_046",
+      "asset_id": "1998d6723c302890a62cea330a975315587d0fdf",
+      "template_name": "1998d6723c302890a62cea330a975315587d0fdf",
+      "name": "1998d6723c302890a62cea330a975315587d0fdf",
+      "category": "seating_furniture",
+      "semantic_name": "Delano Thrillist Sofa With Reversible Chaise",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -3.8731298,
+        3.0514097,
+        1.7881393432617188e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -1.2934074401855469,
+          -0.8570364117622375,
+          -2.0719893711884652e-07
+        ],
+        [
+          1.2934070825576782,
+          0.8570364713668823,
+          1.028496265411377
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -4.730166622857622,
+          1.758002345042724,
+          -2.838500279267464e-08
+        ],
+        [
+          -3.0160929175378466,
+          4.344817412585163,
+          1.0284964442253113
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_047",
+      "asset_id": "1cdf3fae1e6c7c3e407fb4a5eaf8ebc51fbdc5b7",
+      "template_name": "1cdf3fae1e6c7c3e407fb4a5eaf8ebc51fbdc5b7",
+      "name": "1cdf3fae1e6c7c3e407fb4a5eaf8ebc51fbdc5b7",
+      "category": "support_furniture",
+      "semantic_name": "Dakota Coffee Table",
+      "found_in": "living room",
+      "support_surface": true,
+      "position": [
+        -4.7976899,
+        3.6702096,
+        2.2351741790771484e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.5587999820709229,
+          -0.30480003356933594,
+          -1.2296774229980656e-06
+        ],
+        [
+          0.5587999820709229,
+          0.3047999441623688,
+          0.4321720600128174
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.102490111177792,
+          3.111409521051744,
+          -1.0061600050903508e-06
+        ],
+        [
+          -4.492889778229175,
+          4.229009678948228,
+          0.4321722835302353
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_048",
+      "asset_id": "1cdf3fae1e6c7c3e407fb4a5eaf8ebc51fbdc5b7",
+      "template_name": "1cdf3fae1e6c7c3e407fb4a5eaf8ebc51fbdc5b7",
+      "name": "1cdf3fae1e6c7c3e407fb4a5eaf8ebc51fbdc5b7",
+      "category": "support_furniture",
+      "semantic_name": "Dakota Coffee Table",
+      "found_in": "living room",
+      "support_surface": true,
+      "position": [
+        -3.2313599,
+        4.7678093,
+        2.980232238769531e-07
+      ],
+      "rotation": [
+        0.712172807110283,
+        0.0,
+        0.0,
+        -0.702004197147467
+      ],
+      "local_bounds": [
+        [
+          -0.2649999390174866,
+          -0.19999999794712067,
+          -1.6294497341179748e-06
+        ],
+        [
+          0.2649999390174866,
+          0.1999999392811388,
+          0.5726726661079883
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.435149973753967,
+          4.4999607192973645,
+          -1.3314265102410216e-06
+        ],
+        [
+          -3.0275698849059496,
+          5.035657879859005,
+          0.5726729641312122
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_049",
+      "asset_id": "xxxx028e6297xba22x4718xb4cbx1470a69a0bd6",
+      "template_name": "xxxx028e6297xba22x4718xb4cbx1470a69a0bd6",
+      "name": "xxxx028e6297xba22x4718xb4cbx1470a69a0bd6",
+      "category": "default",
+      "semantic_name": "Black Rattan Woven Round Basket",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -7.2797603,
+        4.6425395,
+        2.682209014892578e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.22765612602233887,
+          -0.22600266337394714,
+          0.0
+        ],
+        [
+          0.22765612602233887,
+          0.22600266337394714,
+          0.5122727155685425
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.505763035731949,
+          4.414883302145195,
+          2.682209014892578e-07
+        ],
+        [
+          -7.053757564268052,
+          4.870195697854805,
+          0.512272983789444
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_050",
+      "asset_id": "38edde1e4c201b931926f3827d40ebe3298b9c5d",
+      "template_name": "38edde1e4c201b931926f3827d40ebe3298b9c5d",
+      "name": "38edde1e4c201b931926f3827d40ebe3298b9c5d",
+      "category": "lighting",
+      "semantic_name": "Table Lamp",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -11.5407152,
+        1.6384749,
+        0.5200001
+      ],
+      "rotation": [
+        0.5927666576648555,
+        0.0,
+        0.0,
+        0.8053742543444233
+      ],
+      "local_bounds": [
+        [
+          -0.09438543766736984,
+          -0.38814064860343933,
+          4.034336420488671e-09
+        ],
+        [
+          0.09438547492027283,
+          0.26395925879478455,
+          0.6540316939353943
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.820799565105558,
+          1.4698925624121522,
+          0.5200001040343364
+        ],
+        [
+          -11.142062702120326,
+          1.8439708592642736,
+          1.1740317939353941
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_051",
+      "asset_id": "38edde1e4c201b931926f3827d40ebe3298b9c5d",
+      "template_name": "38edde1e4c201b931926f3827d40ebe3298b9c5d",
+      "name": "38edde1e4c201b931926f3827d40ebe3298b9c5d",
+      "category": "lighting",
+      "semantic_name": "Table Lamp",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -11.703329,
+        4.5239381,
+        0.5026701
+      ],
+      "rotation": [
+        0.8433664744774585,
+        0.0,
+        0.0,
+        0.5373388034819953
+      ],
+      "local_bounds": [
+        [
+          -0.09438543766736984,
+          -0.38814064860343933,
+          4.034336420488671e-09
+        ],
+        [
+          0.09438547492027283,
+          0.26395925879478455,
+          0.6540316939353943
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.98244875783721,
+          4.274389506839215,
+          0.5026701040343364
+        ],
+        [
+          -11.311657788293,
+          4.7210158650121175,
+          1.1567017939353943
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_052",
+      "asset_id": "87b334f6e7eab81ec0424ce77bda910fa375bc48",
+      "template_name": "87b334f6e7eab81ec0424ce77bda910fa375bc48",
+      "name": "87b334f6e7eab81ec0424ce77bda910fa375bc48",
+      "category": "default",
+      "semantic_name": "ENEL KVAR - Bathroom Mirror",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -9.8562345,
+        -0.45278,
+        1.4758098
+      ],
+      "rotation": [
+        0.4999999249999894,
+        0.4999999249999894,
+        0.5000000249999944,
+        0.5000001249999994
+      ],
+      "local_bounds": [
+        [
+          -0.43999980655650794,
+          -0.5849998280719966,
+          -6.618395827065963e-17
+        ],
+        [
+          0.4399997737739682,
+          0.5849998280719966,
+          0.02845134948391281
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.856234690499917,
+          -0.8927798650564804,
+          0.8908099279280329
+        ],
+        [
+          -9.82778296001616,
+          -0.012780159190654172,
+          2.060809674917099
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_053",
+      "asset_id": "a9be04a84ab7ec9e041c9eb767281ec87b7096a4",
+      "template_name": "a9be04a84ab7ec9e041c9eb767281ec87b7096a4",
+      "name": "a9be04a84ab7ec9e041c9eb767281ec87b7096a4",
+      "category": "default",
+      "semantic_name": "Samsung RSG5DUMH Fridge Freezer Manhattan Silver",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.3619203,
+        -0.5131697,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.4547591209411621,
+          -0.3300023334462941,
+          -1.312404571216689e-07
+        ],
+        [
+          0.4547596275806427,
+          0.33000193486416934,
+          1.7886626719381093
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.8166794209411625,
+          -0.843172033446294,
+          -1.9084510189705952e-07
+        ],
+        [
+          -6.907160672419358,
+          -0.1831677651358306,
+          1.7886626123334646
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_054",
+      "asset_id": "f06e2727948c85bce51796fb4091137df9fe22f2",
+      "template_name": "f06e2727948c85bce51796fb4091137df9fe22f2",
+      "name": "f06e2727948c85bce51796fb4091137df9fe22f2",
+      "category": "default",
+      "semantic_name": "Smoked Bamboo Table Runner",
+      "found_in": "kitchen,dining room",
+      "support_surface": false,
+      "position": [
+        -3.36838,
+        -1.04663,
+        0.7499998
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.17499996201976836,
+          -0.5249997111124038,
+          -2.0317076440191316e-16
+        ],
+        [
+          0.17499996201976836,
+          0.5249997453117728,
+          0.009999997776482627
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.893379800933573,
+          -1.2216301288851836,
+          0.7499997999999998
+        ],
+        [
+          -2.8433802332657963,
+          -0.8716298711148055,
+          0.7599997977764826
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_055",
+      "asset_id": "578e50f145119f121df79f73f5efd64019d94e17",
+      "template_name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen wall cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.6135301,
+        -0.18317,
+        1.7499996
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.707106668813455,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.3467056756773591,
+          -0.374999925,
+          -8.326671019354137e-17
+        ],
+        [
+          0.3467056756773591,
+          0.374999925,
+          0.39343954204533693
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.96023577567736,
+          -0.5766096612349474,
+          1.3749996750000189
+        ],
+        [
+          -6.266824424322641,
+          -0.18316988081036956,
+          2.1249996500504422
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_056",
+      "asset_id": "578e50f145119f121df79f73f5efd64019d94e17",
+      "template_name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen wall cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -7.3866801,
+        -0.18317,
+        2.1078996
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.707106668813455,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.4299946290740967,
+          -0.32999992499999997,
+          -8.326671019354137e-17
+        ],
+        [
+          0.4299946290740967,
+          0.32999992499999997,
+          0.39343954204533693
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.816674729074097,
+          -0.5766096469321889,
+          1.7778996750000169
+        ],
+        [
+          -6.956685470925904,
+          -0.18316989511312806,
+          2.4378996500504444
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_057",
+      "asset_id": "578e50f145119f121df79f73f5efd64019d94e17",
+      "template_name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen wall cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -5.3572301,
+        -2.31922,
+        1.7499996
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.7071067311865435,
+        0.7071068311865479
+      ],
+      "local_bounds": [
+        [
+          -0.3467056756773591,
+          -0.374999925,
+          -8.326671019354137e-17
+        ],
+        [
+          0.3467056756773591,
+          0.374999925,
+          0.39343954204533693
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.703935775677359,
+          -2.3192200530330003,
+          1.3749996750000038
+        ],
+        [
+          -5.01052442432264,
+          -1.9257804049216667,
+          2.1249995806407522
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_058",
+      "asset_id": "578e50f145119f121df79f73f5efd64019d94e17",
+      "template_name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen wall cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.73005,
+        -2.31922,
+        1.7499996
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.7071067311865435,
+        0.7071068311865479
+      ],
+      "local_bounds": [
+        [
+          -0.3467056756773591,
+          -0.374999925,
+          -8.326671019354137e-17
+        ],
+        [
+          0.3467056756773591,
+          0.374999925,
+          0.39343954204533693
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.07675567567736,
+          -2.3192200530330003,
+          1.3749996750000038
+        ],
+        [
+          -6.383344324322641,
+          -1.9257804049216667,
+          2.1249995806407522
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_059",
+      "asset_id": "578e50f145119f121df79f73f5efd64019d94e17",
+      "template_name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "name": "578e50f145119f121df79f73f5efd64019d94e17",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen wall cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.0527195,
+        -2.31922,
+        2.0699996
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.7071067311865435,
+        0.7071068311865479
+      ],
+      "local_bounds": [
+        [
+          -0.3467056756773591,
+          -0.32999992499999997,
+          -8.326671019354137e-17
+        ],
+        [
+          0.3467056756773591,
+          0.32999992499999997,
+          0.39343954204533693
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.39942517567736,
+          -2.319220046669039,
+          1.7399996750000033
+        ],
+        [
+          -5.706013824322641,
+          -1.925780411285628,
+          2.399999580640753
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_060",
+      "asset_id": "e5e90a9c090c1aa9ce55a90726f5de5d42d80f2b",
+      "template_name": "e5e90a9c090c1aa9ce55a90726f5de5d42d80f2b",
+      "name": "e5e90a9c090c1aa9ce55a90726f5de5d42d80f2b",
+      "category": "support_furniture",
+      "semantic_name": "Calais Antique White Round Dining Table",
+      "found_in": "",
+      "support_surface": true,
+      "position": [
+        -3.3689498,
+        -1.0542496,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.5333384275436401,
+          -0.5333387851715088,
+          -9.513887298450102e-17
+        ],
+        [
+          0.5333391427993774,
+          0.5333387851715088,
+          0.7473909854888916
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.9022889427993777,
+          -1.5875883851715087,
+          -5.96046448705295e-08
+        ],
+        [
+          -2.83561137245636,
+          -0.5209108148284911,
+          0.7473909258842468
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_061",
+      "asset_id": "d2d44412052fb3c3548694ef5ddbc1433704ceb4",
+      "template_name": "d2d44412052fb3c3548694ef5ddbc1433704ceb4",
+      "name": "d2d44412052fb3c3548694ef5ddbc1433704ceb4",
+      "category": "storage_furniture",
+      "semantic_name": "Bathroom Vanity Unit",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -9.55624,
+        -0.4449898,
+        -2.9802322387695312e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.42997359312045574,
+          -0.3000024038964808,
+          6.774164645206949e-09
+        ],
+        [
+          0.42999791906470064,
+          0.3000012505560517,
+          0.9683531995250345
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.856241387218448,
+          -0.8749634884729214,
+          -2.3028157742488362e-08
+        ],
+        [
+          -9.256237459433393,
+          -0.014991785583200246,
+          0.9683531697227121
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_062",
+      "asset_id": "7a727353172f3a0e327ee7d8496d0ce6c4d64c23",
+      "template_name": "7a727353172f3a0e327ee7d8496d0ce6c4d64c23",
+      "name": "7a727353172f3a0e327ee7d8496d0ce6c4d64c23",
+      "category": "default",
+      "semantic_name": "Corso 5 Blade Ceiling Fan",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -4.8310098,
+        3.6258995,
+        3.3527998
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.6429700255393982,
+          -0.6674624681472778,
+          -0.6549853682518005
+        ],
+        [
+          0.6429698467254639,
+          0.6674624681472778,
+          -1.1534416755054622e-09
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.473979646725464,
+          2.958437031852722,
+          2.6978144317481996
+        ],
+        [
+          -4.188039774460602,
+          4.293361968147278,
+          3.3527997988465583
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_063",
+      "asset_id": "7a727353172f3a0e327ee7d8496d0ce6c4d64c23",
+      "template_name": "7a727353172f3a0e327ee7d8496d0ce6c4d64c23",
+      "name": "7a727353172f3a0e327ee7d8496d0ce6c4d64c23",
+      "category": "default",
+      "semantic_name": "Corso 5 Blade Ceiling Fan",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -10.0254402,
+        3.0436398,
+        2.7999999
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.6429700255393982,
+          -0.6674624681472778,
+          -0.6549853682518005
+        ],
+        [
+          0.6429698467254639,
+          0.6674624681472778,
+          -1.1534416755054622e-09
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -10.668410046725464,
+          2.376177331852722,
+          2.1450145317481994
+        ],
+        [
+          -9.382470174460602,
+          3.7111022681472776,
+          2.799999898846558
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_064",
+      "asset_id": "6e8ab0b6640c5a66914dbb05d4019a5dcaeb0b44",
+      "template_name": "6e8ab0b6640c5a66914dbb05d4019a5dcaeb0b44",
+      "name": "6e8ab0b6640c5a66914dbb05d4019a5dcaeb0b44",
+      "category": "support_furniture",
+      "semantic_name": "Thorndale Cocktail Table",
+      "found_in": "living room",
+      "support_surface": true,
+      "position": [
+        -6.625185,
+        3.8854997,
+        2.384185791015625e-07
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.7599627284358025,
+          -0.2557665757357478,
+          -2.0612771363928672e-08
+        ],
+        [
+          0.7599626542837143,
+          0.27414528002085686,
+          0.5080000338217259
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.880951817281588,
+          3.1255369644237114,
+          2.1780580773763382e-07
+        ],
+        [
+          -6.351039478433328,
+          4.645462515569847,
+          0.508000272240305
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_065",
+      "asset_id": "ec5a7b51f7301d831b35da3e857ce1e189e34cce",
+      "template_name": "ec5a7b51f7301d831b35da3e857ce1e189e34cce",
+      "name": "ec5a7b51f7301d831b35da3e857ce1e189e34cce",
+      "category": "plant",
+      "semantic_name": "Pflanze/Plante",
+      "found_in": "living room",
+      "support_surface": false,
+      "position": [
+        -6.4756298,
+        4.7673592,
+        2.980232238769531e-07
+      ],
+      "rotation": [
+        0.9044552874580207,
+        0.0,
+        0.0,
+        0.42656843881050205
+      ],
+      "local_bounds": [
+        [
+          -0.24414867162704468,
+          -0.279750257730484,
+          -0.0019009403185918927
+        ],
+        [
+          0.24414873123168945,
+          0.2797503173351288,
+          0.6981052756309509
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.8467896815541796,
+          4.401024996588178,
+          -0.0019006422953680158
+        ],
+        [
+          -6.104469926524957,
+          5.133693487317452,
+          0.6981055736541748
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_066",
+      "asset_id": "xxxx33236ee0x42bfx40c2x8efdx120f08cbe2b3",
+      "template_name": "xxxx33236ee0x42bfx40c2x8efdx120f08cbe2b3",
+      "name": "xxxx33236ee0x42bfx40c2x8efdx120f08cbe2b3",
+      "category": "decor",
+      "semantic_name": "Carlota 8x10 Floating Frame",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.9748902,
+        -1.12406,
+        1.3199999
+      ],
+      "rotation": [
+        0.710185498928068,
+        0.0,
+        0.0,
+        -0.7040146000704044
+      ],
+      "local_bounds": [
+        [
+          -0.20319899916648865,
+          -0.012638295069336891,
+          0.0
+        ],
+        [
+          0.20319899916648865,
+          0.012638295069336891,
+          0.508001983165741
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.9893013082585576,
+          -1.3273615543075477,
+          1.3199999
+        ],
+        [
+          -7.960479091741442,
+          -0.9207584456924525,
+          1.828001883165741
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_067",
+      "asset_id": "xxxx33236ee0x42bfx40c2x8efdx120f08cbe2b3",
+      "template_name": "xxxx33236ee0x42bfx40c2x8efdx120f08cbe2b3",
+      "name": "xxxx33236ee0x42bfx40c2x8efdx120f08cbe2b3",
+      "category": "decor",
+      "semantic_name": "Carlota 8x10 Floating Frame",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.97755,
+        -0.6098098,
+        1.3199999
+      ],
+      "rotation": [
+        0.710185498928068,
+        0.0,
+        0.0,
+        -0.7040146000704044
+      ],
+      "local_bounds": [
+        [
+          -0.20319899916648865,
+          -0.012638295069336891,
+          0.0
+        ],
+        [
+          0.20319899916648865,
+          0.012638295069336891,
+          0.508001983165741
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.9919611082585575,
+          -0.8131113543075476,
+          1.3199999
+        ],
+        [
+          -7.963138891741442,
+          -0.40650824569245236,
+          1.828001883165741
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_068",
+      "asset_id": "xxxx1d3141f1xa14ex4f1bxa180x6a76dcc05a5c",
+      "template_name": "xxxx1d3141f1xa14ex4f1bxa180x6a76dcc05a5c",
+      "name": "xxxx1d3141f1xa14ex4f1bxa180x6a76dcc05a5c",
+      "category": "plant",
+      "semantic_name": "Macramé Plant Holder",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -3.19858,
+        4.6334595,
+        2.7999999
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.16697311401367188,
+          -0.15323925018310547,
+          -1.4539337158203125
+        ],
+        [
+          0.16697311401367188,
+          0.15323925018310547,
+          0.0
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.365553114013672,
+          4.480220249816894,
+          1.3460661841796875
+        ],
+        [
+          -3.0316068859863283,
+          4.786698750183105,
+          2.7999999
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_069",
+      "asset_id": "xxxxa066f1a9xde37x4b72xb834x68f9f9b78ae4",
+      "template_name": "xxxxa066f1a9xde37x4b72xb834x68f9f9b78ae4",
+      "name": "xxxxa066f1a9xde37x4b72xb834x68f9f9b78ae4",
+      "category": "default",
+      "semantic_name": "Brigton Large Rattan Lantern",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -4.9281601,
+        3.7011997,
+        0.43
+      ],
+      "rotation": [
+        0.9999904811991221,
+        0.0,
+        0.0,
+        0.004363199645722108
+      ],
+      "local_bounds": [
+        [
+          -0.09096633642911911,
+          -0.0810365155339241,
+          0.0
+        ],
+        [
+          0.09096633642911911,
+          0.0810365155339241,
+          0.40639999508857727
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.019830123144281,
+          3.6193724689155573,
+          0.43
+        ],
+        [
+          -4.8364900768557195,
+          3.783026931084443,
+          0.8363999950885772
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_070",
+      "asset_id": "xxxx38f5e324xd3eex4463xaecbxaf7244f46700",
+      "template_name": "xxxx38f5e324xd3eex4463xaecbxaf7244f46700",
+      "name": "xxxx38f5e324xd3eex4463xaecbxaf7244f46700",
+      "category": "plant",
+      "semantic_name": "Artificial Potted Monstera",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.2310304,
+        4.6402597,
+        0.7000002
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.2122325897216797,
+          -0.2629079222679138,
+          0.0
+        ],
+        [
+          0.2122325897216797,
+          0.2629079222679138,
+          0.5778082609176636
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.493938389723711,
+          4.428027026715919,
+          0.7000002
+        ],
+        [
+          -6.968122410276289,
+          4.85249237328408,
+          1.2778084609176634
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_071",
+      "asset_id": "8348f0879e4f155c7534e7c428424995b6a99091",
+      "template_name": "8348f0879e4f155c7534e7c428424995b6a99091",
+      "name": "8348f0879e4f155c7534e7c428424995b6a99091",
+      "category": "lighting",
+      "semantic_name": "LERDAL Chandelier",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -3.79478,
+        -1.0260001,
+        3.6575999
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.3077707867200613,
+          -0.3099117851321936,
+          -1.7897961324677467
+        ],
+        [
+          0.30777081652237775,
+          0.30991175532987714,
+          0.0002075433617251285
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -4.1046918531514445,
+          -1.3337709852221218,
+          1.8678037675322534
+        ],
+        [
+          -3.4848681170462292,
+          -0.7182291849755713,
+          3.657807443361725
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_072",
+      "asset_id": "00b285ed70673826ccb6941929a64abfaf5f9239",
+      "template_name": "00b285ed70673826ccb6941929a64abfaf5f9239",
+      "name": "00b285ed70673826ccb6941929a64abfaf5f9239",
+      "category": "default",
+      "semantic_name": "Hotpoint WDF740A Satin Aluminium Washer Dryer.",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -11.6580781,
+        0.4983935,
+        2.9802322387695312e-08
+      ],
+      "rotation": [
+        0.7011880948145308,
+        0.0,
+        0.0,
+        0.7129763359960613
+      ],
+      "local_bounds": [
+        [
+          -0.3005000054836273,
+          -0.29885658621788025,
+          -9.53674028636442e-09
+        ],
+        [
+          0.3005000054836273,
+          0.2824999988079071,
+          0.8500000238418579
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.945548330626382,
+          0.19322583334231058,
+          2.0265582101330892e-08
+        ],
+        [
+          -11.354253554918055,
+          0.8038338393342573,
+          0.8500000536441803
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_073",
+      "asset_id": "00b285ed70673826ccb6941929a64abfaf5f9239",
+      "template_name": "00b285ed70673826ccb6941929a64abfaf5f9239",
+      "name": "00b285ed70673826ccb6941929a64abfaf5f9239",
+      "category": "default",
+      "semantic_name": "Hotpoint WDF740A Satin Aluminium Washer Dryer.",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -11.644,
+        -0.1059899,
+        0.0
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.3005000054836273,
+          -0.29885658621788025,
+          -9.53674028636442e-09
+        ],
+        [
+          0.3005000054836273,
+          0.2824999988079071,
+          0.8500000238418579
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.926500094318538,
+          -0.40649000047191397,
+          -9.53674028636442e-09
+        ],
+        [
+          -11.345143318271491,
+          0.19451019527315125,
+          0.8500000238418579
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_074",
+      "asset_id": "a62409c9dad2a4e7612ef932db2d03a192b56332",
+      "template_name": "a62409c9dad2a4e7612ef932db2d03a192b56332",
+      "name": "a62409c9dad2a4e7612ef932db2d03a192b56332",
+      "category": "lighting",
+      "semantic_name": "Cabaret Bathroom Wall Bar",
+      "found_in": "bathroom",
+      "support_surface": false,
+      "position": [
+        -9.8562345,
+        -0.4345399,
+        2.0605096
+      ],
+      "rotation": [
+        0.4999999249999894,
+        0.4999999249999894,
+        0.5000000249999944,
+        0.5000001249999994
+      ],
+      "local_bounds": [
+        [
+          -0.4699930427130461,
+          -0.09000154492749013,
+          -4.9235233590757586e-08
+        ],
+        [
+          0.4699930427130461,
+          0.09000153923423067,
+          0.10095130123278946
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.856234699233308,
+          -0.904532951713193,
+          1.9705080080732063
+        ],
+        [
+          -9.755283048769138,
+          0.03545318199857028,
+          2.1505111963286616
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_075",
+      "asset_id": "2e028ffe637a7f7b62154ccfb1cb406a2d8ed6ba",
+      "template_name": "2e028ffe637a7f7b62154ccfb1cb406a2d8ed6ba",
+      "name": "2e028ffe637a7f7b62154ccfb1cb406a2d8ed6ba",
+      "category": "support_furniture",
+      "semantic_name": "console table",
+      "found_in": "living room",
+      "support_surface": true,
+      "position": [
+        -8.1416807,
+        -0.8835799,
+        -5.960464477539063e-08
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.6000000238418579,
+          -0.17499999701976776,
+          -3.885780520013599e-17
+        ],
+        [
+          0.6000000238418579,
+          0.17499999701976776,
+          0.75
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -8.316680887723214,
+          -1.4835799794636653,
+          -5.960464481424843e-08
+        ],
+        [
+          -7.966680512276787,
+          -0.2835798205363347,
+          0.7499999403953552
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_076",
+      "asset_id": "1fed03ca5b84ba5de9d2be405050acec4cfeaf10",
+      "template_name": "1fed03ca5b84ba5de9d2be405050acec4cfeaf10",
+      "name": "1fed03ca5b84ba5de9d2be405050acec4cfeaf10",
+      "category": "default",
+      "semantic_name": "computer",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.2378401,
+        4.0576195,
+        0.7000001
+      ],
+      "rotation": [
+        0.7074033569039807,
+        0.0,
+        0.0,
+        -0.7068100810267066
+      ],
+      "local_bounds": [
+        [
+          -0.3212941586971283,
+          -0.2649536728858948,
+          -9.464794129598886e-05
+        ],
+        [
+          0.3212941884994507,
+          0.26495370268821716,
+          0.4700474739074707
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.503063251441634,
+          3.7361031234975135,
+          0.699905452058704
+        ],
+        [
+          -6.972616918731049,
+          4.37913584672518,
+          1.1700475739074707
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_077",
+      "asset_id": "4a5d65ef0499befafb833f460e1dbe5050d99c2a",
+      "template_name": "4a5d65ef0499befafb833f460e1dbe5050d99c2a",
+      "name": "4a5d65ef0499befafb833f460e1dbe5050d99c2a",
+      "category": "default",
+      "semantic_name": "Delonghi Filter Coffee Maker",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.8267402,
+        -2.0483798,
+        0.8899996
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.11500012874603271,
+          -0.130000501871109,
+          -2.8674871061195846e-17
+        ],
+        [
+          0.11500012874603271,
+          0.130000501871109,
+          0.3000003397464752
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.941740328746032,
+          -2.178380301871109,
+          0.8899996
+        ],
+        [
+          -6.711740071253967,
+          -1.9183792981288912,
+          1.189999939746475
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_078",
+      "asset_id": "b896a61466a9e8fcbadfbe1cc102050160aadd48",
+      "template_name": "b896a61466a9e8fcbadfbe1cc102050160aadd48",
+      "name": "b896a61466a9e8fcbadfbe1cc102050160aadd48",
+      "category": "default",
+      "semantic_name": "BABORD shoe rack",
+      "found_in": "bedroom",
+      "support_surface": false,
+      "position": [
+        -11.1912403,
+        -2.1892197,
+        -1.341104507446289e-07
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.39499953389167786,
+          -0.1300000697374344,
+          -2.11160234861536e-17
+        ],
+        [
+          0.39500048756599426,
+          0.1300000548362732,
+          0.30000001192092896
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.586239833891678,
+          -2.3192197697374346,
+          -1.3411045076574493e-07
+        ],
+        [
+          -10.796239812434006,
+          -2.059219645163727,
+          0.2999998778104782
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_079",
+      "asset_id": "b896a61466a9e8fcbadfbe1cc102050160aadd48",
+      "template_name": "b896a61466a9e8fcbadfbe1cc102050160aadd48",
+      "name": "b896a61466a9e8fcbadfbe1cc102050160aadd48",
+      "category": "default",
+      "semantic_name": "BABORD shoe rack",
+      "found_in": "bedroom",
+      "support_surface": false,
+      "position": [
+        -10.4012413,
+        -2.1892197,
+        -1.341104507446289e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.39499953389167786,
+          -0.1300000697374344,
+          -2.11160234861536e-17
+        ],
+        [
+          0.39500048756599426,
+          0.1300000548362732,
+          0.30000001192092896
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -10.796241787565995,
+          -2.3192197548362734,
+          -1.3411045076574493e-07
+        ],
+        [
+          -10.006241766108323,
+          -2.059219630262566,
+          0.2999998778104782
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_080",
+      "asset_id": "b8af904ac858f2431a89ec7b1d3a44c25b444259",
+      "template_name": "b8af904ac858f2431a89ec7b1d3a44c25b444259",
+      "name": "b8af904ac858f2431a89ec7b1d3a44c25b444259",
+      "category": "default",
+      "semantic_name": "Nostalgic Music Centre &amp; Record Player",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -6.5114197,
+        3.9077396,
+        0.5100001
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.21250000596046448,
+          -0.1604168862104416,
+          5.000955206924118e-05
+        ],
+        [
+          0.21250000596046448,
+          0.17353790998458862,
+          0.47869065403938293
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.684957677525386,
+          3.695239543052791,
+          0.5100501095520692
+        ],
+        [
+          -6.351002746248761,
+          4.1202396611175836,
+          0.9886907540393829
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_081",
+      "asset_id": "f53678c774829a81bbc52b1c82537aa953b3c2bd",
+      "template_name": "f53678c774829a81bbc52b1c82537aa953b3c2bd",
+      "name": "f53678c774829a81bbc52b1c82537aa953b3c2bd",
+      "category": "default",
+      "semantic_name": "Simple Curtains",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -4.9600257,
+        5.0356597,
+        1.1403727
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.707106668813455,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -0.9912080308118403,
+          -1.1403668365792037,
+          0.046662667746903745
+        ],
+        [
+          0.9987644488975227,
+          1.1396321818765998,
+          0.10141821412425488
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.951233730811841,
+          4.9342411234226065,
+          5.878252073099333e-06
+        ],
+        [
+          -3.9612612511024774,
+          4.98899739447274,
+          2.2800049141112138
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_082",
+      "asset_id": "f53678c774829a81bbc52b1c82537aa953b3c2bd",
+      "template_name": "f53678c774829a81bbc52b1c82537aa953b3c2bd",
+      "name": "f53678c774829a81bbc52b1c82537aa953b3c2bd",
+      "category": "default",
+      "semantic_name": "Simple Curtains",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -9.883152,
+        5.0356597,
+        1.2680002
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.707106668813455,
+        0.0,
+        0.0
+      ],
+      "local_bounds": [
+        [
+          -1.3697600336570976,
+          -0.9179954159007311,
+          0.046662667746903745
+        ],
+        [
+          1.380202321420741,
+          0.9174040187926888,
+          0.10141821412425488
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -11.252912033657099,
+          4.934241194100934,
+          0.3500047989305345
+        ],
+        [
+          -8.50294967857926,
+          4.988997323839946,
+          2.185404251027314
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_083",
+      "asset_id": "3238d3a7123feddcf9a8960461bf14e9bb6925c1",
+      "template_name": "3238d3a7123feddcf9a8960461bf14e9bb6925c1",
+      "name": "3238d3a7123feddcf9a8960461bf14e9bb6925c1",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen cabinet with door, narrow",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -5.9914202,
+        -0.4156098,
+        -2.9802322387695312e-08
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.16499945756342413,
+          -0.3953249557088018,
+          -0.0009645692588391597
+        ],
+        [
+          0.16499945756342413,
+          0.39532487716479303,
+          0.8984271279202819
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.156419657563425,
+          -0.810934677164793,
+          -0.0009645990611615474
+        ],
+        [
+          -5.826420742436576,
+          -0.0202848442911982,
+          0.8984270981179595
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_084",
+      "asset_id": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "template_name": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "name": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.6941151,
+        -2.0192196,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.3999708890914917,
+          -0.30000001192092896,
+          -0.000543136615306139
+        ],
+        [
+          0.40014296770095825,
+          0.30000001192092896,
+          0.8984273076057434
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.094258067700959,
+          -2.319219611920929,
+          -0.0005432558245956898
+        ],
+        [
+          -6.294144210908509,
+          -1.719219588079071,
+          0.8984271883964539
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_085",
+      "asset_id": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "template_name": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "name": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -5.4237847,
+        -0.4125705,
+        -2.9802322387695312e-08
+      ],
+      "rotation": [
+        0.9999942992711028,
+        0.0,
+        0.0,
+        0.0033765996648069284
+      ],
+      "local_bounds": [
+        [
+          -0.3999708890914917,
+          -0.39499987569588424,
+          -0.0005431365066788159
+        ],
+        [
+          0.40014296770095825,
+          0.39499987569588424,
+          0.8984271279202819
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.826413966304045,
+          -0.8102624363146695,
+          -0.0005431663090012036
+        ],
+        [
+          -5.02098335901037,
+          -0.01487740161080503,
+          0.8984270981179595
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_086",
+      "asset_id": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "template_name": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "name": "feb414e9a23d7083e984cd8464f13464011f15d4",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen cabinet with 2 doors",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -5.4170551,
+        -2.0192196,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.3999708890914917,
+          -0.30000001192092896,
+          -0.000543136615306139
+        ],
+        [
+          0.40014296770095825,
+          0.30000001192092896,
+          0.8984273076057434
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.817198067700958,
+          -2.319219611920929,
+          -0.0005432558245956898
+        ],
+        [
+          -5.017084210908508,
+          -1.719219588079071,
+          0.8984271883964539
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_087",
+      "asset_id": "2155fdf43148aabbd9beb63943df5606fe0c5945",
+      "template_name": "2155fdf43148aabbd9beb63943df5606fe0c5945",
+      "name": "2155fdf43148aabbd9beb63943df5606fe0c5945",
+      "category": "storage_furniture",
+      "semantic_name": "Kitchen cabinet with hobs and oven",
+      "found_in": "kitchen",
+      "support_surface": false,
+      "position": [
+        -6.0682001,
+        -2.0192196,
+        -1.1920928955078125e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          -0.25095221400260925,
+          -0.30000001192092896,
+          0.0005237769801169634
+        ],
+        [
+          0.2510477900505066,
+          0.30000001192092896,
+          0.9139130711555481
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -6.319247890050507,
+          -2.319219611920929,
+          0.0005236577708274126
+        ],
+        [
+          -5.817247885997391,
+          -1.719219588079071,
+          0.9139129519462585
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_088",
+      "asset_id": "499ffdb8a280a0f0a3e6b6ac2b41ae3d191f8059",
+      "template_name": "499ffdb8a280a0f0a3e6b6ac2b41ae3d191f8059",
+      "name": "499ffdb8a280a0f0a3e6b6ac2b41ae3d191f8059",
+      "category": "plant",
+      "semantic_name": "Hanging plant",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -7.2972197,
+        3.5415997,
+        1.7500001
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.7071067311865435,
+        0.7071068311865479
+      ],
+      "local_bounds": [
+        [
+          -0.1680144965648651,
+          -0.22451455891132355,
+          7.193834790086839e-06
+        ],
+        [
+          0.16797542572021484,
+          0.22449654340744019,
+          0.3900890350341797
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -7.465195125720215,
+          3.541606862086183,
+          1.5254855410896961
+        ],
+        [
+          -7.129205203435135,
+          3.9316887667853306,
+          1.9744966985743608
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_089",
+      "asset_id": "69635993790f6d8bde07450b03d84faa4393cbb1",
+      "template_name": "69635993790f6d8bde07450b03d84faa4393cbb1",
+      "name": "69635993790f6d8bde07450b03d84faa4393cbb1",
+      "category": "default",
+      "semantic_name": "Drapery Rod Floorplanner",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -8.9016799,
+        -1.6487598,
+        2.3049998
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.7071067311865435,
+        0.7071068311865479
+      ],
+      "local_bounds": [
+        [
+          -0.9349999881796539,
+          -0.11499770955094694,
+          -4.335763739213944e-05
+        ],
+        [
+          0.9350000618970394,
+          0.1149976811293438,
+          0.08174472157419771
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.836679961897039,
+          -1.648803173900521,
+          2.1900020904429227
+        ],
+        [
+          -7.9666799118203455,
+          -1.5670150621626704,
+          2.4199974926897925
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_090",
+      "asset_id": "xxxxc0e1d9cbxea5fx4777x8b8bx0ee0f8733589",
+      "template_name": "xxxxc0e1d9cbxea5fx4777x8b8bx0ee0f8733589",
+      "name": "xxxxc0e1d9cbxea5fx4777x8b8bx0ee0f8733589",
+      "category": "plant",
+      "semantic_name": "Artificial Potted Greenery",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -3.3273301,
+        -1.06752,
+        0.7499998
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
+      ],
+      "local_bounds": [
+        [
+          -0.24873097240924835,
+          -0.24335694313049316,
+          3.427267074584961e-07
+        ],
+        [
+          0.24873097240924835,
+          0.24335694313049316,
+          0.4025660753250122
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.570687122186904,
+          -1.3162510497575821,
+          0.7500001427267075
+        ],
+        [
+          -3.0839730778130963,
+          -0.8187889502424178,
+          1.152565875325012
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_091",
+      "asset_id": "xxxx4d019c1fx9a21x4be8x8728x0b12c8b544e1",
+      "template_name": "xxxx4d019c1fx9a21x4be8x8728x0b12c8b544e1",
+      "name": "xxxx4d019c1fx9a21x4be8x8728x0b12c8b544e1",
+      "category": "default",
+      "semantic_name": "Acacia Wood Floor Mirror",
+      "found_in": "bedroom,bathroom",
+      "support_surface": false,
+      "position": [
+        -9.27705,
+        1.2005299,
+        5.960464477539063e-08
+      ],
+      "rotation": [
+        0.00041470004728075754,
+        0.0,
+        0.0,
+        0.9999999140119318
+      ],
+      "local_bounds": [
+        [
+          -0.4189942181110382,
+          -0.03809957206249237,
+          0.0
+        ],
+        [
+          0.4189942181110382,
+          0.0380994938313961,
+          1.854174256324768
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -9.696075673718099,
+          1.162082905458771,
+          5.960464477539063e-08
+        ],
+        [
+          -8.858024326217015,
+          1.2389769727722986,
+          1.8541743159294128
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_092",
+      "asset_id": "3760-0",
+      "template_name": "3760-0",
+      "name": "3760-0",
+      "category": "default",
+      "semantic_name": "",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -9.9144306,
+        5.1106595,
+        1.5499999
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          1.073199987411499,
+          -0.03999999855650961,
+          -0.8499998538418532
+        ],
+        [
+          -1.073199987411499,
+          0.039999991105930506,
+          0.6499999057627797
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -10.987630587411498,
+          5.070659508894069,
+          0.7000000461581468
+        ],
+        [
+          -8.8412306125885,
+          5.150659498556509,
+          2.1999998057627796
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_093",
+      "asset_id": "211-7",
+      "template_name": "211-7",
+      "name": "211-7",
+      "category": "default",
+      "semantic_name": "",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -4.9561996,
+        5.1056594,
+        1.1200002
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "local_bounds": [
+        [
+          0.8944999575614929,
+          -0.07999998966244012,
+          -1.0999996846325875
+        ],
+        [
+          -0.8954999446868896,
+          0.06999998629802316,
+          1.099999803841853
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -5.850699557561493,
+          5.0356594137019774,
+          0.02000051536741254
+        ],
+        [
+          -4.06069965531311,
+          5.18565938966244,
+          2.220000003841853
+        ]
+      ]
+    },
+    {
+      "object_id": "hssd_object_094",
+      "asset_id": "201-1",
+      "template_name": "201-1",
+      "name": "201-1",
+      "category": "default",
+      "semantic_name": "",
+      "found_in": "",
+      "support_surface": false,
+      "position": [
+        -2.96019,
+        0.7490996,
+        1.12
+      ],
+      "rotation": [
+        0.707106793559644,
+        0.0,
+        0.0,
+        0.7071067688134507
+      ],
+      "local_bounds": [
+        [
+          -0.4300000071525574,
+          -0.11500000208616257,
+          -1.0999999046325684
+        ],
+        [
+          0.4300000071525574,
+          0.11500000208616257,
+          1.100000023841858
+        ]
+      ],
+      "grasp_site": null,
+      "bounds_mujoco": [
+        [
+          -3.0751900171346156,
+          0.3190995888228566,
+          0.020000095367431747
+        ],
+        [
+          -2.845189982865384,
+          1.1790996111771435,
+          2.220000023841858
+        ]
+      ]
+    },
+    {
+      "object_id": "017_calculator_home_00",
+      "asset_id": "017_calculator",
+      "name": "017_calculator",
+      "category": "interactive_objects",
+      "position": [
+        -2.984192685209854,
+        -1.3004943823475295,
+        0.7507652083739903
+      ],
+      "bounds_mujoco": [
+        [
+          -3.0292743489637273,
+          -1.376827474251792,
+          0.7493909258842468
+        ],
+        [
+          -2.939109640278794,
+          -1.224325273663439,
+          0.8092198543867788
+        ]
+      ],
+      "mass_kg": 0.1535,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_060",
+      "grasp_site": "017_calculator_home_00_grasp_site"
+    },
+    {
+      "object_id": "101_milk-tea_home_03",
+      "asset_id": "101_milk-tea",
+      "name": "101_milk-tea",
+      "category": "interactive_objects",
+      "position": [
+        -6.487341629388624,
+        4.284642762528735,
+        0.5119119881587942
+      ],
+      "bounds_mujoco": [
+        [
+          -6.5429316338594585,
+          4.230612851026068,
+          0.510000272240305
+        ],
+        [
+          -6.434973276412083,
+          4.338468500559091,
+          0.6931578806631576
+        ]
+      ],
+      "mass_kg": 0.4837,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_064",
+      "grasp_site": "101_milk-tea_home_03_grasp_site"
+    },
+    {
+      "object_id": "snack_soda_can_home_04",
+      "asset_id": "snack_soda_can",
+      "name": "Soda Can",
+      "category": "interactive_objects",
+      "position": [
+        -6.7714542316883675,
+        4.301797428183866,
+        0.566416078048938
+      ],
+      "bounds_mujoco": [
+        [
+          -6.806431832706889,
+          4.266670024927792,
+          0.510000272240305
+        ],
+        [
+          -6.736431832214315,
+          4.336670029187019,
+          0.6220002793159894
+        ]
+      ],
+      "mass_kg": 0.157,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_064",
+      "grasp_site": "snack_soda_can_home_04_grasp_site"
+    },
+    {
+      "object_id": "001_bottle_home_05",
+      "asset_id": "001_bottle",
+      "name": "001_bottle",
+      "category": "interactive_objects",
+      "position": [
+        -4.987739906643653,
+        3.954401453078186,
+        0.4342343255641351
+      ],
+      "bounds_mujoco": [
+        [
+          -5.026712107865386,
+          3.9155560849981854,
+          0.4341722835302353
+        ],
+        [
+          -4.949399397675215,
+          3.993099919052907,
+          0.6885818533351189
+        ]
+      ],
+      "mass_kg": 0.487,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_047",
+      "grasp_site": "001_bottle_home_05_grasp_site"
+    },
+    {
+      "object_id": "025_chips-tub_home_06",
+      "asset_id": "025_chips-tub",
+      "name": "025_chips-tub",
+      "category": "interactive_objects",
+      "position": [
+        -4.75739697948835,
+        4.1130835402825845,
+        0.435817035418515
+      ],
+      "bounds_mujoco": [
+        [
+          -4.798764091045303,
+          4.074487427218152,
+          0.4341722835302353
+        ],
+        [
+          -4.71788019989271,
+          4.151744727729357,
+          0.6172524667614299
+        ]
+      ],
+      "mass_kg": 0.3835,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_047",
+      "grasp_site": "025_chips-tub_home_06_grasp_site"
+    },
+    {
+      "object_id": "035_apple_home_07",
+      "asset_id": "035_apple",
+      "name": "035_apple",
+      "category": "interactive_objects",
+      "position": [
+        -8.084007745344874,
+        -0.7806096892642055,
+        0.790797810722582
+      ],
+      "bounds_mujoco": [
+        [
+          -8.124688183636001,
+          -0.7806096863391193,
+          0.7519999403953552
+        ],
+        [
+          -8.043327307309221,
+          -0.6998261362931516,
+          0.8295956819204123
+        ]
+      ],
+      "mass_kg": 0.147,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_075",
+      "grasp_site": "035_apple_home_07_grasp_site"
+    },
+    {
+      "object_id": "038_milk-box_home_08",
+      "asset_id": "038_milk-box",
+      "name": "038_milk-box",
+      "category": "interactive_objects",
+      "position": [
+        -8.133981809155712,
+        -0.42249201175361495,
+        0.7539689928596387
+      ],
+      "bounds_mujoco": [
+        [
+          -8.1887330995653,
+          -0.4796075488086436,
+          0.7519999403953552
+        ],
+        [
+          -8.079910036868771,
+          -0.3653007683556622,
+          0.9546119622392244
+        ]
+      ],
+      "mass_kg": 0.8473,
+      "dynamic": true,
+      "graspable": true,
+      "support": "hssd_object_075",
+      "grasp_site": "038_milk-box_home_08_grasp_site"
+    }
+  ],
+  "robot": {
+    "model": "Hello Robot Stretch",
+    "initial_pose": [
+      -6.801957130432129,
+      1.5975644247872487,
+      0.0
+    ],
+    "body": "base_link"
+  },
+  "mjcf": "home_05_102344094.xml",
+  "robot_include": "home_05_102344094_robot.xml",
+  "preview": "home_05_102344094.png",
+  "model": {
+    "textures": 137,
+    "materials": 293,
+    "meshes": 376,
+    "geoms": 656
+  }
+}

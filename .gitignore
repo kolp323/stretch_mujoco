@@ -90,6 +90,7 @@ stretch_mujoco/models/assets/humanoid/generated/*
 !stretch_mujoco/models/assets/humanoid/generated/README.md
 stretch_mujoco/models/assets/humanoid/sources/**
 !stretch_mujoco/models/assets/humanoid/sources/README.md
+stretch_mujoco/models/assets/home_scenes/_hssd_cache/
 
 # Local LLM credentials must never be committed.
 **/*.local.json

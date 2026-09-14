@@ -21,7 +21,9 @@ import trimesh
 from PIL import Image
 
 
-CONVERTER_VERSION = 1
+# Bumped whenever the coordinate/material conversion changes. This prevents a
+# stale OBJ cache from masking fixes to HSSD stage alignment.
+CONVERTER_VERSION = 2
 HABITAT_TO_MUJOCO = np.array(((1.0, 0.0, 0.0), (0.0, 0.0, -1.0), (0.0, 1.0, 0.0)))
 
 

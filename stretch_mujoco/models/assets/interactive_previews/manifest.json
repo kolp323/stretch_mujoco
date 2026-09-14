@@ -1,0 +1,30 @@
+[
+  {
+    "asset_id": "075_bread",
+    "name": "075_bread",
+    "yaw_rad": 0.0,
+    "yaw_deg": 0.0,
+    "source_scenes": [
+      "office_02_cross_axis",
+      "office_03_long_gallery",
+      "office_06_diagonal_flow",
+      "office_08_dual_island"
+    ],
+    "preview": "075_bread__yaw_plus0.png",
+    "error": null
+  },
+  {
+    "asset_id": "075_bread",
+    "name": "075_bread",
+    "yaw_rad": 1.57079633,
+    "yaw_deg": 90.0000001836389,
+    "source_scenes": [
+      "office_01_linear_bench",
+      "office_04_central_meeting",
+      "office_07_u_bench",
+      "office_10_social_core"
+    ],
+    "preview": "075_bread__yaw_plus90.png",
+    "error": null
+  }
+]

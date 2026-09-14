@@ -7,13 +7,13 @@
       "layout": "single_open_area",
       "area_m2": 220,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 23,
+      "asset_instance_count": 34,
       "robot_initial_pose": [
         -0.7,
         -3.8,
         0.0
       ],
-      "robot_clearance_m": 2.30904191492974,
+      "robot_clearance_m": 2.3176112359393986,
       "mjcf": "office_01_linear_bench.xml",
       "manifest": "office_01_linear_bench.json",
       "preview": "office_01_linear_bench.png"
@@ -24,13 +24,13 @@
       "layout": "single_open_area",
       "area_m2": 216,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 23,
+      "asset_instance_count": 34,
       "robot_initial_pose": [
         -7.7,
         -0.7,
         3.141592653589793
       ],
-      "robot_clearance_m": 1.6948275487538882,
+      "robot_clearance_m": 1.6894670660293332,
       "mjcf": "office_02_cross_axis.xml",
       "manifest": "office_02_cross_axis.json",
       "preview": "office_02_cross_axis.png"
@@ -41,13 +41,13 @@
       "layout": "single_open_area",
       "area_m2": 210,
       "workstation_layout": "rows_y",
-      "asset_instance_count": 25,
+      "asset_instance_count": 34,
       "robot_initial_pose": [
         9.2,
         3.5,
         1.5707963267948966
       ],
-      "robot_clearance_m": 2.488469347902923,
+      "robot_clearance_m": 2.238469347902923,
       "mjcf": "office_03_long_gallery.xml",
       "manifest": "office_03_long_gallery.json",
       "preview": "office_03_long_gallery.png"
@@ -58,13 +58,13 @@
       "layout": "single_open_area",
       "area_m2": 218.4,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 23,
+      "asset_instance_count": 33,
       "robot_initial_pose": [
         9.2,
         1.3,
         0.0
       ],
-      "robot_clearance_m": 2.7264748850576477,
+      "robot_clearance_m": 2.4764748850576477,
       "mjcf": "office_04_central_meeting.xml",
       "manifest": "office_04_central_meeting.json",
       "preview": "office_04_central_meeting.png"
@@ -75,13 +75,13 @@
       "layout": "single_open_area",
       "area_m2": 240,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 24,
+      "asset_instance_count": 34,
       "robot_initial_pose": [
         -8.7,
         3.7,
         -1.5707963267948966
       ],
-      "robot_clearance_m": 4.350678047852282,
+      "robot_clearance_m": 4.359247368861941,
       "mjcf": "office_05_team_clusters.xml",
       "manifest": "office_05_team_clusters.json",
       "preview": "office_05_team_clusters.png"
@@ -92,13 +92,13 @@
       "layout": "single_open_area",
       "area_m2": 231,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 22,
+      "asset_instance_count": 33,
       "robot_initial_pose": [
         -9.2,
         4.2,
         -1.0471975511965976
       ],
-      "robot_clearance_m": 4.701073360488904,
+      "robot_clearance_m": 4.709642681498562,
       "mjcf": "office_06_diagonal_flow.xml",
       "manifest": "office_06_diagonal_flow.json",
       "preview": "office_06_diagonal_flow.png"
@@ -109,13 +109,13 @@
       "layout": "single_open_area",
       "area_m2": 240,
       "workstation_layout": "rows_y",
-      "asset_instance_count": 23,
+      "asset_instance_count": 32,
       "robot_initial_pose": [
         -0.7,
         -4.7,
         3.141592653589793
       ],
-      "robot_clearance_m": 2.4071411950671475,
+      "robot_clearance_m": 2.407141215022081,
       "mjcf": "office_07_u_bench.xml",
       "manifest": "office_07_u_bench.json",
       "preview": "office_07_u_bench.png"
@@ -126,13 +126,13 @@
       "layout": "single_open_area",
       "area_m2": 220,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 23,
+      "asset_instance_count": 34,
       "robot_initial_pose": [
         -8.7,
         -2.2,
         1.5707963267948966
       ],
-      "robot_clearance_m": 2.315564047455505,
+      "robot_clearance_m": 2.3419181501588393,
       "mjcf": "office_08_dual_island.xml",
       "manifest": "office_08_dual_island.json",
       "preview": "office_08_dual_island.png"
@@ -143,13 +143,13 @@
       "layout": "single_open_area",
       "area_m2": 220,
       "workstation_layout": "rows_x",
-      "asset_instance_count": 24,
+      "asset_instance_count": 36,
       "robot_initial_pose": [
         -8.7,
         3.8,
         -1.5707963267948966
       ],
-      "robot_clearance_m": 4.54820018061695,
+      "robot_clearance_m": 3.0191163668677476,
       "mjcf": "office_09_staggered_rows.xml",
       "manifest": "office_09_staggered_rows.json",
       "preview": "office_09_staggered_rows.png"
@@ -160,7 +160,7 @@
       "layout": "single_open_area",
       "area_m2": 240,
       "workstation_layout": "rows_y",
-      "asset_instance_count": 23,
+      "asset_instance_count": 33,
       "robot_initial_pose": [
         8.5,
         1.3,

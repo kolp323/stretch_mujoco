@@ -13,6 +13,7 @@ from typing import Optional
 
 import mujoco
 import numpy as np
+import cv2
 
 
 # ---------------------------------------------------------------------------
@@ -36,10 +37,18 @@ class ObstacleFootprint:
     geom_name: str
     minimum: tuple[float, float]  # (x_min, y_min)
     maximum: tuple[float, float]  # (x_max, y_max)
+    # Inflated XY polygon, when available.  Keeping the AABB fields preserves
+    # compatibility with callers that use them for clearance heuristics.
+    polygon: tuple[tuple[float, float], ...] | None = None
 
 
 class OccupancyGrid:
     """2-D occupancy grid rasterised from MuJoCo collision geometry.
+
+    Each collision geom is represented by its world-space XY footprint, not
+    its aggregate AABB.  Meshes use the XY projection of MuJoCo's compiled
+    convex collision hull; independent mesh geoms remain independent before
+    their occupied cells are unioned.
 
     The grid is row-major: ``occupancy[row, col]`` where *row* indexes the
     y-axis and *col* indexes the x-axis.  ``True`` means occupied (blocked).
@@ -150,31 +159,33 @@ class OccupancyGrid:
             ):
                 continue
 
-            half_extents = cls._world_half_extents(model, data, geom_id)
             center = data.geom_xpos[geom_id]
+            half_extents = cls._world_half_extents(model, data, geom_id)
             z_min = float(center[2] - half_extents[2])
             z_max = float(center[2] + half_extents[2])
 
             if z_max <= minimum_obstacle_height or z_min >= maximum_obstacle_height:
                 continue
 
-            minimum = center[:2] - half_extents[:2] - agent_radius
-            maximum = center[:2] + half_extents[:2] + agent_radius
+            # Mesh geoms are projected from their compiled vertices instead
+            # of using their world AABB.  MuJoCo compiles mesh collisions as
+            # convex hulls, so this is also the shape used by physics. For
+            # primitive geoms, use their exact transformed box footprint.
+            footprint = cls._world_xy_footprint(model, data, geom_id)
+            if footprint is None:
+                footprint = cls._aabb_polygon(center[:2], half_extents[:2])
+            poly = cls._inflate_polygon(footprint, agent_radius)
+            minimum = poly.min(axis=0)
+            maximum = poly.max(axis=0)
             obstacles.append(
                 ObstacleFootprint(
                     geom_name,
                     (float(minimum[0]), float(minimum[1])),
                     (float(maximum[0]), float(maximum[1])),
+                    tuple((float(x), float(y)) for x, y in poly),
                 )
             )
-
-            col_min = max(0, int(math.ceil((minimum[0] - x_min) / resolution)))
-            col_max = min(width - 1, int(math.floor((maximum[0] - x_min) / resolution)))
-            row_min = max(0, int(math.ceil((minimum[1] - y_min) / resolution)))
-            row_max = min(height - 1, int(math.floor((maximum[1] - y_min) / resolution)))
-
-            if col_min <= col_max and row_min <= row_max:
-                occupancy[row_min : row_max + 1, col_min : col_max + 1] = True
+            cls._rasterize_polygon(occupancy, poly, x_min, y_min, resolution)
 
         return cls(
             (x_min, x_max, y_min, y_max),
@@ -183,6 +194,94 @@ class OccupancyGrid:
             agent_radius=agent_radius,
             obstacles=tuple(obstacles),
         )
+
+    @staticmethod
+    def _aabb_polygon(center: np.ndarray, half: np.ndarray) -> np.ndarray:
+        x, y = center[:2]
+        hx, hy = half[:2]
+        return np.asarray(((x-hx, y-hy), (x+hx, y-hy),
+                           (x+hx, y+hy), (x-hx, y+hy)), dtype=float)
+
+    @classmethod
+    def _world_xy_footprint(cls, model: mujoco.MjModel, data: mujoco.MjData,
+                            geom_id: int) -> np.ndarray | None:
+        geom_type = int(model.geom_type[geom_id])
+        center = data.geom_xpos[geom_id]
+        xmat = data.geom_xmat[geom_id].reshape(3, 3)
+        # mjGEOM_MESH == 5.  Use all compiled vertices; their convex hull is
+        # the same conservative collision representation MuJoCo uses.
+        if geom_type == int(mujoco.mjtGeom.mjGEOM_MESH):
+            mesh_id = int(model.geom_dataid[geom_id])
+            start = int(model.mesh_vertadr[mesh_id])
+            count = int(model.mesh_vertnum[mesh_id])
+            vertices = np.asarray(model.mesh_vert[start:start + count])
+            if len(vertices):
+                points = vertices @ xmat.T + center
+                return cls._convex_hull(points[:, :2])
+        # Exact transformed corners for boxes (including rotated furniture).
+        if geom_type == int(mujoco.mjtGeom.mjGEOM_BOX):
+            size = np.asarray(model.geom_size[geom_id])
+            corners = np.asarray([(sx*size[0], sy*size[1], sz*size[2])
+                                  for sx in (-1, 1) for sy in (-1, 1) for sz in (-1, 1)])
+            return cls._convex_hull((corners @ xmat.T + center)[:, :2])
+        # Circular/elliptical primitives are sampled in local XY and then
+        # transformed, retaining arbitrary body orientation. A capsule's
+        # longitudinal axis can be X/Y/Z, so sample both end discs.
+        circle_types = {
+            int(mujoco.mjtGeom.mjGEOM_SPHERE),
+            int(mujoco.mjtGeom.mjGEOM_CYLINDER),
+            int(mujoco.mjtGeom.mjGEOM_ELLIPSOID),
+            int(mujoco.mjtGeom.mjGEOM_CAPSULE),
+        }
+        if geom_type in circle_types:
+            size = np.asarray(model.geom_size[geom_id])
+            angles = np.linspace(0.0, 2.0 * np.pi, 32, endpoint=False)
+            # The local XY ellipse gives the exact footprint for spheres,
+            # cylinders and ellipsoids in their own frame. For a capsule the
+            # union of the two end discs is included conservatively.
+            radii = np.asarray((size[0], size[0]))
+            if geom_type == int(mujoco.mjtGeom.mjGEOM_ELLIPSOID):
+                radii = size[:2]
+            local = np.c_[radii[0] * np.cos(angles), radii[1] * np.sin(angles),
+                          np.zeros(len(angles))]
+            if geom_type == int(mujoco.mjtGeom.mjGEOM_CAPSULE):
+                half_length = max(0.0, float(size[1] - size[0]))
+                local = np.concatenate((local + (0, 0, half_length),
+                                        local - (0, 0, half_length)))
+            return cls._convex_hull((local @ xmat.T + center)[:, :2])
+        return None
+
+    @staticmethod
+    def _convex_hull(points: np.ndarray) -> np.ndarray:
+        if len(points) <= 2:
+            return points
+        hull = cv2.convexHull(np.asarray(points, dtype=np.float32)).reshape(-1, 2)
+        return hull.astype(float)
+
+    @staticmethod
+    def _inflate_polygon(polygon: np.ndarray, radius: float) -> np.ndarray:
+        if radius <= 0:
+            return polygon
+        # A polygonal Minkowski approximation. Raster dilation below provides
+        # the final sub-cell conservative inflation as well.
+        samples = []
+        angles = np.linspace(0, 2*np.pi, 24, endpoint=False)
+        offsets = np.c_[np.cos(angles), np.sin(angles)] * radius
+        for point in polygon:
+            samples.append(point + offsets)
+        return OccupancyGrid._convex_hull(np.concatenate(samples, axis=0))
+
+    @staticmethod
+    def _rasterize_polygon(occupancy: np.ndarray, polygon: np.ndarray,
+                           x_min: float, y_min: float, resolution: float) -> None:
+        points = np.rint((polygon - np.asarray((x_min, y_min))) / resolution).astype(np.int32)
+        points[:, 0] = np.clip(points[:, 0], 0, occupancy.shape[1] - 1)
+        points[:, 1] = np.clip(points[:, 1], 0, occupancy.shape[0] - 1)
+        # OpenCV does not accept bool images.  Draw into a byte mask and merge
+        # it back, preserving the public boolean occupancy representation.
+        mask = np.zeros(occupancy.shape, dtype=np.uint8)
+        cv2.fillPoly(mask, [points[:, [0, 1]]], 1)
+        occupancy |= mask.astype(bool)
 
     # -- coordinate conversion -----------------------------------------------
 
@@ -221,11 +320,16 @@ class OccupancyGrid:
         """Check whether a world point falls inside any inflated obstacle AABB."""
         x, y = (float(v) for v in np.asarray(point)[:2])
         eps = 1e-9
-        return any(
-            obs.minimum[0] + eps < x < obs.maximum[0] - eps
-            and obs.minimum[1] + eps < y < obs.maximum[1] - eps
-            for obs in self.obstacles
-        )
+        for obs in self.obstacles:
+            if not (obs.minimum[0] + eps < x < obs.maximum[0] - eps
+                    and obs.minimum[1] + eps < y < obs.maximum[1] - eps):
+                continue
+            if obs.polygon is None:
+                return True
+            contour = np.asarray(obs.polygon, dtype=np.float32)
+            if cv2.pointPolygonTest(contour, (float(x), float(y)), False) >= 0:
+                return True
+        return False
 
     def nearest_free_cell(
         self,
@@ -276,13 +380,12 @@ class OccupancyGrid:
             end_world
         ):
             return False
-        for obs in self.obstacles:
-            if self._segment_intersects_box(
-                start_world,
-                end_world,
-                np.array(obs.minimum),
-                np.array(obs.maximum),
-            ):
+        # Sample at half-cell spacing against the actual polygon. This avoids
+        # the old AABB false positives while retaining a conservative check.
+        distance = float(np.linalg.norm(end_world - start_world))
+        steps = max(1, int(math.ceil(distance / (self.resolution * 0.5))))
+        for alpha in np.linspace(0.0, 1.0, steps + 1):
+            if self.point_inside_obstacle(start_world * (1-alpha) + end_world * alpha):
                 return False
         return True
 

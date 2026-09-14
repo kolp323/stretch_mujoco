@@ -59,6 +59,8 @@ class RGBDGraspClient:
         desired_approach_direction: tuple[float, float, float] | None = None,
         max_approach_angle_deg: float = 180.0,
         approach_allow_opposite: bool = True,
+        min_depth: float = 0.05,
+        max_depth: float = 3.0,
     ) -> dict[str, Any]:
         inference: dict[str, Any] = {
             "return_top_k": return_top_k,
@@ -67,8 +69,8 @@ class RGBDGraspClient:
             "min_grasps": min_grasps,
             "max_tries": max_tries,
             "remove_outliers": True,
-            "min_depth": 0.05,
-            "max_depth": 3.0,
+            "min_depth": min_depth,
+            "max_depth": max_depth,
             "max_object_points": 20_000,
             "max_approach_angle_deg": max_approach_angle_deg,
             "approach_allow_opposite": approach_allow_opposite,

@@ -63,6 +63,22 @@ def test_endpoint_connector_cannot_cross_an_obstacle(planner) -> None:
         planner.plan(grid, np.array([0.0, 0.0]), np.array([1.45, 0.0]))
 
 
+def test_polygon_footprint_does_not_use_its_aabb_for_collision_queries() -> None:
+    # The point is inside this diamond's AABB but outside the actual convex
+    # footprint. This guards the mesh-projection navigation path against a
+    # regression back to black AABB rectangles.
+    diamond = ObstacleFootprint(
+        "rotated_mesh",
+        (-1.0, -1.0),
+        (1.0, 1.0),
+        ((0.0, -1.0), (1.0, 0.0), (0.0, 1.0), (-1.0, 0.0)),
+    )
+    grid = make_grid(np.zeros((3, 3), dtype=bool), (diamond,))
+
+    assert grid.point_inside_obstacle(np.array([0.0, 0.0]))
+    assert not grid.point_inside_obstacle(np.array([0.9, 0.9]))
+
+
 @pytest.mark.parametrize("planner", [AStarPlanner(), FMMPlanner()])
 def test_occupied_endpoint_is_returned_as_resolved_free_cell(planner) -> None:
     occupancy = np.zeros((3, 5), dtype=bool)

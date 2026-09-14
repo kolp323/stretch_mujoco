@@ -61,7 +61,6 @@ def test_stretch_grasp_ik_recovers_a_reachable_pose() -> None:
     assert orientation_error < 0.02
     np.testing.assert_allclose(solver.forward(joints), target, atol=1e-2)
 
-
 def test_stretch_grasp_ik_ranks_reachable_candidates() -> None:
     solver = StretchGraspIK()
     poses = np.asarray(

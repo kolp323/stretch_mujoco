@@ -777,9 +777,16 @@ class MujocoServer:
             contact = data.contact[contact_index]
             body1 = int(self.mjmodel.geom_bodyid[contact.geom1])
             body2 = int(self.mjmodel.geom_bodyid[contact.geom2])
-            if body1 == object_id:
+            # Graspable office-scene assets wrap their collision/visual geoms
+            # in a child "<object>_orientation" body (to apply an authored
+            # euler_correction), so the collision geom's body is a
+            # *descendant* of object_id, never object_id itself -- an exact
+            # equality check here silently never matches any contact for
+            # those assets, permanently reporting bilateral_contact=False
+            # even when the gripper has fully closed on the object.
+            if self._body_is_descendant(body1, object_id):
                 other_body = body2
-            elif body2 == object_id:
+            elif self._body_is_descendant(body2, object_id):
                 other_body = body1
             else:
                 continue

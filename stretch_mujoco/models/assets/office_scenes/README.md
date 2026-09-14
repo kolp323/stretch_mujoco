@@ -9,7 +9,3 @@ Open a scene with:
 ```bash
 .venv/bin/python examples/generated_office_scene.py --scene 1
 ```
-
-The viewer starts in free-camera mode. Use left-drag to rotate, right-drag to pan, and the mouse
-wheel to zoom. The scenes reference the centralized `office_assets` library and include a
-scene-specific generated Stretch XML that sets the robot's initial freejoint pose.
