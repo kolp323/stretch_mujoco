@@ -7,6 +7,8 @@ import pytest
 from stretch_mujoco.agents import (
     AgentAvailability,
     AgentMemory,
+    ActionCommand,
+    ActionType,
     ConversationCoordinator,
     ConversationRequest,
     DialogueAct,
@@ -129,6 +131,16 @@ class _ReadyConversationDriver:
         return DriverResult(ExecutionStatus.SUCCEEDED, "cancelled")
 
 
+class _AsyncTurnConversationDriver(_ReadyConversationDriver):
+    """A receipt-producing driver: talk remains pending until runtime ticks it."""
+
+    def play_turn(self, _session: object, _turn: object) -> DriverResult:
+        return DriverResult(ExecutionStatus.RUNNING, "talk", "turn-pending")
+
+    def poll_conversation(self, _session_id: str) -> DriverResult:
+        return DriverResult(ExecutionStatus.SUCCEEDED, "terminal", "turn-receipt")
+
+
 def test_strict_conversation_commits_only_after_driver_receipt(
     deterministic_conversation_fixture: DeterministicConversationFixture,
 ) -> None:
@@ -160,6 +172,65 @@ def test_strict_conversation_commits_only_after_driver_receipt(
     assert any(event.event == "dialogue_turn_committed" for event in runtime.events)
 
 
+def test_embodied_conversation_defers_spatial_gate_until_driver_approach(
+    deterministic_conversation_fixture: DeterministicConversationFixture,
+) -> None:
+    """A real driver must be allowed to bring separated people together."""
+    runtime = deterministic_conversation_fixture.runtime
+    runtime.interaction_driver = _ReadyConversationDriver()
+    snapshot = dict(deterministic_conversation_fixture.semantic_snapshot)
+    snapshot["objects"] = dict(snapshot["objects"])
+    snapshot["objects"]["employee_02"] = {
+        "position": [9.0, 0.0, 0.0],
+        "yaw": pi,
+    }
+
+    receipt = runtime.begin_conversation(
+        ConversationRequest(
+            "session-approach-before-gate",
+            ("employee_01", "employee_02"),
+            "status",
+            semantic_snapshot=snapshot,
+        )
+    )
+
+    assert receipt.accepted and receipt.status == "ready"
+
+
+def test_strict_conversation_waits_for_async_turn_receipt(
+    deterministic_conversation_fixture: DeterministicConversationFixture,
+) -> None:
+    runtime = deterministic_conversation_fixture.runtime
+    runtime.interaction_driver = _AsyncTurnConversationDriver()
+    receipt = runtime.begin_conversation(
+        ConversationRequest(
+            "session-async-receipt",
+            ("employee_01", "employee_02"),
+            "status",
+            semantic_snapshot=deterministic_conversation_fixture.semantic_snapshot,
+        )
+    )
+    assert receipt.accepted and receipt.status == "ready"
+    candidate = DialogueCandidate(
+        "request-async",
+        "session-async-receipt",
+        "turn-async",
+        "employee_01",
+        "employee_02",
+        DialogueAct.GREETING,
+        "Hello.",
+        0.0,
+    )
+    assert runtime.submit_dialogue_candidate(candidate).valid
+    session = runtime.conversation("session-async-receipt")
+    assert session.dialogue_turns["turn-async"].status.value == "playing"
+    assert not any(event.event == "dialogue_turn_committed" for event in runtime.events)
+
+    events = runtime.tick(0.1, deterministic_conversation_fixture.semantic_snapshot)
+    assert session.dialogue_turns["turn-async"].status.value == "committed"
+    assert any(event.event == "dialogue_turn_committed" for event in events)
+
+
 def test_dialogue_policy_fallback_is_deterministic() -> None:
     policy = DialoguePolicy(DialoguePolicyConfig(max_chars=20), runtime_seed=7)
     candidate = DialogueCandidate("r", "s", "t", "a", "b", DialogueAct.GREETING, "", 0.0)
@@ -170,6 +241,29 @@ def test_dialogue_policy_fallback_is_deterministic() -> None:
     first = policy.validate_and_sanitize(candidate, session)
     second = policy.validate_and_sanitize(candidate, session)
     assert first.fallback_used and first.candidate.text == second.candidate.text
+
+
+def test_dialogue_pair_cooldown_does_not_block_later_turns_in_one_session() -> None:
+    policy = DialoguePolicy(DialoguePolicyConfig(pair_cooldown_seconds=30.0))
+    session = ConversationCoordinator().start(
+        ("a", "b"),
+        "topic",
+        0.0,
+        {"a": SpatialPose((0, 0, 0), 0), "b": SpatialPose((1, 0, 0), pi)},
+    )
+    policy.note_committed(
+        DialogueCandidate(
+            "first", session.session_id, "first", "a", "b", DialogueAct.GREETING, "Hi.", 0.0
+        ),
+        0.0,
+    )
+    session.turn = 1
+    session.expected_speaker = "b"
+    candidate = DialogueCandidate(
+        "second", session.session_id, "second", "b", "a", DialogueAct.ACKNOWLEDGE, "Hello.", 1.0
+    )
+
+    assert policy.validate_and_sanitize(candidate, session, now=1.0).candidate == candidate
 
 
 def test_conversation_spatial_boundaries_accept_exact_limits_and_reject_overage() -> None:
@@ -513,6 +607,19 @@ def test_conversation_terminal_cleanup_is_idempotent_and_preserves_planner_queue
         tuple(event for event in runtime.events if event.event == "conversation_completed")
     ) == len(events_after_first)
     assert not [event for event in runtime.events if event.event == "conversation_cancelled"]
+
+
+def test_conversation_suspends_and_resumes_pending_plan() -> None:
+    runtime = load_runtime()
+    agent = runtime.agents["employee_01"]
+    queued = ActionCommand("employee_01", ActionType.MOVE_TO, "meeting_table")
+    agent.planner.action_queue = [queued]
+
+    session = runtime.start_conversation("employee_01", "stretch_3", "status", facing_snapshot())
+
+    assert agent.planner.action_queue == []
+    runtime.complete_conversation(session.session_id)
+    assert agent.planner.action_queue == [queued]
 
 
 def test_round_robin_turns_and_turn_timeout_are_enforced() -> None:

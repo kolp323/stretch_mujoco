@@ -46,3 +46,9 @@ def test_production_roster_spawns_all_npcs_at_separate_collision_free_positions(
     assert len({tuple(position) for position in positions}) == len(npc_ids)
     assert np.min(pairwise_distances[np.triu_indices(len(npc_ids), k=1)]) >= 0.5
     assert data.ncon == 0
+    for npc_id in npc_ids:
+        hand_site = model.site(f"npc__{npc_id}__handover")
+        assert hand_site.id >= 0
+        assert model.site(
+            f"npc__{npc_id}__anchor__handover__clip__walk__frame__002"
+        ).id >= 0

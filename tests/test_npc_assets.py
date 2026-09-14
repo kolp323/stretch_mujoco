@@ -77,6 +77,7 @@ def test_approved_interaction_registration_closes_production_clip_contract() -> 
     manifest.validate_population(population)
     bundle = manifest.bundles["smplx_office_neutral_v1"]
     assert set(bundle.clips) == set(OFFICE_CLIPS)
+    assert bundle.attachment_anchors == {"handover": "right_hand_anchors.json"}
     assert {"pick_up", "give", "receive", "talk"} <= set(bundle.clips)
     assert bundle.clips["stand_up"].markers == ({"name": "standing", "phase": 0.875},)
     assert bundle.clips["place"].markers == ({"name": "release", "phase": 0.75},)

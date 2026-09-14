@@ -1,4 +1,5 @@
 import math
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -11,6 +12,9 @@ from stretch_mujoco.agents import (
     ActionType,
     ExecutionStatus,
     OfficeAgentRuntime,
+    EmployeeAgent,
+    MockRobotExecutor,
+    RobotTask,
     RobotToNpcHandoverBridge,
 )
 from stretch_mujoco.agents.drivers import MujocoNpcActionDriver
@@ -18,12 +22,17 @@ from stretch_mujoco.agents.action_recipes import ACTION_RECIPES
 from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt
 from stretch_mujoco.npc.system import NpcSystem
+from stretch_mujoco.npc.locomotion import yaw_quaternion
 from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
-from stretch_mujoco.semantics import SemanticWorld
+from stretch_mujoco.semantics import ObjectType, SemanticObject, SemanticWorld
 
 MODELS = Path(__file__).resolve().parents[1] / "stretch_mujoco" / "models"
 OFFICE_PROFILE = (
     Path(__file__).resolve().parents[1] / "stretch_mujoco/npc/trajectory_profiles/office_v1.json"
+)
+DEMO_HANDOVER_POPULATION = (
+    Path(__file__).resolve().parents[1]
+    / "aaa_workspace/demo/new_demo/production_npc_handover_population.json"
 )
 
 
@@ -257,6 +266,74 @@ def test_sit_approaches_aligns_and_marks_seated_before_semantic_commit() -> None
     )
 
 
+def test_move_to_chair_uses_the_chair_ingress_not_the_sit_center() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {"chair_right": "chair_right_sit"},
+        seat_navigation_sites={"chair_right": "chair_right_approach_site"},
+    )
+    execution = ActionExecution(
+        command=ActionCommand("employee_01", ActionType.MOVE_TO, "chair_right"),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.phase == "navigate"
+    assert simulator.command.kind == NpcCommandKind.MOVE_TO
+    assert simulator.command.payload["site"] == "chair_right_approach_site"
+
+
+def test_robot_request_requires_npc_approach_and_spoken_receipt_before_success() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {},
+        robot_request_sites={"stretch_3": "stretch_request_stand_site"},
+        available_clips={"talk"},
+    )
+    execution = ActionExecution(
+        execution_id="robot_request_1",
+        command=ActionCommand(
+            "employee_01",
+            ActionType.REQUEST_ROBOT,
+            "stretch_3",
+            {"task": "deliver", "object": "parcel", "destination": "desk"},
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    assert driver.start(execution).phase == "approach_stretch"
+    assert simulator.command.kind is NpcCommandKind.MOVE_TO
+    assert simulator.command.payload["site"] == "stretch_request_stand_site"
+
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+    )
+    assert driver.poll(execution).phase == "speak_request"
+    assert simulator.command.kind is NpcCommandKind.PLAY_ANIMATION
+    assert simulator.command.payload == {
+        "clip": "talk",
+        "completion_marker": "talk_cycle",
+        "arrival_clip": "idle",
+        "target_site": "stretch_request_stand_site",
+        "gaze_target": "stretch_3",
+        "interaction_target": "stretch_3",
+        "interaction_distance_min": 0.45,
+        "interaction_distance_max": 1.45,
+        "interaction_yaw_tolerance": 1.20,
+    }
+
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+    )
+    result = driver.poll(execution)
+
+    assert result.status is ExecutionStatus.SUCCEEDED
+    assert result.phase == "request_accepted"
+
+
 def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
     simulator = FakeSimulator()
     driver = MujocoNpcActionDriver(
@@ -264,7 +341,7 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
         {},
         handover_sites={"employee_02": "employee_02_handover_site"},
         handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
-        interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
+        interaction_yaws={"employee_01": math.pi / 2, "employee_02": -math.pi / 2},
     )
     execution = ActionExecution(
         execution_id="handover_1",
@@ -317,14 +394,21 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
         "detach_object",
         "attach_object",
     ]
-    assert simulator.commands[2].payload == {
-        "yaw": 0.0,
-        "target_site": "giver_stand",
-    }
+    assert simulator.commands[2].payload == {"yaw": math.pi / 2, "target_site": "giver_stand"}
     assert simulator.commands[4].payload["completion_marker"] == "handover_ready"
     assert simulator.commands[4].payload["arrival_clip"] == "idle"
     assert simulator.commands[4].payload["target_site"] == "giver_stand"
+    assert simulator.commands[4].payload["reveal_object"] == "parcel"
     assert simulator.commands[5].payload["target_site"] == "receiver_stand"
+    # A handover-ready marker is meaningful only while both physical actors
+    # are at their role stations, within reach, and facing one another.
+    assert simulator.commands[4].payload["interaction_target"] == "employee_02"
+    assert simulator.commands[5].payload["interaction_target"] == "employee_01"
+    for command in simulator.commands[4:6]:
+        assert command.payload["interaction_distance_min"] == 0.45
+        assert command.payload["interaction_distance_max"] == 0.95
+        assert command.payload["interaction_yaw_tolerance"] == 0.30
+        assert command.payload["position_tolerance"] == 0.12
     assert simulator.commands[6].payload["interaction_id"] == "handover_1"
     assert simulator.commands[7].payload["interaction_id"] == "handover_1"
     assert driver.interactions.sessions["handover_1"].completed_phases == [
@@ -335,6 +419,60 @@ def test_npc_handover_waits_for_ready_release_and_receive_receipts() -> None:
         "released",
         "received",
     ]
+
+
+def test_demo_handover_roles_use_close_opposing_stations() -> None:
+    population = json.loads(DEMO_HANDOVER_POPULATION.read_text(encoding="utf-8"))
+    handover = population["interaction_templates"]["handover"]
+
+    assert handover["giver"] == {
+        "site": "npc_handover_giver_stand_site",
+        "yaw": 1.5708,
+    }
+    assert handover["receiver"] == {
+        "site": "npc_handover_receiver_stand_site",
+        "yaw": -1.5708,
+    }
+
+
+def test_handover_role_sites_are_leased_until_cancelled() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {},
+        handover_sites={
+            "employee_02": "employee_02_handover_site",
+            "employee_04": "employee_04_handover_site",
+        },
+        handover_role_sites={
+            ("employee_01", "employee_02"): ("giver_stand", "receiver_stand"),
+            ("employee_03", "employee_04"): ("giver_stand", "receiver_stand"),
+        },
+        interaction_yaws={
+            "employee_01": 0.0,
+            "employee_02": math.pi,
+            "employee_03": 0.0,
+            "employee_04": math.pi,
+        },
+    )
+    first = ActionExecution(
+        execution_id="lease_first",
+        command=ActionCommand(
+            "employee_01", ActionType.HANDOVER, "employee_02", {"object": "parcel"}
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+    second = ActionExecution(
+        execution_id="lease_second",
+        command=ActionCommand(
+            "employee_03", ActionType.HANDOVER, "employee_04", {"object": "parcel_2"}
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+    assert driver.start(first).status is ExecutionStatus.RUNNING
+    assert driver.start(second).error == "interaction_sites_busy"
+    driver.cancel(first, "test")
+    assert driver.start(second).status is ExecutionStatus.RUNNING
 
 
 def test_handover_contract_completes_on_real_npc_controllers_and_returns_to_idle() -> None:
@@ -357,7 +495,7 @@ def test_handover_contract_completes_on_real_npc_controllers_and_returns_to_idle
         {},
         handover_sites={"employee_02": "npc__employee_02__handover"},
         handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
-        interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
+        interaction_yaws={"employee_01": math.pi / 2, "employee_02": -math.pi / 2},
         available_clips={"give", "receive"},
     )
     # Preserve the monotonic sequence established by the preceding physical pickup.
@@ -385,6 +523,65 @@ def test_handover_contract_completes_on_real_npc_controllers_and_returns_to_idle
     states = system.states(data)
     assert states["employee_01"].resolved_clip == "idle"
     assert states["employee_02"].resolved_clip == "idle"
+
+
+def test_real_handover_gate_blocks_far_or_misaligned_participants_before_transfer() -> None:
+    model = _handover_model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(
+        NpcCommand(
+            "preheld", 0, "employee_01", NpcCommandKind.ATTACH_OBJECT, {"object": "parcel"}, 0.0
+        )
+    )
+    system.step(model, data, 0.0)
+    system.drain_receipts()
+    gate = {
+        "interaction_distance_min": 0.45,
+        "interaction_distance_max": 0.95,
+        "interaction_yaw_tolerance": 0.30,
+    }
+    system.submit(
+        NpcCommand(
+            "give", 1, "employee_01", NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "give", "completion_marker": "handover_ready", "interaction_target": "employee_02", **gate},
+            0.0,
+        )
+    )
+    system.submit(
+        NpcCommand(
+            "receive", 0, "employee_02", NpcCommandKind.PLAY_ANIMATION,
+            {"clip": "receive", "completion_marker": "handover_ready", "interaction_target": "employee_01", **gate},
+            0.0,
+        )
+    )
+    for step in range(1, 5):
+        system.step(model, data, step * 0.1)
+    states = system.states(data)
+    assert states["employee_01"].resolved_clip == "idle"
+    assert states["employee_02"].resolved_clip == "idle"
+    assert states["employee_01"].last_marker != "handover_ready"
+    assert states["employee_02"].last_marker != "handover_ready"
+    assert states["employee_01"].held_objects == ("parcel",)
+    assert states["employee_02"].held_objects == ()
+
+    first_mocap = model.body("npc__employee_01").mocapid[0]
+    second_mocap = model.body("npc__employee_02").mocapid[0]
+    data.mocap_pos[first_mocap] = (-0.35, 0.0, 0.0)
+    data.mocap_pos[second_mocap] = (0.35, 0.0, 0.0)
+    data.mocap_quat[first_mocap] = yaw_quaternion(0.0)
+    data.mocap_quat[second_mocap] = yaw_quaternion(0.0)
+    mujoco.mj_forward(model, data)
+    for step in range(5, 9):
+        system.step(model, data, step * 0.1)
+    states = system.states(data)
+    assert states["employee_01"].resolved_clip == "idle"
+    assert states["employee_02"].resolved_clip == "idle"
+    assert states["employee_01"].last_marker != "handover_ready"
+    assert states["employee_02"].last_marker != "handover_ready"
+    assert states["employee_01"].held_objects == ("parcel",)
+    assert states["employee_02"].held_objects == ()
 
 
 def test_pick_up_waits_for_grasp_marker_before_attachment() -> None:
@@ -435,6 +632,7 @@ def test_pick_up_waits_for_grasp_marker_before_attachment() -> None:
     )
     assert driver.poll(execution).phase == "attach"
     assert simulator.command.kind.value == "attach_object"
+    assert simulator.command.payload == {"object": "parcel", "visible": False}
 
 
 def test_object_and_handover_actions_reject_missing_approach_sites() -> None:
@@ -468,7 +666,7 @@ def test_handover_session_timeout_cancels_current_physical_stage() -> None:
         {},
         handover_sites={"employee_02": "employee_02_handover_site"},
         handover_role_sites={("employee_01", "employee_02"): ("giver_stand", "receiver_stand")},
-        interaction_yaws={"employee_01": 0.0, "employee_02": math.pi},
+        interaction_yaws={"employee_01": math.pi / 2, "employee_02": -math.pi / 2},
     )
     execution = ActionExecution(
         execution_id="handover_timeout",
@@ -516,6 +714,12 @@ def test_production_handover_uses_population_npc_ids_and_generic_role_sites() ->
         "npc_handover_giver_stand_site",
         "npc_handover_receiver_stand_site",
     }
+    assert driver.cue_sites == {
+        "npc_alex_chen": "npc_handover_giver_stand_site",
+        "npc_morgan_lee": "npc_handover_giver_stand_site",
+    }
+    assert driver.interaction_yaws["npc_alex_chen"] == math.pi / 2
+    assert driver.interaction_yaws["npc_morgan_lee"] == math.pi / 2
 
 
 def test_production_driver_excludes_unregistered_actions_before_submitting_command() -> None:
@@ -533,6 +737,9 @@ def test_production_driver_excludes_unregistered_actions_before_submitting_comma
             ActionType.USE_COMPUTER,
             ActionType.TALK,
             ActionType.GESTURE_WAVE,
+            ActionType.EAT,
+            ActionType.DRINK,
+            ActionType.REQUEST_ROBOT,
         }
     )
     assert {
@@ -565,7 +772,8 @@ def test_desk_work_driver_plays_at_the_seated_chair_until_session_duration() -> 
     driver = MujocoNpcActionDriver(
         simulator,
         {"chair_right": "chair_right_sit"},
-        available_clips={"work"},
+        seat_yaws={"chair_right": math.pi},
+        available_clips={"sit", "work"},
     )
     execution = ActionExecution(
         execution_id="desk_work_1",
@@ -573,10 +781,29 @@ def test_desk_work_driver_plays_at_the_seated_chair_until_session_duration() -> 
             "employee_01",
             ActionType.WORK,
             "workstation_right",
-            {"_desk_work_seat": "chair_right", "_desk_work_duration_seconds": 15.0},
+            {
+                "_desk_work_seat": "chair_right",
+                "_desk_work_duration_seconds": 15.0,
+                "_desk_work_session_id": "desk_work_1",
+            },
         ),
         status=ExecutionStatus.RUNNING,
     )
+
+    assert driver.start(execution).error == "desk_work_requires_seat_receipt"
+
+    sit = ActionExecution(
+        execution_id="sit_1",
+        command=ActionCommand("employee_01", ActionType.SIT, "chair_right"),
+        status=ExecutionStatus.RUNNING,
+    )
+    assert driver.start(sit).phase == "approach_seat"
+    for _ in range(3):
+        simulator.receipts.append(
+            NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+        )
+        result = driver.poll(sit)
+    assert result.status == ExecutionStatus.SUCCEEDED
 
     result = driver.start(execution)
 
@@ -698,38 +925,46 @@ def test_cancel_removes_object_workflow_and_cancels_its_current_stage() -> None:
     assert "pick_cancel" not in driver._objects
 
 
-def test_use_computer_recipe_requires_complete_contract_then_orders_commands() -> None:
+def test_direct_use_computer_driver_command_is_rejected_without_a_desk_work_session() -> None:
     simulator = FakeSimulator()
     execution = ActionExecution(
         execution_id="computer_1",
         command=ActionCommand("employee_01", ActionType.USE_COMPUTER, "workstation_left"),
         status=ExecutionStatus.RUNNING,
     )
-    incomplete = MujocoNpcActionDriver(simulator, {"workstation_left": "desk_site"})
-    assert incomplete.start(execution).error == "recipe_missing_yaw"
+    driver = MujocoNpcActionDriver(simulator, {"workstation_left": "desk_site"})
 
+    assert driver.start(execution).error == "use_computer_must_expand_to_desk_work"
+    assert simulator.commands == []
+
+
+def test_eat_requires_a_physical_consume_marker_before_driver_success() -> None:
+    simulator = FakeSimulator()
     driver = MujocoNpcActionDriver(
         simulator,
-        {"workstation_left": "desk_site"},
-        interaction_yaws={"workstation_left": 3.14},
-        available_clips={"work"},
+        {},
+        object_approach_sites={"bread_snack": "snack_human_stand_site"},
+        interaction_yaws={"bread_snack": math.pi},
+        available_clips={"eat"},
     )
+    execution = ActionExecution(
+        execution_id="eat_1",
+        command=ActionCommand("employee_01", ActionType.EAT, "bread_snack"),
+        status=ExecutionStatus.RUNNING,
+    )
+
     assert driver.start(execution).phase == "approach"
-    for kind, phase in (("align_to", "align"), ("play_animation", "play"), (None, "completed")):
+    for expected_kind in ("align_to", "play_animation"):
         simulator.receipts.append(
             NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
         )
-        result = driver.poll(execution)
-        assert result.phase == phase
-        if kind is not None:
-            assert simulator.command.kind.value == kind
-    assert result.status == ExecutionStatus.SUCCEEDED
-    assert simulator.commands[-1].payload == {
-        "clip": "work",
-        "completion_marker": "work_cycle",
-        "arrival_clip": "idle",
-        "target_site": "desk_site",
-    }
+        assert driver.poll(execution).status is ExecutionStatus.RUNNING
+        assert simulator.command.kind.value == expected_kind
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_01", CommandStatus.SUCCEEDED)
+    )
+    assert driver.poll(execution).status is ExecutionStatus.SUCCEEDED
+    assert simulator.commands[-1].payload["completion_marker"] == "consume"
 
 
 def test_talk_cue_requires_participant_site_then_carries_gaze_contract() -> None:
@@ -764,6 +999,10 @@ def test_talk_cue_requires_participant_site_then_carries_gaze_contract() -> None
         "arrival_clip": "idle",
         "target_site": "employee_02_conversation_site",
         "gaze_target": "employee_02",
+        "interaction_target": "employee_02",
+        "interaction_distance_min": 0.45,
+        "interaction_distance_max": 0.95,
+        "interaction_yaw_tolerance": 0.30,
     }
 
 
@@ -841,3 +1080,86 @@ def test_robot_handover_prepares_npc_before_accepting_release() -> None:
         "released",
         "received",
     ]
+
+
+def test_mock_robot_handover_waits_for_receive_marker_before_release_and_attach() -> None:
+    simulator = FakeSimulator()
+    world = SemanticWorld.from_json(MODELS / "office_semantics.json")
+    world.objects["employee_02"] = SemanticObject(
+        "employee_02", ObjectType.EMPLOYEE, world.object("employee_01").binding, {}
+    )
+    runtime = OfficeAgentRuntime.from_json(world, MODELS / "office_agents.json", auto_plan=False)
+    runtime.agents["employee_02"] = EmployeeAgent.from_dict(
+        "employee_02",
+        {"profile": {"role": "Receiver", "department": "QA"}, "initial_location": "workstation_right"},
+    )
+    task = RobotTask(
+        "employee_01", "deliver", "document_report", "workstation_right", recipient="employee_02"
+    )
+    runtime.robot_tasks[task.task_id] = task
+    robot = MockRobotExecutor(0.1, npc_transport=simulator)
+
+    robot.tick(runtime, 0.1)
+    assert simulator.command.kind is NpcCommandKind.MOVE_TO
+    for expected in (NpcCommandKind.ALIGN_TO, NpcCommandKind.PLAY_ANIMATION):
+        simulator.receipts.append(
+            NpcCommandReceipt(simulator.command.command_id, "employee_02", CommandStatus.SUCCEEDED)
+        )
+        robot.tick(runtime, 0.1)
+        assert simulator.command.kind is expected
+        assert f"mock:{task.task_id}:robot_release_confirmed" not in task.receipt_ids
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_02", CommandStatus.SUCCEEDED)
+    )
+    robot.tick(runtime, 0.1)
+    assert task.receipt_ids == {f"mock:{task.task_id}:robot_release_confirmed"}
+    robot.tick(runtime, 0.1)
+    assert simulator.command.kind is NpcCommandKind.ATTACH_OBJECT
+    assert f"mock:{task.task_id}:robot_release_confirmed" in task.receipt_ids
+    simulator.receipts.append(
+        NpcCommandReceipt(simulator.command.command_id, "employee_02", CommandStatus.SUCCEEDED)
+    )
+    assert robot.tick(runtime, 0.1) == (task.task_id,)
+    assert task.status.value == "succeeded"
+    assert task.receipt_ids >= {
+        f"mock:{task.task_id}:robot_release_confirmed",
+        f"mock:{task.task_id}:npc_attachment_confirmed",
+        f"mock:{task.task_id}:interaction_completed",
+    }
+
+
+def test_mock_robot_handover_timeout_fails_without_attachment() -> None:
+    simulator = FakeSimulator()
+    world = SemanticWorld.from_json(MODELS / "office_semantics.json")
+    world.objects["employee_02"] = SemanticObject(
+        "employee_02", ObjectType.EMPLOYEE, world.object("employee_01").binding, {}
+    )
+    runtime = OfficeAgentRuntime.from_json(world, MODELS / "office_agents.json", auto_plan=False)
+    runtime.agents["employee_02"] = EmployeeAgent.from_dict(
+        "employee_02",
+        {"profile": {"role": "Receiver", "department": "QA"}, "initial_location": "workstation_right"},
+    )
+    task = RobotTask("employee_01", "deliver", "document_report", "workstation_right", recipient="employee_02")
+    runtime.robot_tasks[task.task_id] = task
+    robot = MockRobotExecutor(0.1, npc_transport=simulator)
+
+    robot.tick(runtime, 0.1)
+    simulator.time = 100.0
+    assert robot.tick(runtime, 0.1) == (task.task_id,)
+    assert task.status.value == "failed"
+    assert not task.npc_attachment_confirmed
+
+
+def test_runtime_rejects_handover_success_without_all_physical_evidence() -> None:
+    world = SemanticWorld.from_json(MODELS / "office_semantics.json")
+    runtime = OfficeAgentRuntime.from_json(world, MODELS / "office_agents.json", auto_plan=False)
+    task = RobotTask("employee_01", "deliver", "document_report", "workstation_right", recipient="employee_01")
+    runtime.robot_tasks[task.task_id] = task
+
+    completed = runtime.complete_robot_task(task.task_id, success=True)
+
+    assert completed.status.value == "failed"
+    assert completed.error == (
+        "robot_handover_evidence_missing:robot_release_confirmed,"
+        "npc_attachment_confirmed,interaction_confirmed"
+    )

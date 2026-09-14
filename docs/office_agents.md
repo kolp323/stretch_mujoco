@@ -43,7 +43,37 @@ while sim.is_running():
 
 The runtime executes logical actions and verifies semantic effects. Navigation,
 grasping, and handover controllers remain responsible for physical execution.
-After a controller reaches a terminal state, report it explicitly:
+
+## Robot Task Contract
+
+`request_robot` is only an NPC request action; it is not a robot control
+command or a delivery classification. The request is compiled once by
+`compile_robot_task_type` into a `RobotTaskType`, and the selected robot control
+driver implements that workflow:
+
+```text
+request_robot → compile_robot_task_type → RobotTaskType → robot/NPC control driver
+```
+
+`place_delivery` releases an object at `destination`. `robot_to_npc_handover`
+prepares the recipient NPC, waits for its receive marker, confirms robot release,
+then attaches the object to the NPC. `destination` is always a scene location;
+`recipient` is a separate NPC ID. For v1 compatibility, `task: deliver` without
+`recipient` compiles to `place_delivery`; with `recipient`, it compiles to
+`robot_to_npc_handover`.
+
+Controllers must report terminal evidence, not merely a logical delay. A handover
+cannot succeed unless the runtime has confirmed all three facts:
+`robot_release_confirmed`, `npc_attachment_confirmed`, and
+`interaction_confirmed`. `MockRobotExecutor` supplies namespaced receipts for
+demo/test integration after the NPC movement/alignment/receive-marker/attachment
+flow; it is not a production robot executor. Production integrations implement
+the minimal `RobotTaskExecutor` lifecycle and supply their own navigation, IK,
+grasp, release, and terminal receipt behavior. This repository does not provide
+a physical `robot_to_npc_handover` executor.
+
+For a place delivery, after a controller reaches a terminal state, report its
+verified result explicitly:
 
 ```python
 runtime.complete_robot_task(
@@ -53,10 +83,12 @@ runtime.complete_robot_task(
 )
 ```
 
-Successful completion updates `ON` and `REQUESTED_BY`, releases the reservation,
-records memory, and emits `robot_task_completed`. A failed controller result does
-not claim that the object moved. When a snapshot is supplied, success is downgraded
-to failure unless the object is physically near the destination.
+Successful place delivery updates `ON` and `REQUESTED_BY`, releases the
+reservation, records memory, and emits `robot_task_completed`. Successful
+handover instead retains the NPC `HOLDS` attachment and also requires the three
+handover evidence flags above. A failed controller result does not claim that the
+object moved. When a place snapshot is supplied, success is downgraded to failure
+unless the object is physically near the destination.
 
 ## Closed Action Set
 

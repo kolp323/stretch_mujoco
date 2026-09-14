@@ -198,6 +198,8 @@ def test_head_top_anchors_accepts_forward_offset_and_rejects_invalid_values(tmp_
         ),
         [0.03, -0.03, 1.69],
     )
+    translated = np.array([[0.4, -0.6, 1.2], [0.42, -0.58, 1.3], [0.38, -0.62, 1.4]])
+    assert np.isclose(module.head_top_position(translated)[2], 1.374)
     with pytest.raises(ValueError, match="positive finite"):
         module.normalized_obj(b"v 0 0 0\nf 1 1 1\n", mesh_scale=0)
     with pytest.raises(ValueError, match="must be finite"):

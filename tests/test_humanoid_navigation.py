@@ -63,3 +63,18 @@ def test_navmesh_rebuild_changes_path_after_furniture_moves() -> None:
 
     assert_path_is_collision_free(rebuilt, moved_path)
     assert not np.array_equal(np.vstack(original_path), np.vstack(moved_path))
+
+
+def test_robot_route_reuses_mesh_but_excludes_its_own_base_tree() -> None:
+    model, data, _ = load_navigation()
+    base_xy = data.body("base_link").xpos[:2]
+    robot_nav = OfficeNavigationMesh.from_model(
+        model,
+        data,
+        agent_radius=0.32,
+        exclude_body_roots=("base_link",),
+    )
+
+    assert robot_nav.is_world_free(base_xy)
+    path = robot_nav.plan(base_xy, data.site("snack_human_stand_site").xpos[:2])
+    assert_path_is_collision_free(robot_nav, path)

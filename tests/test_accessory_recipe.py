@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 
@@ -8,6 +9,7 @@ from stretch_mujoco.npc.appearance_pipeline.accessory_recipe import (
     FusedAccessoryRecipe,
     FusedAccessoryRuntimeConfig,
 )
+from stretch_mujoco.npc.appearance_pipeline.catalog import AppearanceCatalog
 
 
 def _builder_module():
@@ -42,6 +44,48 @@ def test_recipe_requires_head_follow_fused_and_exact_fields(tmp_path: Path) -> N
     recipe.write_text("{}")
     with pytest.raises(ValueError, match="fields mismatch"):
         FusedAccessoryRecipe.from_json(recipe)
+
+
+def test_recipe_v5_owns_double_sided_and_smplx_surface_fallback(tmp_path: Path) -> None:
+    recipe_path = tmp_path / "hair.recipe.json"
+    recipe_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 5,
+                "accessory_id": "hair",
+                "attachment_mode": "head_follow_fused",
+                "mesh_scale": 1.0,
+                "lateral_offset_m": 0.0,
+                "head_clearance_m": 0.0,
+                "back_offset_m": 0.0,
+                "back_tilt_degrees": 0.0,
+                "roll_degrees": 0.0,
+                "yaw_degrees": 0.0,
+                "source_vertical_anchor": None,
+                "accessory_uv": [0.25, 0.75],
+                "render_policy": {
+                    "double_sided": True,
+                    "surface_fallback": {
+                        "mode": "smplx_head_uv_v1",
+                        "color_bgr": [36, 52, 83],
+                        "front_hairline_z_m": 1.66,
+                        "temple_min_z_m": 1.565,
+                        "temple_min_y_m": -0.035,
+                        "rear_min_z_m": 1.515,
+                        "rear_min_y_m": 0.055,
+                        "head_min_z_m": 1.48,
+                        "head_radius_m": 0.18,
+                    },
+                },
+            }
+        )
+    )
+
+    recipe = FusedAccessoryRecipe.from_json(recipe_path)
+
+    assert recipe.render_policy.double_sided is True
+    assert recipe.render_policy.surface_fallback is not None
+    assert recipe.render_policy.surface_fallback.front_hairline_z_m == 1.66
 
 
 def test_runtime_population_removes_only_fused_accessory() -> None:
@@ -89,6 +133,54 @@ def test_runtime_population_resolves_paths_before_moving_projection() -> None:
 
     assert result["scene"] == "/tmp/models/office_scene.xml"
     assert result["appearance_catalog"] == "/tmp/models/assets/appearance_catalog.json"
+
+
+def test_surface_fallback_catalog_projects_a_valid_target_identity(tmp_path: Path) -> None:
+    module = _builder_module()
+    base = tmp_path / "base.png"
+    layer = tmp_path / "hair.png"
+    base.write_bytes(b"base")
+    layer.write_bytes(b"hair")
+    catalog = tmp_path / "appearance_catalog.json"
+    catalog.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "texture_topology_id": "topology",
+                "base": "base.png",
+                "base_sha256": hashlib.sha256(base.read_bytes()).hexdigest(),
+                "layers": {
+                    "hair": {
+                        "category": "hair",
+                        "image": "hair.png",
+                        "sha256": hashlib.sha256(layer.read_bytes()).hexdigest(),
+                    }
+                },
+                "identities": {
+                    "office": {
+                        "appearance_id": "office",
+                        "layers": ["hair"],
+                        "traits": {},
+                        "seed": 1,
+                    }
+                },
+            }
+        )
+    )
+    population = {"appearance_catalog": "appearance_catalog.json"}
+
+    projected, identity = module.build_surface_fallback_catalog(
+        source_population=population,
+        source_population_path=tmp_path / "population.json",
+        source_identity="office",
+        fallback_appearance_id="office__hair__surface_fallback",
+        accessory_id="hair",
+        output_dir=tmp_path / "runtime",
+    )
+
+    assert projected is not None and identity == "office__hair__surface_fallback"
+    checked = AppearanceCatalog.from_json(projected)
+    assert checked.identities[identity].appearance_id == "office__hair__surface_fallback"
 
 
 def test_clear_derived_projection_removes_stale_obj_frames_only(tmp_path: Path) -> None:

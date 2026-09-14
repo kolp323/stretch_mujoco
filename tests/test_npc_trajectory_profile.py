@@ -138,6 +138,7 @@ def test_scene_profile_is_preflighted_and_enforced_by_the_runtime_controller() -
             {
                 "site": "meeting_human_stand_site",
                 "trajectory_route": "workstation_left_to_meeting",
+                "trajectory_source": "workstation_left",
             },
             0.0,
         )
@@ -159,4 +160,4 @@ def test_scene_profile_is_preflighted_and_enforced_by_the_runtime_controller() -
         )
     )
     assert rejected.status == CommandStatus.FAILED
-    assert rejected.reason == "trajectory_route_contract_mismatch:workstation_left_to_meeting"
+    assert rejected.reason == "trajectory_route_missing_source:workstation_left_to_meeting"

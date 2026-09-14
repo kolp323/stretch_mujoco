@@ -28,6 +28,21 @@ def test_fused_obj_keeps_body_and_positions_accessory_in_one_mesh(tmp_path: Path
     assert "f 1/1 2/1 3/1" in fused
 
 
+def test_fused_obj_emits_reversed_accessory_faces_when_recipe_requests_two_sides(
+    tmp_path: Path,
+) -> None:
+    module = _module()
+    body = tmp_path / "body.obj"
+    body.write_text("v 0 0 0\nv 1 0 0\nv 0 1 0\nvt 0.5 0.5\nf 1/1 2/1 3/1\n")
+    accessory = tmp_path / "hair.obj"
+    accessory.write_text("v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n")
+
+    fused = module.fused_obj(body, accessory, [0.0, 0.0, 0.0], double_sided=True).decode()
+
+    assert "f 4/2 5/2 6/2" in fused
+    assert "f 6/2 5/2 4/2" in fused
+
+
 def test_head_follow_applies_reference_head_rotation_and_translation() -> None:
     module = _module()
     reference = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
@@ -133,3 +148,59 @@ def test_fuse_manifest_clones_a_target_specific_bundle(tmp_path: Path) -> None:
             tmp_path / generated["bundles"]["base__fused__accessory"]["clips"]["idle"]["frames"][0]
         ).read_text()
     )
+
+
+def test_fuse_manifest_keeps_stand_up_as_the_reverse_of_sit(tmp_path: Path) -> None:
+    module = _module()
+    body_text = (
+        "\n".join(
+            ["v 0 0 2" for _ in range(16)]
+            + ["v 1 0 0", "v 0 1 0", "v 0 0 0", "vt 0 0", "f 17/1 18/1 19/1"]
+        )
+        + "\n"
+    )
+    for name in ("idle", "sit_00", "sit_01"):
+        (tmp_path / f"{name}.obj").write_text(body_text)
+    accessory = tmp_path / "accessory.obj"
+    accessory.write_text("v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n")
+    anchors = tmp_path / "anchors.json"
+    anchors.write_text(
+        json.dumps(
+            {
+                "idle": [{"position": [0, 0, 0]}],
+                "sit": [{"position": [0, 0, 0]}, {"position": [0, 0, 0]}],
+                "stand_up": [{"position": [0, 0, 0]}, {"position": [0, 0, 0]}],
+            }
+        )
+    )
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "bundles": {
+                    "bundle": {
+                        "clips": {
+                            "idle": {"frames": ["idle.obj"]},
+                            "sit": {"frames": ["sit_00.obj", "sit_01.obj"]},
+                            "stand_up": {"frames": ["sit_01.obj", "sit_00.obj"]},
+                        },
+                        "accessories": {},
+                        "sha256": {},
+                    }
+                }
+            }
+        )
+    )
+
+    module.fuse_manifest(
+        manifest,
+        accessory,
+        anchors,
+        tmp_path / "fused",
+        tmp_path / "fused_manifest.json",
+        bundle_id="bundle",
+    )
+
+    generated = json.loads((tmp_path / "fused_manifest.json").read_text())
+    clips = generated["bundles"]["bundle"]["clips"]
+    assert clips["stand_up"]["frames"] == list(reversed(clips["sit"]["frames"]))

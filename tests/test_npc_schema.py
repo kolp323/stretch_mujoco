@@ -54,6 +54,49 @@ def test_population_validates_semantic_location_and_site() -> None:
         )
 
 
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        (
+            lambda payload: payload["interaction_templates"].update(unknown={}),
+            "Unknown interaction template kind",
+        ),
+        (
+            lambda payload: payload["interaction_templates"]["conversation"].pop("listener"),
+            "missing roles",
+        ),
+        (
+            lambda payload: payload["interaction_templates"]["handover"]["giver"].update(site=""),
+            "non-empty site",
+        ),
+        (
+            lambda payload: payload["interaction_templates"]["conversation"]["speaker"].update(
+                yaw=float("inf")
+            ),
+            "yaw must be finite",
+        ),
+        (
+            lambda payload: payload["interaction_templates"]["handover"]["giver"].update(yaaw=0.0),
+            "unknown fields",
+        ),
+    ],
+)
+def test_population_rejects_invalid_interaction_templates(mutation, message: str) -> None:
+    payload = json.loads((MODELS / "office_population.json").read_text())
+    mutation(payload)
+
+    with pytest.raises(ValueError, match=message):
+        NpcPopulation.from_dict(payload)
+
+
+def test_population_rejects_wildcard_templates_for_single_npc_roster() -> None:
+    payload = json.loads((MODELS / "office_population.json").read_text())
+    payload["npcs"].pop("employee_02")
+
+    with pytest.raises(ValueError, match="at least two NPCs"):
+        NpcPopulation.from_dict(payload)
+
+
 def test_population_validates_visual_identity_against_catalog(tmp_path: Path) -> None:
     base = tmp_path / "base.png"
     layer = tmp_path / "hair.png"

@@ -1,5 +1,6 @@
 import mujoco
 import numpy as np
+import pytest
 
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
 from stretch_mujoco.npc.system import NpcSystem
@@ -55,3 +56,18 @@ def test_duplicate_and_stale_commands_do_not_execute_twice() -> None:
     assert system.submit(original) == accepted
     stale = command("stale", 1, "employee_01", "target_right")
     assert system.submit(stale).reason == "stale_sequence"
+
+
+def test_command_id_reuse_with_different_payload_is_rejected() -> None:
+    model = mujoco.MjModel.from_xml_string(MODEL_XML)
+    system = NpcSystem.from_model(model)
+    original = command("same", 0, "employee_01", "target_left")
+    assert system.submit(original).status == CommandStatus.ACCEPTED
+    conflict = command("same", 0, "employee_02", "target_right")
+    assert system.submit(conflict).reason == "command_id_conflict"
+
+
+@pytest.mark.parametrize("value", (float("nan"), float("inf"), float("-inf")))
+def test_command_rejects_non_finite_clock_values(value: float) -> None:
+    with pytest.raises(ValueError, match="must be finite"):
+        NpcCommand("bad", 0, "employee_01", NpcCommandKind.MOVE_TO, {"site": "target_left"}, value)

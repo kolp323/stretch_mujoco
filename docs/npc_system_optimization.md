@@ -1,4 +1,9 @@
-# NPC 系统优化说明
+# NPC 系统优化说明（历史记录）
+
+> 此文记录了 NPC 改造开始时的目标和差距，部分“当前版本”描述已经被后续的
+> population、asset manifest、动画回执和会话实现取代。使用和配置请以
+> [NPC 系统指南](npc_system.md) 为准；集成迁移的证据记录见
+> `aaa_workspace/docs/current.md`。
 
 ## 1. 当前版本效果
 
@@ -85,4 +90,3 @@
 同事负责 stretch_mujoco/humanoid/、stretch_mujoco/agents/、stretch_mujoco/semantics/ 及 NPC 配置/测试；场景 XML 只通过稳定接口或 fixture 协作。
 
 完成标准：至少 10 个外观不同的 NPC；动作切换无明显跳帧；NPC-NPC 与 NPC-机器人对话均能开始、轮流、超时和恢复；失败可回退；headless 集成测试和一段带字幕的多 NPC 录屏通过。
-

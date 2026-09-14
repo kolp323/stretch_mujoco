@@ -10,7 +10,7 @@ authoritative for identity, ownership, permissions, requests, and task state.
 Relations are stored as `(subject, relation, object)` triples:
 
 ```text
-document_report INSIDE storage_cabinet
+document_report ON storage_cabinet (robot dispatch tray)
 document_report BELONGS_TO employee_01
 employee_01 HOLDS document_report
 document_report REQUESTED_BY employee_01
@@ -31,7 +31,7 @@ requests = world.pending_requests("employee_01")
 if world.can_access("stretch_3", "document_report"):
     world.add_relation("stretch_3", RelationType.HOLDS, "document_report")
     world.remove_relation(
-        "document_report", RelationType.INSIDE, "storage_cabinet"
+        "document_report", RelationType.ON, "storage_cabinet"
     )
 ```
 

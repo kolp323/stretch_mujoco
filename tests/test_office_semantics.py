@@ -42,14 +42,12 @@ def test_office_semantics_registers_required_types_and_relations() -> None:
         ObjectType.DOOR,
     }
     assert required_types <= {obj.object_type for obj in world.objects.values()}
-    assert world.related_objects("document_report", RelationType.INSIDE)[0].object_id == (
+    assert world.related_objects("document_report", RelationType.ON)[0].object_id == (
         "storage_cabinet"
     )
-    assert world.related_objects("document_report", RelationType.REQUESTED_BY)[0].object_id == (
-        "employee_01"
-    )
+    assert not world.related_objects("document_report", RelationType.REQUESTED_BY)
     assert world.object("document_report").get("confidential") is True
-    assert world.pending_requests("employee_01")[0].object_id == "document_report"
+    assert not world.pending_requests("employee_01")
     assert world.can_access("employee_01", "document_report")
     assert not world.can_access("stretch_3", "document_report")
     assert world.can_access("stretch_3", "document_invoice")
@@ -60,6 +58,7 @@ def test_interaction_points_resolve_to_mujoco_poses() -> None:
 
     grasp_pose = world.interaction_pose("document_report_grasp", model, data)
     cabinet_pose = world.interaction_pose("cabinet_open", model, data)
+    request_pose = world.interaction_pose("stretch_request", model, data)
     nearest_work_point = world.nearest_interaction_point(
         InteractionRole.DESK_WORK,
         np.array([2.3, 0.4, 0.0]),
@@ -69,6 +68,7 @@ def test_interaction_points_resolve_to_mujoco_poses() -> None:
 
     assert grasp_pose.shape == (4, 4)
     assert cabinet_pose[2, 3] == 0.88
+    assert request_pose.shape == (4, 4)
     assert nearest_work_point.point_id == "desk_right_work"
 
 

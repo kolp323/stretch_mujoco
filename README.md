@@ -110,6 +110,10 @@ schedules, memory, execution state, robot requests, and result verification. See
 [Office Employee Agents](./docs/office_agents.md) for the simulator loop and
 physical-controller handoff contract.
 
+For NPC population configuration, versioned asset manifests, appearance
+recipes, scene generation, command receipts, and conversation integration, see
+[NPC System Guide](./docs/npc_system.md).
+
 Inspect the seeded low-compute state machine, utility decisions, daily events, and
 event-only LLM triggers:
 

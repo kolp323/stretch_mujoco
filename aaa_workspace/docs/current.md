@@ -730,6 +730,27 @@ production population 现在选择两个可追溯的组合：Alex Chen 使用 `o
 
 ## 14. 独立 OBJ 配饰（第七轮，进行中）
 
+### 14.1 不透明 hair-card 与 SMPL-X UV 兜底（当前事实）
+
+`models/accessories/*.recipe.json` 的 schema v5 将 OBJ 的渲染处理纳入同一 recipe
+事实源：`render_policy.double_sided` 要求融合器为每个 accessory 三角形额外写出反向
+绕序面；可选 `render_policy.surface_fallback`（当前支持 `smplx_head_uv_v1`）以 recipe
+声明的发色与头部阈值，从 reference body OBJ 的真实 UV 三角形生成目标 NPC 专属的不透明
+atlas 和 mask。它解决开放、单面 hair cards 在运行时背面剔除或缝隙中显出内部头皮的问题，
+但不改变 OBJ 轮廓，也不能替代近距离发型建模。
+
+该能力只沿既有 `recipe -> build_npc_fused_accessory -> runtime manifest/population ->
+build_npc_scene` 路径工作。构建器复制原 visual identity 的 catalog entry，唯一改变其
+`appearance_id` 为 fallback atlas 的派生 appearance，并将 runtime population 的目标 NPC
+指向该派生 identity；因此不会为绕过 fallback 而移除 `appearance_catalog` 或降低其 hash/
+layer 校验。atlas、mask、逐帧融合 OBJ、runtime manifest/population 和 catalog projection
+均为可删除的 recipe 投影；来源 OBJ、基础 atlas、源 manifest/population/catalog 均只读。
+
+2026-09-11 已以 `ponytail_hair_v1` 在 `npc_priya_narayanan` 上完成本路径验证：严格
+资产校验覆盖 10 个 NPC/2 个 bundle；`render_npc_acceptance_video.py` 对生成的 runtime scene
+输出 40 帧十视角验收视频且 `passed=True`。验收产物仅保留在本地
+`aaa_workspace/demo/hair_acceptance/`，不作为受版本控制的资源输入。
+
 `NpcEmbodiment.accessories` 现在接受通用 accessory ID。asset manifest 的 bundle 可声明每个 accessory 的 OBJ 与逐 clip/逐 frame anchor JSON；二者都由 SHA-256 校验。scene builder 为人体每个 clip frame 同时生成同名帧的 accessory geom，`MeshSequenceBackend` 因而会在切换 idle、walk、sit 帧时同步切换人体和配饰，不会把眼镜固定在 mocap 根节点。
 
 原 `cap_simple_v1` 是一次性低多边形 demo，已删除其生成器、基线 manifest 注册与派生 OBJ。它不能作为运行时配饰或后续资产命名模板；正式帽子统一通过下面的 recipe-bound `baseball_cap_v1` 路径构建。
@@ -766,7 +787,7 @@ OBJ/GLB 配饰以 `models/accessories/<accessory_id>.recipe.json` 与 `<accessor
 
 生产外观 roster 现由受版本控制的 `models/appearance_recipes/office_personas_v1.roster.json` 与 `tools/build_npc_persona_roster.py` 重建。它生成 4 种 skin、4 种 short-hair colour、4 套 top、3 套 bottom、3 双 shoes，并结合现有 freckles、brows、chin beard 与 2D glasses layer；每个 identity 固定 seed、生成 body atlas、thumbnail 和 metadata receipt。`office_population.production.example.json` 现在是 10 人配置：原 `employee_01`/`employee_02` 迁移为 `npc_alex_chen`/`npc_morgan_lee`，其余八位有独立 profile、agent_id、visual identity 和完整的 `skin`/`hair`/`top`/`bottom`/`shoes`/`accessories`/`scale` 配置。Alex 的 `office_sage_beard_glasses_v1` identity 已使用其 `hair_brown_v1` 短发 layer；当前 `baseball_cap_v1` 的融合 runtime 则将帽子以逐帧 body OBJ 的方式加到 Alex，不能被每帧 mesh 的局部重心变化甩离头部。验证为 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -q tests/test_npc_appearance_bake.py tests/test_npc_appearance_catalog.py tests/test_npc_schema.py tests/test_npc_production_appearance_roster.py tests/test_accessory_recipe.py tests/test_npc_acceptance_video.py`（此前为 `25 passed`）和 `tools/validate_npc_assets.py --population stretch_mujoco/models/office_population.production.example.json`（`Validated 10 NPC(s) and 1 bundle(s)`）。每人接受 office-native front/walk、side/walk、seated/work 的 120-frame acceptance render；报告要求无 material/alpha failures 且每个镜头 `occlusion_passed: true`。验收 renderer 现在会只将目标 NPC 的 sequence-frame geom 设为可见，同时隐藏同一已加载 office MJCF 中其他 roster NPC 和历史 `humanoid_preview` 的 frame geom；它不更改 office XML、家具、灯光、环境或目标 NPC。这样共享 desk spawn 的重叠人体不会遮挡检查对象；report 的 `review_visibility.policy=target_npc_frames_only` 与 `hidden_npc_ids` 记录这一 review-only 可见性策略。当前 10 个 120-frame report 均 `passed=true`、无 material/alpha failures，并记录了该策略。
 
-`appearance_pipeline/textile_layers.py` 建立织物 intake 到 UV layer 的受控边界。versioned textile spec 为每个 source ZIP 固定 SHA-256、来源 URL、license、ZIP 内 diffuse member、semantic mask、tile 宽度和 seed；生成器只读取已审核并移入 `assets/humanoid/sources/npc/textures/` 的 archive，拒绝 hash 不符或越出 generated asset root 的输出，并在 `appearance_sources/.../textiles/textile_layers.receipt.json` 记录 source/mask/output hashes。`office_personas_v1` 当前将 jersey melange 与浅灰 jogging melange 分别应用到 Olivia 的 `top_jersey_melange_v1`、Wei 的 `top_jogging_melange_v1`；gingham 资源保留为可审计输入，但不再由 production Jordan 使用，因为它在当前 atlas 上会产生明显形变。jogging layer 使用 `top.png` 语义 mask，Wei 的 bottom 保持 `bottom_charcoal_v2`。`build_npc_persona_roster.py` 会先重建这些层再生成 catalog、body atlas、thumbnail 与 manifest。
+`appearance_pipeline/textile_layers.py` 建立织物 intake 到 UV layer 的受控边界。versioned textile spec 为每个 source ZIP 固定 SHA-256、来源 URL、license、ZIP 内 diffuse member、semantic mask、tile 宽度和 seed；生成器只读取已审核并移入 `assets/humanoid/sources/npc/textures/` 的 archive，拒绝 hash 不符或越出 generated asset root 的输出，并在 `appearance_sources/.../textiles/textile_layers.receipt.json` 记录 source/mask/output hashes。`office_personas_v1` 当前将 jersey melange 与浅灰 jogging melange 分别应用到 Olivia 的 `top_jersey_melange_v1`、Wei 的 `top_jogging_melange_v1`；gingham 资源保留为可审计输入，但不再由 production Jordan 使用，因为它在当前 atlas 上会产生明显形变。新增的 bi stretch、caban、cotton jersey、crepe georgette、两种 denim、fabric leather、poly wool herringbone、rough linen、stretch poplin 与 velour velvet 已各自注册为可选 `top` layer；它们不改动当前十名 production NPC 的 identity。jogging layer 使用 `top.png` 语义 mask，Wei 的 bottom 保持 `bottom_charcoal_v2`。`build_npc_persona_roster.py` 会先重建这些层再生成 catalog、body atlas、thumbnail 与 manifest。
 
 面部细节的全络腮胡现在不再从二维 face atlas 猜测鬓角位置：每个 `beard_full` style 都必须声明由 `semantic_masks_v2` 的已烘焙 OBJ 生成的 `sideburn_mask`，缺失该字段会明确失败。该 mask 仅选择头部耳前的侧向表面（高度、横向距离和前向 `Y` 均受限）；`beard_full_black_v1` 与保留兼容名称的 `beard_full_black_sideburns_v2` 都引用同一 mask，独立可复用资源为 `sideburns_black_v1`，不再有 Marco 专属配置。这样任一 persona 应用该全胡或鬓角资源都会使用相同的 UV/mesh 语义定位。重新生成语义 mask、face-detail layers 和全员 roster 后，Marco Silva 与 Wei Zhang（当前两个 full-beard identity）各自以组合办公室的原生光照完成 200-frame、前/后/左/右/顶部单人验收；两份 report 均为 `passed=true`、`lighting=scene_native_only`、每镜头 `animation_passed=true` / `occlusion_passed=true`，且 `color_failures`、`transparency_failures` 为空。该轮 focused 检查为 `PYTHONPATH=. ../stretch_mujoco/.venv/bin/python -m pytest -q tests/test_npc_face_details.py tests/test_npc_semantic_masks.py tests/test_npc_flat_layers.py tests/test_npc_textile_layers.py`，结果 `17 passed in 0.83s`。
 
@@ -852,7 +873,7 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python tools/validate_npc_trajectorie
 
 receipt 中的 waypoint 是此次构建的审计投影，不能作为后续场景或运行时的事实源；运行时 `LocomotionController` 仍会从实时 geometry 重规划。新场景应先提供明确的、面向人的 interaction/navigation site，再复制并按新场景创建独立的版本化 profile，更新该场景的 SHA-256，最后把上述 preflight 加入该场景的 CI。不存在 anchor、floor 不符合导航约定、profile 与 scene 名或 SHA-256 不匹配，或任一 route 不可达时，命令均会以稳定错误码失败，禁止把未确认路线发布给 NPC 行为层。
 
-`office_scene.xml` 通过 `custom/text:npc_trajectory_profile=office_v1` 显式登记该契约。`MujocoServer` 启动时读取该登记，解析生成 wrapper 中的原始 `office_scene.xml` include，核对 SHA-256 并 preflight 全部路线；scene bytes、profile 或 anchor 漂移会使启动失败。`MujocoNpcActionDriver` 同时接收 production roster 的初始逻辑位置：当动作与 profile 的 source/destination/action 一一匹配时，它会在 `MOVE_TO` payload 写入 `trajectory_route`；`NpcController` 会拒绝 route ID、目标 site 或动作许可不一致的命令，然后才在实时 geometry 上重规划。
+`office_scene.xml` 通过 `custom/text:npc_trajectory_profile=office_v1` 显式登记该契约。`MujocoServer` 启动时读取该登记，解析生成 wrapper 中的原始 `office_scene.xml` include，核对 SHA-256 并 preflight 全部路线；scene bytes、profile 或 anchor 漂移会使启动失败。`MujocoNpcActionDriver` 同时接收 production roster 的初始逻辑位置：当动作与 profile 的 source/destination/action 一一匹配时，它会在 `MOVE_TO` payload 写入 `trajectory_route`、`trajectory_source` 与 `route_mode=audited`；`NpcController` 会拒绝 route ID、source、目标 site 或动作许可不一致的命令。未匹配 profile 的可达动作仍是 `route_mode=dynamic`，它只表示当前碰撞 geometry 的实时规划，绝不表示已通过 profile preflight。
 
 production roster 的十名 NPC 现在各自引用一个 `npc_spawn_*` scene site。scene builder 的回归测试要求十个初始 XY 坐标均不同、任意两者距离至少 0.5 m、生成 NPC 之间零初始接触。使用下列命令渲染多人总览；它不会隐藏任何 roster NPC，并为每个人写入 segmentation 可见像素审计：
 
@@ -866,11 +887,11 @@ PYTHONPATH=. MUJOCO_GL=egl .venv/bin/python tools/render_npc_acceptance_video.py
   --population-overview --output /tmp/npc_population_overview.mp4
 ```
 
-preflight 还会用 `LocomotionController` 逐 10 ms 推进每条 route，包含每个渐进转向姿态；MuJoCo 必须报告 NPC collision proxy 与所有非 `office_floor` 场景 geom 零接触，否则以 `trajectory_route_collision` 拒绝。`office_v1` 当前分别审计了 336、315、554、674 个 move/turn pose，均为零接触；JSON receipt 对每条 route 写入采样数与 `collision_free: true`。
+preflight 还会用 `LocomotionController` 逐 10 ms 推进每条 route，包含每个渐进转向姿态；MuJoCo 必须报告 NPC collision proxy 与所有非 `office_floor` 场景 geom 零接触，否则以 `trajectory_route_collision` 拒绝。`office_v1` 当前分别审计了 336、315、554、674 个 move/turn pose，均为零接触；JSON receipt 对每条 route 写入采样数与 `collision_free: true`。运行时 planner 仅排除当前 NPC 自身，其他 mocap NPC collision proxy 会进入动态占用检查；检查以 250 ms 有界周期进行，下一段被动态占用时最多按该命令的 replan budget 重规划，否则终止为 `route_blocked_dynamic`，不会把穿越对方当作成功进度。chair navigation ingress 与 sit site 不再以写入 `mocap_pos` 跳转，最后一段同样按 `speed * dt` 连续推进。
 
 ## 20. 工位 work 会话（当前事实）
 
-`OfficeAgentRuntime.submit_action(WORK)` 现在是一个 receipt-gated 的工位会话入口，而不是直接在 desk 位置播放 work。它把日程、LLM 和 API 的同一 public `WORK` 请求统一展开为 `MOVE_TO(chair) → SIT(chair) → WORK(workstation) → STAND_UP(chair) → IDLE`；只有 `SIT` 的物理回执成功并提交 `OCCUPIED_BY` 后，内部 work 命令才会被接受。work 结束后，`STAND_UP` 成功才释放椅子占用和 reservation，因此不会出现工作中站着、或失败时提前释放座位的状态。
+`OfficeAgentRuntime.submit_action(WORK)` 现在是一个 receipt-gated 的工位会话入口，而不是直接在 desk 位置播放 work。它把日程、LLM 和 API 的同一 public `WORK` 请求统一展开为 `MOVE_TO(chair) → SIT(chair) → WORK(workstation) → STAND_UP(chair) → IDLE`；只有 `SIT` 的物理回执成功并提交 `OCCUPIED_BY` 后，内部 work 命令才会被接受。work 结束后，`STAND_UP` 成功才释放椅子占用和 reservation，因此不会出现工作中站着、或失败时提前释放座位的状态。driver 还把 receipt-gated seated state 作为移动 gate：坐着的 NPC 不能直接 `MOVE_TO`；REST planner 也会排入 `STAND_UP → IDLE`。当前没有经批准的 REST、ATTEND_MEETING 或 OPEN_CABINET 实体 marker/asset，因此在启用 `MujocoNpcActionDriver` 时这些 public actions 以稳定错误拒绝，不能用逻辑计时冒充物理完成。
 
 椅子不是由 `chair_right` 一类名字或坐标猜测：场景必须恰好声明一条 `Chair --NEAR--> Workstation` 关系。缺少或多条关联均会以稳定验证错误拒绝 work。实体桥接还从语义 interaction point 读取每个 `desk_work_site` 和 `chair_sit_site`；chair site 必须显式给出有限 `attributes.yaw`，否则 driver 在新场景装配期失败。因而迁移场景只需提供新的对象 ID、上述关系和 sites/yaw，不需要修改 office 专用动作代码。实体 `WORK` 在前序 sit 已确立的 chair site 播放并保持 `seated_idle`，不会再导航到 desk site 使 NPC 离开椅子。
 
@@ -883,3 +904,86 @@ MUJOCO_GL=egl PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python \
   --profile stretch_mujoco/npc/trajectory_profiles/office_v1.json \
   --output /tmp/npc_all_routes.mp4
 ```
+
+## 21. Control-sequence receipt lifecycle（当前事实）
+
+`stretch_mujoco/agents/control_sequences/` 现提供 v1 YAML 的严格加载、静态能力预检、模式解析和计划段接口；`tools/validate_control_sequence.py` 只读取 YAML、scene XML、语义和 population 后编译，绝不启动 simulator。`--control-mode` 的唯一优先级仍是 CLI 显式值、YAML 默认值、再到 `yaml`；在 `llm` 模式中 YAML 的固定 steps 仅作策略/验收配置，不会被暗中执行，短计划必须经同一 `SequenceCompiler.compile_segment()` 后才能交给 executor。
+
+实体对话不再把 driver 的 `RUNNING` 当作失败或成功：runtime 在提交 candidate 时只登记 pending turn 并标记 `PLAYING_TURN`，每次 `tick()` 轮询 interaction driver；只有成功的终态 physical receipt 才写 transcript、memory 和 `dialogue_turn_committed` event。approach/alignment/talk 的失败会走已有的统一 terminal cleanup，释放 participant reservation，且不提交文本。handover 与双人 conversation 的 role sites 由 driver 以 workflow/session ID lease；同一站位的第二个 workflow 稳定失败为 `interaction_sites_busy`，失败、取消、超时 receipt 路径释放 lease。带 `target_site` 的 ALIGN、关键动画和 handover 阶段还会持续检查当前位置；站位不存在或参与者被移动后，命令以 `unknown_target_site` 或 `target_site_not_reached` 失败，而不是凭旧 approach receipt 释放或接收物体。取消 command 亦有独立 receipt lifecycle：walk 必须等待安全 foot marker 时，target 与 cancel receipt 均可先为 `RUNNING`；target 最终 receipt 会原子投影到关联 cancel command，因而重放同一 cancel ID 必定得到其终态而不是永久的 `waiting_for_foot_marker`。该变化尚未使 renderer 成为 control-sequence runner，也未生成新的验收视频。
+
+本切片实际验证：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_control_sequence_executor.py tests/test_conversation.py` 得到 `27 passed in 0.50s`；`PYTHONPATH=. .venv/bin/python tools/validate_control_sequence.py stretch_mujoco/models/control_sequences/npc_full_acceptance_v1.yaml --strict` 和同命令追加 `--control-mode llm` 都返回 `passed: true`。这些是静态/单元验证，不是 navmesh route preflight、MuJoCo integration 或 MP4 验收。
+
+### 21.1 Stretch robot task transport（当前事实）
+
+`StretchRobotTaskDriver` 是 `RobotTask` 的唯一真实 Stretch transport adapter：它只使用 live `StretchMujocoSimulator` 的 base `move_by`、status、`request_grasp_metrics`/`pull_grasp_metrics`、`attach_object_to_gripper` 和 `release_grasped_object` 路径。每一个 task 都必须经过 pickup waypoint base navigation、明确的 grasp IK acknowledgement、双指 contact observation、attachment、delivery navigation、release 和 delivery position observation，才会由 runtime 调用 `complete_robot_task(success=True)` 并写入 `stretch:<task>:delivered` receipt。`OfficeAgentRuntime.tick()` 会轮询该 driver；runtime 仍只拥有 receipt 后的 semantic commit。
+
+当前 server public API 没有 semantic-site navigation 或 grasp IK command/receipt：`StretchMujocoSimulator.move_to()` 仅支持单 actuator 绝对位置，`move_by()` 的 base motion是相对量，且没有 `navigate_to_site`、`solve_grasp_ik` 或 `is_grasp_ik_complete`。因此 composed scene owner 必须显式传入 world-coordinate waypoints，并提供 IK extension；任一能力缺失会写 terminal failed receipt（例如 `robot_waypoint_transport_unsupported` 或 `robot_ik_transport_unsupported`），绝不由 `MockRobotExecutor` 或 `complete_robot_task` 逻辑调用冒充成功。`RendererSimulator` 只有 NPC `NpcSystem` transport，默认同样得到这个明确失败 receipt；它不能渲染真实 Stretch delivery，直到 renderer 运行在包含 Stretch server transport、NPC population 和具名 waypoints 的同一 composed scene。
+
+本轮验证：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q tests/test_stretch_robot_task_driver.py tests/test_control_sequence_executor.py tests/test_conversation.py` 得到 `31 passed in 0.55s`。测试包含真实 transport 方法调用的 navigation → IK → bilateral-contact → attach → release → observation success chain，以及缺少 IK 时的 terminal failed receipt；尚未启动独立 MuJoCo server 或产出 MP4。
+
+## 22. 声明式 NPC 场景组合（当前事实）
+
+`stretch_mujoco.npc.composition.compose_npc_scene(population, output)` 是正式的
+population-to-scene 构建入口。population JSON 中的 `scene`、`asset_manifest`、NPC
+identity/appearance/spawn/capability 是唯一配置来源；API/CLI 不接受第二个 scene 参数。
+它调用兼容的 `build_npc_scene(..., include_base_scene=True)`，在不修改 base office XML
+的前提下生成可直接 `MjModel.from_xml_path()` 加载的 combined MJCF。为了让输出可放在
+`outputs/` 或 `/tmp`，它仅生成相邻的 base/stretch include wrapper，并把嵌套 Stretch
+assetdir 固定为 base scene 的绝对投影；wrapper 是可删除的构建产物，不是源场景修改。
+
+composition receipt（默认 `*.composition.json`）钉定 population、base scene、manifest
+和 generated scene 的 SHA-256，并记录 canonical NPC IDs、`npc__<id>` body、handover
+site 与 spawn site。构建/缓存复用前后都会实际编译 MuJoCo 并验证这些名称；缺失项以
+稳定 `composed_scene_missing_*` 错误失败。`load_composed_npc_runtime()` 用同一
+population 共同构造 model、`NpcSystem`、semantic world 和 `OfficeAgentRuntime`，并把
+base office 里的 legacy preview binding 映射为 canonical body/site，避免旧录制 clone
+链与 population runtime 发生 unknown-NPC/semantic-binding 冲突。`native_scene.py` 仍只
+是 recording fixture。MuJoCo 不能在已编译 model 热插 NPC；人数或外观变化必须更新
+population 后重新组合并 reload。
+
+### 22.1 Population 启动与配置边界（当前事实）
+
+`launch_sim --population <population.json> [--semantics <world.json>]` 现在在系统临时目录
+组合/复用 MJCF，并把同一 population path 传给 server；server 因而使用
+`NpcSystem.from_population()` 和 manifest graph，而非对 composed model 的 `from_model()`
+猜测。schema-v2 的 `population.trajectory_profile` 是该系统与 action driver 的唯一 profile
+来源；XML custom text 仅保留给 legacy `from_model`。schema-v2 显式 `agent_id` 必须等于
+`npc_id`；capability 会在 `OfficeAgentRuntime.validate_action()` 拒绝未授权的 locomotion,
+sit, conversation, object handover 和 computer actions，idle/stand-up 不受此 gate。全局
+`dialogue_policy` 可内联到 population，NPC profile 的 `sociability` 初始化实际 social
+energy，故影响对话 admission。新的 interaction-point `attributes.binding` 可声明
+location、seat ingress、placement、object approach 或 robot request 的 site/yaw，覆盖旧 office
+常量；未迁移 schema-v1 场景仍使用明确的 legacy constants。
+
+## 23. Runtime closure（当前事实）
+
+`OfficeAgentRuntime` 现在为一次已验证的动作完成分配一个 event ID，并把同一 ID 写到
+`action_succeeded`、`semantic_commit` 及相应 memory entry；事件类型仍分开，以保留物理
+完成和语义投影的查询含义。没有 receipt 的 embodied action 不得借此路径完成：启用
+`MujocoNpcActionDriver` 时，未注册 marker/asset 的 REST、ATTEND_MEETING、OPEN_CABINET
+继续以稳定错误拒绝。
+
+utility 的运行时约束只有 `OfficeAgentRuntime._utility_context()` 一个投影入口：日程紧迫度、
+meeting priority、未决邀请、连续失败、对象 reservation、social cooldown 和近期重复会被
+传入 `EmployeePlanner.choose_plan(..., context=...)`；utility 模块只负责对该值输入评分。进入
+conversation 前 planner 将 pending plan 作为 checkpoint 并清空 queue，terminal cleanup 重新
+验证 target 后恢复；若对象已不存在则清除 stale plan 并写 `plan_resume_invalidated` event。
+这不取消 busy embodied action，仍遵循既有 receipt-safe 的会话 admission contract。
+
+demo receipt 是派生产物而非可编辑配置。当前 checkout 的 new-demo 01–06、07 Scene A 与
+07 Scene B 的 sequence/population/semantic/profile hashes 均与各自当前输入一致；07 的最终
+montage 尚未由这两条当前 source render 重建，仍只能作为历史组合产物。动画
+crossfade/point/gaze/overlay 与真实 3 NPC + Stretch 同时端到端集成仍是明确搁置项，不在本轮
+完成声明内。后者的 P0 验收仅保留为本地失败复现，不能作为本分支的通过测试或 PR 交付证据：
+当前真实 Stretch transport 缺少语义 waypoint、grasp-IK 与 release 验证闭环，且拥挤三 NPC
+handover 的动态 rendezvous route 仍可能终止为 `route_blocked_dynamic`/`route_unavailable`。
+
+本轮 PR 聚焦回归覆盖 NPC controller/asset/schema/composition、Agent action/
+conversation/control-sequence、语义绑定、对象附着、导航和 Stretch robot-task
+接口，命令为 `PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest
+-q <27 focused test files>`，结果 `211 passed in 99.24s`。
+`tools/validate_npc_assets.py --population
+stretch_mujoco/models/office_population.production.example.json` 返回
+`Validated 10 NPC(s) and 1 bundle(s)`；版本库中四份 control-sequence YAML 均经
+`tools/validate_control_sequence.py <yaml> --strict` 验证为 `passed: true`。核心模块
+`compileall` 和 `git diff --check` 通过。以上不代表完整 `tests/` suite 已在本轮运行。
