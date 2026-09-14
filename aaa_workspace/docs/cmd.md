@@ -22,7 +22,7 @@ MUJOCO_GL=egl uv run tools/render_mujoco_video.py \
 
 
 ```bash
-cd /home/sxu/xs/stretch_mujoco-npc-appearance-optimization
+cd <appearance-optimization-worktree>
 
 # 可视化调整
 .venv/bin/python tools/tune_npc_obj_accessory.py \
