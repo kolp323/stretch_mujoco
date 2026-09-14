@@ -228,6 +228,10 @@
   <worldbody>
     <body name="base_link" childclass="stretch">
       <freejoint/>
+      <!-- A mobile, robot-owned stand point for face-to-face task requests.
+           It follows the base, so an NPC never targets a stale world-space pose. -->
+      <site name="stretch_request_stand_site" pos="-1.0 -0.8 0" euler="0 0 2.246"
+            size="0.025" rgba="0 0 0 0"/>
       <geom mesh="base_link_0" material="Caster_Rollers_Red" density="100" class="visual"/>
       <geom mesh="base_link_2" material="Lightbar_Green" density="100" class="visual" shellinertia="true"/>
       <geom mesh="base_link_3" material="Power_Button_Green" density="100" class="visual"/>

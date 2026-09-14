@@ -24,6 +24,7 @@ from stretch_mujoco.graspgen import (
     rotated_d435i_optical_pose,
     world_to_base_pose,
 )
+from stretch_mujoco.paths import output_root
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -217,15 +218,26 @@ def move_joints(
 
 
 @click.command()
-@click.option("--host", default="10.29.150.95", show_default=True)
+@click.option(
+    "--host",
+    default=lambda: os.environ.get("STRETCH_MUJOCO_GRASPGEN_HOST", "127.0.0.1"),
+    show_default="127.0.0.1",
+    help="GraspGen server host (or set STRETCH_MUJOCO_GRASPGEN_HOST).",
+)
 @click.option("--port", type=int, default=5557, show_default=True)
 @click.option("--object-id", default="cereal_box", show_default=True)
 @click.option("--prompt", default="cereal box", show_default=True)
-@click.option("--output", type=click.Path(path_type=Path), default=Path("office_graspgen.mp4"))
+@click.option(
+    "--output",
+    type=click.Path(path_type=Path),
+    default=lambda: output_root() / "office_graspgen" / "run.mp4",
+    show_default="outputs/office_graspgen/run.mp4",
+)
 @click.option(
     "--artifacts-dir",
     type=click.Path(path_type=Path),
-    default=Path("output/office_graspgen"),
+    default=lambda: output_root() / "office_graspgen" / "artifacts",
+    show_default="outputs/office_graspgen/artifacts",
 )
 @click.option("--fps", type=click.IntRange(1, 60), default=24, show_default=True)
 @click.option("--motion-speed", type=click.FloatRange(min=0.1), default=6.0, show_default=True)

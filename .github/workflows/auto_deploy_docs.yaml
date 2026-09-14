@@ -3,9 +3,10 @@ run-name: Edit by ${{ github.actor }} triggered docs deployment
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
     paths:
       - '**.md'
+      - 'mkdocs.yml'
 jobs:
   Dispatch-Deploy-Workflow:
     runs-on: ubuntu-latest

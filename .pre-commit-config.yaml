@@ -30,7 +30,7 @@ repos:
         entry: mypy
         types: [python]
         language: system
-        exclude: ^stretch_mujoco/utils.py|
+        exclude: ^(stretch_mujoco/utils\.py|stretch_mujoco/navigations/A\*/)
         args:
           - --ignore-missing-imports
           - --install-types
@@ -56,4 +56,4 @@ repos:
   - repo: https://github.com/codespell-project/codespell 
     rev: v2.2.4 
     hooks: 
-      - id: codespell 
+      - id: codespell

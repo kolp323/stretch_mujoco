@@ -35,6 +35,7 @@ import mujoco.viewer
 import numpy as np
 
 from stretch_mujoco.habitat_scene_gallery import (
+    DEFAULT_CACHE_ROOT,
     DEFAULT_SCENE_ID,
     load_habitat_scene_model,
     prepare_habitat_scene,
@@ -313,7 +314,7 @@ def _apply_preset(viewer, preset: dict[str, Any]) -> None:
 @click.command()
 @click.option("--scene-id", default=DEFAULT_SCENE_ID, show_default=True)
 @click.option("--cache-root", type=click.Path(path_type=Path),
-              default="/tmp/stretch_mujoco_habitat_scenes", show_default=True)
+              default=DEFAULT_CACHE_ROOT, show_default=True)
 @click.option("--resolution", default=0.2, show_default=True)
 @click.option("--agent-radius", default=0.3, show_default=True)
 @click.option("--algorithm", "algo", type=click.Choice(["astar", "fmm"]),

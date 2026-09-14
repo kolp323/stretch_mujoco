@@ -11,6 +11,8 @@ import socket
 import subprocess
 import time
 
+from stretch_mujoco.paths import configured_path, require_external_directory
+
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -77,7 +79,12 @@ def wait_for_server(process: subprocess.Popen, host: str, port: int, timeout: fl
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--openpi-root", type=Path, default=Path("/home/yjw/openpi"))
+    parser.add_argument(
+        "--openpi-root",
+        type=Path,
+        default=configured_path("STRETCH_MUJOCO_OPENPI_ROOT"),
+        help="OpenPI checkout root (or set STRETCH_MUJOCO_OPENPI_ROOT)",
+    )
     parser.add_argument("--experiment", type=Path, required=True)
     parser.add_argument("--config", default="pi05_stretch")
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -88,6 +95,15 @@ def main() -> None:
     parser.add_argument("--max-steps", type=int, default=300)
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
+
+    try:
+        openpi_root = require_external_directory(
+            args.openpi_root,
+            environment_variable="STRETCH_MUJOCO_OPENPI_ROOT",
+            description="OpenPI checkout root",
+        )
+    except (ValueError, FileNotFoundError) as exc:
+        parser.error(str(exc))
 
     checkpoints = checkpoint_steps(args.experiment, args.interval)
     if not checkpoints:
@@ -115,7 +131,7 @@ def main() -> None:
                 f"--policy.config={args.config}",
                 f"--policy.dir={checkpoint}",
             ],
-            cwd=args.openpi_root,
+            cwd=openpi_root,
             env=env,
         )
         try:

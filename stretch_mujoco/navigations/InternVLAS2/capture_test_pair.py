@@ -12,7 +12,7 @@ and prints a ready-to-run ``curl`` command.
 Usage
 -----
   .venv/bin/python stretch_mujoco/navigations/InternVLAS2/capture_test_pair.py \
-      --pose "1.0,0.0,0.0" --out /home/yjw/InternNav/test_eval_dual/mujoco
+      --pose "1.0,0.0,0.0" --out outputs/internvla/test_eval_dual/mujoco
 """
 
 from __future__ import annotations

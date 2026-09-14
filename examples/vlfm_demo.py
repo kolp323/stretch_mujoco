@@ -32,6 +32,7 @@ import numpy as np
 from PIL import Image
 
 from stretch_mujoco.habitat_scene_gallery import (
+    DEFAULT_CACHE_ROOT,
     DEFAULT_SCENE_ID,
     load_habitat_scene_model,
     prepare_habitat_scene,
@@ -72,7 +73,7 @@ def _render_grid(ax, data, bounds, title, cmap="Greys", alpha=1.0):
 @click.option(
     "--cache-root",
     type=click.Path(path_type=Path),
-    default="/tmp/stretch_mujoco_habitat_scenes",
+    default=DEFAULT_CACHE_ROOT,
     show_default=True,
 )
 @click.option("--resolution", default=0.05, show_default=True)

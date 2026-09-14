@@ -14,8 +14,8 @@ start=green dot, end=red dot) onto the image; if it returns a
 Usage
 -----
   .venv/bin/python stretch_mujoco/navigations/InternVLAS2/visualize_trajectory.py \
-      --rgb /home/yjw/InternNav/test_eval_dual/rgb.jpg \
-      --depth /home/yjw/InternNav/test_eval_dual/depth.png \
+      --rgb outputs/internvla/test_eval_dual/rgb.jpg \
+      --depth outputs/internvla/test_eval_dual/depth.png \
       --server-url http://127.0.0.1:5801
 """
 

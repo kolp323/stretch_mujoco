@@ -11,12 +11,17 @@ Thank you for considering contributing to this repository. Stretch Mujoco is a h
  - `examples/` - small scripts that show some aspect of the sim
  - `stretch_mujoco/` - source code for the sim
      - `mujoco_server_<>.py` - server side of the simulation; `<>` can be `passive`, `managed` for simulation with visualization (passive vs. managed viz is [described here](https://mujoco.readthedocs.io/en/stable/python.html#interactive-viewer)), or empty for headless simulation.
-     - `stretch_mujoco_simulation.py` - client side of the simulation; the API is defined here. Communication between client and server is managed by shared memory.
+     - `stretch_mujoco_simulator.py` - client side of the simulation; the API is defined here. Communication between client and server is managed by shared memory.
      - `robocasa_gen.py` - generates the xml for the kitchen-style environment
      - `datamodels/` - defines custom [dataclasses](https://www.dataquest.io/blog/how-to-use-python-data-classes/), which is returned to the user on the client side. E.g. `StatusStretchCameras` holds image data from the simulated cameras.
      - `enums/` - enumerates the actuators, cameras, sensors, etc. E.g. instead of using strings like 'joint_arm' in the API, `move_by('joint_arm', 0.1)`, you can use the enum value, `move_by(Actuators.arm, 0.1)`. This reduces the probability of string related errors.
      - `models/` - contains all the XMLs, mesh files, image textures, material files, etc., that describe the robot, environments, and other assets
  - `third_party/` - robosuite and robocasa repos are cloned within here. This folder is a few gigabytes in size.
+
+Runtime logs, videos, evaluations, and reports belong under the ignored `outputs/` directory. See
+the root README for path environment variables and
+[Git collaboration and repository hygiene](git_collaboration_and_setup.md) before working in a
+shared NPC worktree.
 
 ## Client Server
 

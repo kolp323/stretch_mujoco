@@ -32,7 +32,7 @@ from stretch_mujoco.navigations import (
 # Defaults
 # ---------------------------------------------------------------------------
 DEFAULT_SCENE_ID = "108294417_176709879"
-DEFAULT_CACHE = "/tmp/stretch_mujoco_habitat_scenes"
+DEFAULT_CACHE = DEFAULT_CACHE_ROOT
 GRID_RESOLUTION = 0.2  # metres / cell
 AGENT_RADIUS = 0.3       # inflation radius (metres)
 MIN_OBSTACLE_H = 0.1     # ignore geoms entirely below this Z

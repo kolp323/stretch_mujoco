@@ -569,7 +569,5 @@ Test inventory:
 
 - [stretch_mujoco robot interface](../stretch_mujoco/robots/README.md) — unified
   `RobotSimulator` ABC and factory documentation.
-- [robot_project](/home/yjw/robot_project) — reference implementation that
-  inspired the MCP server + agent + CLI pattern.
 - [rai-opensource/vlfm](https://github.com/rai-opensource/vlfm) — upstream VLFM
   (ICRA 2024).

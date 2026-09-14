@@ -1,241 +1,244 @@
 {
   "asset_count": 39,
-  "source": "/home/yjw/data/hssd-hab",
-  "registry": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/mjcf/office_assets.xml",
+  "source": {
+    "dataset": "HSSD",
+    "root_env": "STRETCH_MUJOCO_HSSD_ROOT"
+  },
+  "registry": "stretch_mujoco/models/assets/office_assets/mjcf/office_assets.xml",
   "assets": [
     {
       "asset_id": "fa26f3ac2b4003fae1a5025526aabaaaa8458d37",
       "name": "Series 1 Task Chair",
       "category": "furniture/chairs",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/chairs/fa26f3ac2b4003fae1a5025526aabaaaa8458d37"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/chairs/fa26f3ac2b4003fae1a5025526aabaaaa8458d37"
     },
     {
       "asset_id": "d6f9b4561838f68f34d3fc36a7b700bc2c180253",
       "name": "Gas Task Chair, Aluminum Frame and Remix 123",
       "category": "furniture/chairs",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/chairs/d6f9b4561838f68f34d3fc36a7b700bc2c180253"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/chairs/d6f9b4561838f68f34d3fc36a7b700bc2c180253"
     },
     {
       "asset_id": "a5f9a4e0b89f85a3f8e117c3662541608f938b38",
       "name": "Garda Swivel Chair White Leather",
       "category": "furniture/chairs",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/chairs/a5f9a4e0b89f85a3f8e117c3662541608f938b38"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/chairs/a5f9a4e0b89f85a3f8e117c3662541608f938b38"
     },
     {
       "asset_id": "f8c1be8fafd7d652e850774aa20a4e33feddea4c",
       "name": "Zain Writing Desk",
       "category": "furniture/desks",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/desks/f8c1be8fafd7d652e850774aa20a4e33feddea4c"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/desks/f8c1be8fafd7d652e850774aa20a4e33feddea4c"
     },
     {
       "asset_id": "f84624a16fc343ce94373e0ec45362127c70451a",
       "name": "Shia 47 Inch Writing Desk",
       "category": "furniture/desks",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/desks/f84624a16fc343ce94373e0ec45362127c70451a"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/desks/f84624a16fc343ce94373e0ec45362127c70451a"
     },
     {
       "asset_id": "da6ab8a359f639f9bbd92f51bf7ffc89f65714ee",
       "name": "Hidden Home Office",
       "category": "furniture/desks",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/desks/da6ab8a359f639f9bbd92f51bf7ffc89f65714ee"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/desks/da6ab8a359f639f9bbd92f51bf7ffc89f65714ee"
     },
     {
       "asset_id": "e94ede305ff3f873dd34f8e95274bb54679df6b4",
       "name": "Kelly Settee by Nate Berkus and Jeremiah Brent, Blue",
       "category": "furniture/sofas",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4"
     },
     {
       "asset_id": "9a0e617b83c901d346ce9fb020b49bf91442273c",
       "name": "Tufted Curved Settee, Navy",
       "category": "furniture/sofas",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c"
     },
     {
       "asset_id": "5274751529e50c02430fb9b3ee3019ea9c091520",
       "name": "Kendrick Stone Settee",
       "category": "furniture/sofas",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520"
     },
     {
       "asset_id": "ed95c877f692c3fad1b50a96e21ea1e02101dd42",
       "name": "GALANT Open storage combination 80 x 200, Oak veneer",
       "category": "furniture/storage",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/storage/ed95c877f692c3fad1b50a96e21ea1e02101dd42"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/storage/ed95c877f692c3fad1b50a96e21ea1e02101dd42"
     },
     {
       "asset_id": "aa69ad95160221cb20a99652a2d8b905bcefdac4",
       "name": "Tall Closed Storage",
       "category": "furniture/storage",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/storage/aa69ad95160221cb20a99652a2d8b905bcefdac4"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/storage/aa69ad95160221cb20a99652a2d8b905bcefdac4"
     },
     {
       "asset_id": "aa48e0adc7ea84c3c8dbb9530d5a56be5c22c13f",
       "name": "Telegraph Lateral Storage Cabinet, Spencer Brown",
       "category": "furniture/storage",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/storage/aa48e0adc7ea84c3c8dbb9530d5a56be5c22c13f"
+      "directory": "stretch_mujoco/models/assets/office_assets/furniture/storage/aa48e0adc7ea84c3c8dbb9530d5a56be5c22c13f"
     },
     {
       "asset_id": "958b2b2572ebb43a525c6993a754d92a50d4c889",
       "name": "APPLE iMac 21\"",
       "category": "electronics",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/electronics/958b2b2572ebb43a525c6993a754d92a50d4c889"
+      "directory": "stretch_mujoco/models/assets/office_assets/electronics/958b2b2572ebb43a525c6993a754d92a50d4c889"
     },
     {
       "asset_id": "2efebdcc1ba9514b0deb0dfb05951341432bd26a",
       "name": "APPLE iMac 5K 27\"",
       "category": "electronics",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/electronics/2efebdcc1ba9514b0deb0dfb05951341432bd26a"
+      "directory": "stretch_mujoco/models/assets/office_assets/electronics/2efebdcc1ba9514b0deb0dfb05951341432bd26a"
     },
     {
       "asset_id": "fbe1da92b4ec1d1ab6540aca91a52c64d42a6229",
       "name": "LaserJet P3005d, Mono A4 Duplex 33ppm 1200x1200 dpi",
       "category": "electronics",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/electronics/fbe1da92b4ec1d1ab6540aca91a52c64d42a6229"
+      "directory": "stretch_mujoco/models/assets/office_assets/electronics/fbe1da92b4ec1d1ab6540aca91a52c64d42a6229"
     },
     {
       "asset_id": "xxxxcb321f68x12e2x49baxa491x042208fe4615",
       "name": "Morgan Black Metal Desk Lamp with USB Port",
       "category": "lighting",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/lighting/xxxxcb321f68x12e2x49baxa491x042208fe4615"
+      "directory": "stretch_mujoco/models/assets/office_assets/lighting/xxxxcb321f68x12e2x49baxa491x042208fe4615"
     },
     {
       "asset_id": "xxxx1a9211bbxdbd2x4e77xb598xc693c6b7122e",
       "name": "Orbs Champagne Floor Lamp\r\n",
       "category": "lighting",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/lighting/xxxx1a9211bbxdbd2x4e77xb598xc693c6b7122e"
+      "directory": "stretch_mujoco/models/assets/office_assets/lighting/xxxx1a9211bbxdbd2x4e77xb598xc693c6b7122e"
     },
     {
       "asset_id": "xxxx07289eaex9e77x42acxaeacxd40ba4b679c4",
       "name": "Isla Bronze Triangle Floor Lamp",
       "category": "lighting",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/lighting/xxxx07289eaex9e77x42acxaeacxd40ba4b679c4"
+      "directory": "stretch_mujoco/models/assets/office_assets/lighting/xxxx07289eaex9e77x42acxaeacxd40ba4b679c4"
     },
     {
       "asset_id": "fbeea099466186ec2d4af811c7ab24169c822092",
       "name": "White Orchids in Glass, 28''",
       "category": "props/plants",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/plants/fbeea099466186ec2d4af811c7ab24169c822092"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/plants/fbeea099466186ec2d4af811c7ab24169c822092"
     },
     {
       "asset_id": "f0aefc7dcac192761cf696918086d2a21f9a5ee4",
       "name": "Oncidium orchids",
       "category": "props/plants",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/plants/f0aefc7dcac192761cf696918086d2a21f9a5ee4"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/plants/f0aefc7dcac192761cf696918086d2a21f9a5ee4"
     },
     {
       "asset_id": "dbaf471314440f77d069d09e56fd02d3ed70a99e",
       "name": "Triple moth orchid in rattan planter",
       "category": "props/plants",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/plants/dbaf471314440f77d069d09e56fd02d3ed70a99e"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/plants/dbaf471314440f77d069d09e56fd02d3ed70a99e"
     },
     {
       "asset_id": "e77fdd847315d42f536995b42866e90cc305a79b",
       "name": "Nick Munro Frost Wastepaper Bin",
       "category": "props/trash_bins",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/trash_bins/e77fdd847315d42f536995b42866e90cc305a79b"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/trash_bins/e77fdd847315d42f536995b42866e90cc305a79b"
     },
     {
       "asset_id": "e1d968f387df48e1f1f3c5df126e497f4884e924",
       "name": "Risom Wastebasket",
       "category": "props/trash_bins",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/trash_bins/e1d968f387df48e1f1f3c5df126e497f4884e924"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/trash_bins/e1d968f387df48e1f1f3c5df126e497f4884e924"
     },
     {
       "asset_id": "da0efbb3c1d8989b23d18681cdb04e49da9ef9d2",
       "name": "Nick Munro Traveller Waste Paper Bin. 30cm",
       "category": "props/trash_bins",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/trash_bins/da0efbb3c1d8989b23d18681cdb04e49da9ef9d2"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/trash_bins/da0efbb3c1d8989b23d18681cdb04e49da9ef9d2"
     },
     {
       "asset_id": "edf5a667080ed733fda55514ee18a8081f9dcf9c",
       "name": "Skyline - A3 Vang Sketchbook",
       "category": "props/books",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/books/edf5a667080ed733fda55514ee18a8081f9dcf9c"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/books/edf5a667080ed733fda55514ee18a8081f9dcf9c"
     },
     {
       "asset_id": "e6a24c5d82ac274c29caa24dc71c18c5c5481a56",
       "name": "London Travel Companion",
       "category": "props/books",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/books/e6a24c5d82ac274c29caa24dc71c18c5c5481a56"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/books/e6a24c5d82ac274c29caa24dc71c18c5c5481a56"
     },
     {
       "asset_id": "d344e96d26c7f5ca8ffcad826d39617635f81def",
       "name": "Bardot - A5 Notebook",
       "category": "props/books",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/books/d344e96d26c7f5ca8ffcad826d39617635f81def"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/books/d344e96d26c7f5ca8ffcad826d39617635f81def"
     },
     {
       "asset_id": "fcae3d93545969544b5aec155f56fda69f1a2f9a",
       "name": "Love birds mug blue",
       "category": "props/drinkware",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/drinkware/fcae3d93545969544b5aec155f56fda69f1a2f9a"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/drinkware/fcae3d93545969544b5aec155f56fda69f1a2f9a"
     },
     {
       "asset_id": "ed95f32cc00075ceed5bd4b593d2a06a444c0eec",
       "name": "Pantone Mugs",
       "category": "props/drinkware",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/drinkware/ed95f32cc00075ceed5bd4b593d2a06a444c0eec"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/drinkware/ed95f32cc00075ceed5bd4b593d2a06a444c0eec"
     },
     {
       "asset_id": "e3479ce73271171bdaa163968c50500719ed4d72",
       "name": "Street Art - Know Your Rights Small Mug",
       "category": "props/drinkware",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/props/drinkware/e3479ce73271171bdaa163968c50500719ed4d72"
+      "directory": "stretch_mujoco/models/assets/office_assets/props/drinkware/e3479ce73271171bdaa163968c50500719ed4d72"
     },
     {
       "asset_id": "ff3f501d99144ddb7e9aca99702f609ae6754a4c",
       "name": "156 Runner - Beige",
       "category": "decoration/rugs",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/rugs/ff3f501d99144ddb7e9aca99702f609ae6754a4c"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/rugs/ff3f501d99144ddb7e9aca99702f609ae6754a4c"
     },
     {
       "asset_id": "e4d32d37fb98def0c95c79a2f337785c63829074",
       "name": "Jaden Hand Loomed 2'6'' x 10' Runner in Light Grey",
       "category": "decoration/rugs",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/rugs/e4d32d37fb98def0c95c79a2f337785c63829074"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/rugs/e4d32d37fb98def0c95c79a2f337785c63829074"
     },
     {
       "asset_id": "e1e746a367ad18a84242bc1f4a7c1196b251c7a8",
       "name": "Jackson Handwoven Runner Rug, Marine",
       "category": "decoration/rugs",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/rugs/e1e746a367ad18a84242bc1f4a7c1196b251c7a8"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/rugs/e1e746a367ad18a84242bc1f4a7c1196b251c7a8"
     },
     {
       "asset_id": "ffd5d856642f1a686d533ad41029edd975271a7e",
       "name": "Slatted Blinds",
       "category": "decoration/curtains",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/curtains/ffd5d856642f1a686d533ad41029edd975271a7e"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/curtains/ffd5d856642f1a686d533ad41029edd975271a7e"
     },
     {
       "asset_id": "fc71f5447c513b19a3c7218beb81ffdd47423173",
       "name": "Slatted Blinds",
       "category": "decoration/curtains",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/curtains/fc71f5447c513b19a3c7218beb81ffdd47423173"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/curtains/fc71f5447c513b19a3c7218beb81ffdd47423173"
     },
     {
       "asset_id": "f68d3d5d97fec3128fb897500b9428d0abe7f6a6",
       "name": "Plain Blinds",
       "category": "decoration/curtains",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/curtains/f68d3d5d97fec3128fb897500b9428d0abe7f6a6"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/curtains/f68d3d5d97fec3128fb897500b9428d0abe7f6a6"
     },
     {
       "asset_id": "da909ae4a0f2411ddfe5f499f11bee8cec508197",
       "name": "Masai Mara Plains, Kenya Subject Framed Art Poster Print by James Urbach, 40x20",
       "category": "decoration/wall_art",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/wall_art/da909ae4a0f2411ddfe5f499f11bee8cec508197"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/wall_art/da909ae4a0f2411ddfe5f499f11bee8cec508197"
     },
     {
       "asset_id": "b645ac0b787d641c9a28d4edee3fd99704d63654",
       "name": "John Lewis The Godfather Movie Poster Print on Canvas, 30 x 40cm",
       "category": "decoration/wall_art",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/wall_art/b645ac0b787d641c9a28d4edee3fd99704d63654"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/wall_art/b645ac0b787d641c9a28d4edee3fd99704d63654"
     },
     {
       "asset_id": "8c73109a6020fbf91d2491766b22e7167f13ae21",
       "name": "Disney Cars Poster Wall Canvas - 30x50 cms",
       "category": "decoration/wall_art",
-      "directory": "/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/decoration/wall_art/8c73109a6020fbf91d2491766b22e7167f13ae21"
+      "directory": "stretch_mujoco/models/assets/office_assets/decoration/wall_art/8c73109a6020fbf91d2491766b22e7167f13ae21"
     }
   ]
 }

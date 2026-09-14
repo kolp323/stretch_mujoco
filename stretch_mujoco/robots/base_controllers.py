@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
@@ -49,9 +49,7 @@ class DiffDriveBaseController(RobotBaseController):
         if isinstance(self._last_command, CommandMove):
             self.handle_move_by(self._last_command)
         elif isinstance(self._last_command, CommandBaseVelocity):
-            self._set_base_velocity(
-                self._last_command.v_linear, self._last_command.omega
-            )
+            self._set_base_velocity(self._last_command.v_linear, self._last_command.omega)
 
     def get_base_pose(self) -> np.ndarray:
         xyz = self._server.mjdata.body("base_link").xpos
@@ -66,9 +64,7 @@ class DiffDriveBaseController(RobotBaseController):
         elif name == StretchActuators.base_rotate.name:
             self._base_rotate_by(command.pos)
         else:
-            raise NotImplementedError(
-                f"Diff-drive base does not support '{name}'"
-            )
+            raise NotImplementedError(f"Diff-drive base does not support '{name}'")
 
     def stop(self) -> None:
         self._last_command = None
@@ -78,12 +74,8 @@ class DiffDriveBaseController(RobotBaseController):
 
     def _set_base_velocity(self, v_linear: float, omega: float) -> None:
         w_left, w_right = utils.diff_drive_inv_kinematics(v_linear, omega)
-        self._server.mjdata.actuator(
-            StretchActuators.left_wheel_vel.name
-        ).ctrl = w_left
-        self._server.mjdata.actuator(
-            StretchActuators.right_wheel_vel.name
-        ).ctrl = w_right
+        self._server.mjdata.actuator(StretchActuators.left_wheel_vel.name).ctrl = w_left
+        self._server.mjdata.actuator(StretchActuators.right_wheel_vel.name).ctrl = w_right
 
     def _base_translate_by(self, x_inc: float) -> None:
         start_pose = self._start_pose[:2]
@@ -154,12 +146,8 @@ class OmniPositionBaseController(RobotBaseController):
         from stretch_mujoco.datamodels.status_command import CommandBaseVelocity
 
         if isinstance(command, CommandBaseVelocity):
-            self._last_v = float(
-                np.clip(command.v_linear, -self._max_linear, self._max_linear)
-            )
-            self._last_omega = float(
-                np.clip(command.omega, -self._max_angular, self._max_angular)
-            )
+            self._last_v = float(np.clip(command.v_linear, -self._max_linear, self._max_linear))
+            self._last_omega = float(np.clip(command.omega, -self._max_angular, self._max_angular))
 
     def update(self) -> None:
         if self._last_v == 0.0 and self._last_omega == 0.0:
@@ -196,9 +184,7 @@ class OmniPositionBaseController(RobotBaseController):
             current = float(self._server.mjdata.actuator(self._heading_name).length[0])
             self._server.mjdata.actuator(self._heading_name).ctrl = current + command.pos
         else:
-            raise NotImplementedError(
-                f"Omni base does not support move_by for '{name}'"
-            )
+            raise NotImplementedError(f"Omni base does not support move_by for '{name}'")
 
     def _set_base_velocity(self, v_linear: float, omega: float) -> None:
         self._last_v = float(v_linear)

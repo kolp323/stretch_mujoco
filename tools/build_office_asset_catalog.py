@@ -15,8 +15,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from stretch_mujoco.paths import configured_path, require_external_directory
 
-DEFAULT_HSSD_ROOT = Path("/home/yjw/data/hssd-hab")
+DEFAULT_HSSD_ROOT = configured_path("STRETCH_MUJOCO_HSSD_ROOT")
 DEFAULT_OUTPUT = Path("stretch_mujoco/models/assets/office_assets/catalog/hssd_candidates.json")
 
 
@@ -66,7 +67,12 @@ RULES = (
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--hssd-root", type=Path, default=DEFAULT_HSSD_ROOT)
+    parser.add_argument(
+        "--hssd-root",
+        type=Path,
+        default=DEFAULT_HSSD_ROOT,
+        help="HSSD dataset root (or set STRETCH_MUJOCO_HSSD_ROOT)",
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     return parser.parse_args()
 
@@ -210,7 +216,15 @@ def build_catalog(root: Path) -> dict[str, Any]:
 
 def main() -> None:
     args = parse_args()
-    catalog = build_catalog(args.hssd_root.resolve())
+    try:
+        hssd_root = require_external_directory(
+            args.hssd_root,
+            environment_variable="STRETCH_MUJOCO_HSSD_ROOT",
+            description="HSSD dataset root",
+        )
+    except (ValueError, FileNotFoundError) as exc:
+        raise SystemExit(f"error: {exc}") from exc
+    catalog = build_catalog(hssd_root)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"

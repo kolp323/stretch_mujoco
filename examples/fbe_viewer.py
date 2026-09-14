@@ -34,6 +34,7 @@ import mujoco.viewer
 import numpy as np
 
 from stretch_mujoco.habitat_scene_gallery import (
+    DEFAULT_CACHE_ROOT,
     DEFAULT_SCENE_ID,
     load_habitat_scene_model,
     prepare_habitat_scene,
@@ -232,7 +233,7 @@ def _update_user_scene(user_scene, fbe, goal_xy, resolution) -> None:
 @click.option(
     "--cache-root",
     type=click.Path(path_type=Path),
-    default="/tmp/stretch_mujoco_habitat_scenes",
+    default=DEFAULT_CACHE_ROOT,
     show_default=True,
 )
 @click.option("--resolution", default=0.25, show_default=True, help="Grid resolution (m/cell).")

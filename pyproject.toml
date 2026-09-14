@@ -69,6 +69,10 @@ Tracker = "https://github.com/hello-robot/stretch_mujoco/issues"
 [tool.black]
 line-length = 100
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: simulator, rendering, or external-service integration tests"]
+
 [project.optional-dependencies]
 dev = [
     "pre-commit",

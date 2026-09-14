@@ -10,8 +10,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
+from stretch_mujoco.paths import output_root
 
-DEFAULT_LOG_DIR = Path(__file__).resolve().parent / "logs"
+DEFAULT_LOG_DIR = output_root() / "strech_codex" / "episodes"
 _SECRET_WORDS = ("api_key", "apikey", "password", "secret", "token")
 
 

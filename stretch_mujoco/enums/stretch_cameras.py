@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import Callable
 
 import mujoco
@@ -72,13 +71,6 @@ class StretchCameras(RobotCameras):
         Returns the Depth camera's only
         """
         return [StretchCameras.cam_d405_depth, StretchCameras.cam_d435i_depth]
-
-    @staticmethod
-    def none() -> list["StretchCameras"]:
-        """
-        Short-hand for not using any cameras.
-        """
-        return []
 
     @property
     def camera_name_in_mjcf(self) -> str:

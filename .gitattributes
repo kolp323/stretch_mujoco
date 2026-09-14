@@ -1,0 +1,14 @@
+* text=auto
+
+# Binary model, media, and numerical assets should never receive line-ending
+# conversion or noisy textual diffs.
+*.dae binary
+*.glb binary
+*.jpg binary
+*.ktx2 binary
+*.msh binary
+*.mp4 binary
+*.npy binary
+*.npz binary
+*.png binary
+*.stl binary

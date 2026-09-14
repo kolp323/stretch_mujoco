@@ -85,8 +85,10 @@ nav:
     - Getting Started Notebook: ./docs/getting_started.ipynb
     - Stretch Mujoco API: ./docs/using_mujoco_simulator_with_stretch.md
     - Simulation Parameters: https://forum.hello-robot.com/t/physical-aspects-of-the-robot-for-simulation/792
+ - Development:
+    - Contributing: ./docs/contributing.md
+    - Git and repository hygiene: ./docs/git_collaboration_and_setup.md
  - Other Simulators:
     - ROS2 with Gazebo: https://github.com/CardiffUniversityComputationalRobotics/stretch_ros2
     - MuJoCo Menagerie: https://github.com/google-deepmind/mujoco_menagerie/tree/main/hello_robot_stretch
-
 

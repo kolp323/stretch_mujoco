@@ -25,8 +25,8 @@ They retain their original category directories under `furniture/`, `electronics
 [`mjcf/office_assets.xml`](mjcf/office_assets.xml), and the exact restoration manifest is
 [`catalog/legacy_restored.json`](catalog/legacy_restored.json).
 
-Rebuild the legacy library from `/home/yjw/data/hssd-hab` with:
+Set `STRETCH_MUJOCO_HSSD_ROOT` to an HSSD checkout, then rebuild the legacy library with:
 
 ```bash
-.venv/bin/python tools/restore_legacy_office_assets.py
+uv run python tools/restore_legacy_office_assets.py
 ```

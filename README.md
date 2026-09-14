@@ -10,6 +10,80 @@ This library provides a simulation stack for Stretch, built on [MuJoCo](https://
 
 Check out the [highlight reel](https://www.youtube.com/watch?v=SWPJt67IB0Q) for features that have been recently added.
 
+## Project layout
+
+The repository has one primary Python package and one optional agent package:
+
+| Path | Purpose |
+| --- | --- |
+| `stretch_mujoco/` | Simulator client/server, robot interfaces, navigation, NPC runtime, recording, and packaged MuJoCo assets |
+| `examples/` | Runnable simulation, teleoperation, data-collection, policy-evaluation, and office demos |
+| `tools/` | Asset conversion, scene generation, validation, and rendering utilities |
+| `tests/` | Root pytest suite; vendor tests under `third_party/` are deliberately excluded |
+| `strech_codex/` | Optional MCP/Codex agent package with its own `pyproject.toml` and tests |
+| `docs/` | User and contributor documentation |
+| `third_party/` | Robocasa and Robosuite Git submodules |
+| `outputs/` | Ignored runtime logs, recordings, evaluations, and generated reports |
+| `aaa_workspace/` | Shared local NPC intake, experiments, task notes, and implementation records |
+
+Domain configuration stays with its owner. Robot/scene assets and NPC manifests live under
+`stretch_mujoco/models/`; trajectory profiles live under `stretch_mujoco/npc/trajectory_profiles/`.
+Machine-specific paths and credentials do not belong in those files.
+
+## Installation
+
+Python 3.10 or newer is supported; use Python 3.10 when installing the Robocasa extra. From a
+clone with submodules:
+
+```bash
+git submodule update --init
+uv python install 3.10
+uv sync --extra dev
+uv run python -c "import mujoco, stretch_mujoco; print(mujoco.__version__)"
+```
+
+The current lockfile resolves `openpi-client` from the sibling path
+`../openpi/packages/openpi-client`. Provision that checkout before refreshing the lockfile. The
+base simulator does not need an OpenPI server at runtime; OpenPI evaluation commands do.
+
+## Runtime configuration
+
+CLI options take precedence. The following optional environment variables remove
+machine-specific paths from code and generated assets:
+
+| Variable | Meaning | Default |
+| --- | --- | --- |
+| `STRETCH_MUJOCO_OUTPUT_DIR` | Logs, recordings, evaluations, and reports | `<repo>/outputs` |
+| `STRETCH_MUJOCO_CACHE_DIR` | Disposable converted assets and caches | system temp directory |
+| `STRETCH_MUJOCO_HSSD_ROOT` | HSSD dataset root | required by HSSD tools |
+| `STRETCH_MUJOCO_ROBOTWIN_ROOT` | RoboTwin `assets/objects` root | required by conversion tool |
+| `STRETCH_MUJOCO_OPENPI_ROOT` | OpenPI checkout root | required by checkpoint evaluator |
+| `STRETCH_MUJOCO_GRASPGEN_HOST` | GraspGen service host | `127.0.0.1` |
+
+`.env.example` documents these names, but the project does not implicitly load `.env`; export
+variables in the shell or pass the corresponding CLI option. LLM credentials belong only in the
+ignored `stretch_mujoco/models/office_llm.local.json`, copied from
+`office_llm.example.json` and restricted to the current user.
+
+## Data and model preparation
+
+The base robot scenes and redistributable assets are included. Optional workflows require their
+licensed upstream data:
+
+```bash
+uv run prepare_smplx_npc --help
+uv run prepare_amass_npc_motion --help
+uv run build_npc_scene --help
+uv run compose_npc_scene --help
+uv run python tools/convert_robotwin_objects.py --help
+uv run python tools/build_office_asset_catalog.py --help
+```
+
+Keep downloaded datasets, checkpoints, private SMPL-X inputs, and generated recordings out of
+Git. Store raw NPC intake under `aaa_workspace/raw_resources/`, private humanoid inputs under
+`stretch_mujoco/models/assets/humanoid/private/`, and reproducible runtime artifacts under the
+configured output root.
+
 
 ## Getting Started
 Start with Google Colab:
@@ -35,7 +109,8 @@ Lastly, run the simulation:
 uv run launch_sim
 ```
 
-> Note: If you see a build error mentioning `evdev` on linux, please run `sudo apt insall python3-dev`.
+> Note: If you see a build error mentioning `evdev` on Linux, install your distribution's
+> Python development headers (for example, `sudo apt install python3-dev` on Debian/Ubuntu).
 
 To exit, press `Ctrl+C` in the terminal.
 
@@ -161,9 +236,72 @@ Ignore any warnings.
 <img src="https://github.com/hello-robot/stretch_mujoco/raw/main/docs/images/robocasa_scene_1.png" title="Camera Streams" width="300px">
 <img src="https://github.com/hello-robot/stretch_mujoco/raw/main/docs/images/robocasa_scene_camera_data.png" title="Camera Streams" width="300px">
 
+## Training, inference, and evaluation
+
+This repository does not contain a general-purpose model training loop. It provides simulation,
+dataset collection, deterministic replay, and evaluation clients. Training OpenPI or another
+policy happens in that model's repository; use the tools here to produce or evaluate compatible
+episodes:
+
+```bash
+# Collect local episodes (written below datasets/, which is ignored).
+uv run examples/collect_random_grasp_episodes.py --help
+uv run examples/collect_random_object_grasp_episodes.py --help
+
+# Evaluate a running OpenPI policy server.
+uv run examples/evaluate_openpi_policy.py --help
+
+# Evaluate retained checkpoints by starting the OpenPI policy server per checkpoint.
+uv run python tools/evaluate_openpi_checkpoints.py --help
+```
+
+NPC and office workflows are simulation/runtime features rather than learned-policy training.
+Use `uv run examples/office_scene.py --headless` for a minimal scene compile and the commands in
+the NPC System Guide for manifest-backed NPC generation and validation.
+
+## Outputs and reproducibility
+
+Use one subdirectory per run below `outputs/`, for example
+`outputs/<workflow>/<YYYYMMDD_HHMMSS>_<label>/`. Keep the effective input configuration, random
+seed, summary JSON, and logs together; put large videos/checkpoints below the same ignored run
+directory or external storage. Tools that create source-owned model assets still write to their
+documented `stretch_mujoco/models/` locations.
+
+For a reproducible handoff, record the Git commit, `uv.lock`, command line, relevant environment
+variables, dataset/asset checksums, and random seed. Do not commit `outputs/`, `datasets/`, caches,
+local credential files, or private model inputs.
+
+## Validation
+
+Run checks from the repository root:
+
+```bash
+uv lock --check
+uv run pytest -q
+uv run pytest -q tests/test_office_scene.py
+uv run pre-commit run --all-files
+MUJOCO_GL=egl uv run examples/office_scene.py --headless
+```
+
+The root pytest configuration only discovers `tests/`; run the optional agent package separately
+with `uv run --project strech_codex --extra dev pytest`. Rendering, external services, private assets, and GPU
+workflows may need additional local setup and should report their unmet prerequisite explicitly.
+
+## Common problems
+
+- `openpi-client` cannot be resolved: provision `../openpi/packages/openpi-client` before running
+  `uv lock` or `uv sync` with the current source override.
+- HSSD/RoboTwin/OpenPI data cannot be found: pass the tool's root option or export the matching
+  `STRETCH_MUJOCO_*_ROOT` variable.
+- GLFW/OpenGL initialization fails on a headless host: set `MUJOCO_GL=egl` and use `--headless`.
+- An NPC asset is missing: initialize the approved private/generated asset projection; do not
+  replace it silently with a preview asset.
+- A run created many local files: keep them under `outputs/` or the documented ignored workspace
+  area, then inspect with `git status --short --ignored` before staging.
+
 ## Writing Code
 
-Use the [StretchMujocoSimulator](https://github.com/hello-robot/stretch_mujoco/tree/main/stretch_mujoco/stretch_mujoco.py) class to:
+Use the [`StretchMujocoSimulator`](./stretch_mujoco/stretch_mujoco_simulator.py) class to:
 
  * start the simulation
  * position control the robot's ranged joints
@@ -254,7 +392,7 @@ model, xml = model_generation_wizard(
     task=<task_name>,
     layout=<layout_id>,
     style=<style_id>,
-    wrtie_to_file=<filename>,
+    write_to_file=<filename>,
 )
 
 sim = StretchMujocoSimulator(model=model)

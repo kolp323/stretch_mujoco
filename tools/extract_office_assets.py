@@ -15,7 +15,6 @@ import re
 import shutil
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -26,6 +25,7 @@ from stretch_mujoco.habitat_scene_gallery import (
     load_habitat_scene_model,
     prepare_habitat_scene,
 )
+from stretch_mujoco.paths import cache_root
 
 # ---------------------------------------------------------------------------
 # Target objects — human label → (template_id, output_name, category_dir)
@@ -165,7 +165,7 @@ def main() -> None:
     # Load scene
     scene = prepare_habitat_scene(
         scene_id=DEFAULT_SCENE_ID,
-        cache_root=Path("/tmp/stretch_mujoco_habitat_scenes"),
+        cache_root=cache_root() / "habitat_scenes",
     )
     model = load_habitat_scene_model(scene)
     scene_xml = Path(scene.xml_path).read_text(encoding="utf-8")
@@ -342,8 +342,6 @@ def _write_standalone_xml(
     File paths in mesh/texture elements are rewritten to be relative to
     the XML file's parent directory.
     """
-    xml_dir = path.parent
-
     def _fix_path(file_attr: str, *, subfolder: str = "") -> str:
         """Convert an absolute path to be relative to *xml_dir*.
 
@@ -364,7 +362,6 @@ def _write_standalone_xml(
     ]
     seen = set()
     for e in asset_elems:
-        tag = e.tag
         # Deduplicate by name or file
         key = e.get("name") or e.get("file") or ET.tostring(e, encoding="unicode")
         if key in seen:

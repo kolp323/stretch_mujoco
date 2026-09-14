@@ -47,7 +47,10 @@ def _apply_camera_preset(viewer: mujoco.viewer.Handle, preset: dict[str, Any]) -
 @click.command()
 @click.option("--scene-id", default=DEFAULT_SCENE_ID, show_default=True)
 @click.option(
-    "--hssd-root", type=click.Path(path_type=Path), default=DEFAULT_HSSD_ROOT, show_default=True
+    "--hssd-root",
+    type=click.Path(path_type=Path, exists=True, file_okay=False),
+    default=DEFAULT_HSSD_ROOT,
+    help="HSSD dataset root (or set STRETCH_MUJOCO_HSSD_ROOT).",
 )
 @click.option(
     "--cache-root", type=click.Path(path_type=Path), default=DEFAULT_CACHE_ROOT, show_default=True
@@ -83,7 +86,7 @@ def _apply_camera_preset(viewer: mujoco.viewer.Handle, preset: dict[str, Any]) -
 @click.option("--headless", is_flag=True, help="Build and compile without opening a window.")
 def main(
     scene_id: str,
-    hssd_root: Path,
+    hssd_root: Path | None,
     cache_root: Path,
     ktx_command: Path | None,
     uncluttered: bool,

@@ -542,7 +542,5 @@ VLM 后端：
 
 - [stretch_mujoco 机器人接口](../stretch_mujoco/robots/README.md) — 统一的
   `RobotSimulator` ABC 与工厂文档。
-- [robot_project](/home/yjw/robot_project) — 启发本项目的 MCP 服务器 + agent
-  + CLI 模式的参考实现。
 - [rai-opensource/vlfm](https://github.com/rai-opensource/vlfm) — 上游 VLFM
   （ICRA 2024）。

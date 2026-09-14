@@ -36,6 +36,8 @@ from pathlib import Path
 
 import numpy as np
 import trimesh
+
+from stretch_mujoco.paths import configured_path, require_external_directory
 from trimesh.exchange.obj import export_obj
 from trimesh.util import concatenate
 
@@ -81,7 +83,7 @@ CANONICAL_SIZE: dict[str, tuple[float, bool]] = {
 }
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_ROBOTWIN_DIR = Path("/home/yjw/RoboTwin/assets/objects")
+DEFAULT_ROBOTWIN_DIR = configured_path("STRETCH_MUJOCO_ROBOTWIN_ROOT")
 DEFAULT_OUT_DIR = PROJECT_ROOT / "stretch_mujoco" / "models" / "assets" / "grasp_objects"
 
 # RoboTwin ships several variants per object; the default (base0) texture is
@@ -218,11 +220,12 @@ def convert_object(
     # Keep the GLB's UVs, but discard its material references: MJCF owns the
     # texture and material, and no companion MTL file is needed.
     obj_text = export_obj(visual, include_texture=True)
-    obj_text = "\n".join(
-        line
-        for line in obj_text.splitlines()
-        if not line.startswith(("mtllib ", "usemtl "))
-    ) + "\n"
+    obj_text = (
+        "\n".join(
+            line for line in obj_text.splitlines() if not line.startswith(("mtllib ", "usemtl "))
+        )
+        + "\n"
+    )
     visual_obj.write_text(obj_text)
 
     collision.export(str(collision_stl))
@@ -233,13 +236,13 @@ def convert_object(
     if image is not None:
         image.save(str(texture_png))
         material_xml = f'<material name="{prefix}_mat" texture="{prefix}_tex"/>'
-        texture_xml = (
-            f'<texture name="{prefix}_tex" type="2d" file="{texture_png.name}"/>'
-        )
+        texture_xml = f'<texture name="{prefix}_tex" type="2d" file="{texture_png.name}"/>'
     else:
         texture_png = None
         rgba = _solid_rgba(visual) or [0.5, 0.5, 0.5, 1.0]
-        material_xml = f'<material name="{prefix}_mat" rgba="{" ".join(f"{v:.4g}" for v in rgba)}"/>'
+        material_xml = (
+            f'<material name="{prefix}_mat" rgba="{" ".join(f"{v:.4g}" for v in rgba)}"/>'
+        )
         texture_xml = ""
 
     # Mass from scaled volume, clamped to a graspable band.
@@ -303,7 +306,7 @@ def main() -> None:
         "--robotwin-dir",
         type=Path,
         default=DEFAULT_ROBOTWIN_DIR,
-        help="RoboTwin assets/objects directory",
+        help="RoboTwin assets/objects directory (or set STRETCH_MUJOCO_ROBOTWIN_ROOT)",
     )
     parser.add_argument(
         "--out-dir",
@@ -314,11 +317,18 @@ def main() -> None:
     parser.add_argument("--model-id", type=int, default=0, help="variant index (baseN)")
     args = parser.parse_args()
 
+    try:
+        robotwin_dir = require_external_directory(
+            args.robotwin_dir,
+            environment_variable="STRETCH_MUJOCO_ROBOTWIN_ROOT",
+            description="RoboTwin assets/objects root",
+        )
+    except (ValueError, FileNotFoundError) as exc:
+        parser.error(str(exc))
+
     object_names = [name.strip() for name in args.objects.split(",") if name.strip()]
     for i, name in enumerate(object_names, 1):
-        meta = convert_object(
-            name, args.robotwin_dir, args.out_dir, model_id=args.model_id
-        )
+        meta = convert_object(name, robotwin_dir, args.out_dir, model_id=args.model_id)
         print(
             f"[{i}/{len(object_names)}] {name}: "
             f"h={meta['height'] * 100:.1f}cm mass={meta['mass_kg']:.2f}kg "

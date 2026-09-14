@@ -14,11 +14,12 @@ from stretch_mujoco.office_asset_gallery import (
     convert_gallery_assets,
     write_office_asset_registry,
 )
+from stretch_mujoco.paths import cache_root, configured_path, require_external_directory
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-HSSD_ROOT = Path("/home/yjw/data/hssd-hab")
-DEFAULT_KTX = Path("/tmp/ktx-software/usr/bin/ktx")
+DEFAULT_HSSD_ROOT = configured_path("STRETCH_MUJOCO_HSSD_ROOT")
+DEFAULT_KTX = cache_root() / "ktx-software" / "usr" / "bin" / "ktx"
 
 LEGACY_ASSETS = {
     "furniture/chairs": (
@@ -89,26 +90,26 @@ LEGACY_ASSETS = {
 }
 
 
-def _display_names() -> dict[str, str]:
-    semantics = HSSD_ROOT / "semantics" / "objects.csv"
+def _display_names(hssd_root: Path) -> dict[str, str]:
+    semantics = hssd_root / "semantics" / "objects.csv"
     with semantics.open(newline="", encoding="utf-8") as stream:
         return {row["id"]: row.get("name") or row["id"] for row in csv.DictReader(stream)}
 
 
-def _source_glb(asset_id: str) -> Path:
-    config_path = HSSD_ROOT / "objects" / asset_id[0] / f"{asset_id}.object_config.json"
+def _source_glb(hssd_root: Path, asset_id: str) -> Path:
+    config_path = hssd_root / "objects" / asset_id[0] / f"{asset_id}.object_config.json"
     config = json.loads(config_path.read_text(encoding="utf-8"))
     return (config_path.parent / config["render_asset"]).resolve()
 
 
-def legacy_gallery_assets() -> tuple[GalleryAsset, ...]:
-    names = _display_names()
+def legacy_gallery_assets(hssd_root: Path) -> tuple[GalleryAsset, ...]:
+    names = _display_names(hssd_root)
     return tuple(
         GalleryAsset(
             asset_id=asset_id,
             display_name=names.get(asset_id, asset_id),
             category=category,
-            source_glb=_source_glb(asset_id),
+            source_glb=_source_glb(hssd_root, asset_id),
             converted_dir=ASSET_ROOT / category / asset_id,
         )
         for category, asset_ids in LEGACY_ASSETS.items()
@@ -117,6 +118,12 @@ def legacy_gallery_assets() -> tuple[GalleryAsset, ...]:
 
 
 @click.command()
+@click.option(
+    "--hssd-root",
+    type=click.Path(path_type=Path, exists=True, file_okay=False),
+    default=DEFAULT_HSSD_ROOT,
+    help="HSSD dataset root (or set STRETCH_MUJOCO_HSSD_ROOT).",
+)
 @click.option("--rebuild", is_flag=True, help="Reconvert assets that are already present.")
 @click.option(
     "--ktx",
@@ -125,9 +132,17 @@ def legacy_gallery_assets() -> tuple[GalleryAsset, ...]:
     default=DEFAULT_KTX,
     show_default=True,
 )
-def main(rebuild: bool, ktx_command: Path) -> None:
+def main(hssd_root: Path | None, rebuild: bool, ktx_command: Path) -> None:
     """Recreate the legacy textured catalog at its original office_assets paths."""
-    assets = legacy_gallery_assets()
+    try:
+        hssd_root = require_external_directory(
+            hssd_root,
+            environment_variable="STRETCH_MUJOCO_HSSD_ROOT",
+            description="HSSD dataset root",
+        )
+    except (ValueError, FileNotFoundError) as exc:
+        raise click.ClickException(str(exc)) from exc
+    assets = legacy_gallery_assets(hssd_root)
     converted = convert_gallery_assets(
         assets,
         rebuild=rebuild,
@@ -137,14 +152,14 @@ def main(rebuild: bool, ktx_command: Path) -> None:
     write_office_asset_registry(converted, registry)
     manifest = {
         "asset_count": len(assets),
-        "source": str(HSSD_ROOT),
-        "registry": str(registry),
+        "source": {"dataset": "HSSD", "root_env": "STRETCH_MUJOCO_HSSD_ROOT"},
+        "registry": str(registry.relative_to(PROJECT_ROOT)),
         "assets": [
             {
                 "asset_id": asset.asset_id,
                 "name": asset.display_name,
                 "category": asset.category,
-                "directory": str(asset.converted_dir),
+                "directory": str(asset.converted_dir.relative_to(PROJECT_ROOT)),
             }
             for asset in assets
         ],

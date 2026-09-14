@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -15,12 +16,13 @@ from stretch_mujoco.gltf_material_converter import (
     ConvertedGltfAsset,
     convert_glb_with_materials,
 )
+from stretch_mujoco.paths import cache_root
 
 
 ASSET_ROOT = Path(__file__).resolve().parent / "models" / "assets" / "office_assets"
 DEFAULT_CATALOG = ASSET_ROOT / "catalog" / "hssd_candidates.json"
 DEFAULT_PREVIEW_MANIFEST = ASSET_ROOT / "previews" / "manifest.json"
-DEFAULT_CACHE = Path("/tmp/stretch_mujoco_office_asset_gallery")
+DEFAULT_CACHE = cache_root() / "office_asset_gallery"
 
 CATEGORY_COLORS = {
     "furniture/chairs": "0.26 0.52 0.68 1",
@@ -135,6 +137,7 @@ def write_office_asset_registry(
     converted: list[tuple[GalleryAsset, ConvertedGltfAsset]],
     output: Path = ASSET_ROOT / "mjcf" / "office_assets.xml",
 ) -> None:
+    """Write a relocatable registry whose assets are relative to the MJCF file."""
     root = ET.Element("mujoco", model="textured office assets")
     assets = ET.SubElement(root, "asset")
     for asset, converted_asset in converted:
@@ -149,7 +152,7 @@ def write_office_asset_registry(
                     "texture",
                     name=texture_name,
                     type="2d",
-                    file=str(part.texture_path.resolve()),
+                    file=os.path.relpath(part.texture_path.resolve(), output.parent.resolve()),
                 )
             material_attributes = {
                 "name": f"{prefix}_material",
@@ -165,7 +168,7 @@ def write_office_asset_registry(
                 assets,
                 "mesh",
                 name=f"{prefix}_mesh",
-                file=str(part.obj_path.resolve()),
+                file=os.path.relpath(part.obj_path.resolve(), output.parent.resolve()),
             )
     output.parent.mkdir(parents=True, exist_ok=True)
     ET.indent(root, space="  ")
