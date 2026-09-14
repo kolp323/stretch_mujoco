@@ -1,5 +1,5 @@
 <mujoco model="stretch">
-  <compiler angle="radian" assetdir="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets" />
+  <compiler angle="radian" assetdir=".." />
   <option integrator="implicitfast" impratio="20" cone="elliptic">
     <flag multiccd="enable" />
   </option>
@@ -208,6 +208,7 @@
   <worldbody>
     <body name="base_link" childclass="stretch" pos="9.2 1.3 0" quat="1 0 0 0">
       <freejoint />
+      <site name="stretch_request_stand_site" pos="-1.0 -0.8 0" euler="0 0 2.246" size="0.025" rgba="0 0 0 0" />
       <geom mesh="base_link_0" material="Caster_Rollers_Red" density="100" class="visual" />
       <geom mesh="base_link_2" material="Lightbar_Green" density="100" class="visual" shellinertia="true" />
       <geom mesh="base_link_3" material="Power_Button_Green" density="100" class="visual" />

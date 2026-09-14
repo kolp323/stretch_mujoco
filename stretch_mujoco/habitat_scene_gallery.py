@@ -19,11 +19,12 @@ from stretch_mujoco.gltf_material_converter import (
     ConvertedGltfAsset,
     convert_glb_with_materials,
 )
+from stretch_mujoco.paths import cache_root, configured_path, require_external_directory
 
 
-DEFAULT_HSSD_ROOT = Path("/home/yjw/data/hssd-hab")
+DEFAULT_HSSD_ROOT = configured_path("STRETCH_MUJOCO_HSSD_ROOT")
 DEFAULT_SCENE_ID = "108294417_176709879"
-DEFAULT_CACHE_ROOT = Path("/tmp/stretch_mujoco_habitat_scenes")
+DEFAULT_CACHE_ROOT = cache_root() / "habitat_scenes"
 
 CATEGORY_COLORS = {
     "seating_furniture": "0.23 0.52 0.70 1",
@@ -187,7 +188,7 @@ def _transform_bounds(
 def prepare_habitat_scene(
     *,
     scene_id: str = DEFAULT_SCENE_ID,
-    hssd_root: Path = DEFAULT_HSSD_ROOT,
+    hssd_root: Path | None = DEFAULT_HSSD_ROOT,
     cache_root: Path = DEFAULT_CACHE_ROOT,
     uncluttered: bool = False,
     stage_alpha: float = 0.32,
@@ -195,7 +196,11 @@ def prepare_habitat_scene(
     rebuild: bool = False,
     ktx_command: Path | None = None,
 ) -> PreparedHabitatScene:
-    hssd_root = hssd_root.resolve()
+    hssd_root = require_external_directory(
+        hssd_root,
+        environment_variable="STRETCH_MUJOCO_HSSD_ROOT",
+        description="HSSD dataset root",
+    )
     cache_dir = cache_root / scene_id
     if rebuild and cache_dir.exists():
         shutil.rmtree(cache_dir)

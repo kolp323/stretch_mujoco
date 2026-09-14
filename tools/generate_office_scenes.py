@@ -377,6 +377,11 @@ def load_mjcf_asset(
     return AssetInfo(prefix, name, category, bounds, components, tuple(definitions))
 
 
+def asset_file_path(path: str | Path) -> str:
+    """Return a portable file path relative to the model's compiler asset root."""
+    return os.path.relpath(Path(path).resolve(), (MODELS_ROOT / "assets").resolve())
+
+
 def load_assets() -> dict[str, list[AssetInfo]]:
     specifications = (
         ("desks/adjustable_desk.xml", "office_desks", "Adjustable Office Desk", False, False),
@@ -418,8 +423,17 @@ def load_assets() -> dict[str, list[AssetInfo]]:
             component_z_offsets=overrides[1] if len(overrides) > 1 else None,
         )
         by_category[category].append(asset)
-    legacy_registry = ET.parse(OFFICE_ASSETS / "mjcf" / "office_assets.xml").getroot()
-    registry_definitions = list(legacy_registry.find("asset"))
+    registry_path = OFFICE_ASSETS / "mjcf" / "office_assets.xml"
+    legacy_registry = ET.parse(registry_path).getroot()
+    registry_definitions = []
+    for node in legacy_registry.find("asset"):
+        attributes = dict(node.attrib)
+        if "file" in attributes:
+            source_path = Path(attributes["file"])
+            if not source_path.is_absolute():
+                source_path = registry_path.parent / source_path
+            attributes["file"] = str(source_path.resolve())
+        registry_definitions.append(ImportedDefinition(node.tag, attributes))
     for metadata_path in sorted((OFFICE_ASSETS / "furniture" / "sofas").glob("*/asset.json")):
         data = json.loads(metadata_path.read_text(encoding="utf-8"))
         asset_id = data["asset_id"]
@@ -427,9 +441,9 @@ def load_assets() -> dict[str, list[AssetInfo]]:
         center = bounds.mean(axis=0)
         prefix = f"office_{asset_id}_part_"
         definitions = tuple(
-            ImportedDefinition(node.tag, dict(node.attrib))
-            for node in registry_definitions
-            if node.get("name", "").startswith(prefix)
+            definition
+            for definition in registry_definitions
+            if definition.attributes.get("name", "").startswith(prefix)
         )
         components = (
             AssetComponent(
@@ -940,7 +954,11 @@ def add_scene_assets(root: ET.Element) -> None:
         ("snack_lemon_mesh", "lemon.msh", "1.5 1 1"),
     ):
         ET.SubElement(
-            assets, "mesh", name=name, file=str((SNACK_ASSETS / filename).resolve()), scale=scale
+            assets,
+            "mesh",
+            name=name,
+            file=asset_file_path(SNACK_ASSETS / filename),
+            scale=scale,
         )
     for material, texture, filename in (
         ("snack_soda", "snack_soda_tex", "soda.png"),
@@ -953,14 +971,17 @@ def add_scene_assets(root: ET.Element) -> None:
             "texture",
             name=texture,
             type="2d",
-            file=str((SNACK_ASSETS / filename).resolve()),
+            file=asset_file_path(SNACK_ASSETS / filename),
         )
         ET.SubElement(
             assets, "material", name=material, texture=texture, specular="0.1", shininess="0.08"
         )
 
 
-def add_imported_assets(root: ET.Element, asset_pool: dict[str, list[AssetInfo]]) -> None:
+def add_imported_assets(
+    root: ET.Element,
+    asset_pool: dict[str, list[AssetInfo]],
+) -> None:
     assets = ET.SubElement(root, "asset")
     seen = set()
     for values in asset_pool.values():
@@ -969,7 +990,10 @@ def add_imported_assets(root: ET.Element, asset_pool: dict[str, list[AssetInfo]]
                 continue
             seen.add(asset.asset_id)
             for definition in asset.definitions:
-                ET.SubElement(assets, definition.tag, **definition.attributes)
+                attributes = dict(definition.attributes)
+                if "file" in attributes:
+                    attributes["file"] = asset_file_path(attributes["file"])
+                ET.SubElement(assets, definition.tag, **attributes)
 
 
 def write_robot_include(spec: SceneSpec, output_dir: Path) -> Path:
@@ -978,7 +1002,10 @@ def write_robot_include(spec: SceneSpec, output_dir: Path) -> Path:
     compiler = root.find("compiler")
     if compiler is None:
         raise RuntimeError("stretch.xml has no compiler element")
-    compiler.set("assetdir", str((MODELS_ROOT / "assets").resolve()))
+    compiler.set(
+        "assetdir",
+        os.path.relpath((MODELS_ROOT / "assets").resolve(), output_dir.resolve()),
+    )
     base = root.find("./worldbody/body[@name='base_link']")
     if base is None:
         raise RuntimeError("stretch.xml has no base_link body")
@@ -1152,8 +1179,6 @@ scene-specific generated Stretch XML that sets the robot's initial freejoint pos
 def main(output: Path, skip_previews: bool) -> None:
     """Generate all ten open-plan office scenes."""
     output.mkdir(parents=True, exist_ok=True)
-    for old_file in output.glob("office_*.*"):
-        old_file.unlink()
     asset_pool = load_assets()
     catalog = []
     preview_images = []

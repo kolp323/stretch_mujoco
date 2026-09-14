@@ -15,37 +15,37 @@
     <material name="lounge_rug" rgba="0.45 0.39 0.31 1" />
     <material name="plant_pot" rgba="0.26 0.19 0.13 1" />
     <material name="plant_leaf" rgba="0.12 0.38 0.18 1" />
-    <mesh name="snack_can_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/can.msh" scale="1.4 1.4 1.4" />
-    <mesh name="snack_cereal_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/cereal.msh" scale="0.85 0.85 0.85" />
-    <mesh name="snack_bread_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/bread.msh" scale="0.9 0.9 0.9" />
-    <mesh name="snack_lemon_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/lemon.msh" scale="1.5 1 1" />
-    <texture name="snack_soda_tex" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/soda.png" />
+    <mesh name="snack_can_mesh" file="office_snacks/can.msh" scale="1.4 1.4 1.4" />
+    <mesh name="snack_cereal_mesh" file="office_snacks/cereal.msh" scale="0.85 0.85 0.85" />
+    <mesh name="snack_bread_mesh" file="office_snacks/bread.msh" scale="0.9 0.9 0.9" />
+    <mesh name="snack_lemon_mesh" file="office_snacks/lemon.msh" scale="1.5 1 1" />
+    <texture name="snack_soda_tex" type="2d" file="office_snacks/soda.png" />
     <material name="snack_soda" texture="snack_soda_tex" specular="0.1" shininess="0.08" />
-    <texture name="snack_cereal_tex" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/cereal.png" />
+    <texture name="snack_cereal_tex" type="2d" file="office_snacks/cereal.png" />
     <material name="snack_cereal" texture="snack_cereal_tex" specular="0.1" shininess="0.08" />
-    <texture name="snack_bread_tex" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/bread.png" />
+    <texture name="snack_bread_tex" type="2d" file="office_snacks/bread.png" />
     <material name="snack_bread" texture="snack_bread_tex" specular="0.1" shininess="0.08" />
-    <texture name="snack_lemon_tex" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_snacks/lemon.png" />
+    <texture name="snack_lemon_tex" type="2d" file="office_snacks/lemon.png" />
     <material name="snack_lemon" texture="snack_lemon_tex" specular="0.1" shininess="0.08" />
   </asset>
   <asset>
-    <texture name="new_adjustable_desk_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_001.png" />
-    <texture name="new_adjustable_desk_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_002.png" />
+    <texture name="new_adjustable_desk_texture_000" type="2d" file="office_assets/desks/textures/image_001.png" />
+    <texture name="new_adjustable_desk_texture_001" type="2d" file="office_assets/desks/textures/image_002.png" />
     <material name="new_adjustable_desk_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_adjustable_desk_texture_000" />
     <material name="new_adjustable_desk_material_001" rgba="0.00143 0.00143 0.00143 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_adjustable_desk_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_adjustable_desk_texture_001" />
-    <mesh name="new_adjustable_desk_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Material__24.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_adjustable_desk_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_Material__3.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_adjustable_desk_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Material___02.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <texture name="new_oak_square_table_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_002.png" />
-    <texture name="new_oak_square_table_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_004.png" />
+    <mesh name="new_adjustable_desk_mesh_000" file="office_assets/desks/meshes/part_000_Material__24.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_adjustable_desk_mesh_001" file="office_assets/desks/meshes/part_002_Material__3.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_adjustable_desk_mesh_002" file="office_assets/desks/meshes/part_001_Material___02.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_oak_square_table_texture_000" type="2d" file="office_assets/desks/textures/image_002.png" />
+    <texture name="new_oak_square_table_texture_001" type="2d" file="office_assets/desks/textures/image_004.png" />
     <material name="new_oak_square_table_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_oak_square_table_texture_001" />
     <material name="new_oak_square_table_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_oak_square_table_texture_000" />
-    <mesh name="new_oak_square_table_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_FINISH_461.obj" scale="1 0.999999881 0.999999881" />
-    <mesh name="new_oak_square_table_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_FINISH_621.obj" scale="1 0.999999881 0.999999881" />
-    <texture name="new_cb_desk_2400_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_001.png" />
-    <texture name="new_cb_desk_2400_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_003.png" />
-    <texture name="new_cb_desk_2400_texture_002" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_000.png" />
+    <mesh name="new_oak_square_table_mesh_000" file="office_assets/desks/meshes/part_000_FINISH_461.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_oak_square_table_mesh_001" file="office_assets/desks/meshes/part_001_FINISH_621.obj" scale="1 0.999999881 0.999999881" />
+    <texture name="new_cb_desk_2400_texture_000" type="2d" file="office_assets/desks/textures/image_001.png" />
+    <texture name="new_cb_desk_2400_texture_001" type="2d" file="office_assets/desks/textures/image_003.png" />
+    <texture name="new_cb_desk_2400_texture_002" type="2d" file="office_assets/desks/textures/image_000.png" />
     <material name="new_cb_desk_2400_material_000" rgba="0.411117 0.411117 0.411117 1" specular="0.693134" shininess="0.949234" reflectance="0.334495" />
     <material name="new_cb_desk_2400_material_001" rgba="0.874524 0.874524 0.874524 1" specular="0.632896" shininess="1" reflectance="0.296161" />
     <material name="new_cb_desk_2400_material_002" rgba="0.7519 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
@@ -82,148 +82,148 @@
     <material name="new_cb_desk_2400_material_033" rgba="0.10616 0.10616 0.11926 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_cb_desk_2400_material_034" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_cb_desk_2400_material_035" rgba="0.411117 0.411117 0.411117 1" specular="0.693134" shininess="0.949234" reflectance="0.334495" />
-    <mesh name="new_cb_desk_2400_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_FINISH_FFFFFF.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_003" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_003_Material__2.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_004" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_005" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_006" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_007" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_008" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Fabric_Seethrough2.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_009" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_010" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Material__1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_011" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_012" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_013" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Standard_2.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_014" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_015" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_016" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_017" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_018" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_019" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_020" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_021" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_022" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_023" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_024" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_025" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_026" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_027" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_028" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_029" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_030" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_031" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_003_Metal___Stainless_steel_RADIAL.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_032" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_033" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_Material__3.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_034" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_Standard_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_cb_desk_2400_mesh_035" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <texture name="new_reception_desk_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_003.png" />
-    <texture name="new_reception_desk_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/textures/image_001.png" />
+    <mesh name="new_cb_desk_2400_mesh_000" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_001" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_002" file="office_assets/desks/meshes/part_002_FINISH_FFFFFF.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_003" file="office_assets/desks/meshes/part_003_Material__2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_004" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_005" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_006" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_007" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_008" file="office_assets/desks/meshes/part_000_Fabric_Seethrough2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_009" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_010" file="office_assets/desks/meshes/part_001_Material__1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_011" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_012" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_013" file="office_assets/desks/meshes/part_000_Standard_2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_014" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_015" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_016" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_017" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_018" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_019" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_020" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_021" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_022" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_023" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_024" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_025" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_026" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_027" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_028" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_029" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_030" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_031" file="office_assets/desks/meshes/part_003_Metal___Stainless_steel_RADIAL.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_032" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_033" file="office_assets/desks/meshes/part_002_Material__3.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_034" file="office_assets/desks/meshes/part_001_Standard_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_035" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_reception_desk_texture_000" type="2d" file="office_assets/desks/textures/image_003.png" />
+    <texture name="new_reception_desk_texture_001" type="2d" file="office_assets/desks/textures/image_001.png" />
     <material name="new_reception_desk_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_reception_desk_texture_000" />
     <material name="new_reception_desk_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_reception_desk_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="new_reception_desk_texture_001" />
-    <mesh name="new_reception_desk_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_001_AAA___STEEL.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_reception_desk_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_002_mig_07___Default.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_reception_desk_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/desks/meshes/part_000_FINISH_CB_DARK_OAK.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <texture name="new_office_chair_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_005.png" />
-    <texture name="new_office_chair_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_002.png" />
+    <mesh name="new_reception_desk_mesh_000" file="office_assets/desks/meshes/part_001_AAA___STEEL.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_reception_desk_mesh_001" file="office_assets/desks/meshes/part_002_mig_07___Default.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_reception_desk_mesh_002" file="office_assets/desks/meshes/part_000_FINISH_CB_DARK_OAK.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_office_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_005.png" />
+    <texture name="new_office_chair_texture_001" type="2d" file="office_assets/chairs/textures/image_002.png" />
     <material name="new_office_chair_material_000" rgba="0.778745 0.778745 0.778745 1" specular="0.690136" shininess="1" reflectance="0.332586" />
     <material name="new_office_chair_material_001" rgba="1 1 1 1" specular="0.155" shininess="0.96017" reflectance="0" texture="new_office_chair_texture_001" />
     <material name="new_office_chair_material_002" rgba="0.127225 0.127225 0.127225 1" specular="0.113382" shininess="0.949234" reflectance="0.00545891" />
     <material name="new_office_chair_material_003" rgba="1 1 1 1" specular="0.163039" shininess="0.894888" reflectance="0" texture="new_office_chair_texture_000" />
-    <mesh name="new_office_chair_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_000_Shader4.obj" scale="1 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_002_Shader2.obj" scale="1 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_003_Shader1.obj" scale="1 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_003" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_002_Shader2.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_004" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_003_Shader1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_005" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_000_Shader4.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_006" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_001_Shader3.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_office_chair_mesh_007" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_001_Shader3.obj" scale="1 0.999999881 0.999999881" />
-    <texture name="new_home_office_chair_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_004.png" />
-    <texture name="new_home_office_chair_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_007.png" />
-    <texture name="new_home_office_chair_texture_002" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_001.png" />
+    <mesh name="new_office_chair_mesh_000" file="office_assets/chairs/meshes/part_000_Shader4.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_001" file="office_assets/chairs/meshes/part_002_Shader2.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_002" file="office_assets/chairs/meshes/part_003_Shader1.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_003" file="office_assets/chairs/meshes/part_002_Shader2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_004" file="office_assets/chairs/meshes/part_003_Shader1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_005" file="office_assets/chairs/meshes/part_000_Shader4.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_006" file="office_assets/chairs/meshes/part_001_Shader3.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_007" file="office_assets/chairs/meshes/part_001_Shader3.obj" scale="1 0.999999881 0.999999881" />
+    <texture name="new_home_office_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_004.png" />
+    <texture name="new_home_office_chair_texture_001" type="2d" file="office_assets/chairs/textures/image_007.png" />
+    <texture name="new_home_office_chair_texture_002" type="2d" file="office_assets/chairs/textures/image_001.png" />
     <material name="new_home_office_chair_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_home_office_chair_texture_001" />
     <material name="new_home_office_chair_material_001" rgba="0.00169 0.00169 0.00169 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_home_office_chair_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_home_office_chair_texture_002" />
     <material name="new_home_office_chair_material_003" rgba="1 1 1 1" specular="0.1675" shininess="0.97023" reflectance="0" texture="new_home_office_chair_texture_000" />
     <material name="new_home_office_chair_material_004" rgba="0.03561 0.03561 0.03561 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_home_office_chair_material_005" rgba="0.00169 0.00169 0.00169 1" specular="0.1675" shininess="0" reflectance="0" />
-    <mesh name="new_home_office_chair_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_001_Fabric_blue.obj" scale="0.999999881 0.999999762 0.999999881" />
-    <mesh name="new_home_office_chair_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_005_Walnut_wood.obj" scale="0.999999881 0.999999762 0.999999881" />
-    <mesh name="new_home_office_chair_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_004_unicolor_black2.obj" scale="0.999999881 0.999999762 0.999999881" />
-    <mesh name="new_home_office_chair_mesh_003" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_003_Metal_Brushed_leg.obj" scale="0.999999881 0.999999762 0.999999881" />
-    <mesh name="new_home_office_chair_mesh_004" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_002_unicolor_black.obj" scale="0.999999881 0.999999762 0.999999881" />
-    <mesh name="new_home_office_chair_mesh_005" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_000_x.obj" scale="0.999999881 0.999999762 0.999999881" />
-    <texture name="new_dining_chair_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_000.png" />
+    <mesh name="new_home_office_chair_mesh_000" file="office_assets/chairs/meshes/part_001_Fabric_blue.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_001" file="office_assets/chairs/meshes/part_005_Walnut_wood.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_002" file="office_assets/chairs/meshes/part_004_unicolor_black2.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_003" file="office_assets/chairs/meshes/part_003_Metal_Brushed_leg.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_004" file="office_assets/chairs/meshes/part_002_unicolor_black.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_005" file="office_assets/chairs/meshes/part_000_x.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <texture name="new_dining_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_000.png" />
     <material name="new_dining_chair_material_000" rgba="0.00169 0.00169 0.00169 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_dining_chair_material_001" rgba="0.552002 0.320131 0.156443 1" specular="0.735064" shininess="0.904609" reflectance="0.311305" />
     <material name="new_dining_chair_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_dining_chair_texture_000" />
-    <mesh name="new_dining_chair_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_002_Fabric_Velvet_Black.obj" scale="0.999999881 0.99999994 0.999999881" />
-    <mesh name="new_dining_chair_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_001_Metal___Gold_Brushed_Marina.obj" scale="0.999999881 0.99999994 0.999999881" />
-    <mesh name="new_dining_chair_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_000_unicolor_black.obj" scale="0.999999881 0.99999994 0.999999881" />
-    <texture name="new_stance_chair_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_001.png" />
-    <texture name="new_stance_chair_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/textures/image_000.png" />
+    <mesh name="new_dining_chair_mesh_000" file="office_assets/chairs/meshes/part_002_Fabric_Velvet_Black.obj" scale="0.999999881 0.99999994 0.999999881" />
+    <mesh name="new_dining_chair_mesh_001" file="office_assets/chairs/meshes/part_001_Metal___Gold_Brushed_Marina.obj" scale="0.999999881 0.99999994 0.999999881" />
+    <mesh name="new_dining_chair_mesh_002" file="office_assets/chairs/meshes/part_000_unicolor_black.obj" scale="0.999999881 0.99999994 0.999999881" />
+    <texture name="new_stance_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_001.png" />
+    <texture name="new_stance_chair_texture_001" type="2d" file="office_assets/chairs/textures/image_000.png" />
     <material name="new_stance_chair_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_stance_chair_texture_001" />
     <material name="new_stance_chair_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_stance_chair_texture_000" />
     <material name="new_stance_chair_material_002" rgba="0.00412 0.00412 0.00412 1" specular="0.1675" shininess="0" reflectance="0" />
-    <mesh name="new_stance_chair_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_000_Crown_Ebony.obj" scale="0.99999994 0.999999762 0.999999762" />
-    <mesh name="new_stance_chair_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_002_Standard_18.obj" scale="0.99999994 0.999999762 0.999999762" />
-    <mesh name="new_stance_chair_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/chairs/meshes/part_001_Standard_6.obj" scale="0.99999994 0.999999762 0.999999762" />
-    <texture name="new_imac_24_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/textures/image_000.png" />
-    <texture name="new_imac_24_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/textures/image_001.png" />
+    <mesh name="new_stance_chair_mesh_000" file="office_assets/chairs/meshes/part_000_Crown_Ebony.obj" scale="0.99999994 0.999999762 0.999999762" />
+    <mesh name="new_stance_chair_mesh_001" file="office_assets/chairs/meshes/part_002_Standard_18.obj" scale="0.99999994 0.999999762 0.999999762" />
+    <mesh name="new_stance_chair_mesh_002" file="office_assets/chairs/meshes/part_001_Standard_6.obj" scale="0.99999994 0.999999762 0.999999762" />
+    <texture name="new_imac_24_texture_000" type="2d" file="office_assets/displays/textures/image_000.png" />
+    <texture name="new_imac_24_texture_001" type="2d" file="office_assets/displays/textures/image_001.png" />
     <material name="new_imac_24_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_24_texture_000" />
     <material name="new_imac_24_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_24_texture_001" />
-    <mesh name="new_imac_24_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_001_unicolor_creme_t.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_imac_24_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_000_unicolor_creme.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <texture name="new_imac_27_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/textures/image_002.png" />
-    <texture name="new_imac_27_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/textures/image_003.png" />
-    <texture name="new_imac_27_texture_002" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/textures/image_009.png" />
-    <texture name="new_imac_27_texture_003" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/textures/image_007.png" />
+    <mesh name="new_imac_24_mesh_000" file="office_assets/displays/meshes/part_001_unicolor_creme_t.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_24_mesh_001" file="office_assets/displays/meshes/part_000_unicolor_creme.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_imac_27_texture_000" type="2d" file="office_assets/displays/textures/image_002.png" />
+    <texture name="new_imac_27_texture_001" type="2d" file="office_assets/displays/textures/image_003.png" />
+    <texture name="new_imac_27_texture_002" type="2d" file="office_assets/displays/textures/image_009.png" />
+    <texture name="new_imac_27_texture_003" type="2d" file="office_assets/displays/textures/image_007.png" />
     <material name="new_imac_27_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_27_texture_002" />
     <material name="new_imac_27_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_27_texture_003" />
     <material name="new_imac_27_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="new_imac_27_texture_000" />
     <material name="new_imac_27_material_003" rgba="0 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_imac_27_material_004" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_27_texture_001" />
-    <mesh name="new_imac_27_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_000_unicolor_creme_t.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_imac_27_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_003_Standard_1_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_imac_27_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_001_Metal___Stainless_steel_1.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_imac_27_mesh_003" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_002_Material__69.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <mesh name="new_imac_27_mesh_004" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/displays/meshes/part_004_Metal___Stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
-    <texture name="new_teaming_table_texture_000" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/meeting_table/textures/image_004.png" />
-    <texture name="new_teaming_table_texture_001" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/meeting_table/textures/image_001.png" />
+    <mesh name="new_imac_27_mesh_000" file="office_assets/displays/meshes/part_000_unicolor_creme_t.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_001" file="office_assets/displays/meshes/part_003_Standard_1_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_002" file="office_assets/displays/meshes/part_001_Metal___Stainless_steel_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_003" file="office_assets/displays/meshes/part_002_Material__69.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_004" file="office_assets/displays/meshes/part_004_Metal___Stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_teaming_table_texture_000" type="2d" file="office_assets/meeting_table/textures/image_004.png" />
+    <texture name="new_teaming_table_texture_001" type="2d" file="office_assets/meeting_table/textures/image_001.png" />
     <material name="new_teaming_table_material_000" rgba="0.01113 0.01113 0.01113 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_teaming_table_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0.917531" reflectance="0" texture="new_teaming_table_texture_001" />
     <material name="new_teaming_table_material_002" rgba="0.00018 0.00018 0.00018 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_teaming_table_material_003" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_teaming_table_texture_000" />
-    <mesh name="new_teaming_table_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/meeting_table/meshes/part_003_Material__4.obj" scale="1 0.999999881 0.75672355" />
-    <mesh name="new_teaming_table_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/meeting_table/meshes/part_000_Material__24.obj" scale="1 0.999999881 0.75672355" />
-    <mesh name="new_teaming_table_mesh_002" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/meeting_table/meshes/part_001_Material__3.obj" scale="1 0.999999881 0.75672355" />
-    <mesh name="new_teaming_table_mesh_003" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/meeting_table/meshes/part_002_Metal___Stainless_steel_2017.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_000" file="office_assets/meeting_table/meshes/part_003_Material__4.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_001" file="office_assets/meeting_table/meshes/part_000_Material__24.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_002" file="office_assets/meeting_table/meshes/part_001_Material__3.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_003" file="office_assets/meeting_table/meshes/part_002_Metal___Stainless_steel_2017.obj" scale="1 0.999999881 0.75672355" />
     <material name="new_dry_wipe_module_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
     <material name="new_dry_wipe_module_material_001" rgba="0.21764 0.21764 0.21764 1" specular="0.1675" shininess="0" reflectance="0" />
-    <mesh name="new_dry_wipe_module_mesh_000" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/whiteboard/meshes/part_000_Arch___Design__mi__2.obj" scale="0.999999881 0.999999821 0.999999881" />
-    <mesh name="new_dry_wipe_module_mesh_001" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/whiteboard/meshes/part_001_Arch___Design__mi__1.obj" scale="0.999999881 0.999999821 0.999999881" />
-    <texture name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_texture" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/textures/image_003.png" />
+    <mesh name="new_dry_wipe_module_mesh_000" file="office_assets/whiteboard/meshes/part_000_Arch___Design__mi__2.obj" scale="0.999999881 0.999999821 0.999999881" />
+    <mesh name="new_dry_wipe_module_mesh_001" file="office_assets/whiteboard/meshes/part_001_Arch___Design__mi__1.obj" scale="0.999999881 0.999999821 0.999999881" />
+    <texture name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_texture" type="2d" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/textures/image_003.png" />
     <material name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_texture" />
-    <mesh name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/meshes/part_000_Fabric.obj" />
-    <texture name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_texture" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/textures/image_001.png" />
+    <mesh name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_mesh" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/meshes/part_000_Fabric.obj" />
+    <texture name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_texture" type="2d" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/textures/image_001.png" />
     <material name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_texture" />
-    <mesh name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/meshes/part_001_mig_00wood.obj" />
-    <texture name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_texture" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/textures/image_003.png" />
+    <mesh name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_mesh" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/meshes/part_001_mig_00wood.obj" />
+    <texture name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_texture" type="2d" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/textures/image_003.png" />
     <material name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_texture" />
-    <mesh name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/meshes/part_000_mig_00wood.obj" />
-    <texture name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_texture" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/textures/image_000.png" />
+    <mesh name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/meshes/part_000_mig_00wood.obj" />
+    <texture name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_texture" type="2d" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/textures/image_000.png" />
     <material name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_texture" />
-    <mesh name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/meshes/part_001_Velvet_Emerald.obj" />
+    <mesh name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/meshes/part_001_Velvet_Emerald.obj" />
     <material name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_000_material" rgba="0.00064 0.00064 0.00064 1" specular="0.1675" shininess="0" reflectance="0" />
-    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_000_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_000_Black.obj" />
-    <texture name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_texture" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/textures/image_002.png" />
+    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_000_mesh" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_000_Black.obj" />
+    <texture name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_texture" type="2d" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/textures/image_002.png" />
     <material name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_material" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_texture" />
-    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_001_Metal___Stainless_steel.obj" />
-    <texture name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_texture" type="2d" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/textures/image_000.png" />
+    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_mesh" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_001_Metal___Stainless_steel.obj" />
+    <texture name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_texture" type="2d" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/textures/image_000.png" />
     <material name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_texture" />
-    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_mesh" file="/home/yjw/stretch_mujoco/stretch_mujoco/models/assets/office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_002_Fabric.obj" />
+    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_mesh" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_002_Fabric.obj" />
   </asset>
   <worldbody>
     <geom name="office_floor" type="box" pos="0 0 -0.04" size="10 5.5 0.04" material="scene_floor" friction="1 0.01 0.001" />
@@ -310,7 +310,7 @@
         <geom name="asset_visual_000_042" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_000_043" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
       </body>
-      <body name="asset_component_000_08" pos="1.5634517 4.33969305e-08 3.33438204e-07" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+      <body name="asset_component_000_08" pos="1.5634517 4.33969314e-08 3.33438204e-07" quat="0.707106802 0 4.21468498e-08 -0.70710676">
         <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
         <geom name="asset_visual_000_044" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_000_045" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
@@ -385,7 +385,7 @@
         <geom name="asset_visual_000_090" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_000_091" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
       </body>
-      <body name="asset_component_000_17" pos="-1.56345166 4.33969305e-08 3.33438204e-07" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+      <body name="asset_component_000_17" pos="-1.56345166 4.33969314e-08 3.33438204e-07" quat="0.707106802 0 -4.21468498e-08 0.70710676">
         <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
         <geom name="asset_visual_000_092" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_000_093" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
@@ -464,7 +464,7 @@
         <geom name="asset_visual_001_042" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_001_043" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
       </body>
-      <body name="asset_component_001_08" pos="1.5634517 4.33969305e-08 3.33438204e-07" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+      <body name="asset_component_001_08" pos="1.5634517 4.33969314e-08 3.33438204e-07" quat="0.707106802 0 4.21468498e-08 -0.70710676">
         <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
         <geom name="asset_visual_001_044" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_001_045" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
@@ -539,7 +539,7 @@
         <geom name="asset_visual_001_090" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_001_091" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
       </body>
-      <body name="asset_component_001_17" pos="-1.56345166 4.33969305e-08 3.33438204e-07" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+      <body name="asset_component_001_17" pos="-1.56345166 4.33969314e-08 3.33438204e-07" quat="0.707106802 0 -4.21468498e-08 0.70710676">
         <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
         <geom name="asset_visual_001_092" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
         <geom name="asset_visual_001_093" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
