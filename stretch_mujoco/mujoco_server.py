@@ -289,6 +289,8 @@ class MujocoServer:
         cameras_to_use: list[StretchCameras],
         start_translation: list | None,
         start_rotation_quat: list | None,
+        semantic_world_path: str | None = None,
+        population_path: str | None = None,
     ):
         server = cls(
             scene_xml_path,
@@ -297,6 +299,8 @@ class MujocoServer:
             data_proxies,
             start_translation,
             start_rotation_quat,
+            semantic_world_path,
+            population_path,
         )
         server.run(
             show_viewer_ui=show_viewer_ui,
@@ -339,6 +343,8 @@ class MujocoServer:
         data_proxies: MujocoServerProxies,
         start_translation: list | None,
         start_rotation_quat: list | None,
+        semantic_world_path: str | None = None,
+        population_path: str | None = None,
     ):
         """
         Initialize the Simulator handle with a scene
@@ -366,7 +372,18 @@ class MujocoServer:
             self.mjmodel.actuator_ctrlrange[actuator_id] = (-40.0, 40.0)
 
         self.mjdata = MjData(self.mjmodel)
-        self.npc_system = NpcSystem.from_model(self.mjmodel, scene_path=scene_xml_path)
+        if population_path is None:
+            self.npc_system = NpcSystem.from_model(self.mjmodel, scene_path=scene_xml_path)
+            population = None
+        else:
+            from stretch_mujoco.npc.assets import NpcAssetManifest
+            from stretch_mujoco.npc.schema import NpcPopulation
+
+            population = NpcPopulation.from_json(population_path)
+            manifest = NpcAssetManifest.from_json(population.resolve_path(population.asset_manifest))
+            self.npc_system = NpcSystem.from_population(
+                self.mjmodel, population, manifest, scene_path=population.resolve_path(population.scene)
+            )
         self._object_visibility_state: dict[str, bool] = {}
         self._object_geom_defaults: dict[int, tuple[float, int, int]] = {}
         self._grasp_attachment_object = ""
@@ -383,7 +400,20 @@ class MujocoServer:
                 self.mjmodel.actuator_biasprm[actuator_id].copy(),
                 self.mjmodel.actuator_forcerange[actuator_id].copy(),
             )
-        self.semantic_world = SemanticWorld.for_scene(scene_xml_path)
+        self.semantic_world = (
+            SemanticWorld.from_json(semantic_world_path)
+            if semantic_world_path is not None
+            else SemanticWorld.for_scene(
+                population.resolve_path(population.scene)
+                if population is not None
+                else scene_xml_path
+            )
+        )
+        if self.semantic_world is not None and population is not None:
+            from stretch_mujoco.npc.composition import _bind_population_semantics
+
+            _bind_population_semantics(self.semantic_world, population)
+            self.semantic_world.register_population_npcs(population.npcs)
         self._next_semantic_update_time = 0.0
         if self.semantic_world is not None:
             self.semantic_world.validate_model(self.mjmodel)
@@ -411,15 +441,19 @@ class MujocoServer:
 
     def update_joint_limits(self):
         for i in range(self.mjmodel.njnt):
-            name = mujoco._functions.mj_id2name(self.mjmodel, mujoco._enums.mjtObj.mjOBJ_JOINT, i)
+            name = mujoco._functions.mj_id2name(
+                self.mjmodel, mujoco._enums.mjtObj.mjOBJ_JOINT, i
+            )
+            if name is None:
+                continue
             joint_range = self.mjmodel.jnt_range[i]  # This gives [lower_limit, upper_limit]
             try:
                 actuator = Actuators.get_actuator_by_joint_names_in_mjcf(name)
                 self.data_proxies.set_joint_limit(
                     actuator=actuator, min_max=(joint_range[0], joint_range[1])
                 )
-            except:
-                ...
+            except NotImplementedError:
+                continue
 
     def set_camera_manager(
         self,
@@ -432,7 +466,8 @@ class MujocoServer:
         """
         This should be called before trying to render offscreen cameras.
 
-        If `use_camera_thread` is false, `self.camera_manager.pull_camera_data_at_camera_rate()` should be called on a UI thread.
+        If `use_camera_thread` is false,
+        `self.camera_manager.pull_camera_data_at_camera_rate()` should be called on a UI thread.
         This is the recommended usage.
 
         If `use_camera_thread` is true, a thread will be spawned to call Renderer.render().
@@ -513,7 +548,7 @@ class MujocoServer:
             self._ctrl_callback(self.mjmodel, self.mjdata)
 
         time_until_next_step = self.mjmodel.opt.timestep - (time.perf_counter() - start_time)
-        if time_until_next_step > 0:
+        if time_until_next_step > 0 and os.environ.get("MUJOCO_FAST_SIM") != "1":
             # Sleep to match the timestep.
             time.sleep(time_until_next_step)
 

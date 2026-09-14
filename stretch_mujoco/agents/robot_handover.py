@@ -225,4 +225,31 @@ class RobotToNpcHandoverBridge:
             issued_at,
             issued_at + self.timeout_seconds,
         )
-        return self.simulator.submit_npc_command(command)
+        try:
+            return self.simulator.submit_npc_command(command)
+        except ValueError as error:
+            # Other NPC action drivers may have issued commands for the same
+            # receiver before this bridge starts. Align once with the server's
+            # current sequence boundary instead of replaying stale sequence 0.
+            if "sequence" not in str(error).lower():
+                raise
+            latest = self._sequences[npc_id]
+            for sequence in range(latest + 1, latest + 65):
+                self._sequences[npc_id] = sequence
+                command = NpcCommand(
+                    f"{session_id}:{stage}",
+                    sequence,
+                    npc_id,
+                    kind,
+                    payload,
+                    issued_at,
+                    issued_at + self.timeout_seconds,
+                )
+                try:
+                    return self.simulator.submit_npc_command(command)
+                except ValueError as retry_error:
+                    if "sequence" not in str(retry_error).lower():
+                        raise
+            raise ValueError(
+                f"Unable to align NPC command sequence for '{npc_id}' after 64 attempts"
+            ) from error

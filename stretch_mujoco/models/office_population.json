@@ -2,6 +2,17 @@
   "schema_version": 2,
   "scene": "office_scene.xml",
   "asset_manifest": "npc_assets.example.json",
+  "trajectory_profile": "../npc/trajectory_profiles/office_v1.json",
+  "interaction_templates": {
+    "conversation": {
+      "speaker": {"site": "meeting_conversation_alex_site", "yaw": 1.5708},
+      "listener": {"site": "meeting_conversation_morgan_site", "yaw": -1.5708}
+    },
+    "handover": {
+      "giver": {"site": "npc_handover_giver_stand_site", "yaw": 1.5708},
+      "receiver": {"site": "npc_handover_receiver_stand_site", "yaw": -1.5708}
+    }
+  },
   "clock": {
     "start": "09:00",
     "minutes_per_second": 1.0

@@ -14,6 +14,10 @@ LEGACY_MULTI_FRAME_PATTERN = re.compile(
 LEGACY_SINGLE_FRAME_PATTERN = re.compile(
     r"^humanoid_preview_frame_(?P<clip>[a-z0-9_]+)_(?P<frame>\d+)_(?P<material>[a-z]+)$"
 )
+ATTACHMENT_ANCHOR_SITE_PATTERN = re.compile(
+    r"^npc__(?P<npc>[a-zA-Z0-9_]+)__anchor__(?P<role>[a-z0-9_]+)"
+    r"__clip__(?P<clip>[a-z0-9_]+)__frame__(?P<frame>\d+)$"
+)
 
 
 def body_name(npc_id: str) -> str:
@@ -30,6 +34,22 @@ def accessory_frame_geom_name(npc_id: str, clip: str, frame: int, accessory_id: 
 
 def interaction_site_name(npc_id: str, role: str) -> str:
     return f"npc__{npc_id}__{role}"
+
+
+def attachment_anchor_site_name(npc_id: str, role: str, clip: str, frame: int) -> str:
+    return f"npc__{npc_id}__anchor__{role}__clip__{clip}__frame__{frame:03d}"
+
+
+def parse_attachment_anchor_site_name(name: str) -> tuple[str, str, str, int] | None:
+    match = ATTACHMENT_ANCHOR_SITE_PATTERN.match(name)
+    if match is None:
+        return None
+    return (
+        match.group("npc"),
+        match.group("role"),
+        match.group("clip"),
+        int(match.group("frame")),
+    )
 
 
 def collision_geom_name(npc_id: str, part: str) -> str:

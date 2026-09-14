@@ -114,7 +114,7 @@
     }
   },
   "relations": [
-    {"subject": "document_report", "relation": "INSIDE", "object": "storage_cabinet"},
+    {"subject": "document_report", "relation": "ON", "object": "storage_cabinet"},
     {"subject": "document_invoice", "relation": "INSIDE", "object": "storage_cabinet"},
     {"subject": "computer_left", "relation": "ON", "object": "workstation_left"},
     {"subject": "computer_right", "relation": "ON", "object": "workstation_right"},
@@ -129,7 +129,6 @@
     {"subject": "workstation_right", "relation": "BELONGS_TO", "object": "employee_01"},
     {"subject": "document_report", "relation": "BELONGS_TO", "object": "employee_01"},
     {"subject": "document_invoice", "relation": "BELONGS_TO", "object": "employee_01"},
-    {"subject": "document_report", "relation": "REQUESTED_BY", "object": "employee_01"},
     {"subject": "chair_right", "relation": "RESERVED_BY", "object": "employee_01"},
     {"subject": "document_report", "relation": "ALLOWED_FOR", "object": "employee_01"}
   ],
@@ -149,12 +148,22 @@
     "desk_left_work": {
       "role": "desk_work_site",
       "owner": "workstation_left",
-      "site": "desk_left_work_site"
+      "site": "desk_left_work_site",
+      "attributes": {
+        "binding": "placement",
+        "target": "workstation_left",
+        "yaw": 3.141592653589793
+      }
     },
     "desk_right_work": {
       "role": "desk_work_site",
       "owner": "workstation_right",
-      "site": "desk_right_work_site"
+      "site": "desk_right_work_site",
+      "attributes": {
+        "binding": "placement",
+        "target": "workstation_right",
+        "yaw": 3.141592653589793
+      }
     },
     "npc_spawn_alex_chen": {
       "role": "human_stand_site",
@@ -209,7 +218,12 @@
     "cabinet_open": {
       "role": "cabinet_open_site",
       "owner": "storage_cabinet",
-      "site": "cabinet_open_site"
+      "site": "cabinet_open_site",
+      "attributes": {
+        "binding": "placement",
+        "target": "storage_cabinet",
+        "yaw": 3.141592653589793
+      }
     },
     "document_report_grasp": {
       "role": "document_grasp_site",
@@ -221,11 +235,27 @@
       "owner": "document_invoice",
       "site": "document_invoice_grasp_site"
     },
+    "stretch_request": {
+      "role": "robot_request_site",
+      "owner": "stretch_3",
+      "site": "stretch_request_stand_site",
+      "attributes": {"binding": "robot_request", "target": "stretch_3"}
+    },
+    "workstation_right_robot_delivery": {
+      "role": "robot_delivery_site",
+      "owner": "workstation_right",
+      "site": "workstation_right_robot_delivery_site"
+    },
     "snack_place": {
       "role": "snack_place_site",
       "owner": "snack_counter",
       "site": "snack_place_site",
-      "attributes": {"surface": "snack_counter"}
+      "attributes": {
+        "surface": "snack_counter",
+        "binding": "placement",
+        "target": "snack_counter",
+        "yaw": 3.141592653589793
+      }
     },
     "employee_01_handover": {
       "role": "handover_site",
@@ -235,32 +265,155 @@
     "meeting_table_place": {
       "role": "meeting_place_site",
       "owner": "meeting_table",
-      "site": "meeting_table_place_site"
+      "site": "meeting_table_place_site",
+      "attributes": {
+        "binding": "placement",
+        "target": "meeting_table",
+        "yaw": 3.141592653589793
+      }
     },
     "meeting_human_stand": {
       "role": "human_stand_site",
       "owner": "meeting_table",
-      "site": "meeting_human_stand_site"
+      "site": "meeting_human_stand_site",
+      "attributes": {
+        "binding": "location",
+        "target": "meeting_table",
+        "yaw": 3.141592653589793
+      }
+    },
+    "meeting_conversation_alex": {
+      "role": "human_stand_site",
+      "owner": "meeting_table",
+      "site": "meeting_conversation_alex_site"
+    },
+    "meeting_conversation_morgan": {
+      "role": "human_stand_site",
+      "owner": "meeting_table",
+      "site": "meeting_conversation_morgan_site"
+    },
+    "npc_handover_giver_stand": {
+      "role": "human_stand_site",
+      "owner": "meeting_table",
+      "site": "npc_handover_giver_stand_site"
+    },
+    "npc_handover_receiver_stand": {
+      "role": "human_stand_site",
+      "owner": "meeting_table",
+      "site": "npc_handover_receiver_stand_site"
+    },
+    "employee_01_handover_stand": {
+      "role": "human_stand_site",
+      "owner": "meeting_table",
+      "site": "employee_01_handover_stand_site"
+    },
+    "employee_02_handover_stand": {
+      "role": "human_stand_site",
+      "owner": "meeting_table",
+      "site": "employee_02_handover_stand_site"
+    },
+    "chair_right_approach": {
+      "role": "human_stand_site",
+      "owner": "chair_right",
+      "site": "chair_right_approach_site",
+      "attributes": {"binding": "seat_navigation", "target": "chair_right"}
+    },
+    "chair_left_approach": {
+      "role": "human_stand_site",
+      "owner": "chair_left",
+      "site": "chair_left_approach_site",
+      "attributes": {"binding": "seat_navigation", "target": "chair_left"}
     },
     "snack_human_stand": {
       "role": "human_stand_site",
       "owner": "snack_counter",
-      "site": "snack_human_stand_site"
+      "site": "snack_human_stand_site",
+      "attributes": {
+        "binding": "location",
+        "target": "snack_counter",
+        "yaw": 3.141592653589793
+      }
     },
     "cabinet_human_stand": {
       "role": "human_stand_site",
       "owner": "storage_cabinet",
-      "site": "cabinet_human_stand_site"
+      "site": "cabinet_human_stand_site",
+      "attributes": {
+        "binding": "location",
+        "target": "storage_cabinet",
+        "yaw": 3.141592653589793
+      }
     },
     "coffee_human_stand": {
       "role": "human_stand_site",
       "owner": "coffee_machine",
-      "site": "coffee_human_stand_site"
+      "site": "coffee_human_stand_site",
+      "attributes": {"binding": "location", "target": "coffee_machine", "yaw": 0.0}
     },
     "coffee_machine_use": {
       "role": "coffee_use_site",
       "owner": "coffee_machine",
       "site": "coffee_machine_use_site"
+    },
+    "document_report_human_approach": {
+      "role": "human_stand_site",
+      "owner": "document_report",
+      "site": "cabinet_human_stand_site",
+      "attributes": {
+        "binding": "object_approach",
+        "target": "document_report",
+        "yaw": 3.141592653589793
+      }
+    },
+    "document_invoice_human_approach": {
+      "role": "human_stand_site",
+      "owner": "document_invoice",
+      "site": "cabinet_human_stand_site",
+      "attributes": {
+        "binding": "object_approach",
+        "target": "document_invoice",
+        "yaw": 3.141592653589793
+      }
+    },
+    "soda_can_human_approach": {
+      "role": "human_stand_site",
+      "owner": "soda_can",
+      "site": "snack_human_stand_site",
+      "attributes": {
+        "binding": "object_approach",
+        "target": "soda_can",
+        "yaw": 3.141592653589793
+      }
+    },
+    "cereal_box_human_approach": {
+      "role": "human_stand_site",
+      "owner": "cereal_box",
+      "site": "snack_human_stand_site",
+      "attributes": {
+        "binding": "object_approach",
+        "target": "cereal_box",
+        "yaw": 3.141592653589793
+      }
+    },
+    "bread_snack_human_approach": {
+      "role": "human_stand_site",
+      "owner": "bread_snack",
+      "site": "snack_human_stand_site",
+      "attributes": {
+        "binding": "object_approach",
+        "target": "bread_snack",
+        "yaw": 3.141592653589793
+      }
+    },
+    "lemon_human_approach": {
+      "role": "human_stand_site",
+      "owner": "lemon",
+      "site": "snack_human_stand_site",
+      "attributes": {
+        "binding": "object_approach",
+        "target": "lemon",
+        "yaw": 3.141592653589793
+      }
     },
     "office_door_handle": {
       "role": "door_handle_site",

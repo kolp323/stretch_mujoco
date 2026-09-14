@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import re
 from dataclasses import dataclass, field
 from typing import Any, Mapping
@@ -41,11 +42,87 @@ class DialoguePolicyConfig:
         r"\b[A-Za-z0-9]{24,}\b",
     )
 
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "DialoguePolicyConfig":
+        """Parse JSON-shaped policy data without leaking string enum keys."""
+        allowed = {
+            "max_chars",
+            "max_turns",
+            "session_timeout_seconds",
+            "turn_timeout_seconds",
+            "pair_cooldown_seconds",
+            "min_social_energy",
+            "distance_min",
+            "distance_max",
+            "yaw_tolerance",
+            "fallback_templates",
+            "sensitive_patterns",
+        }
+        unknown = set(payload) - allowed
+        if unknown:
+            raise ValueError(f"Unknown dialogue_policy fields: {', '.join(sorted(unknown))}")
+        values = dict(payload)
+        if "fallback_templates" in values:
+            raw_templates = values["fallback_templates"]
+            if not isinstance(raw_templates, Mapping):
+                raise ValueError("fallback_templates must be an object")
+            templates = dict(cls().fallback_templates)
+            for raw_act, raw_values in raw_templates.items():
+                try:
+                    act = DialogueAct(str(raw_act))
+                except ValueError as error:
+                    raise ValueError(f"Unknown dialogue fallback act '{raw_act}'") from error
+                if (
+                    not isinstance(raw_values, list)
+                    or not raw_values
+                    or not all(isinstance(item, str) and item for item in raw_values)
+                ):
+                    raise ValueError(
+                        f"Fallback templates for '{act.value}' must be non-empty strings"
+                    )
+                templates[act] = tuple(raw_values)
+            values["fallback_templates"] = templates
+        if "sensitive_patterns" in values:
+            patterns = values["sensitive_patterns"]
+            if (
+                not isinstance(patterns, list)
+                or not patterns
+                or not all(isinstance(item, str) and item for item in patterns)
+            ):
+                raise ValueError("sensitive_patterns must be non-empty strings")
+            values["sensitive_patterns"] = tuple(patterns)
+        return cls(**values)
+
     def __post_init__(self) -> None:
-        if self.max_chars <= 0 or self.max_turns <= 0:
+        if (
+            isinstance(self.max_chars, bool)
+            or not isinstance(self.max_chars, int)
+            or self.max_chars <= 0
+            or isinstance(self.max_turns, bool)
+            or not isinstance(self.max_turns, int)
+            or self.max_turns <= 0
+        ):
             raise ValueError("Dialogue limits must be positive")
+        numeric_values = (
+            self.session_timeout_seconds,
+            self.turn_timeout_seconds,
+            self.pair_cooldown_seconds,
+            self.min_social_energy,
+            self.distance_min,
+            self.distance_max,
+            self.yaw_tolerance,
+        )
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            for value in numeric_values
+        ):
+            raise ValueError("Dialogue policy numeric values must be finite numbers")
         if self.session_timeout_seconds <= 0 or self.turn_timeout_seconds <= 0:
             raise ValueError("Dialogue timeouts must be positive")
+        if self.pair_cooldown_seconds < 0:
+            raise ValueError("pair_cooldown_seconds must be non-negative")
         if not 0 <= self.min_social_energy <= 1:
             raise ValueError("min_social_energy must be in [0, 1]")
         if not 0 <= self.distance_min <= self.distance_max:
@@ -100,7 +177,14 @@ class DialoguePolicy:
             raise ValueError("missing_candidate_id")
         clock = candidate.proposed_at if now is None else now
         pair = tuple(sorted((candidate.speaker, candidate.listener)))
-        if clock - self._last_pair_at.get(pair, float("-inf")) < self.config.pair_cooldown_seconds:
+        # Cooldown prevents a *new* conversation from immediately reopening
+        # the same pair.  It must not suppress the next alternating turn of
+        # an already admitted conversation.
+        if (
+            session.turn == 0
+            and clock - self._last_pair_at.get(pair, float("-inf"))
+            < self.config.pair_cooldown_seconds
+        ):
             raise ValueError("pair_cooldown")
         text = self._clean_text(candidate.text)
         if not text or any(pattern.search(text) for pattern in self._sensitive):

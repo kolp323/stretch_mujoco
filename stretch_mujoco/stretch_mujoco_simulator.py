@@ -1,13 +1,16 @@
 import atexit
+import hashlib
 import multiprocessing
 import platform
 import signal
 import sys
+import tempfile
 import threading
 import time
 import uuid
 import warnings
 from multiprocessing import Lock, Manager, Process
+from pathlib import Path
 
 import click
 import numpy as np
@@ -53,19 +56,57 @@ class StretchMujocoSimulator:
         scene_xml_path: str | None = None,
         model: MjModel | None = None,
         camera_hz: float = 30,
-        cameras_to_use: list[StretchCameras] = [],
+        cameras_to_use: list[StretchCameras] | None = None,
         start_translation: list | None = None,
         start_rotation_quat: list | None = None,
+        semantic_world_path: str | None = None,
+        population_path: str | None = None,
     ) -> None:
+        self.population_path = (
+            None if population_path is None else str(Path(population_path).resolve())
+        )
+        if self.population_path is not None:
+            if model is not None:
+                raise ValueError("population_path cannot be combined with a precompiled model")
+            from stretch_mujoco.npc.composition import compose_npc_scene
+            from stretch_mujoco.npc.schema import NpcPopulation
+
+            population = NpcPopulation.from_json(self.population_path)
+            if (
+                scene_xml_path is not None
+                and Path(scene_xml_path).resolve() != population.resolve_path(population.scene)
+            ):
+                raise ValueError("scene_xml_path conflicts with authoritative population.scene")
+            composed_dir = Path(tempfile.gettempdir()) / "stretch_mujoco_npc_compositions"
+            population_key = hashlib.sha256(self.population_path.encode()).hexdigest()[:12]
+            scene_xml_path = str(
+                compose_npc_scene(
+                    self.population_path,
+                    composed_dir
+                    / f"{Path(self.population_path).stem}-{population_key}.xml",
+                ).scene_path
+            )
+            semantic_scene_path = population.resolve_path(population.scene)
+        else:
+            semantic_scene_path = scene_xml_path
         self.scene_xml_path = scene_xml_path
         self.model = model
         self.camera_hz = camera_hz
         self.urdf_model = utils.URDFmodel()
-        self._server_process = None
-        self._cameras_to_use = cameras_to_use
+        self._server_process: Process | None = None
+        self._cameras_to_use = list(cameras_to_use or ())
         self._start_translation = start_translation
         self._start_rotation_quat = start_rotation_quat
-        self.semantic_world = SemanticWorld.for_scene(scene_xml_path)
+        self.semantic_world = (
+            SemanticWorld.from_json(semantic_world_path)
+            if semantic_world_path is not None
+            else SemanticWorld.for_scene(semantic_scene_path)
+        )
+        self._semantic_world_path = (
+            str(self.semantic_world.source_path)
+            if self.semantic_world is not None and self.semantic_world.source_path is not None
+            else semantic_world_path
+        )
         self.agent_runtime: OfficeAgentRuntime | None = None
 
         self.is_stop_called = False
@@ -85,7 +126,11 @@ class StretchMujocoSimulator:
         self._legacy_humanoid_playback_speed = 1.0
 
     def start(
-        self, show_viewer_ui: bool = False, headless: bool = False, use_passive_viewer: bool = True
+        self,
+        show_viewer_ui: bool = False,
+        headless: bool = False,
+        use_passive_viewer: bool = True,
+        home_on_start: bool = True,
     ) -> None:
         """
         Start the simulator
@@ -123,6 +168,8 @@ class StretchMujocoSimulator:
                 self._cameras_to_use,
                 self._start_translation,
                 self._start_rotation_quat,
+                self._semantic_world_path,
+                self.population_path,
             ),
             daemon=False,  # We're gonna handle terminating this in stop_mujoco_process()
         )
@@ -137,15 +184,16 @@ class StretchMujocoSimulator:
         click.secho("Starting Stretch Mujoco Simulator...", fg="green")
         while self.pull_status().time == 0 or self.pull_camera_data().time == 0:
             time.sleep(1)
-            click.secho("Still waiting to connect to the Mujoco Simulatior.", fg="yellow")
+            click.secho("Still waiting to connect to the MuJoCo simulator.", fg="yellow")
 
             if not self.is_running():
                 click.secho("The simulator is not running anymore, quitting..", fg="yellow")
                 return
 
-        click.secho("The Mujoco Simulatior is connected.", fg="green")
+        click.secho("The MuJoCo simulator is connected.", fg="green")
 
-        self.home()
+        if home_on_start:
+            self.home()
 
     def stop(self) -> None:
         """
@@ -159,9 +207,9 @@ class StretchMujocoSimulator:
         self.is_stop_called = True
 
         try:
-            simulation_time_message = self.data_proxies.get_status().time
-            simulation_time_message = f" simulated runtime= {simulation_time_message:.1f}s"
-        except:
+            simulation_time = self.data_proxies.get_status().time
+            simulation_time_message = f" simulated runtime= {simulation_time:.1f}s"
+        except (AttributeError, BrokenPipeError, EOFError, OSError):
             simulation_time_message = ""
 
         click.secho(
@@ -172,7 +220,7 @@ class StretchMujocoSimulator:
         self.stop_mujoco_process()
 
         click.secho(
-            f"The Stretch Mujoco Simulator has ended. Good-bye!",
+            "The Stretch MuJoCo Simulator has ended. Good-bye!",
             fg="red",
         )
 
@@ -180,13 +228,13 @@ class StretchMujocoSimulator:
 
         if self._server_process and not self._server_process.is_alive():
             click.secho(
-                f"The Mujoco process has already terminated.",
+                "The MuJoCo process has already terminated.",
                 fg="red",
             )
             return
 
         click.secho(
-            f"Sending signal to stop the Mujoco process...",
+            "Sending signal to stop the MuJoCo process...",
             fg="red",
         )
 
@@ -197,7 +245,7 @@ class StretchMujocoSimulator:
             self._server_process.join()
 
         click.secho(
-            f"The Mujoco process has ended.",
+            "The MuJoCo process has ended.",
             fg="red",
         )
 
@@ -440,6 +488,7 @@ class StretchMujocoSimulator:
                     for agent_id, agent in self.agent_runtime.agents.items()
                 },
                 world=self.semantic_world,
+                interaction_templates=self.agent_runtime.population_interaction_templates,
             )
         return self.agent_runtime
 
@@ -491,15 +540,15 @@ class StretchMujocoSimulator:
             wait_timeout=timeout,
             check=lambda: self.is_reached_set_position(
                 actuator=actuator, position_tolerance=position_tolerance
-            )
-            == True,
+            ),
             is_alive=self.is_running,
         ):
             pos = move_command.pos
             actual = actuator.get_position(self.pull_status())
             error = pos - actual
             click.secho(
-                f"Timeout: Joint {actuator.name} did not reach {pos}. Actual: {actual:.4f} Diff: {error*100:.4f}cm",
+                f"Timeout: Joint {actuator.name} did not reach {pos}. "
+                f"Actual: {actual:.4f} Diff: {error * 100:.4f}cm",
                 fg="red",
             )
             return False
@@ -541,7 +590,7 @@ class StretchMujocoSimulator:
             else:
                 current_position = actuator.get_position(self.pull_status())
 
-            if not actuator in self._last_movement_positions:
+            if actuator not in self._last_movement_positions:
                 self._last_movement_positions[actuator] = current_position
                 return True
 
@@ -555,7 +604,7 @@ class StretchMujocoSimulator:
 
         if not block_until_check_succeeds(
             wait_timeout=timeout,
-            check=lambda: check_if_moved() == False,
+            check=lambda: not check_if_moved(),
             is_alive=self.is_running,
         ):
             if timeout is not None:
@@ -621,7 +670,7 @@ class StretchMujocoSimulator:
             command = self.data_proxies.get_command()
 
             command.set_move_by(
-                # We set the pos here, and not new_position, because this relative motion math is handled by mujoco_server:
+                # The server handles the relative-motion math, so pass pos directly.
                 CommandMove(actuator_name=actuator.name, pos=pos, trigger=True)
             )
 
@@ -736,9 +785,10 @@ class StretchMujocoSimulator:
 
     def is_running(self) -> bool:
         """
-        Check if the simulator and mujoco are running, or if the stopevent signal has been triggered.
+        Check whether the simulator is running and its stop event has not fired.
 
-        Side-effect here is that if the mujoco process is terminated or the stopevent is triggered, `self.stop()` is called.
+        If the MuJoCo process has terminated or the stop event is set, this
+        method also finalizes the client through :meth:`stop`.
         """
         if self.is_mujoco_process_dead_or_stopevent_triggered():
             # Send the signal to stop the program:

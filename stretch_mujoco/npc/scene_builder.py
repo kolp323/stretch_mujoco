@@ -12,6 +12,7 @@ import mujoco
 from .assets import NpcAssetManifest
 from .naming import (
     accessory_frame_geom_name,
+    attachment_anchor_site_name,
     body_name,
     collision_geom_name,
     frame_geom_name,
@@ -25,6 +26,7 @@ def build_npc_scene(
     output_path: str | Path,
     *,
     include_base_scene: bool = False,
+    _base_scene_path: str | Path | None = None,
 ) -> Path:
     """Build a standalone, includable MJCF containing canonical per-NPC bodies.
 
@@ -39,7 +41,14 @@ def build_npc_scene(
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
 
-    scene_path = population.resolve_path(population.scene)
+    # ``_base_scene_path`` is intentionally private: public callers must take
+    # the scene from the population.  The composition module uses it only for
+    # a generated portable wrapper of that same source scene.
+    scene_path = (
+        Path(_base_scene_path).resolve()
+        if _base_scene_path is not None
+        else population.resolve_path(population.scene)
+    )
     source_model = mujoco.MjModel.from_xml_path(str(scene_path))
     source_data = mujoco.MjData(source_model)
     mujoco.mj_forward(source_model, source_data)
@@ -57,6 +66,7 @@ def build_npc_scene(
     mesh_names: dict[tuple[str, float, str, int], str] = {}
     material_names: dict[tuple[str, str], str] = {}
     accessory_meshes: dict[tuple[str, str], str] = {}
+    attachment_anchor_payloads: dict[tuple[str, str], dict[str, object]] = {}
     for npc_id, definition in population.npcs.items():
         bundle = manifest.bundles[definition.embodiment.bundle]
         appearance = bundle.appearances[definition.embodiment.appearance]
@@ -111,6 +121,21 @@ def build_npc_scene(
             )
             for accessory_id in definition.embodiment.accessories
         }
+        attachment_anchors: dict[str, dict[str, object]] = {}
+        for role, relative_path in bundle.attachment_anchors.items():
+            key = (bundle.bundle_id, role)
+            payload = attachment_anchor_payloads.get(key)
+            if payload is None:
+                payload = json.loads((manifest_path.parent / relative_path).read_text())
+                if payload.get("coordinate_system") != bundle.coordinate_system:
+                    raise ValueError(
+                        f"Attachment anchors '{relative_path}' use an incompatible coordinate system"
+                    )
+                clips = payload.get("clips")
+                if not isinstance(clips, dict):
+                    raise ValueError(f"Attachment anchors '{relative_path}' must define clips")
+                attachment_anchor_payloads[key] = payload
+            attachment_anchors[role] = payload
         for clip_id, clip in bundle.clips.items():
             for frame_index, frame_path in enumerate(clip.frames):
                 mesh_key = (bundle.bundle_id, definition.embodiment.scale, clip_id, frame_index)
@@ -147,6 +172,32 @@ def build_npc_scene(
                         },
                     )
                     first_geom = False
+                for role, anchor_payload in attachment_anchors.items():
+                    try:
+                        anchor = anchor_payload["clips"][clip_id][frame_index]
+                    except (KeyError, IndexError, TypeError) as error:
+                        raise ValueError(
+                            f"Attachment anchor '{role}' lacks {clip_id}/{frame_index}"
+                        ) from error
+                    if not isinstance(anchor, list) or len(anchor) != 3:
+                        raise ValueError(
+                            f"Attachment anchor '{role}' has invalid {clip_id}/{frame_index}"
+                        )
+                    ET.SubElement(
+                        body,
+                        "site",
+                        {
+                            "name": attachment_anchor_site_name(
+                                npc_id, role, clip_id, frame_index
+                            ),
+                            "pos": " ".join(
+                                f"{float(value) * definition.embodiment.scale:.9g}"
+                                for value in anchor
+                            ),
+                            "size": "0.001",
+                            "rgba": "0 0 0 0",
+                        },
+                    )
                 for accessory_id in definition.embodiment.accessories:
                     definition_asset = bundle.accessories[accessory_id]
                     accessory_mesh_key = (bundle.bundle_id, accessory_id)
@@ -200,12 +251,25 @@ def build_npc_scene(
                 "rgba": "0 0 0 0",
             },
         )
+        handover_payload = attachment_anchors.get("handover")
+        if handover_payload is None:
+            hand_anchor = tuple(
+                coordinate * definition.embodiment.scale
+                for coordinate in (-0.25, 0.06, 0.90)
+            )
+        else:
+            hand_anchor = tuple(
+                float(value) * definition.embodiment.scale
+                for value in handover_payload["clips"]["idle"][0]
+            )
         ET.SubElement(
             body,
             "site",
             {
                 "name": interaction_site_name(npc_id, "handover"),
-                "pos": "0 -0.42 1.02",
+                # MeshSequenceBackend replaces this local pose with the anchor
+                # belonging to every visible animation frame.
+                "pos": " ".join(f"{coordinate:.9g}" for coordinate in hand_anchor),
                 "size": "0.025",
                 "rgba": "0 0 0 0",
             },
@@ -226,5 +290,10 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--population", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument(
+        "--include-base-scene",
+        action="store_true",
+        help="Write a combined base-scene and NPC MJCF (legacy standalone output is the default).",
+    )
     args = parser.parse_args()
-    print(build_npc_scene(args.population, args.output))
+    print(build_npc_scene(args.population, args.output, include_base_scene=args.include_base_scene))

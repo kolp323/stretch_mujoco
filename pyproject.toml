@@ -13,6 +13,7 @@ dependencies = [
     "opencv-python",
     "openpi-client",
     "pynput>=1.8.1",
+    "PyYAML>=6.0.2",
     "urchin>=0.0.29",
 ]
 authors = [
@@ -40,6 +41,7 @@ bake_smplx_animations = "stretch_mujoco.humanoid.smplx_animation_baker:main"
 prepare_amass_npc_motion = "stretch_mujoco.humanoid.amass_intake:main"
 validate_npc_assets = "stretch_mujoco.npc.assets:main"
 build_npc_scene = "stretch_mujoco.npc.scene_builder:main"
+compose_npc_scene = "stretch_mujoco.npc.composition:main"
 bake_npc_appearance = "stretch_mujoco.npc.appearance_pipeline.bake:main"
 make_npc_flat_layers = "stretch_mujoco.npc.appearance_pipeline.flat_layers:main"
 make_npc_short_hair_layers = "stretch_mujoco.npc.appearance_pipeline.hair_layers:main"

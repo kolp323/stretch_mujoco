@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stretch MuJoCo control sequence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "sequence_id", "participants"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "sequence_id": {"type": "string", "minLength": 1},
+    "purpose": {"enum": ["acceptance", "runtime"]},
+    "default_control_mode": {"enum": ["yaml", "llm"]},
+    "seed": {"type": "integer"},
+    "participants": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string"}},
+    "steps": {"type": "array"}
+  }
+}

@@ -136,7 +136,6 @@
     {"subject": "workstation_right", "relation": "BELONGS_TO", "object": "employee_02"},
     {"subject": "document_report", "relation": "BELONGS_TO", "object": "employee_01"},
     {"subject": "document_invoice", "relation": "BELONGS_TO", "object": "employee_01"},
-    {"subject": "document_report", "relation": "REQUESTED_BY", "object": "employee_01"},
     {"subject": "chair_left", "relation": "RESERVED_BY", "object": "employee_01"},
     {"subject": "chair_right", "relation": "RESERVED_BY", "object": "employee_02"},
     {"subject": "document_report", "relation": "ALLOWED_FOR", "object": "employee_01"},

@@ -50,6 +50,9 @@ class InteractionRole(str, Enum):
     COFFEE_USE = "coffee_use_site"
     DOOR_HANDLE = "door_handle_site"
     HUMAN_STAND = "human_stand_site"
+    ROBOT_REQUEST = "robot_request_site"
+    ROBOT_DELIVERY = "robot_delivery_site"
+    CONVERSATION = "conversation_site"
 
 
 class BindingKind(str, Enum):
@@ -244,13 +247,16 @@ class SemanticWorld:
             handover_site = f"npc__{npc_id}__handover"
             existing = self.objects.get(npc_id)
             if existing is not None:
-                if (
-                    existing.object_type != ObjectType.EMPLOYEE
-                    or existing.binding != SemanticBinding(BindingKind.BODY, body)
-                ):
+                if existing.object_type != ObjectType.EMPLOYEE:
                     raise SemanticValidationError(
                         f"NPC '{npc_id}' conflicts with an existing semantic binding"
                     )
+                # Schema-v2 composition replaces the legacy preview body with
+                # the generated canonical body while preserving user-facing
+                # semantic attributes.
+                self.objects[npc_id] = SemanticObject(
+                    npc_id, ObjectType.EMPLOYEE, SemanticBinding(BindingKind.BODY, body), existing.attributes
+                )
             else:
                 self.objects[npc_id] = SemanticObject(
                     object_id=npc_id,
@@ -265,9 +271,13 @@ class SemanticWorld:
                 owner=npc_id,
                 site=handover_site,
             )
-            if existing_point is not None and existing_point != point:
-                raise SemanticValidationError(
-                    f"NPC '{npc_id}' conflicts with an existing handover interaction point"
+            if existing_point is not None:
+                point = InteractionPoint(
+                    point_id,
+                    InteractionRole.HANDOVER,
+                    npc_id,
+                    handover_site,
+                    existing_point.attributes,
                 )
             self.interaction_points[point_id] = point
         self._validate_graph()

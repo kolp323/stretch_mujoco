@@ -6,7 +6,11 @@ from dataclasses import dataclass
 
 import mujoco
 
-from .naming import candidate_body_names, parse_frame_geom_name
+from .naming import (
+    candidate_body_names,
+    parse_attachment_anchor_site_name,
+    parse_frame_geom_name,
+)
 
 
 @dataclass(frozen=True)
@@ -16,6 +20,7 @@ class NpcBinding:
     mocap_id: int
     frame_geom_ids: dict[str, dict[int, dict[str, int]]]
     interaction_site_ids: dict[str, int]
+    frame_anchor_site_ids: dict[str, dict[str, dict[int, int]]]
     collision_geom_ids: tuple[int, ...]
 
     @classmethod
@@ -49,13 +54,26 @@ class NpcBinding:
             raise ValueError(f"NPC '{npc_id}' has no animation frame geoms")
 
         sites: dict[str, int] = {}
+        frame_anchor_sites: dict[str, dict[str, dict[int, int]]] = {}
         for site_id in range(model.nsite):
             if int(model.site_bodyid[site_id]) != body_id:
                 continue
             name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_SITE, site_id)
             if name:
                 sites[name] = site_id
-        return cls(npc_id, body_id, mocap_id, frames, sites, tuple(collision_ids))
+                parsed_anchor = parse_attachment_anchor_site_name(name)
+                if parsed_anchor is not None and parsed_anchor[0] == npc_id:
+                    _, role, clip, frame = parsed_anchor
+                    frame_anchor_sites.setdefault(role, {}).setdefault(clip, {})[frame] = site_id
+        return cls(
+            npc_id,
+            body_id,
+            mocap_id,
+            frames,
+            sites,
+            frame_anchor_sites,
+            tuple(collision_ids),
+        )
 
 
 def discover_npc_ids(model: mujoco.MjModel) -> tuple[str, ...]:

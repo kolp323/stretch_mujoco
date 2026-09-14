@@ -1,0 +1,118 @@
+schema_version: 1
+sequence_id: npc_full_acceptance_v1
+description: Three-NPC acceptance sequence expressed only as closed business actions.
+purpose: acceptance
+default_control_mode: yaml
+seed: 17
+scene:
+  xml: ../office_scene.xml
+  population: ../office_population.production.example.json
+  trajectory_profile: ../../npc/trajectory_profiles/office_v1.json
+participants:
+  alex: npc_alex_chen
+  morgan: npc_morgan_lee
+  jordan: npc_jordan_patell
+  robot: stretch_3
+locations:
+  alex_desk: desk_left_work_site
+  morgan_desk: desk_right_work_site
+  meeting_left: meeting_conversation_alex_site
+  meeting_right: meeting_conversation_morgan_site
+  snack: snack_human_stand_site
+  chair_right:
+    target_site: chair_right_sit
+    navigation_site: chair_right_approach_site
+    yaw: 3.1415926
+llm:
+  enabled: true
+  provider_config: ../office_llm.local.json
+  daily_budget: 8
+  failure_policy: fail_sequence
+  record_responses: true
+  autonomy:
+    allowed_actions: [move_to, use_computer, eat, sit, stand_up, request_robot]
+    allowed_locations: [workstation_left, workstation_right, meeting_table, snack_counter, chair_right]
+    decision_interval_s: [5, 15]
+    plan_horizon_actions: 2
+    max_decisions: 8
+    max_consecutive_failures: 3
+    max_replans_per_segment: 1
+    stop:
+      max_decisions: 8
+defaults:
+  timeout_s: 30
+  on_failure: fail_sequence
+setup:
+  spawn:
+    alex: alex_desk
+    morgan: morgan_desk
+    jordan: meeting_left
+steps:
+  - id: morning_work
+    kind: parallel
+    join: all
+    steps:
+      - id: alex_work
+        kind: action
+        actor: alex
+        action: use_computer
+        target: computer_left
+      - id: morgan_work
+        kind: action
+        actor: morgan
+        action: use_computer
+        target: computer_right
+  - id: generate_robot_request
+    kind: llm_request
+    trigger: new_task
+    actor: alex
+    output_contract: robot_task_v1
+    save_as: delivery
+    context:
+      allowed_robots: [stretch_3]
+      allowed_tasks: [deliver]
+      allowed_objects: [document_report]
+      allowed_destinations: [workstation_right]
+  - id: issue_robot_request
+    kind: action
+    actor: alex
+    action: request_robot
+    target: ${delivery.robot_id}
+    parameters:
+      task: ${delivery.task}
+      object: ${delivery.object}
+      destination: ${delivery.destination}
+  - id: morgan_sit
+    kind: action
+    actor: morgan
+    action: sit
+    target: chair_right
+  - id: morgan_stand
+    kind: action
+    actor: morgan
+    action: stand_up
+    target: chair_right
+  - id: jordan_eat
+    kind: action
+    actor: jordan
+    action: eat
+    target: bread_snack
+  - id: dialogue
+    kind: conversation
+    participants: [alex, morgan]
+    topic: report hand-off status
+    max_turns: 2
+    meeting:
+      sites: {alex: meeting_left, morgan: meeting_right}
+      require_mutual_facing: true
+    turns:
+      - id: turn_1
+        speaker: alex
+        listener: morgan
+        source: llm
+        allowed_acts: [acknowledge]
+        gesture: talk
+acceptance:
+  require_terminal_success: true
+  require_actions: [use_computer, request_robot, sit, stand_up, eat]
+  require_llm_triggers: [new_task, dialogue]

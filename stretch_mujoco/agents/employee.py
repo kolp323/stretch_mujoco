@@ -5,9 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
-from stretch_mujoco.semantics import ObjectType, RelationType, SemanticWorld
+from stretch_mujoco.semantics import ObjectType, SemanticWorld
 
-from .actions import ActionCommand, ActionExecution, ActionType
+from .actions import ActionCommand, ActionExecution, ActionType, required_capability
 from .models import (
     AgentMemory,
     AgentPerception,
@@ -17,7 +17,7 @@ from .models import (
     EmployeeState,
     ScheduleItem,
 )
-from .utility import UtilityGoal, UtilityScore, UtilitySystem
+from .utility import UtilityContext, UtilityGoal, UtilityScore, UtilitySystem
 
 if TYPE_CHECKING:
     from stretch_mujoco.npc.schema import NpcDefinition
@@ -54,10 +54,12 @@ class EmployeePlanner:
         minute_of_day: float,
         day: int,
         seed: int,
+        *,
+        context: UtilityContext | None = None,
     ) -> BehaviorPlan:
         schedule_item = agent.schedule.active_item(agent.agent_id, minute_of_day, day, seed)
         agent.state.schedule_item = "" if schedule_item is None else schedule_item.item_id
-        self.last_scores = self.utility.evaluate(agent, world, schedule_item)
+        self.last_scores = self.utility.evaluate(agent, world, schedule_item, context)
         choice = self.utility.choose(
             self.last_scores,
             agent_id=agent.agent_id,
@@ -66,6 +68,13 @@ class EmployeePlanner:
             seed=seed,
         )
         plan = self._build_plan(agent, world, schedule_item, choice, seed, day)
+        if not agent.supports_plan(plan):
+            plan = BehaviorPlan(
+                UtilityGoal.WAIT,
+                choice.score,
+                "capability_fallback",
+                (ActionCommand(agent.agent_id, ActionType.IDLE),),
+            )
         self.decision_count += 1
         self.current_plan = plan
         self.action_queue = list(plan.actions)
@@ -144,6 +153,8 @@ class EmployeePlanner:
                 (
                     ActionCommand(agent.agent_id, ActionType.SIT, chair),
                     ActionCommand(agent.agent_id, ActionType.REST, chair),
+                    ActionCommand(agent.agent_id, ActionType.STAND_UP, chair),
+                    ActionCommand(agent.agent_id, ActionType.IDLE),
                 )
             )
             variant = "chair_break"
@@ -246,6 +257,7 @@ class EmployeeAgent:
     needs: EmployeeNeeds
     schedule: EmployeeSchedule
     state: EmployeeState
+    capabilities: frozenset[str] | None = None
     memory: AgentMemory = field(default_factory=AgentMemory)
     planner: EmployeePlanner = field(default_factory=EmployeePlanner)
     perception: AgentPerception = field(default_factory=AgentPerception)
@@ -256,12 +268,16 @@ class EmployeeAgent:
         """Build the behavior projection of an already validated NPC definition."""
         state = EmployeeState(location=definition.spawn.location)
         state.sync_needs(definition.needs)
+        # The population's sociability is the initial usable social capacity;
+        # conversation admission and recovery consume this state at runtime.
+        state.social_energy = definition.profile.personality.get("sociability", 1.0)
         return cls(
             agent_id=definition.npc_id,
             profile=definition.profile,
             needs=definition.needs,
             schedule=definition.schedule,
             state=state,
+            capabilities=definition.capabilities,
         )
 
     @classmethod
@@ -295,3 +311,16 @@ class EmployeeAgent:
         semantic_object = world.object(self.agent_id)
         if semantic_object.object_type != ObjectType.EMPLOYEE:
             raise ValueError(f"Agent '{self.agent_id}' is not bound to an Employee object")
+
+    def supports_action(self, action: ActionType) -> bool:
+        """Check the same capability contract used by runtime validation."""
+        capability = required_capability(action)
+        return (
+            capability is None
+            or self.capabilities is None
+            or capability in self.capabilities
+        )
+
+    def supports_plan(self, plan: BehaviorPlan) -> bool:
+        """Reject planner output that the configured embodiment cannot execute."""
+        return all(self.supports_action(command.action) for command in plan.actions)

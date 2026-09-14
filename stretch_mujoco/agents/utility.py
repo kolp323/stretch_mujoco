@@ -70,7 +70,10 @@ class UtilitySystem:
         )
         conscientiousness = agent.profile.personality.get("conscientiousness", 0.5)
         patience = agent.profile.personality.get("patience", 0.5)
-        work_urgency = 0.85 if schedule_item and schedule_item.activity == "work" else 0.18
+        work_urgency = max(
+            0.85 if schedule_item and schedule_item.activity == "work" else 0.18,
+            context.schedule_urgency,
+        )
         meeting_urgency = (
             0.95
             if schedule_item
@@ -85,6 +88,11 @@ class UtilitySystem:
         preferred_drink = agent.profile.preferences.get("drink", "soda_can")
         snack_availability = self._availability(agent, world, preferred_snack)
         drink_availability = self._availability(agent, world, preferred_drink)
+        # Runtime owns global availability (reservations, current task load and
+        # scene observations); the utility layer owns only scoring its supplied
+        # value.  This keeps the planner deterministic and testable in isolation.
+        snack_availability *= context.resource_availability
+        drink_availability *= context.resource_availability
         leaving_cost = work_urgency * conscientiousness * 0.45
         snack_request_value = (
             agent.needs.hunger * (1.0 - snack_availability)
@@ -124,8 +132,8 @@ class UtilitySystem:
                 {"task_value": remote_need, "leaving_cost": leaving_cost},
             ),
             UtilityGoal.MEETING: (
-                meeting_urgency,
-                {"urgency": meeting_urgency},
+                max(meeting_urgency, context.task_priority),
+                {"urgency": meeting_urgency, "task_priority": context.task_priority},
             ),
             UtilityGoal.WAIT: (0.08, {"baseline": 0.08}),
             UtilityGoal.RESPOND_TO_CONVERSATION: (

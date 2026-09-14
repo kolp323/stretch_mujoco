@@ -330,6 +330,17 @@ class NpcConversationScheduler:
                 expired.append(invitation)
         return tuple(expired)
 
+    def cooldown_remaining(self, participant: str, now: float) -> float:
+        """Return the largest active social cooldown involving one participant."""
+        return max(
+            (
+                max(0.0, expires_at - now)
+                for pair, expires_at in self._cooldown_until.items()
+                if participant in pair
+            ),
+            default=0.0,
+        )
+
 
 ROBOT_INTENTS = frozenset(
     {
@@ -608,6 +619,7 @@ class ConversationCoordinator:
         session_id: str | None = None,
         max_turns: int = 8,
         parent_event_id: str | None = None,
+        require_spatial_ready: bool = True,
     ) -> ConversationSession:
         participant_tuple = tuple(dict.fromkeys(participants))
         if len(participant_tuple) != 2:
@@ -621,7 +633,11 @@ class ConversationCoordinator:
         first, second = participant_tuple
         if first not in poses or second not in poses:
             raise ValueError("Conversation requires semantic poses for both participants")
-        if not self._can_speak(poses[first], poses[second]):
+        # The logical/mock path may only start once speakers already meet the
+        # range and mutual-facing gate.  An embodied conversation instead
+        # starts in APPROACHING and its action driver moves both people to the
+        # rendezvous sites before the same gate is checked by the talk command.
+        if require_spatial_ready and not self._can_speak(poses[first], poses[second]):
             raise ValueError("Participants are too far apart or are not facing each other")
         if any(
             session.session_id != session_id
@@ -716,6 +732,14 @@ class ConversationCoordinator:
 
     def mark_approaching(self, session_id: str) -> ConversationTransition:
         return self._set_phase(session_id, ConversationPhase.APPROACHING)
+
+    def mark_aligning(self, session_id: str) -> ConversationTransition:
+        """Record that the embodied driver has moved from approach to facing alignment."""
+        session = self._active(session_id)
+        if session.phase != ConversationPhase.APPROACHING:
+            raise ValueError("conversation_not_approaching")
+        session.phase = ConversationPhase.ALIGNING
+        return ConversationTransition(session_id, session.phase, session.status)
 
     def mark_aligned(
         self, session_id: str, receipt_ids: Iterable[str] = ()

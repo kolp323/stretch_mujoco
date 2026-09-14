@@ -49,6 +49,8 @@ class OfficeNavigationMesh:
         agent_radius: float = 0.25,
         minimum_obstacle_height: float = 0.08,
         maximum_obstacle_height: float = 1.80,
+        exclude_body_roots: tuple[str, ...] = (),
+        include_mocap_obstacles: bool = False,
     ) -> "OfficeNavigationMesh":
         if resolution <= 0 or agent_radius < 0:
             raise ValueError("Navigation resolution and agent radius must be valid")
@@ -64,7 +66,18 @@ class OfficeNavigationMesh:
             if geom_name == "office_floor":
                 continue
             body_id = int(model.geom_bodyid[geom_id])
-            if body_id >= 0 and model.body_mocapid[body_id] >= 0:
+            # Other mocap actors are live collision proxies.  Exclude only the
+            # caller's own root, otherwise multi-NPC plans silently cross them.
+            if (
+                body_id >= 0
+                and model.body_mocapid[body_id] >= 0
+                and (
+                    not include_mocap_obstacles
+                    or cls._body_root_name(model, body_id) in exclude_body_roots
+                )
+            ):
+                continue
+            if cls._body_root_name(model, body_id) in exclude_body_roots:
                 continue
             if model.geom_contype[geom_id] == 0 and model.geom_conaffinity[geom_id] == 0:
                 continue
@@ -103,6 +116,19 @@ class OfficeNavigationMesh:
             agent_radius=agent_radius,
             obstacles=tuple(obstacles),
         )
+
+    @staticmethod
+    def _body_root_name(model: mujoco.MjModel, body_id: int) -> str:
+        """Return the top-level body that owns one geom.
+
+        The shared NPC planner normally treats Stretch as a moving obstacle.
+        Stretch's own planner instead excludes the ``base_link`` tree so the
+        base is not rasterised as an obstacle around its current pose.
+        """
+        current = body_id
+        while current > 0 and int(model.body_parentid[current]) != 0:
+            current = int(model.body_parentid[current])
+        return mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, current) or ""
 
     @staticmethod
     def _walkable_bounds(

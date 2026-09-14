@@ -310,7 +310,15 @@ def head_top_position(
         raise ValueError("Accessory position offsets must be finite")
     head = points[(points[:, 2] > 1.45) & (np.hypot(points[:, 0], points[:, 1]) < 0.19)]
     if not len(head):
-        raise ValueError("Could not identify head vertices")
+        # Some clips retain the animated root translation in their OBJ frame,
+        # so an absolute crown-height/origin test cannot be used.  Preserve the
+        # precise canonical-frame selection above, then fall back to the upper
+        # body band for translated frames.  Its median is robust to a raised
+        # hand while its maximum still follows the rendered crown height.
+        upper_body = points[points[:, 2] >= np.quantile(points[:, 2], 0.92)]
+        if not len(upper_body):
+            raise ValueError("Could not identify head vertices")
+        head = upper_body
     return [
         float(np.median(head[:, 0]) + lateral_offset_m),
         # NPC forward is local -Y, so +Y moves an accessory backward.

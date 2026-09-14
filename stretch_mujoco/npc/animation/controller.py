@@ -217,6 +217,9 @@ class AnimationController:
 
 
 def _frame_count(backend: AnimationBackend, clip: str) -> int:
+    frame_count = getattr(backend, "frame_count", None)
+    if callable(frame_count):
+        return int(frame_count(clip))
     binding = getattr(backend, "binding", None)
     if binding is None:
         return 1

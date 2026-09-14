@@ -695,6 +695,7 @@ dependencies = [
     { name = "opencv-python" },
     { name = "openpi-client" },
     { name = "pynput" },
+    { name = "pyyaml" },
     { name = "urchin" },
 ]
 
@@ -754,6 +755,7 @@ requires-dist = [
     { name = "pre-commit", marker = "extra == 'dev'" },
     { name = "protobuf", marker = "extra == 'vlfm'", specifier = ">=4.25" },
     { name = "pynput", specifier = ">=1.8.1" },
+    { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "pyzmq", marker = "extra == 'graspgen'", specifier = ">=26" },
     { name = "scipy", marker = "extra == 'graspgen'", specifier = ">=1.10" },

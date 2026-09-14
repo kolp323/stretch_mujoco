@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -57,6 +58,7 @@ class AssetBundle:
     material_slots: tuple[str, ...]
     appearances: dict[str, AppearanceManifest]
     accessories: dict[str, AccessoryManifest]
+    attachment_anchors: dict[str, str]
     clips: dict[str, ClipManifest]
     sha256: dict[str, str]
     asset_quality: str = "production"
@@ -128,6 +130,17 @@ class NpcAssetManifest:
                 ):
                     raise ValueError(f"Accessory '{accessory_id}' requires mesh and anchors")
                 accessories[str(accessory_id)] = AccessoryManifest(item["mesh"], item["anchors"])
+            attachment_anchors_data = _mapping(
+                raw_bundle.get("attachment_anchors", {}),
+                f"Asset bundle '{bundle_id}' attachment_anchors",
+            )
+            if not all(
+                isinstance(role, str) and isinstance(path, str)
+                for role, path in attachment_anchors_data.items()
+            ):
+                raise ValueError(
+                    f"Asset bundle '{bundle_id}' attachment_anchors must map roles to paths"
+                )
             clips_data = _mapping(raw_bundle["clips"], f"Asset bundle '{bundle_id}' clips")
             clips: dict[str, ClipManifest] = {}
             for clip_id, raw_clip in clips_data.items():
@@ -166,6 +179,7 @@ class NpcAssetManifest:
                 material_slots=slots,
                 appearances=appearances,
                 accessories=accessories,
+                attachment_anchors=dict(attachment_anchors_data),
                 clips=clips,
                 sha256={str(key): str(value) for key, value in hashes.items()},
                 asset_quality=str(raw_bundle.get("asset_quality", "production")),
@@ -282,6 +296,49 @@ class NpcAssetManifest:
             referenced.extend(appearance.textures.values())
         for accessory in bundle.accessories.values():
             referenced.extend((accessory.mesh, accessory.anchors))
+        referenced.extend(bundle.attachment_anchors.values())
+        for role, relative_path in bundle.attachment_anchors.items():
+            path = self.source_path.parent / relative_path
+            if not role or not path.is_file():
+                continue
+            try:
+                anchor_payload = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                errors.append(
+                    f"Bundle '{bundle.bundle_id}' attachment anchor '{role}' is invalid JSON"
+                )
+                continue
+            if anchor_payload.get("coordinate_system") != bundle.coordinate_system:
+                errors.append(
+                    f"Bundle '{bundle.bundle_id}' attachment anchor '{role}' has an "
+                    "incompatible coordinate system"
+                )
+            anchor_clips = anchor_payload.get("clips")
+            if not isinstance(anchor_clips, Mapping):
+                errors.append(
+                    f"Bundle '{bundle.bundle_id}' attachment anchor '{role}' must define clips"
+                )
+                continue
+            for clip_id, clip in bundle.clips.items():
+                anchors = anchor_clips.get(clip_id)
+                valid = isinstance(anchors, list) and len(anchors) == len(clip.frames)
+                if valid:
+                    valid = all(
+                        isinstance(anchor, list)
+                        and len(anchor) == 3
+                        and all(
+                            isinstance(value, (int, float))
+                            and not isinstance(value, bool)
+                            and math.isfinite(float(value))
+                            for value in anchor
+                        )
+                        for anchor in anchors
+                    )
+                if not valid:
+                    errors.append(
+                        f"Bundle '{bundle.bundle_id}' attachment anchor '{role}' has invalid "
+                        f"frames for clip '{clip_id}'"
+                    )
 
         topology: tuple[int, tuple[tuple[str, ...], ...]] | None = None
         for clip_id, clip in bundle.clips.items():

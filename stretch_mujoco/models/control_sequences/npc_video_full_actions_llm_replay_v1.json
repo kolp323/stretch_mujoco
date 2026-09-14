@@ -1,0 +1,27 @@
+{
+  "action_proposal": {
+    "proposal_id": "llm_full_office_story_001",
+    "actions": [
+      {"actor": "npc_alex_chen", "action": "use_computer", "target": "computer_left", "parameters": {"duration_seconds": 1.0}, "reason": "Alex prepares the report."},
+      {"actor": "npc_morgan_lee", "action": "use_computer", "target": "computer_right", "parameters": {"duration_seconds": 1.0}, "reason": "Morgan checks the receiving desk."},
+      {"actor": "npc_morgan_lee", "action": "sit", "target": "chair_right", "reason": "Morgan takes the chair through its ingress route."},
+      {"actor": "npc_morgan_lee", "action": "stand_up", "target": "chair_right", "reason": "Morgan stands ready for delivery."},
+      {"actor": "npc_jordan_patell", "action": "move_to", "target": "snack_counter", "reason": "Jordan walks to the snack counter."},
+      {"actor": "npc_jordan_patell", "action": "pick_up", "target": "bread_snack", "reason": "Jordan takes the declared snack."},
+      {"actor": "npc_jordan_patell", "action": "eat", "target": "bread_snack", "reason": "Jordan takes a break at the snack counter."}
+    ],
+    "conversations": [
+      {
+        "participants": ["npc_alex_chen", "npc_morgan_lee"],
+        "topic": "report hand-off status",
+        "turns": [
+          {"speaker": "npc_alex_chen", "listener": "npc_morgan_lee", "act": "acknowledge", "text": "The report is ready. I am sending Stretch the delivery instruction now."},
+          {"speaker": "npc_morgan_lee", "listener": "npc_alex_chen", "act": "acknowledge", "text": "Confirmed. I will receive it at the right workstation."}
+        ]
+      }
+    ],
+    "post_actions": [
+      {"actor": "npc_alex_chen", "action": "request_robot", "target": "stretch_3", "parameters": {"task": "deliver", "object": "document_report", "destination": "workstation_right", "recipient": "npc_morgan_lee"}, "reason": "Send the validated physical handover request."}
+    ]
+  }
+}

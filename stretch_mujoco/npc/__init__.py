@@ -2,6 +2,12 @@
 
 from .protocol import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt, NpcRuntimeState
 from .schema import NpcDefinition, NpcEmbodiment, NpcPopulation, NpcSpawn
+from .composition import (
+    ComposedNpcRuntime,
+    NpcSceneComposition,
+    compose_npc_scene,
+    load_composed_npc_runtime,
+)
 
 __all__ = [
     "CommandStatus",
@@ -13,4 +19,8 @@ __all__ = [
     "NpcPopulation",
     "NpcRuntimeState",
     "NpcSpawn",
+    "ComposedNpcRuntime",
+    "NpcSceneComposition",
+    "compose_npc_scene",
+    "load_composed_npc_runtime",
 ]

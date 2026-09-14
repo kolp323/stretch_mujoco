@@ -1,0 +1,34 @@
+{
+  "schema_version": 2,
+  "scene": "office_scene.xml",
+  "asset_manifest": "assets/humanoid/generated/animations/manifest.json",
+  "appearance_catalog": "assets/humanoid/generated/animations/appearance_catalog.json",
+  "trajectory_profile": "../npc/trajectory_profiles/office_v1.json",
+  "interaction_templates": {
+    "conversation": {
+      "speaker": {"site": "meeting_conversation_alex_site", "yaw": 1.5708},
+      "listener": {"site": "meeting_conversation_morgan_site", "yaw": -1.5708}
+    },
+    "handover": {
+      "giver": {"site": "npc_handover_giver_stand_site", "yaw": 1.5708},
+      "receiver": {"site": "npc_handover_receiver_stand_site", "yaw": -1.5708}
+    }
+  },
+  "clock": {"start": "09:00", "minutes_per_second": 1.0},
+  "npcs": {
+    "npc_alex_chen": {
+      "profile": {"display_name": "Alex Chen", "role": "Operations Specialist", "department": "Operations", "personality": {"conscientiousness": 0.85, "sociability": 0.62}, "preferences": {"chair": "chair_left", "workstation": "workstation_left"}},
+      "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_sage_chin_beard_glasses_v2", "visual_identity": "office_sage_chin_beard_glasses_v2", "accessories": [], "appearance_config": {"skin": "skin_warm_v2", "hair": "hair_brown_v1", "top": "top_rough_linen_v1", "bottom": "bottom_denim_fabric_06_v1", "shoes": "shoes_cognac_v2", "accessories": [], "scale": 1.0}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 1.0},
+      "spawn": {"location": "workstation_left", "site": "npc_spawn_alex_chen", "yaw": 0.0},
+      "capabilities": ["conversation", "locomotion", "object_handover", "sit", "use_computer"],
+      "needs": {"hunger": 0.22, "thirst": 0.3, "fatigue": 0.18}, "schedule": []
+    },
+    "npc_morgan_lee": {
+      "profile": {"display_name": "Morgan Lee", "role": "Product Manager", "department": "Product", "personality": {"conscientiousness": 0.75, "sociability": 0.88}, "preferences": {"chair": "chair_right", "workstation": "workstation_right"}},
+      "embodiment": {"bundle": "smplx_office_neutral_v1", "appearance": "office_navy_handlebar_moustache_v2", "visual_identity": "office_navy_handlebar_moustache_v2", "appearance_config": {"skin": "skin_light_v1", "hair": "hair_black_v1", "top": "top_bi_stretch_v1", "bottom": "bottom_charcoal_v2", "shoes": "shoes_black_v1", "accessories": [], "scale": 1.0}, "animation_graph": "office_humanoid_v1", "collision_profile": "adult_humanoid_v1", "scale": 1.0},
+      "spawn": {"location": "meeting_table", "site": "meeting_conversation_morgan_site", "yaw": -1.5708},
+      "capabilities": ["conversation", "locomotion", "object_handover", "sit", "use_computer"],
+      "needs": {"hunger": 0.35, "thirst": 0.25, "fatigue": 0.3}, "schedule": []
+    }
+  }
+}

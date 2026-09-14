@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -24,6 +25,11 @@ KNOWN_CAPABILITIES = frozenset(
         "use_computer",
     }
 )
+KNOWN_SCHEDULE_ACTIVITIES = frozenset({"work", "rest", "meeting"})
+INTERACTION_TEMPLATE_ROLES = {
+    "conversation": frozenset({"speaker", "listener"}),
+    "handover": frozenset({"giver", "receiver"}),
+}
 
 
 def _require_mapping(payload: object, context: str) -> Mapping[str, Any]:
@@ -82,7 +88,7 @@ class NpcAppearance:
         ):
             raise ValueError("NPC appearance accessories must be unique non-empty string IDs")
         scale = float(payload["scale"])
-        if not 0.1 <= scale <= 10.0:
+        if not math.isfinite(scale) or not 0.1 <= scale <= 10.0:
             raise ValueError("NPC appearance scale must be between 0.1 and 10.0")
         return cls(**slots, accessories=tuple(raw_accessories), scale=scale)
 
@@ -113,7 +119,7 @@ class NpcEmbodiment:
             else None
         )
         scale = float(payload.get("scale", appearance_config.scale if appearance_config else 1.0))
-        if not 0.1 <= scale <= 10.0:
+        if not math.isfinite(scale) or not 0.1 <= scale <= 10.0:
             raise ValueError("NPC embodiment scale must be between 0.1 and 10.0")
         raw_accessories = payload.get(
             "accessories", list(appearance_config.accessories) if appearance_config else []
@@ -154,10 +160,71 @@ class NpcSpawn:
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "NpcSpawn":
         _require_fields(payload, {"location", "site"}, "NPC spawn")
+        location, site, yaw = (
+            str(payload["location"]),
+            str(payload["site"]),
+            float(payload.get("yaw", 0.0)),
+        )
+        if not location or not site or not math.isfinite(yaw):
+            raise ValueError("NPC spawn requires non-empty location/site and finite yaw")
+        return cls(location=location, site=site, yaw=yaw)
+
+
+@dataclass(frozen=True)
+class NpcInteractionStation:
+    """A roster-wildcard station for one interaction role."""
+
+    site: str
+    yaw: float | None = None
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any], *, context: str) -> "NpcInteractionStation":
+        _require_fields(payload, {"site"}, context)
+        unknown = set(payload) - {"site", "yaw"}
+        if unknown:
+            raise ValueError(f"{context} has unknown fields: {', '.join(sorted(unknown))}")
+        site = payload["site"]
+        if not isinstance(site, str) or not site.strip():
+            raise ValueError(f"{context} requires a non-empty site")
+        yaw = payload.get("yaw")
+        if yaw is not None:
+            if isinstance(yaw, bool) or not isinstance(yaw, (int, float)) or not math.isfinite(yaw):
+                raise ValueError(f"{context} yaw must be finite")
+            yaw = float(yaw)
+        return cls(site=site, yaw=yaw)
+
+
+@dataclass(frozen=True)
+class NpcInteractionTemplate:
+    """Role stations expanded for every ordered pair in a population roster."""
+
+    kind: str
+    roles: dict[str, NpcInteractionStation]
+
+    @classmethod
+    def from_dict(cls, kind: str, payload: Mapping[str, Any]) -> "NpcInteractionTemplate":
+        expected_roles = INTERACTION_TEMPLATE_ROLES.get(kind)
+        if expected_roles is None:
+            raise ValueError(f"Unknown interaction template kind '{kind}'")
+        role_names = set(payload)
+        if role_names != expected_roles:
+            missing = expected_roles - role_names
+            unknown = role_names - expected_roles
+            detail = []
+            if missing:
+                detail.append(f"missing roles: {', '.join(sorted(missing))}")
+            if unknown:
+                detail.append(f"unknown roles: {', '.join(sorted(unknown))}")
+            raise ValueError(f"Interaction template '{kind}' {'; '.join(detail)}")
         return cls(
-            location=str(payload["location"]),
-            site=str(payload["site"]),
-            yaw=float(payload.get("yaw", 0.0)),
+            kind=kind,
+            roles={
+                role: NpcInteractionStation.from_dict(
+                    _require_mapping(value, f"Interaction template '{kind}' role '{role}'"),
+                    context=f"Interaction template '{kind}' role '{role}'",
+                )
+                for role, value in payload.items()
+            },
         )
 
 
@@ -211,12 +278,46 @@ class NpcDefinition:
             raise ValueError(f"NPC '{npc_id}' schedule must be a list")
         for item in schedule_data:
             _require_mapping(item, f"NPC '{npc_id}' schedule item")
+        # ``agent_id`` was independently configurable in early schema-v2 files.
+        # Keep it readable for compatibility; embodied runtime identity is the
+        # canonical NPC mapping key (``npc_id``), not this legacy alias.
         personality = _require_mapping(
             profile_data.get("personality", {}), f"NPC '{npc_id}' personality"
         )
         preferences = _require_mapping(
             profile_data.get("preferences", {}), f"NPC '{npc_id}' preferences"
         )
+        for name, value in {**needs_data, **personality}.items():
+            valid_value = (
+                not isinstance(value, bool)
+                and isinstance(value, (int, float))
+                and math.isfinite(value)
+                and 0 <= value <= 1
+            )
+            if not valid_value:
+                raise ValueError(f"NPC '{npc_id}' {name} must be a finite value in [0, 1]")
+        for item in schedule_data:
+            _require_fields(
+                item,
+                {"id", "start", "end", "activity", "location"},
+                f"NPC '{npc_id}' schedule item",
+            )
+            parsed_item = ScheduleItem.from_dict(dict(item))
+            start, end = parsed_item.start_minute, parsed_item.end_minute
+            if end <= start:
+                raise ValueError(
+                    f"NPC '{npc_id}' schedule item '{item['id']}' must end after start"
+                )
+            if item["activity"] not in KNOWN_SCHEDULE_ACTIVITIES:
+                raise ValueError(
+                    f"NPC '{npc_id}' schedule item '{item['id']}' has invalid activity"
+                )
+            variation = item.get("variation_minutes", 0)
+            if isinstance(variation, bool) or not isinstance(variation, int) or variation < 0:
+                raise ValueError(
+                    f"NPC '{npc_id}' schedule item '{item['id']}' "
+                    "variation_minutes must be non-negative"
+                )
         schedule = EmployeeSchedule(
             tuple(ScheduleItem.from_dict(dict(item)) for item in schedule_data)
         )
@@ -258,6 +359,8 @@ class NpcPopulation:
     clock: dict[str, Any]
     appearance_catalog: str | None = None
     trajectory_profile: str | None = None
+    dialogue_policy: dict[str, Any] | None = None
+    interaction_templates: dict[str, NpcInteractionTemplate] | None = None
     source_path: Path | None = None
 
     @classmethod
@@ -298,6 +401,29 @@ class NpcPopulation:
             if payload.get("trajectory_profile") is not None
             else None
         )
+        dialogue_policy = payload.get("dialogue_policy")
+        if dialogue_policy is not None:
+            dialogue_policy = dict(_require_mapping(dialogue_policy, "Population dialogue_policy"))
+        raw_templates = payload.get("interaction_templates")
+        interaction_templates: dict[str, NpcInteractionTemplate] = {}
+        if raw_templates is not None:
+            template_payloads = _require_mapping(raw_templates, "Population interaction_templates")
+            interaction_templates = {
+                str(kind): NpcInteractionTemplate.from_dict(
+                    str(kind), _require_mapping(value, f"Interaction template '{kind}'")
+                )
+                for kind, value in template_payloads.items()
+            }
+            if len(npcs) < 2:
+                raise ValueError("Population interaction_templates require at least two NPCs")
+            if sites is not None:
+                for template in interaction_templates.values():
+                    for station in template.roles.values():
+                        if station.site not in sites:
+                            raise ValueError(
+                                f"Interaction template '{template.kind}' has unknown site "
+                                f"'{station.site}'"
+                            )
         if appearance_catalog is not None:
             if source_path is None:
                 raise ValueError("Population appearance_catalog requires a source path")
@@ -324,6 +450,8 @@ class NpcPopulation:
             clock=dict(_require_mapping(payload["clock"], "Population clock")),
             appearance_catalog=appearance_catalog,
             trajectory_profile=trajectory_profile,
+            dialogue_policy=dialogue_policy,
+            interaction_templates=interaction_templates,
             source_path=source_path,
         )
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from enum import Enum
+import math
 from typing import Any, Mapping
 
 
@@ -50,8 +51,24 @@ class NpcCommand:
             raise ValueError("NPC command_id cannot be empty")
         if not self.npc_id:
             raise ValueError("NPC npc_id cannot be empty")
-        if self.sequence < 0:
+        if (
+            isinstance(self.sequence, bool)
+            or not isinstance(self.sequence, int)
+            or self.sequence < 0
+        ):
             raise ValueError("NPC command sequence cannot be negative")
+        if (
+            isinstance(self.issued_at, bool)
+            or not isinstance(self.issued_at, (int, float))
+            or not math.isfinite(self.issued_at)
+        ):
+            raise ValueError("NPC command issued_at must be finite")
+        if self.deadline is not None and (
+            isinstance(self.deadline, bool)
+            or not isinstance(self.deadline, (int, float))
+            or not math.isfinite(self.deadline)
+        ):
+            raise ValueError("NPC command deadline must be finite")
         if self.deadline is not None and self.deadline < self.issued_at:
             raise ValueError("NPC command deadline cannot precede issued_at")
 

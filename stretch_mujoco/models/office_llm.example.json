@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "provider": "openai_compatible",
-  "api_key": "sk-d8eefe74e1c1474899f03d8585af8481",
+  "api_key": "PASTE_API_KEY_HERE",
   "base_url": "https://api.deepseek.com",
   "model": "deepseek-v4-flash",
   "api_mode": "chat_completions",

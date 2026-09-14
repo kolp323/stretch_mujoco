@@ -1,0 +1,22 @@
+schema_version: 1
+sequence_id: npc_yaml_render_probe_v1
+purpose: runtime
+default_control_mode: yaml
+seed: 17
+scene:
+  xml: ../office_scene.xml
+  population: ../office_population.production.example.json
+participants:
+  alex: npc_alex_chen
+locations:
+  meeting_table: meeting_table
+defaults:
+  timeout_s: 30
+steps:
+  - id: alex_moves_to_meeting
+    kind: action
+    actor: alex
+    action: move_to
+    target: meeting_table
+acceptance:
+  require_actions: [move_to]

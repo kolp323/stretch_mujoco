@@ -1,0 +1,69 @@
+schema_version: 1
+sequence_id: npc_video_extended_actions_v1
+description: Two-NPC office action showcase using configured bindings and receipts.
+purpose: acceptance
+default_control_mode: yaml
+seed: 41
+scene:
+  xml: ../office_scene.xml
+  population: ../office_population.production.example.json
+participants:
+  alex: npc_alex_chen
+  morgan: npc_morgan_lee
+  robot: stretch_3
+locations:
+  chair_left:
+    target_site: chair_left_sit
+    navigation_site: chair_left_approach_site
+    yaw: 3.1415926
+  chair_right:
+    target_site: chair_right_sit
+    navigation_site: chair_right_approach_site
+    yaw: 3.1415926
+  snack_counter: snack_counter
+  meeting_table: meeting_table
+  computer_left: computer_left
+  computer_right: computer_right
+  bread: bread_snack
+  soda: soda_can
+  robot_target: stretch_3
+llm:
+  enabled: true
+  replay_file: npc_video_full_actions_llm_replay_v1.json
+  record_responses: true
+  autonomy:
+    allowed_actions: [use_computer, sit, stand_up, move_to, pick_up, drink, gesture_wave, gesture_point, talk, request_robot]
+    allowed_locations: [computer_left, computer_right, chair_left, chair_right, snack_counter, meeting_table, soda_can, stretch_3]
+    plan_horizon_actions: 10
+    max_decisions: 1
+    stop: {max_decisions: 1}
+defaults:
+  timeout_s: 45
+setup:
+  spawn:
+    alex: computer_left
+    morgan: computer_right
+steps:
+  - id: alex_to_meeting
+    kind: action
+    actor: alex
+    action: move_to
+    target: meeting_table
+  - id: morgan_to_snacks
+    kind: action
+    actor: morgan
+    action: move_to
+    target: snack_counter
+  - id: morgan_pick_soda
+    kind: action
+    actor: morgan
+    action: pick_up
+    target: soda
+  - id: morgan_drink
+    kind: action
+    actor: morgan
+    action: drink
+    target: soda
+acceptance:
+  require_terminal_success: false
+  require_actions: [move_to, pick_up, drink]

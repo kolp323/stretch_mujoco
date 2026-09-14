@@ -83,6 +83,15 @@
     <site name="npc_spawn_samira_haddad" pos="-1.4 2.15 0" euler="0 0 3.14159" size="0.025" rgba="0 0 0 0"/>
     <site name="npc_spawn_wei_zhang" pos="1.4 2.15 0" euler="0 0 3.14159" size="0.025" rgba="0 0 0 0"/>
     <site name="npc_spawn_lena_fischer" pos="-3.2 -0.4 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <!-- Formal interaction affordances used by the versioned control sequence. -->
+    <site name="meeting_conversation_alex_site" pos="-0.45 1.35 0" euler="0 0 1.5708"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="meeting_conversation_morgan_site" pos="0.45 1.35 0" euler="0 0 -1.5708"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="chair_right_approach_site" pos="2.25 -0.20 0" euler="0 0 3.14159"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="chair_left_approach_site" pos="-2.35 -0.20 0" euler="0 0 3.14159"
+          size="0.025" rgba="0 0 0 0"/>
 
     <!-- Snack counter, positioned in the robot's initial manipulation workspace. -->
     <body name="snack_counter" pos="0 -1.25 0">
@@ -147,6 +156,8 @@
             contype="0" conaffinity="0" rgba="0.70 0.24 0.16 1"/>
       <site name="desk_left_work_site" pos="0 -0.52 0.78" euler="0 0 3.14159"
             size="0.025" rgba="0 0 0 0"/>
+      <site name="desk_left_approach_site" pos="1.0 -1.80 0.04" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
     </body>
 
     <body name="workstation_right" pos="2.25 1.25 0">
@@ -166,6 +177,20 @@
             contype="0" conaffinity="0" rgba="0.76 0.57 0.13 1"/>
       <site name="desk_right_work_site" pos="0 -0.52 0.78" euler="0 0 3.14159"
             size="0.025" rgba="0 0 0 0"/>
+      <site name="desk_right_approach_site" pos="0 -1.80 0.04" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Stretch deposits deliveries on this workstation-owned tray.  Its top
+         is a manipulation target; the robot base reaches a separately planned
+         collision-free approach pose rather than driving into the desk. -->
+    <body name="workstation_right_robot_delivery_tray" pos="2.90 0.00 0">
+      <geom name="workstation_right_robot_delivery_tray_top" type="box" pos="0 0 0.76"
+            size="0.20 0.16 0.035" material="white_laminate"/>
+      <geom name="workstation_right_robot_delivery_tray_post" type="box" pos="0 0.12 0.38"
+            size="0.025 0.025 0.38" material="dark_metal"/>
+      <site name="workstation_right_robot_delivery_site" pos="0 0 0.82"
+            size="0.018" rgba="0 0 0 0"/>
     </body>
 
     <body name="chair_left" pos="-2.35 0.45 0">
@@ -210,7 +235,16 @@
             size="0.025" rgba="0 0 0 0"/>
     </body>
 
-    <body name="document_report" pos="-3.48 2.42 0.895">
+    <!-- External dispatch tray: documents remain associated with the secure
+         cabinet, but this hand-off surface is reachable by the real base/IK
+         planner rather than requiring an arm to pass through cabinet walls. -->
+    <body name="cabinet_robot_dispatch_tray" pos="-2.70 1.40 0">
+      <geom name="cabinet_robot_dispatch_tray_top" type="box" pos="0 0 0.76"
+            size="0.20 0.16 0.035" material="white_laminate"/>
+      <geom name="cabinet_robot_dispatch_tray_post" type="box" pos="0 0.12 0.38"
+            size="0.025 0.025 0.38" material="dark_metal"/>
+    </body>
+    <body name="document_report" pos="-2.70 1.40 0.807">
       <freejoint name="document_report_freejoint"/>
       <geom name="document_report_geom" type="box" size="0.14 0.10 0.012" mass="0.08"
             friction="0.9 0.01 0.001" rgba="0.88 0.84 0.68 1"/>
@@ -519,9 +553,9 @@
     <site name="employee_02_handover_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
           size="0.025" rgba="0 0 0 0"/>
     <!-- Production roster roles: deliberately independent of NPC IDs. -->
-    <site name="npc_handover_giver_stand_site" pos="-0.35 -1.20 0" euler="0 0 0"
+    <site name="npc_handover_giver_stand_site" pos="1.25 -1.20 0" euler="0 0 0"
           size="0.025" rgba="0 0 0 0"/>
-    <site name="npc_handover_receiver_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
+    <site name="npc_handover_receiver_stand_site" pos="1.95 -1.20 0" euler="0 0 3.1416"
           size="0.025" rgba="0 0 0 0"/>
   </worldbody>
 </mujoco>

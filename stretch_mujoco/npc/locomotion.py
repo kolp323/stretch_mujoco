@@ -28,10 +28,14 @@ def angle_delta(source: float, target: float) -> float:
 class LocomotionController:
     """Move one NPC root; animation backends never write this pose."""
 
-    def __init__(self, model: mujoco.MjModel, binding: NpcBinding) -> None:
+    def __init__(
+        self, model: mujoco.MjModel, binding: NpcBinding, *, dynamic_obstacles: bool = True
+    ) -> None:
         self.model = model
         self.binding = binding
+        self.dynamic_obstacles = dynamic_obstacles
         self.target_site: str | None = None
+        self.navigation_site: str | None = None
         self.speed = 1.0
         self.position_tolerance = 0.025
         self.yaw_tolerance = 0.03
@@ -46,6 +50,7 @@ class LocomotionController:
         self._route_waypoints: tuple[np.ndarray, ...] = ()
         self._route_waypoint_index = 0
         self.failure_reason: str | None = None
+        self._last_dynamic_check: float | None = None
 
     def move_to(
         self,
@@ -54,16 +59,23 @@ class LocomotionController:
         *,
         progress_timeout: float = 2.0,
         max_replans: int = 0,
+        navigation_site: str | None = None,
     ) -> None:
         if mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, site) < 0:
             raise ValueError(f"Unknown NPC navigation target site: {site}")
-        if speed <= 0:
+        if not math.isfinite(speed) or speed <= 0:
             raise ValueError("NPC locomotion speed must be positive")
-        if progress_timeout <= 0:
+        if not math.isfinite(progress_timeout) or progress_timeout <= 0:
             raise ValueError("NPC locomotion progress_timeout must be positive")
         if max_replans < 0:
             raise ValueError("NPC locomotion max_replans cannot be negative")
+        if (
+            navigation_site is not None
+            and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, navigation_site) < 0
+        ):
+            raise ValueError(f"Unknown NPC navigation approach site: {navigation_site}")
         self.target_site = site
+        self.navigation_site = navigation_site
         self.speed = speed
         self.progress_timeout = progress_timeout
         self.max_replans = max_replans
@@ -75,9 +87,11 @@ class LocomotionController:
         self._route_waypoints = ()
         self._route_waypoint_index = 0
         self.failure_reason = None
+        self._last_dynamic_check = None
 
     def cancel(self) -> None:
         self.target_site = None
+        self.navigation_site = None
         self.route_tangent = None
         self._route_waypoints = ()
         self._route_waypoint_index = 0
@@ -92,8 +106,17 @@ class LocomotionController:
             self._fail("route_invalid")
             return False
         target = data.site_xpos[site_id].copy()
+        navigation_site_id = (
+            site_id
+            if self.navigation_site is None
+            else mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, self.navigation_site)
+        )
+        if navigation_site_id < 0:
+            self._fail("route_invalid")
+            return False
+        navigation_target = data.site_xpos[navigation_site_id].copy()
         position = data.mocap_pos[self.binding.mocap_id, :2].copy()
-        if not self._route_waypoints and not self._plan_route(data, target):
+        if not self._route_waypoints and not self._plan_route(data, navigation_target):
             return False
         if self._last_progress_position is None:
             self._last_progress_position = position
@@ -113,7 +136,7 @@ class LocomotionController:
                 self.route_revision += 1
                 self.last_progress_time = sim_time
                 self._last_progress_position = position
-                if not self._plan_route(data, target):
+                if not self._plan_route(data, navigation_target):
                     return False
             else:
                 self._fail("route_blocked")
@@ -127,17 +150,28 @@ class LocomotionController:
                     return False
                 step = min(self.speed * dt, distance)
                 direction = delta / distance
+                if not self._dynamic_segment_clear(data, sim_time, position, waypoint[:2]):
+                    return False
                 self.route_tangent = (float(direction[0]), float(direction[1]))
                 data.mocap_pos[self.binding.mocap_id, :2] += direction * step
                 target_yaw = math.atan2(float(direction[0]), float(-direction[1]))
                 self._turn_toward(data, target_yaw, dt)
                 return False
+            # Only snap the tiny residual inside the declared position tolerance.
             data.mocap_pos[self.binding.mocap_id, :2] = waypoint[:2]
             self._route_waypoint_index += 1
             if self._route_waypoint_index < len(self._route_waypoints):
                 return False
-        target[2] = data.mocap_pos[self.binding.mocap_id, 2]
-        data.mocap_pos[self.binding.mocap_id] = target
+        # A chair's navigation ingress is deliberately distinct from its sit
+        # site.  Continue the final ingress at normal root-motion speed instead
+        # of assigning the mocap pose to the seat in one physics tick.
+        if self.navigation_site is not None and self.navigation_site != self.target_site:
+            self.navigation_site = None
+            self._route_waypoints = (
+                np.array((target[0], target[1], data.mocap_pos[self.binding.mocap_id, 2])),
+            )
+            self._route_waypoint_index = 0
+            return False
         target_quaternion = np.empty(4)
         mujoco.mju_mat2Quat(target_quaternion, data.site_xmat[site_id])
         target_yaw = yaw_from_quaternion(target_quaternion)
@@ -145,14 +179,56 @@ class LocomotionController:
             return False
         data.mocap_quat[self.binding.mocap_id] = target_quaternion
         self.target_site = None
+        self.navigation_site = None
         self.route_tangent = None
         self._route_waypoints = ()
         self._route_waypoint_index = 0
         return True
 
+    def _dynamic_segment_clear(
+        self,
+        data: mujoco.MjData,
+        sim_time: float,
+        start: np.ndarray,
+        waypoint: np.ndarray,
+    ) -> bool:
+        """Periodically inspect moving collision proxies without rebuilding per tick."""
+        if self._last_dynamic_check is not None and sim_time - self._last_dynamic_check < 0.25:
+            return True
+        self._last_dynamic_check = sim_time
+        if mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "office_floor") < 0:
+            return True
+        if not self.dynamic_obstacles:
+            return True
+        root = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_BODY, self.binding.body_id)
+        try:
+            mesh = OfficeNavigationMesh.from_model(
+                self.model,
+                data,
+                exclude_body_roots=(() if root is None else (root,)),
+                include_mocap_obstacles=self.dynamic_obstacles,
+            )
+            next_point = start + (waypoint - start) * min(
+                1.0, self.speed * 0.25 / max(float(np.linalg.norm(waypoint - start)), 1e-9)
+            )
+            if not mesh.point_inside_obstacle(next_point):
+                return True
+        except NavigationPathError:
+            pass
+        if self.replan_attempt < self.max_replans:
+            self.replan_attempt += 1
+            self.route_revision += 1
+            target_id = mujoco.mj_name2id(
+                self.model, mujoco.mjtObj.mjOBJ_SITE, self.navigation_site or self.target_site
+            )
+            return target_id >= 0 and self._plan_route(data, data.site_xpos[target_id])
+        self._fail("route_blocked_dynamic")
+        return False
+
     def _fail(self, reason: str) -> None:
         self.failure_reason = reason
         self.target_site = None
+        self.navigation_site = None
         self.route_tangent = None
         self._route_waypoints = ()
         self._route_waypoint_index = 0
@@ -172,7 +248,13 @@ class LocomotionController:
             self._route_waypoint_index = 0
             return True
         try:
-            path = OfficeNavigationMesh.from_model(self.model, data).plan(start, target)
+            root = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_BODY, self.binding.body_id)
+            path = OfficeNavigationMesh.from_model(
+                self.model,
+                data,
+                exclude_body_roots=(() if root is None else (root,)),
+                include_mocap_obstacles=self.dynamic_obstacles,
+            ).plan(start, target)
         except NavigationPathError:
             self._fail("route_unavailable")
             return False

@@ -1,0 +1,13 @@
+{
+  "action_proposal": {
+    "proposal_id": "replay_meeting_move_001",
+    "actions": [
+      {
+        "actor": "npc_alex_chen",
+        "action": "move_to",
+        "target": "meeting_table",
+        "reason": "Move to the declared clear-floor meeting affordance."
+      }
+    ]
+  }
+}

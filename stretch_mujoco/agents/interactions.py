@@ -72,7 +72,15 @@ class InteractionCoordinator:
         )
         previous = self.sessions.get(session.session_id)
         if previous is not None:
-            return previous
+            if (
+                previous.kind == kind
+                and previous.participants == participants
+                and previous.object_id == object_id
+                and previous.phase_requirements == phase_requirements
+                and previous.deadline == deadline
+            ):
+                return previous
+            raise ValueError("interaction_session_id_conflict")
         self.sessions[session.session_id] = session
         return session
 

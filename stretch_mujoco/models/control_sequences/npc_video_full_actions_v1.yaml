@@ -1,0 +1,117 @@
+schema_version: 1
+sequence_id: npc_video_full_actions_v1
+description: Three NPC live-video sequence with work, sit/stand, eating, dialogue, and a real robot task request.
+purpose: acceptance
+default_control_mode: yaml
+seed: 29
+scene:
+  xml: ../office_scene.xml
+  population: ../office_population.production.example.json
+participants:
+  alex: npc_alex_chen
+  morgan: npc_morgan_lee
+  jordan: npc_jordan_patell
+  robot: stretch_3
+locations:
+  chair_right:
+    target_site: chair_right_sit
+    navigation_site: chair_right_approach_site
+    yaw: 3.1415926
+  computer_left: computer_left
+  computer_right: computer_right
+  bread: bread_snack
+  robot_target: stretch_3
+llm:
+  enabled: true
+  replay_file: npc_video_full_actions_llm_replay_v1.json
+  record_responses: true
+  autonomy:
+    allowed_actions: [use_computer, move_to, sit, stand_up, pick_up, eat, request_robot]
+    allowed_locations: [computer_left, computer_right, chair_right, snack_counter, bread_snack, stretch_3]
+    plan_horizon_actions: 8
+    max_decisions: 1
+    stop: {max_decisions: 1}
+defaults:
+  # Robot navigation, grasp IK, pre-placement and verification are all
+  # physical receipts; allow that chain to finish instead of timing out at
+  # the NPC speech receipt.
+  timeout_s: 240
+setup:
+  spawn:
+    alex: computer_left
+    morgan: computer_right
+    jordan: bread
+steps:
+  - id: work_in_parallel
+    kind: parallel
+    join: all
+    steps:
+      - id: alex_work
+        kind: action
+        actor: alex
+        action: use_computer
+        target: computer_left
+        parameters: {duration_seconds: 1.0}
+      - id: morgan_work
+        kind: action
+        actor: morgan
+        action: use_computer
+        target: computer_right
+        parameters: {duration_seconds: 1.0}
+  - id: morgan_sit
+    kind: action
+    actor: morgan
+    action: sit
+    target: chair_right
+  - id: morgan_stand
+    kind: action
+    actor: morgan
+    action: stand_up
+    target: chair_right
+  - id: jordan_to_snack
+    kind: action
+    actor: jordan
+    action: move_to
+    target: snack_counter
+  - id: jordan_pick_bread
+    kind: action
+    actor: jordan
+    action: pick_up
+    target: bread
+  - id: jordan_eat
+    kind: action
+    actor: jordan
+    action: eat
+    target: bread
+  - id: status_dialogue
+    kind: conversation
+    participants: [alex, morgan]
+    topic: report hand-off status
+    max_turns: 2
+    turns:
+      - id: alex_instruction
+        speaker: alex
+        listener: morgan
+        act: acknowledge
+        text: "Morgan, the report is ready. I am sending Stretch the delivery instruction now."
+        gesture: talk
+      - id: morgan_acknowledge
+        speaker: morgan
+        listener: alex
+        act: acknowledge
+        text: "Acknowledged. I will receive it at the right workstation."
+        gesture: talk
+  - id: send_robot_instruction
+    kind: action
+    actor: alex
+    action: request_robot
+    target: robot_target
+    parameters:
+      task: deliver
+      object: document_report
+      destination: workstation_right
+      recipient: npc_morgan_lee
+acceptance:
+  require_terminal_success: false
+  require_actions: [use_computer, move_to, sit, stand_up, pick_up, eat, request_robot]
+  require_llm_triggers: []

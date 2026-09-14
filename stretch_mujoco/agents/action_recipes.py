@@ -120,8 +120,16 @@ ACTION_RECIPES = {
         "marker_only",
         15.0,
     ),
-    ActionType.EAT: ActionRecipe("eat", "attachment_and_duration", timeout_seconds=240.0),
-    ActionType.DRINK: ActionRecipe("eat", "attachment_and_duration", timeout_seconds=120.0),
+    # Consumption changes the semantic world, so it must be gated on the
+    # animation marker rather than the legacy duration-only completion path.
+    ActionType.EAT: ActionRecipe(
+        "eat", "attachment_and_marker", "object", "object_approach", "site", True,
+        "consume", "marker_only", 240.0,
+    ),
+    ActionType.DRINK: ActionRecipe(
+        "eat", "attachment_and_marker", "object", "object_approach", "site", True,
+        "consume", "marker_only", 120.0,
+    ),
     ActionType.PICK_UP: ActionRecipe(
         "pick_up",
         "grasp_and_attachment",
@@ -152,7 +160,15 @@ ACTION_RECIPES = {
         completion_marker="handover_ready",
         timeout_seconds=45.0,
     ),
-    ActionType.REQUEST_ROBOT: ActionRecipe("idle", "robot_task_and_session", timeout_seconds=30.0),
+    ActionType.REQUEST_ROBOT: ActionRecipe(
+        "talk",
+        "robot_request_acceptance",
+        "participant",
+        "robot_request",
+        approach_required=True,
+        completion_marker="talk_cycle",
+        timeout_seconds=45.0,
+    ),
     ActionType.ATTEND_MEETING: ActionRecipe(
         "sit_down", "interaction_session", timeout_seconds=900.0
     ),
@@ -164,12 +180,21 @@ ACTION_RECIPES = {
 OFFICE_LOCATION_SITES = {
     "workstation_left": "desk_left_work_site",
     "workstation_right": "desk_right_work_site",
+    "computer_left": "desk_left_approach_site",
+    "computer_right": "desk_right_approach_site",
     "chair_left": "chair_left_sit",
     "chair_right": "chair_right_sit",
     "meeting_table": "meeting_human_stand_site",
     "storage_cabinet": "cabinet_human_stand_site",
     "snack_counter": "snack_human_stand_site",
     "coffee_machine": "coffee_human_stand_site",
+}
+
+# Chair centres are occupied collision volumes; navigation targets the ingress and
+# the sit transition later applies the target-site pose.
+OFFICE_SEAT_NAVIGATION_SITES = {
+    "chair_left": "chair_left_approach_site",
+    "chair_right": "chair_right_approach_site",
 }
 
 OFFICE_PLACEMENT_SITES = {
@@ -214,8 +239,17 @@ OFFICE_INTERACTION_YAWS = {
     "storage_cabinet": math.pi,
     "workstation_left": math.pi,
     "workstation_right": math.pi,
+    "computer_left": math.pi,
+    "computer_right": math.pi,
     "employee_01": 0.0,
     "employee_02": math.pi,
+}
+
+# This is deliberately a robot-owned site (defined below ``base_link``), not a
+# world-space point.  The NPC controller's interaction gate observes the live
+# robot body before it exposes the spoken-request animation.
+OFFICE_ROBOT_REQUEST_SITES = {
+    "stretch_3": "stretch_request_stand_site",
 }
 
 OFFICE_HANDOVER_SITES = {
@@ -245,9 +279,7 @@ def production_handover_bindings(
     participants = tuple(sorted(set(npc_ids)))
     if len(participants) < 2:
         raise ValueError("Production handover bindings require at least two NPC IDs")
-    handover_sites = {
-        npc_id: interaction_site_name(npc_id, "handover") for npc_id in participants
-    }
+    handover_sites = {npc_id: interaction_site_name(npc_id, "handover") for npc_id in participants}
     role_sites = {
         (giver, receiver): (
             "npc_handover_giver_stand_site",
@@ -257,9 +289,10 @@ def production_handover_bindings(
         for receiver in participants
         if giver != receiver
     }
-    # Ordered role sites own facing direction: the workflow makes each receiver
-    # face the giver, so every prospective giver has the canonical +X yaw.
-    yaws = {npc_id: 0.0 for npc_id in participants}
+    # NpcController's bearing convention is ``atan2(delta_x, -delta_y)``;
+    # therefore a giver looking along +X uses +pi/2.  The workflow derives
+    # the receiver as +pi modulo 2pi, yielding -pi/2 for mutual facing.
+    yaws = {npc_id: math.pi / 2 for npc_id in participants}
     return handover_sites, role_sites, yaws
 
 

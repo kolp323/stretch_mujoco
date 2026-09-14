@@ -1,0 +1,561 @@
+<mujoco model="stretch office">
+  <include file="stretch.xml"/>
+  <include file="assets/humanoid/generated/smplx_humanoid_assets.xml"/>
+
+  <statistic center="0 -0.5 1" extent="4.8" meansize="0.08"/>
+
+  <visual>
+    <headlight diffuse="0.65 0.65 0.65" ambient="0.25 0.25 0.25" specular="0.1 0.1 0.1"/>
+    <rgba haze="0.75 0.82 0.86 1"/>
+    <global azimuth="135" elevation="-25"/>
+  </visual>
+
+  <asset>
+    <texture name="office_sky" type="skybox" builtin="gradient"
+             rgb1="0.42 0.55 0.65" rgb2="0.96 0.97 0.98" width="512" height="3072"/>
+    <material name="office_floor" rgba="0.58 0.61 0.62 1" reflectance="0.05"/>
+    <material name="wall_paint" rgba="0.88 0.90 0.89 1"/>
+    <material name="accent_wall" rgba="0.39 0.23 0.36 1"/>
+    <material name="light_wood" rgba="0.67 0.49 0.31 1"/>
+    <material name="white_laminate" rgba="0.87 0.88 0.86 1"/>
+    <material name="dark_metal" rgba="0.16 0.18 0.19 1"/>
+    <material name="chair_fabric" rgba="0.16 0.34 0.48 1"/>
+    <material name="monitor" rgba="0.035 0.045 0.05 1" reflectance="0.12"/>
+    <material name="plant" rgba="0.14 0.40 0.22 1"/>
+    <material name="window_glass" rgba="0.16 0.34 0.42 0.65" reflectance="0.35"/>
+    <material name="sofa_fabric" rgba="0.34 0.42 0.40 1"/>
+    <material name="rug_fabric" rgba="0.18 0.30 0.32 1"/>
+    <material name="terracotta" rgba="0.58 0.20 0.14 1"/>
+    <material name="coffee_machine" rgba="0.08 0.09 0.09 1" reflectance="0.2"/>
+    <texture name="humanoid_employee_texture" type="2d"
+             file="humanoid/generated/animations/smplx_employee_diffuse.png"/>
+    <material name="humanoid_employee" texture="humanoid_employee_texture"
+              specular="0.1" shininess="0.12"/>
+
+    <!-- Textured visual meshes imported from Robosuite's object asset library. -->
+    <mesh name="office_can_mesh" file="office_snacks/can.msh" scale="1.4 1.4 1.4"/>
+    <mesh name="office_cereal_mesh" file="office_snacks/cereal.msh" scale="0.85 0.85 0.85"/>
+    <mesh name="office_bread_mesh" file="office_snacks/bread.msh" scale="0.9 0.9 0.9"/>
+    <mesh name="office_lemon_mesh" file="office_snacks/lemon.msh" scale="1.5 1 1"/>
+    <texture name="office_soda_texture" type="2d" file="office_snacks/soda.png"/>
+    <texture name="office_cereal_texture" type="2d" file="office_snacks/cereal.png"/>
+    <texture name="office_bread_texture" type="2d" file="office_snacks/bread.png"/>
+    <texture name="office_lemon_texture" type="2d" file="office_snacks/lemon.png"/>
+    <material name="office_soda_label" texture="office_soda_texture" texuniform="true"
+              texrepeat="5 5" reflectance="0.25"/>
+    <material name="office_cereal_label" texture="office_cereal_texture" reflectance="0.15"/>
+    <material name="office_bread_surface" texture="office_bread_texture" texuniform="true"
+              texrepeat="15 15" reflectance="0.1"/>
+    <material name="office_lemon_skin" texture="office_lemon_texture" texuniform="true"
+              texrepeat="40 35" reflectance="0.08"/>
+  </asset>
+
+  <!-- Explicit runtime contract; the server resolves this ID from
+       stretch_mujoco/npc/trajectory_profiles and refuses stale scene bytes. -->
+  <custom>
+    <text name="npc_trajectory_profile" data="office_v1"/>
+  </custom>
+
+  <worldbody>
+    <camera name="office_overview" pos="0 -5.7 3.4" xyaxes="1 0 0 0 0.46 0.89" fovy="55"/>
+    <light name="ceiling_light_1" pos="-2 -1 3.2" dir="0 0 -1" castshadow="false"
+           diffuse="0.7 0.7 0.68" attenuation="0.2 0.1 0.03"/>
+    <light name="ceiling_light_2" pos="2 1.5 3.2" dir="0 0 -1" castshadow="false"
+           diffuse="0.65 0.65 0.63" attenuation="0.2 0.1 0.03"/>
+
+    <!-- Room shell: the open front keeps the complete scene visible in the viewer. -->
+    <geom name="office_floor" type="box" pos="0 0 -0.04" size="4 3 0.04"
+          material="office_floor" friction="1 0.01 0.001"/>
+    <geom name="back_wall" type="box" pos="0 3 1.5" size="4 0.06 1.5" material="wall_paint"/>
+    <geom name="left_wall" type="box" pos="-4 0 1.5" size="0.06 3 1.5" material="wall_paint"/>
+    <geom name="right_wall" type="box" pos="4 0 1.5" size="0.06 3 1.5" material="accent_wall"/>
+    <geom name="office_sign" type="box" pos="3.925 0.8 1.8" size="0.012 0.72 0.34" rgba="0.90 0.72 0.20 1"/>
+
+    <!-- Production roster staging positions.  They are ground-level, named
+         scene anchors rather than copied coordinates in the population file. -->
+    <site name="npc_spawn_alex_chen" pos="-3.2 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_morgan_lee" pos="-2.4 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_jordan_patell" pos="-1.6 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_priya_narayanan" pos="-0.8 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_marco_silva" pos="0.8 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_olivia_bennett" pos="1.6 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_daniel_kim" pos="3.2 -2.2 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_samira_haddad" pos="-1.4 2.15 0" euler="0 0 3.14159" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_wei_zhang" pos="1.4 2.15 0" euler="0 0 3.14159" size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_spawn_lena_fischer" pos="-3.2 -0.4 0" euler="0 0 0" size="0.025" rgba="0 0 0 0"/>
+    <!-- Formal interaction affordances used by the versioned control sequence. -->
+    <site name="meeting_conversation_alex_site" pos="-0.45 1.35 0" euler="0 0 1.5708"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="meeting_conversation_morgan_site" pos="0.45 1.35 0" euler="0 0 -1.5708"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="chair_right_approach_site" pos="2.25 -0.20 0" euler="0 0 3.14159"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="chair_left_approach_site" pos="-2.35 -0.20 0" euler="0 0 3.14159"
+          size="0.025" rgba="0 0 0 0"/>
+
+    <!-- Snack counter, positioned in the robot's initial manipulation workspace. -->
+    <body name="snack_counter" pos="0 -1.25 0">
+      <geom name="snack_counter_top" type="box" pos="0 0 0.74" size="0.62 0.38 0.04" material="light_wood" friction="0.9 0.02 0.002"/>
+      <geom name="snack_counter_back" type="box" pos="0 0.30 0.38" size="0.58 0.04 0.34" material="white_laminate"/>
+      <geom name="snack_counter_left" type="box" pos="-0.54 0 0.36" size="0.04 0.30 0.36" material="dark_metal"/>
+      <geom name="snack_counter_right" type="box" pos="0.54 0 0.36" size="0.04 0.30 0.36" material="dark_metal"/>
+      <geom name="snack_counter_shelf" type="box" pos="0 0 0.35" size="0.50 0.29 0.025" material="white_laminate"/>
+      <site name="snack_place_site" pos="0 -0.10 0.82" size="0.025" rgba="0 0 0 0"/>
+      <site name="snack_human_stand_site" pos="0 -0.72 0" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Real visual meshes use simple convex collision proxies for stable grasping. -->
+    <body name="soda_can" pos="-0.36 -1.25 0.836">
+      <freejoint name="soda_can_freejoint"/>
+      <geom name="soda_can_visual" type="mesh" mesh="office_can_mesh" material="office_soda_label"
+            mass="0" contype="0" conaffinity="0" group="2"/>
+      <geom name="soda_can_collision" type="cylinder" size="0.034 0.055" mass="0.08"
+            condim="4" friction="1.2 0.01 0.001" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="cereal_box" pos="-0.12 -1.25 0.844">
+      <freejoint name="cereal_box_freejoint"/>
+      <geom name="cereal_box_visual" type="mesh" mesh="office_cereal_mesh" material="office_cereal_label"
+            mass="0" contype="0" conaffinity="0" group="2"/>
+      <geom name="cereal_box_collision" type="box" size="0.042 0.013 0.063" mass="0.07"
+            condim="4" friction="1.0 0.01 0.001" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="bread_snack" pos="0.13 -1.25 0.807">
+      <freejoint name="bread_snack_freejoint"/>
+      <geom name="bread_snack_visual" type="mesh" mesh="office_bread_mesh" material="office_bread_surface"
+            mass="0" contype="0" conaffinity="0" group="2"/>
+      <geom name="bread_snack_collision" type="ellipsoid" size="0.027 0.023 0.027" mass="0.05"
+            condim="4" friction="1.1 0.01 0.001" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="lemon" pos="0.36 -1.25 0.802">
+      <freejoint name="lemon_freejoint"/>
+      <geom name="lemon_visual" type="mesh" mesh="office_lemon_mesh" material="office_lemon_skin"
+            mass="0" contype="0" conaffinity="0" group="2"/>
+      <geom name="lemon_collision" type="ellipsoid" size="0.033 0.020 0.020" mass="0.08"
+            condim="4" friction="1.3 0.01 0.001" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Two workstations define the office zone while leaving a wide navigation aisle. -->
+    <body name="workstation_left" pos="-2.35 1.25 0">
+      <geom name="desk_left_top" type="box" pos="0 0 0.74" size="0.85 0.42 0.045" material="light_wood"/>
+      <geom name="desk_left_leg_1" type="box" pos="-0.72 -0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="desk_left_leg_2" type="box" pos="0.72 -0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="desk_left_leg_3" type="box" pos="-0.72 0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="desk_left_leg_4" type="box" pos="0.72 0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="monitor_left" type="box" pos="0 0.12 1.04" size="0.30 0.025 0.19" material="monitor"/>
+      <geom name="monitor_left_stand" type="box" pos="0 0.12 0.84" size="0.035 0.035 0.08" material="dark_metal"/>
+      <geom name="keyboard_left" type="box" pos="0 -0.18 0.80" size="0.22 0.08 0.012" material="dark_metal"/>
+      <geom name="desk_left_screen" type="box" pos="0 0.145 1.04" size="0.27 0.004 0.16"
+            contype="0" conaffinity="0" rgba="0.08 0.32 0.40 1"/>
+      <geom name="desk_left_cup" type="cylinder" pos="0.55 -0.12 0.84" size="0.045 0.06"
+            contype="0" conaffinity="0" material="terracotta"/>
+      <geom name="desk_left_notebook" type="box" pos="-0.50 -0.12 0.80" size="0.13 0.09 0.012"
+            contype="0" conaffinity="0" rgba="0.70 0.24 0.16 1"/>
+      <site name="desk_left_work_site" pos="0 -0.52 0.78" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+      <site name="desk_left_approach_site" pos="1.0 -1.80 0.04" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="workstation_right" pos="2.25 1.25 0">
+      <geom name="desk_right_top" type="box" pos="0 0 0.74" size="0.85 0.42 0.045" material="white_laminate"/>
+      <geom name="desk_right_leg_1" type="box" pos="-0.72 -0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="desk_right_leg_2" type="box" pos="0.72 -0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="desk_right_leg_3" type="box" pos="-0.72 0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="desk_right_leg_4" type="box" pos="0.72 0.31 0.36" size="0.035 0.035 0.36" material="dark_metal"/>
+      <geom name="monitor_right" type="box" pos="0 0.12 1.04" size="0.30 0.025 0.19" material="monitor"/>
+      <geom name="monitor_right_stand" type="box" pos="0 0.12 0.84" size="0.035 0.035 0.08" material="dark_metal"/>
+      <geom name="keyboard_right" type="box" pos="0 -0.18 0.80" size="0.22 0.08 0.012" material="dark_metal"/>
+      <geom name="desk_right_screen" type="box" pos="0 0.145 1.04" size="0.27 0.004 0.16"
+            contype="0" conaffinity="0" rgba="0.12 0.27 0.46 1"/>
+      <geom name="desk_right_books_1" type="box" pos="-0.55 -0.08 0.81" size="0.14 0.09 0.018"
+            contype="0" conaffinity="0" rgba="0.18 0.46 0.36 1"/>
+      <geom name="desk_right_books_2" type="box" pos="-0.55 -0.08 0.85" size="0.13 0.085 0.018"
+            contype="0" conaffinity="0" rgba="0.76 0.57 0.13 1"/>
+      <site name="desk_right_work_site" pos="0 -0.52 0.78" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+      <site name="desk_right_approach_site" pos="0 -1.80 0.04" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Stretch deposits deliveries on this workstation-owned tray.  Its top
+         is a manipulation target; the robot base reaches a separately planned
+         collision-free approach pose rather than driving into the desk. -->
+    <body name="workstation_right_robot_delivery_tray" pos="2.90 0.00 0">
+      <geom name="workstation_right_robot_delivery_tray_top" type="box" pos="0 0 0.76"
+            size="0.20 0.16 0.035" material="white_laminate"/>
+      <geom name="workstation_right_robot_delivery_tray_post" type="box" pos="0 0.12 0.38"
+            size="0.025 0.025 0.38" material="dark_metal"/>
+      <site name="workstation_right_robot_delivery_site" pos="0 0 0.82"
+            size="0.018" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="chair_left" pos="-2.35 0.45 0">
+      <geom name="chair_left_seat" type="box" pos="0 0 0.44" size="0.25 0.24 0.04" material="chair_fabric"/>
+      <geom name="chair_left_back" type="box" pos="0 -0.22 0.68" size="0.25 0.035 0.23" material="chair_fabric"/>
+      <geom name="chair_left_post" type="cylinder" pos="0 0 0.25" size="0.035 0.22" material="dark_metal"/>
+      <geom name="chair_left_base" type="cylinder" pos="0 0 0.04" size="0.25 0.025" material="dark_metal"/>
+      <site name="chair_left_sit" pos="0 -0.015 0.48" euler="0 0 3.14159"
+            size="0.015" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="chair_right" pos="2.25 0.45 0">
+      <geom name="chair_right_seat" type="box" pos="0 0 0.44" size="0.25 0.24 0.04" material="chair_fabric"/>
+      <geom name="chair_right_back" type="box" pos="0 -0.22 0.68" size="0.25 0.035 0.23" material="chair_fabric"/>
+      <geom name="chair_right_post" type="cylinder" pos="0 0 0.25" size="0.035 0.22" material="dark_metal"/>
+      <geom name="chair_right_base" type="cylinder" pos="0 0 0.04" size="0.25 0.025" material="dark_metal"/>
+      <site name="chair_right_sit" pos="0 -0.015 0.48" euler="0 0 3.14159"
+            size="0.015" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Shared meeting table, storage cabinet, and plant complete the office layout. -->
+    <body name="meeting_table" pos="0 2.25 0">
+      <geom name="meeting_table_top" type="box" pos="0 0 0.72" size="0.80 0.38 0.045" material="white_laminate"/>
+      <geom name="meeting_table_pedestal" type="cylinder" pos="0 0 0.35" size="0.10 0.35" material="dark_metal"/>
+      <geom name="meeting_table_base" type="cylinder" pos="0 0 0.035" size="0.38 0.025" material="dark_metal"/>
+      <site name="meeting_table_place_site" pos="0 -0.15 0.78" size="0.025" rgba="0 0 0 0"/>
+      <site name="meeting_human_stand_site" pos="0 -0.75 0" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="storage_cabinet" pos="-3.35 2.55 0">
+      <geom name="cabinet_left_panel" type="box" pos="-0.43 0 0.65" size="0.025 0.30 0.65" material="white_laminate"/>
+      <geom name="cabinet_right_panel" type="box" pos="0.43 0 0.65" size="0.025 0.30 0.65" material="white_laminate"/>
+      <geom name="cabinet_back_panel" type="box" pos="0 0.29 0.65" size="0.43 0.018 0.65" material="white_laminate"/>
+      <geom name="cabinet_bottom" type="box" pos="0 0 0.025" size="0.45 0.30 0.025" material="white_laminate"/>
+      <geom name="cabinet_top" type="box" pos="0 0 1.275" size="0.45 0.30 0.025" material="white_laminate"/>
+      <geom name="cabinet_shelf_1" type="box" pos="0 0 0.43" size="0.40 0.28 0.018" material="dark_metal"/>
+      <geom name="cabinet_shelf_2" type="box" pos="0 0 0.86" size="0.40 0.28 0.018" material="dark_metal"/>
+      <site name="cabinet_open_site" pos="0 -0.52 0.88" euler="0 0 0"
+            size="0.025" rgba="0 0 0 0"/>
+      <site name="cabinet_human_stand_site" pos="0 -0.62 0" euler="0 0 3.14159"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- External dispatch tray: documents remain associated with the secure
+         cabinet, but this hand-off surface is reachable by the real base/IK
+         planner rather than requiring an arm to pass through cabinet walls. -->
+    <body name="cabinet_robot_dispatch_tray" pos="-2.70 1.40 0">
+      <geom name="cabinet_robot_dispatch_tray_top" type="box" pos="0 0 0.76"
+            size="0.20 0.16 0.035" material="white_laminate"/>
+      <geom name="cabinet_robot_dispatch_tray_post" type="box" pos="0 0.12 0.38"
+            size="0.025 0.025 0.38" material="dark_metal"/>
+    </body>
+    <body name="document_report" pos="-2.70 1.40 0.807">
+      <freejoint name="document_report_freejoint"/>
+      <geom name="document_report_geom" type="box" size="0.14 0.10 0.012" mass="0.08"
+            friction="0.9 0.01 0.001" rgba="0.88 0.84 0.68 1"/>
+      <site name="document_report_grasp_site" pos="0 0 0.025" size="0.018" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="document_invoice" pos="-3.18 2.42 0.895">
+      <freejoint name="document_invoice_freejoint"/>
+      <geom name="document_invoice_geom" type="box" size="0.13 0.09 0.010" mass="0.06"
+            friction="0.9 0.01 0.001" rgba="0.70 0.82 0.88 1"/>
+      <site name="document_invoice_grasp_site" pos="0 0 0.022" size="0.018" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Licensed SMPL-X employee with pre-baked low-cost mesh animation clips. -->
+    <body name="humanoid_preview" pos="1.35 2.20 0" euler="0 0 -1.5708" mocap="true">
+      <!-- Every frame is compiled as its own geom so MuJoCo preserves its mesh frame. -->
+      <geom name="humanoid_preview_frame_idle_00_body" type="mesh" mesh="humanoid_idle_00_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 1"/>
+      <geom name="humanoid_preview_frame_idle_01_body" type="mesh" mesh="humanoid_idle_01_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_idle_02_body" type="mesh" mesh="humanoid_idle_02_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_idle_03_body" type="mesh" mesh="humanoid_idle_03_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_00_body" type="mesh" mesh="humanoid_walk_00_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_01_body" type="mesh" mesh="humanoid_walk_01_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_02_body" type="mesh" mesh="humanoid_walk_02_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_03_body" type="mesh" mesh="humanoid_walk_03_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_04_body" type="mesh" mesh="humanoid_walk_04_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_05_body" type="mesh" mesh="humanoid_walk_05_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_06_body" type="mesh" mesh="humanoid_walk_06_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_walk_07_body" type="mesh" mesh="humanoid_walk_07_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_00_body" type="mesh" mesh="humanoid_sit_00_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_01_body" type="mesh" mesh="humanoid_sit_01_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_02_body" type="mesh" mesh="humanoid_sit_02_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_03_body" type="mesh" mesh="humanoid_sit_03_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_04_body" type="mesh" mesh="humanoid_sit_04_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_05_body" type="mesh" mesh="humanoid_sit_05_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_06_body" type="mesh" mesh="humanoid_sit_06_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_sit_07_body" type="mesh" mesh="humanoid_sit_07_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_00_body" type="mesh" mesh="humanoid_work_00_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_01_body" type="mesh" mesh="humanoid_work_01_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_02_body" type="mesh" mesh="humanoid_work_02_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_03_body" type="mesh" mesh="humanoid_work_03_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_04_body" type="mesh" mesh="humanoid_work_04_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_05_body" type="mesh" mesh="humanoid_work_05_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_06_body" type="mesh" mesh="humanoid_work_06_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_work_07_body" type="mesh" mesh="humanoid_work_07_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_00_body" type="mesh" mesh="humanoid_eat_00_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_01_body" type="mesh" mesh="humanoid_eat_01_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_02_body" type="mesh" mesh="humanoid_eat_02_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_03_body" type="mesh" mesh="humanoid_eat_03_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_04_body" type="mesh" mesh="humanoid_eat_04_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_05_body" type="mesh" mesh="humanoid_eat_05_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_06_body" type="mesh" mesh="humanoid_eat_06_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_eat_07_body" type="mesh" mesh="humanoid_eat_07_body"
+            material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <!-- Approved interaction clips; only one frame is visible at runtime. -->
+      <geom name="humanoid_preview_frame_pick_up_00_body" type="mesh" mesh="humanoid_pick_up_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_01_body" type="mesh" mesh="humanoid_pick_up_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_02_body" type="mesh" mesh="humanoid_pick_up_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_03_body" type="mesh" mesh="humanoid_pick_up_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_04_body" type="mesh" mesh="humanoid_pick_up_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_05_body" type="mesh" mesh="humanoid_pick_up_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_06_body" type="mesh" mesh="humanoid_pick_up_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_07_body" type="mesh" mesh="humanoid_pick_up_07_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_08_body" type="mesh" mesh="humanoid_pick_up_08_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_09_body" type="mesh" mesh="humanoid_pick_up_09_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_10_body" type="mesh" mesh="humanoid_pick_up_10_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_pick_up_11_body" type="mesh" mesh="humanoid_pick_up_11_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_00_body" type="mesh" mesh="humanoid_give_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_01_body" type="mesh" mesh="humanoid_give_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_02_body" type="mesh" mesh="humanoid_give_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_03_body" type="mesh" mesh="humanoid_give_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_04_body" type="mesh" mesh="humanoid_give_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_05_body" type="mesh" mesh="humanoid_give_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_give_06_body" type="mesh" mesh="humanoid_give_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_00_body" type="mesh" mesh="humanoid_receive_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_01_body" type="mesh" mesh="humanoid_receive_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_02_body" type="mesh" mesh="humanoid_receive_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_03_body" type="mesh" mesh="humanoid_receive_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_04_body" type="mesh" mesh="humanoid_receive_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_05_body" type="mesh" mesh="humanoid_receive_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_06_body" type="mesh" mesh="humanoid_receive_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_07_body" type="mesh" mesh="humanoid_receive_07_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_08_body" type="mesh" mesh="humanoid_receive_08_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_09_body" type="mesh" mesh="humanoid_receive_09_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_10_body" type="mesh" mesh="humanoid_receive_10_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_11_body" type="mesh" mesh="humanoid_receive_11_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_12_body" type="mesh" mesh="humanoid_receive_12_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_13_body" type="mesh" mesh="humanoid_receive_13_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_14_body" type="mesh" mesh="humanoid_receive_14_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_15_body" type="mesh" mesh="humanoid_receive_15_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_16_body" type="mesh" mesh="humanoid_receive_16_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_17_body" type="mesh" mesh="humanoid_receive_17_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_18_body" type="mesh" mesh="humanoid_receive_18_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_19_body" type="mesh" mesh="humanoid_receive_19_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_20_body" type="mesh" mesh="humanoid_receive_20_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_21_body" type="mesh" mesh="humanoid_receive_21_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_22_body" type="mesh" mesh="humanoid_receive_22_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_receive_23_body" type="mesh" mesh="humanoid_receive_23_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <!-- Registered BEAT full-body talk clip; only one frame is visible at runtime. -->
+      <geom name="humanoid_preview_frame_talk_00_body" type="mesh" mesh="humanoid_talk_00_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_01_body" type="mesh" mesh="humanoid_talk_01_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_02_body" type="mesh" mesh="humanoid_talk_02_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_03_body" type="mesh" mesh="humanoid_talk_03_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_04_body" type="mesh" mesh="humanoid_talk_04_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_05_body" type="mesh" mesh="humanoid_talk_05_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_06_body" type="mesh" mesh="humanoid_talk_06_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_07_body" type="mesh" mesh="humanoid_talk_07_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_08_body" type="mesh" mesh="humanoid_talk_08_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_09_body" type="mesh" mesh="humanoid_talk_09_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_10_body" type="mesh" mesh="humanoid_talk_10_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_11_body" type="mesh" mesh="humanoid_talk_11_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_12_body" type="mesh" mesh="humanoid_talk_12_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_13_body" type="mesh" mesh="humanoid_talk_13_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_14_body" type="mesh" mesh="humanoid_talk_14_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_15_body" type="mesh" mesh="humanoid_talk_15_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_16_body" type="mesh" mesh="humanoid_talk_16_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_17_body" type="mesh" mesh="humanoid_talk_17_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_18_body" type="mesh" mesh="humanoid_talk_18_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_19_body" type="mesh" mesh="humanoid_talk_19_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_20_body" type="mesh" mesh="humanoid_talk_20_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_21_body" type="mesh" mesh="humanoid_talk_21_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_22_body" type="mesh" mesh="humanoid_talk_22_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_23_body" type="mesh" mesh="humanoid_talk_23_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_24_body" type="mesh" mesh="humanoid_talk_24_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_25_body" type="mesh" mesh="humanoid_talk_25_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_26_body" type="mesh" mesh="humanoid_talk_26_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_27_body" type="mesh" mesh="humanoid_talk_27_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_28_body" type="mesh" mesh="humanoid_talk_28_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_29_body" type="mesh" mesh="humanoid_talk_29_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_30_body" type="mesh" mesh="humanoid_talk_30_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_31_body" type="mesh" mesh="humanoid_talk_31_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_32_body" type="mesh" mesh="humanoid_talk_32_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_33_body" type="mesh" mesh="humanoid_talk_33_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_34_body" type="mesh" mesh="humanoid_talk_34_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_35_body" type="mesh" mesh="humanoid_talk_35_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_36_body" type="mesh" mesh="humanoid_talk_36_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_37_body" type="mesh" mesh="humanoid_talk_37_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_38_body" type="mesh" mesh="humanoid_talk_38_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_39_body" type="mesh" mesh="humanoid_talk_39_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_40_body" type="mesh" mesh="humanoid_talk_40_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_41_body" type="mesh" mesh="humanoid_talk_41_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_42_body" type="mesh" mesh="humanoid_talk_42_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_43_body" type="mesh" mesh="humanoid_talk_43_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_44_body" type="mesh" mesh="humanoid_talk_44_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_45_body" type="mesh" mesh="humanoid_talk_45_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_46_body" type="mesh" mesh="humanoid_talk_46_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_47_body" type="mesh" mesh="humanoid_talk_47_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_48_body" type="mesh" mesh="humanoid_talk_48_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_49_body" type="mesh" mesh="humanoid_talk_49_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_50_body" type="mesh" mesh="humanoid_talk_50_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_51_body" type="mesh" mesh="humanoid_talk_51_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_52_body" type="mesh" mesh="humanoid_talk_52_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_53_body" type="mesh" mesh="humanoid_talk_53_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_54_body" type="mesh" mesh="humanoid_talk_54_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_55_body" type="mesh" mesh="humanoid_talk_55_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_56_body" type="mesh" mesh="humanoid_talk_56_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_57_body" type="mesh" mesh="humanoid_talk_57_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_58_body" type="mesh" mesh="humanoid_talk_58_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_59_body" type="mesh" mesh="humanoid_talk_59_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_60_body" type="mesh" mesh="humanoid_talk_60_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_61_body" type="mesh" mesh="humanoid_talk_61_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_62_body" type="mesh" mesh="humanoid_talk_62_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_frame_talk_63_body" type="mesh" mesh="humanoid_talk_63_body" material="humanoid_employee" mass="0" contype="0" conaffinity="0" group="2" rgba="1 1 1 0"/>
+      <geom name="humanoid_preview_collision_torso" type="capsule"
+            fromto="0 0 0.72 0 0 1.38" size="0.16" rgba="0 0 0 0"
+            friction="0.8 0.01 0.001"/>
+      <geom name="humanoid_preview_collision_head" type="sphere" pos="0 0 1.58" size="0.12" rgba="0 0 0 0"/>
+      <geom name="humanoid_preview_collision_arm_left" type="capsule"
+            fromto="0.18 0 1.37 0.25 0.05 0.87" size="0.055" rgba="0 0 0 0"/>
+      <geom name="humanoid_preview_collision_arm_right" type="capsule"
+            fromto="-0.18 0 1.37 -0.25 0.05 0.87" size="0.055" rgba="0 0 0 0"/>
+      <geom name="humanoid_preview_collision_leg_left" type="capsule"
+            fromto="0.10 0 0.88 0.12 -0.03 0.09" size="0.075" rgba="0 0 0 0"/>
+      <geom name="humanoid_preview_collision_leg_right" type="capsule"
+            fromto="-0.10 0 0.88 -0.12 -0.03 0.09" size="0.075" rgba="0 0 0 0"/>
+      <site name="humanoid_preview_head" pos="0 0 1.62" size="0.025" rgba="0 0 0 0"/>
+      <site name="employee_01_handover_site" pos="0 -0.42 1.02" size="0.025" rgba="0 0 0 0"/>
+    </body>
+
+    <!-- Lounge zone: soft seating, rug and low table create a distinct informal area. -->
+    <geom name="lounge_rug" type="box" pos="-2.55 -1.45 0.008" size="1.08 0.88 0.008"
+          material="rug_fabric" contype="0" conaffinity="0"/>
+    <body name="lounge_sofa" pos="-3.25 -1.30 0">
+      <geom name="sofa_base" type="box" pos="0 0 0.28" size="0.58 0.34 0.22" material="sofa_fabric"/>
+      <geom name="sofa_seat" type="box" pos="0 -0.10 0.50" size="0.54 0.27 0.09" material="sofa_fabric"/>
+      <geom name="sofa_back" type="box" pos="0 0.27 0.73" size="0.58 0.10 0.36" material="sofa_fabric"/>
+      <geom name="sofa_arm_left" type="box" pos="-0.58 -0.02 0.57" size="0.09 0.34 0.25" material="sofa_fabric"/>
+      <geom name="sofa_arm_right" type="box" pos="0.58 -0.02 0.57" size="0.09 0.34 0.25" material="sofa_fabric"/>
+      <geom name="sofa_cushion_left" type="box" pos="-0.27 -0.11 0.61" size="0.24 0.23 0.05"
+            euler="0.08 0 0" contype="0" conaffinity="0" rgba="0.73 0.45 0.22 1"/>
+      <geom name="sofa_cushion_right" type="box" pos="0.27 -0.11 0.61" size="0.24 0.23 0.05"
+            euler="0.08 0 0" contype="0" conaffinity="0" rgba="0.22 0.50 0.48 1"/>
+    </body>
+    <body name="coffee_table" pos="-2.15 -1.15 0">
+      <geom name="coffee_table_top" type="cylinder" pos="0 0 0.36" size="0.42 0.035" material="light_wood"/>
+      <geom name="coffee_table_leg" type="cylinder" pos="0 0 0.18" size="0.055 0.18" material="dark_metal"/>
+      <geom name="coffee_table_base" type="cylinder" pos="0 0 0.025" size="0.23 0.025" material="dark_metal"/>
+      <geom name="coffee_table_magazine" type="box" pos="0.04 0 0.41" size="0.15 0.11 0.012"
+            euler="0 0 0.2" contype="0" conaffinity="0" rgba="0.83 0.80 0.70 1"/>
+    </body>
+
+    <!-- Break area with a kitchenette counter, coffee machine and water cooler. -->
+    <body name="coffee_bar" pos="3.30 -1.35 0">
+      <geom name="coffee_bar_cabinet" type="box" pos="0 0 0.42" size="0.50 0.34 0.42" material="white_laminate"/>
+      <geom name="coffee_bar_top" type="box" pos="0 -0.01 0.87" size="0.55 0.38 0.035" material="light_wood"/>
+      <geom name="coffee_bar_toe" type="box" pos="0 -0.31 0.08" size="0.44 0.035 0.08" material="dark_metal"/>
+      <geom name="coffee_machine_body" type="box" pos="0 0 1.05" size="0.20 0.17 0.15" material="coffee_machine"/>
+      <geom name="coffee_machine_top" type="box" pos="0 0 1.22" size="0.17 0.15 0.035" material="dark_metal"/>
+      <geom name="coffee_machine_spout" type="cylinder" pos="0 -0.18 1.06" size="0.015 0.06"
+            euler="1.5708 0 0" material="dark_metal"/>
+      <geom name="coffee_mug" type="cylinder" pos="0 -0.13 0.96" size="0.045 0.055"
+            contype="0" conaffinity="0" rgba="0.88 0.88 0.84 1"/>
+      <geom name="upper_cabinet_left" type="box" pos="-0.27 0.18 1.72" size="0.25 0.16 0.34" material="white_laminate"/>
+      <geom name="upper_cabinet_right" type="box" pos="0.27 0.18 1.72" size="0.25 0.16 0.34" material="white_laminate"/>
+      <site name="coffee_machine_use_site" pos="0 -0.48 1.05" size="0.025" rgba="0 0 0 0"/>
+      <site name="coffee_human_stand_site" pos="0 0.78 0" euler="0 0 0"
+            size="0.025" rgba="0 0 0 0"/>
+    </body>
+    <body name="water_cooler" pos="2.38 -2.32 0">
+      <geom name="cooler_base" type="box" pos="0 0 0.42" size="0.22 0.20 0.42" material="white_laminate"/>
+      <geom name="cooler_panel" type="box" pos="0 -0.205 0.62" size="0.16 0.01 0.12" material="dark_metal"/>
+      <geom name="cooler_tap" type="cylinder" pos="0 -0.24 0.64" size="0.018 0.05"
+            euler="1.5708 0 0" rgba="0.16 0.40 0.66 1"/>
+      <geom name="water_bottle" type="capsule" pos="0 0 1.02" size="0.16 0.25"
+            contype="0" conaffinity="0" rgba="0.34 0.70 0.82 0.55"/>
+    </body>
+
+    <!-- Architectural details and wall dressing. -->
+    <geom name="window_left" type="box" pos="-2.15 2.925 1.82" size="0.72 0.012 0.58"
+          material="window_glass" contype="0" conaffinity="0"/>
+    <geom name="window_right" type="box" pos="2.15 2.925 1.82" size="0.72 0.012 0.58"
+          material="window_glass" contype="0" conaffinity="0"/>
+    <geom name="window_left_frame_v" type="box" pos="-2.15 2.90 1.82" size="0.025 0.018 0.60" material="dark_metal"/>
+    <geom name="window_left_frame_h" type="box" pos="-2.15 2.90 1.82" size="0.74 0.018 0.025" material="dark_metal"/>
+    <geom name="window_right_frame_v" type="box" pos="2.15 2.90 1.82" size="0.025 0.018 0.60" material="dark_metal"/>
+    <geom name="window_right_frame_h" type="box" pos="2.15 2.90 1.82" size="0.74 0.018 0.025" material="dark_metal"/>
+    <geom name="wall_clock" type="cylinder" pos="0 2.90 2.40" size="0.22 0.025"
+          euler="1.5708 0 0" rgba="0.92 0.91 0.86 1"/>
+    <geom name="clock_center" type="sphere" pos="0 2.865 2.40" size="0.025" material="dark_metal"/>
+    <geom name="clock_hand_hour" type="box" pos="0.05 2.862 2.43" size="0.065 0.008 0.012"
+          euler="0 0 -0.5" material="dark_metal"/>
+    <geom name="clock_hand_minute" type="box" pos="-0.02 2.86 2.49" size="0.012 0.008 0.09"
+          euler="0 0 0.25" material="dark_metal"/>
+    <geom name="art_panel_1" type="box" pos="-3.925 -0.10 1.65" size="0.012 0.42 0.55"
+          contype="0" conaffinity="0" rgba="0.76 0.31 0.19 1"/>
+    <geom name="art_panel_2" type="box" pos="-3.920 0.80 1.65" size="0.012 0.32 0.55"
+          contype="0" conaffinity="0" rgba="0.16 0.47 0.50 1"/>
+    <geom name="ceiling_panel_1" type="box" pos="-1.65 -0.70 2.86" size="0.62 0.22 0.025"
+          contype="0" conaffinity="0" rgba="0.95 0.95 0.91 1"/>
+    <geom name="ceiling_panel_2" type="box" pos="1.65 0.80 2.86" size="0.62 0.22 0.025"
+          contype="0" conaffinity="0" rgba="0.95 0.95 0.91 1"/>
+    <geom name="waste_bin" type="cylinder" pos="1.15 1.65 0.22" size="0.18 0.22"
+          rgba="0.13 0.16 0.16 1"/>
+
+    <body name="office_door" pos="-3.25 -2.92 0">
+      <geom name="office_door_panel" type="box" pos="0 0 1.05" size="0.56 0.035 1.05"
+            material="light_wood"/>
+      <geom name="office_door_handle" type="sphere" pos="0.42 -0.07 1.02" size="0.04"
+            material="dark_metal"/>
+      <site name="door_handle_site" pos="0.42 -0.12 1.02" size="0.02" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="office_plant" pos="3.35 2.45 0">
+      <geom name="plant_pot" type="cylinder" pos="0 0 0.20" size="0.20 0.20" rgba="0.52 0.25 0.12 1"/>
+      <geom name="plant_stem" type="cylinder" pos="0 0 0.62" size="0.035 0.28" material="plant"/>
+      <geom name="plant_leaf_1" type="ellipsoid" pos="0.13 0 0.78" size="0.18 0.07 0.28" euler="0 0.55 0" material="plant"/>
+      <geom name="plant_leaf_2" type="ellipsoid" pos="-0.13 0 0.73" size="0.18 0.07 0.25" euler="0 -0.55 0" material="plant"/>
+    </body>
+    <!-- Separate roots keep two actors outside each other's collision proxies. -->
+    <site name="employee_01_handover_stand_site" pos="-0.35 -1.20 0" euler="0 0 0"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="employee_02_handover_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
+          size="0.025" rgba="0 0 0 0"/>
+    <!-- Production roster roles: deliberately independent of NPC IDs. -->
+    <site name="npc_handover_giver_stand_site" pos="-0.35 -1.20 0" euler="0 0 0"
+          size="0.025" rgba="0 0 0 0"/>
+    <site name="npc_handover_receiver_stand_site" pos="0.35 -1.20 0" euler="0 0 3.1416"
+          size="0.025" rgba="0 0 0 0"/>
+  </worldbody>
+</mujoco>

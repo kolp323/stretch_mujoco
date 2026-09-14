@@ -3,15 +3,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import Mapping
 
 import mujoco
+import numpy as np
 
 from .animation import AnimationController, AnimationGraph, MeshSequenceBackend
 from .animation.state import AnimationLifecycle
 from .attachment import AttachmentController
 from .binding import NpcBinding
-from .locomotion import LocomotionController
+from .locomotion import LocomotionController, angle_delta, yaw_from_quaternion
+from .naming import candidate_body_names
 from .protocol import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt, NpcRuntimeState
 
 
@@ -19,9 +22,12 @@ def _payload_float(value: object, field: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float, str)):
         raise ValueError(f"NPC command payload '{field}' must be numeric")
     try:
-        return float(value)
+        result = float(value)
     except ValueError as error:
         raise ValueError(f"NPC command payload '{field}' must be numeric") from error
+    if not math.isfinite(result):
+        raise ValueError(f"NPC command payload '{field}' must be finite")
+    return result
 
 
 def _payload_int(value: object, field: str) -> int:
@@ -44,6 +50,7 @@ class TrajectoryRouteContract:
     """The controller-facing projection of one preflighted profile route."""
 
     route_id: str
+    source_anchor: str
     destination_site: str
     actions: frozenset[str]
 
@@ -104,6 +111,11 @@ class NpcController:
                     speed,
                     progress_timeout=progress_timeout,
                     max_replans=max_replans,
+                    navigation_site=(
+                        None
+                        if command.payload.get("navigation_site") is None
+                        else str(command.payload["navigation_site"])
+                    ),
                 )
                 self._walk_motion_started = False
                 self._move_completion_pending = False
@@ -111,20 +123,31 @@ class NpcController:
                 self._stop_marker = None
                 self.animation.lifecycle = AnimationLifecycle.NAVIGATING
             elif command.kind == NpcCommandKind.PLAY_ANIMATION:
-                target_site = command.payload.get("target_site")
-                if (
-                    target_site is not None
-                    and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site))
-                    < 0
-                ):
-                    raise ValueError(f"unknown_target_site:{target_site}")
+                self._validate_target_site(command.payload)
+                reveal_object = command.payload.get("reveal_object")
+                if reveal_object is not None:
+                    if str(command.payload["clip"]) != "give":
+                        raise ValueError("reveal_object_requires_give_clip")
+                    if not isinstance(reveal_object, str) or not reveal_object:
+                        raise ValueError("reveal_object_must_be_non_empty_string")
+                    if not self.attachments.is_attached(reveal_object):
+                        raise ValueError(f"object_not_attached:{reveal_object}")
                 self.animation.set_execution(command.command_id)
-                self.animation.request(str(command.payload["clip"]))
+                if command.payload.get("interaction_target") is None:
+                    self.animation.request(str(command.payload["clip"]))
+                else:
+                    self._validate_interaction_gate(command.payload)
+                    # Do not expose a social clip until the other participant is
+                    # physically close and both actors face one another.
+                    self.animation.request("idle", force=True)
             elif command.kind == NpcCommandKind.INTERACTION_CUE:
                 self.animation.set_execution(command.command_id)
                 self.animation.request(str(command.payload.get("clip", "idle")))
             elif command.kind == NpcCommandKind.ATTACH_OBJECT:
                 object_name = str(command.payload["object"])
+                visible = command.payload.get("visible", True)
+                if not isinstance(visible, bool):
+                    raise ValueError("attach_visible_must_be_boolean")
                 self.attachments.validate_object(object_name)
                 self.attachments.handover_site_id()
             elif command.kind == NpcCommandKind.DETACH_OBJECT:
@@ -140,6 +163,7 @@ class NpcController:
                     raise ValueError(f"unknown_detach_site:{detach_site}")
             elif command.kind == NpcCommandKind.ALIGN_TO:
                 _payload_float(command.payload["yaw"], "yaw")
+                self._validate_target_site(command.payload)
                 self.animation.lifecycle = AnimationLifecycle.ALIGNING
             else:
                 return NpcCommandReceipt(
@@ -172,7 +196,14 @@ class NpcController:
         route = self.trajectory_routes.get(str(route_id))
         if route is None:
             raise ValueError(f"trajectory_route_unknown:{route_id}")
-        if route.destination_site != site or "move_to" not in route.actions:
+        source = command.payload.get("trajectory_source")
+        if source is None:
+            raise ValueError(f"trajectory_route_missing_source:{route_id}")
+        if (
+            route.source_anchor != str(source)
+            or route.destination_site != site
+            or "move_to" not in route.actions
+        ):
             raise ValueError(f"trajectory_route_contract_mismatch:{route_id}")
 
     def cancel(
@@ -235,10 +266,15 @@ class NpcController:
             return self._finish(CommandStatus.TIMED_OUT, sim_time, "deadline_exceeded")
 
         complete = False
+        interaction_ready = True
         if active is not None:
             if active.command.kind == NpcCommandKind.MOVE_TO:
                 return self._step_move(data, sim_time, active, running_receipt)
             elif active.command.kind == NpcCommandKind.ALIGN_TO:
+                try:
+                    self._require_target_site_proximity(data, active.command.payload)
+                except ValueError as error:
+                    return self._finish(CommandStatus.FAILED, sim_time, str(error))
                 dt = (
                     0.0
                     if self._last_step_time is None
@@ -251,13 +287,33 @@ class NpcController:
                 NpcCommandKind.PLAY_ANIMATION,
                 NpcCommandKind.INTERACTION_CUE,
             }:
+                try:
+                    self._require_target_site_proximity(data, active.command.payload)
+                except ValueError as error:
+                    return self._finish(CommandStatus.FAILED, sim_time, str(error))
+                if active.command.kind == NpcCommandKind.PLAY_ANIMATION and (
+                    active.command.payload.get("interaction_target") is not None
+                ):
+                    interaction_ready = self._interaction_ready(data, active.command.payload)
+                    self.animation.request(
+                        str(active.command.payload["clip"]) if interaction_ready else "idle",
+                        force=True,
+                    )
+                reveal_object = active.command.payload.get("reveal_object")
+                if interaction_ready and reveal_object is not None:
+                    self.attachments.set_visible(str(reveal_object), True)
                 duration = _payload_float(active.command.payload.get("duration", 0.0), "duration")
-                complete = duration > 0 and (
-                    active.started_at is not None and sim_time - active.started_at >= duration
+                complete = (
+                    interaction_ready
+                    and duration > 0
+                    and (active.started_at is not None and sim_time - active.started_at >= duration)
                 )
             elif active.command.kind == NpcCommandKind.ATTACH_OBJECT:
                 object_name = str(active.command.payload["object"])
-                self.attachments.attach(object_name)
+                self.attachments.attach(
+                    object_name,
+                    visible=bool(active.command.payload.get("visible", True)),
+                )
                 self.attachments.step(data)
                 complete = self.attachments.is_attached(object_name)
             elif active.command.kind == NpcCommandKind.DETACH_OBJECT:
@@ -303,7 +359,9 @@ class NpcController:
             NpcCommandKind.INTERACTION_CUE,
         }:
             completion_marker = active.command.payload.get("completion_marker")
-            if completion_marker is not None:
+            if not interaction_ready:
+                complete = False
+            elif completion_marker is not None:
                 complete = str(completion_marker) in self._animation_events
             elif _payload_float(active.command.payload.get("duration", 0.0), "duration") <= 0:
                 complete = self.animation.phase >= 1.0
@@ -322,6 +380,93 @@ class NpcController:
                     self.animation.settle_completed_clip()
             return self._finish(CommandStatus.SUCCEEDED, sim_time)
         return running_receipt
+
+    def _validate_interaction_gate(self, payload: Mapping[str, object]) -> None:
+        target = str(payload.get("interaction_target", ""))
+        if not target or self._body_id_for(target) < 0:
+            raise ValueError(f"unknown_interaction_target:{target}")
+        minimum = _payload_float(
+            payload.get("interaction_distance_min", 0.45), "interaction_distance_min"
+        )
+        maximum = _payload_float(
+            payload.get("interaction_distance_max", 0.95), "interaction_distance_max"
+        )
+        tolerance = _payload_float(
+            payload.get("interaction_yaw_tolerance", 0.30), "interaction_yaw_tolerance"
+        )
+        if minimum < 0 or maximum < minimum or not 0 < tolerance <= math.pi:
+            raise ValueError("invalid_interaction_gate")
+
+    def _validate_target_site(self, payload: Mapping[str, object]) -> None:
+        target_site = payload.get("target_site")
+        if (
+            target_site is not None
+            and mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site)) < 0
+        ):
+            raise ValueError(f"unknown_target_site:{target_site}")
+        tolerance = payload.get("position_tolerance")
+        if tolerance is not None and _payload_float(tolerance, "position_tolerance") <= 0:
+            raise ValueError("invalid_position_tolerance")
+
+    def _require_target_site_proximity(
+        self, data: mujoco.MjData, payload: Mapping[str, object]
+    ) -> None:
+        """Keep staged actions honest if a participant is moved after approach."""
+        self._validate_target_site(payload)
+        target_site = payload.get("target_site")
+        if target_site is None:
+            return
+        site_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, str(target_site))
+        tolerance = _payload_float(payload.get("position_tolerance", 0.12), "position_tolerance")
+        distance = float(
+            np.linalg.norm(data.mocap_pos[self.binding.mocap_id, :2] - data.site_xpos[site_id, :2])
+        )
+        if distance > tolerance:
+            raise ValueError(f"target_site_not_reached:{target_site}")
+
+    def _body_id_for(self, npc_id: str) -> int:
+        names = candidate_body_names(npc_id)
+        if npc_id in {"stretch", "stretch_3"}:
+            # Stretch is a semantic participant but not an NPC-generated body.
+            # Its root is the authoritative live pose for request interaction.
+            names = (*names, "base_link")
+        for name in names:
+            body_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, name)
+            if body_id >= 0:
+                return body_id
+        return -1
+
+    def _interaction_ready(self, data: mujoco.MjData, payload: Mapping[str, object]) -> bool:
+        self._validate_interaction_gate(payload)
+        target_body = self._body_id_for(str(payload["interaction_target"]))
+        target_mocap = int(self.model.body_mocapid[target_body])
+        target_position = (
+            data.mocap_pos[target_mocap] if target_mocap >= 0 else data.xpos[target_body]
+        )
+        own_position = data.mocap_pos[self.binding.mocap_id]
+        delta = target_position[:2] - own_position[:2]
+        distance = float(np.linalg.norm(delta))
+        minimum = _payload_float(
+            payload.get("interaction_distance_min", 0.45), "interaction_distance_min"
+        )
+        maximum = _payload_float(
+            payload.get("interaction_distance_max", 0.95), "interaction_distance_max"
+        )
+        if not minimum <= distance <= maximum:
+            return False
+        bearing = math.atan2(float(delta[0]), float(-delta[1]))
+        own_yaw = yaw_from_quaternion(data.mocap_quat[self.binding.mocap_id])
+        target_yaw = yaw_from_quaternion(
+            data.mocap_quat[target_mocap] if target_mocap >= 0 else data.xquat[target_body]
+        )
+        tolerance = _payload_float(
+            payload.get("interaction_yaw_tolerance", 0.30), "interaction_yaw_tolerance"
+        )
+        return (
+            abs(angle_delta(own_yaw, bearing)) <= tolerance
+            and abs(angle_delta(target_yaw, math.remainder(bearing + math.pi, 2 * math.pi)))
+            <= tolerance
+        )
 
     def _step_move(
         self,

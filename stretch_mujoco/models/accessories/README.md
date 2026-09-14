@@ -3,6 +3,21 @@
 `*.recipe.json` is the only persisted pose source. Generated OBJ frames and receipts are disposable
 runtime projections.
 
+## Opaque hair-card fallback
+
+Recipe schema v5 adds `render_policy`, which is the sole source for an OBJ
+accessory's runtime-facing visual treatment. `double_sided: true` emits a
+reversed-winding partner for every accessory triangle in fused frames. An
+optional `surface_fallback` with `mode: "smplx_head_uv_v1"` bakes an opaque
+hair-colour underlay onto selected SMPL-X head UV triangles.
+
+`build_npc_fused_accessory.py` writes the mesh frames, target-only body atlas,
+mask, receipt, fused manifest, runtime population, and (when applicable) a
+derived appearance-catalog identity from that recipe. The source OBJ, source
+atlas, manifest, population, and catalog are read-only inputs. Runtime scenes
+must be built through `build_npc_scene.py --accessory-runtime-config`; manually
+editing generated PNGs, receipts, manifests, or frames is unsupported.
+
 Open the interactive geometry tuner from the repository root:
 
 ```bash

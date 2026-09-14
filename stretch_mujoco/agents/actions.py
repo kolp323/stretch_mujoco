@@ -29,6 +29,28 @@ class ActionType(str, Enum):
     ATTEND_MEETING = "attend_meeting"
 
 
+# Recovery primitives (idle and stand-up) intentionally remain available even
+# when an NPC has a reduced capability set.
+ACTION_CAPABILITY_REQUIREMENTS: dict[ActionType, str] = {
+    ActionType.MOVE_TO: "locomotion",
+    ActionType.SIT: "sit",
+    ActionType.WORK: "use_computer",
+    ActionType.USE_COMPUTER: "use_computer",
+    ActionType.TALK: "conversation",
+    ActionType.GESTURE_POINT: "conversation",
+    ActionType.GESTURE_WAVE: "conversation",
+    ActionType.HANDOVER: "object_handover",
+    ActionType.REQUEST_ROBOT: "object_handover",
+    ActionType.PICK_UP: "object_handover",
+    ActionType.PUT_DOWN: "object_handover",
+}
+
+
+def required_capability(action: ActionType) -> str | None:
+    """Return the population capability required to plan or run an action."""
+    return ACTION_CAPABILITY_REQUIREMENTS.get(action)
+
+
 class ExecutionStatus(str, Enum):
     IDLE = "idle"
     RUNNING = "running"
@@ -43,6 +65,36 @@ class RobotTaskStatus(str, Enum):
     RUNNING = "running"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
+
+
+class RobotTaskType(str, Enum):
+    """Compiled robot workflow; distinct from an NPC's request_robot action."""
+
+    PLACE_DELIVERY = "place_delivery"
+    ROBOT_TO_NPC_HANDOVER = "robot_to_npc_handover"
+
+
+def compile_robot_task_type(task: str, recipient: str | None = None) -> RobotTaskType:
+    """The single compatibility boundary for public robot-request vocabulary.
+
+    ``deliver`` was the v1 request verb.  It remains a placement unless an
+    explicit recipient is supplied, in which case it lowers to a handover.
+    """
+    if task == RobotTaskType.PLACE_DELIVERY.value:
+        if recipient is not None:
+            raise ValueError("place_delivery cannot have a recipient")
+        return RobotTaskType.PLACE_DELIVERY
+    if task == RobotTaskType.ROBOT_TO_NPC_HANDOVER.value:
+        if not recipient:
+            raise ValueError("robot_to_npc_handover requires a recipient")
+        return RobotTaskType.ROBOT_TO_NPC_HANDOVER
+    if task in {"deliver", "fetch"}:  # retain v1 inputs without adding a control verb.
+        return (
+            RobotTaskType.ROBOT_TO_NPC_HANDOVER
+            if recipient
+            else RobotTaskType.PLACE_DELIVERY
+        )
+    raise ValueError("Robot task must be place_delivery or robot_to_npc_handover")
 
 
 @dataclass(frozen=True)
@@ -105,14 +157,23 @@ class RobotTask:
     object_id: str
     destination: str
     robot_id: str = "stretch_3"
+    recipient: str | None = None
     task_id: str = field(default_factory=lambda: f"task_{uuid.uuid4().hex[:10]}")
     status: RobotTaskStatus = RobotTaskStatus.PENDING
     error: str | None = None
     conversation_id: str | None = None
+    # This records the preceding NPC navigation/alignment/speech receipt.  It
+    # is distinct from ``receipt_ids``, which contain only terminal robot task
+    # receipts and must not be mistaken for delivery evidence.
+    request_receipt_id: str | None = None
     robot_release_confirmed: bool = False
     npc_attachment_confirmed: bool = False
     interaction_confirmed: bool = False
     receipt_ids: set[str] = field(default_factory=set)
+    task_type: RobotTaskType = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.task_type = compile_robot_task_type(self.task, self.recipient)
 
 
 @dataclass(frozen=True)

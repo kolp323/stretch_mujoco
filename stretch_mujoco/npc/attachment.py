@@ -19,6 +19,7 @@ class HeldObject:
     dof_address: int
     gravcomp: float
     geom_collisions: dict[int, tuple[int, int]]
+    geom_alphas: dict[int, float]
 
 
 class AttachmentController:
@@ -38,7 +39,7 @@ class AttachmentController:
             raise ValueError(f"object_not_free_body:{object_name}")
         return body_id, joint_id
 
-    def attach(self, object_name: str) -> None:
+    def attach(self, object_name: str, *, visible: bool = True) -> None:
         if object_name in self.held:
             return
         body_id, joint_id = self.validate_object(object_name)
@@ -58,12 +59,14 @@ class AttachmentController:
             int(self.model.jnt_dofadr[joint_id]),
             float(self.model.body_gravcomp[body_id]),
             collisions,
+            {geom_id: float(self.model.geom_rgba[geom_id, 3]) for geom_id in collisions},
         )
         self.model.body_gravcomp[body_id] = 1.0
         for geom_id in collisions:
             self.model.geom_contype[geom_id] = 0
             self.model.geom_conaffinity[geom_id] = 0
         self.held[object_name] = held
+        self.set_visible(object_name, visible)
 
     def detach(self, data: mujoco.MjData, object_name: str, site_name: str | None = None) -> None:
         held = self.held.pop(object_name, None)
@@ -79,6 +82,15 @@ class AttachmentController:
         for geom_id, (contype, conaffinity) in held.geom_collisions.items():
             self.model.geom_contype[geom_id] = contype
             self.model.geom_conaffinity[geom_id] = conaffinity
+            self.model.geom_rgba[geom_id, 3] = held.geom_alphas[geom_id]
+
+    def set_visible(self, object_name: str, visible: bool) -> None:
+        """Show or hide a held object's geoms without changing logical ownership."""
+        held = self.held.get(object_name)
+        if held is None:
+            raise ValueError(f"object_not_attached:{object_name}")
+        for geom_id, alpha in held.geom_alphas.items():
+            self.model.geom_rgba[geom_id, 3] = alpha if visible else 0.0
 
     def step(self, data: mujoco.MjData) -> None:
         if not self.held:

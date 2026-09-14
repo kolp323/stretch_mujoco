@@ -226,7 +226,7 @@ class NpcTrajectoryProfile:
                 data.mocap_pos[binding.mocap_id] = root_position
                 mujoco.mju_mat2Quat(data.mocap_quat[binding.mocap_id], data.site_xmat[source_id])
                 mujoco.mj_forward(model, data)
-                controller = LocomotionController(model, binding)
+                controller = LocomotionController(model, binding, dynamic_obstacles=False)
                 controller.move_to(self.anchors[route.destination].site, speed=1.0)
                 for sample_index in range(10000):
                     completed = controller.step(data, sample_index * sample_period)

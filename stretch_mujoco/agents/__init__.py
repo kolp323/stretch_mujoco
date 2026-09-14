@@ -9,6 +9,7 @@ from .actions import (
     ExecutionStatus,
     RobotTask,
     RobotTaskStatus,
+    RobotTaskType,
     RuntimeEvent,
     ValidationResult,
 )
@@ -56,6 +57,11 @@ from .models import (
     EmployeeSchedule,
     EmployeeState,
     MemoryEntry,
+)
+from .robot_task_driver import (
+    RobotTaskReceipt,
+    RobotTaskExecutor,
+    UnsupportedRobotTaskExecutor,
 )
 from .robot_handover import RobotHandover, RobotToNpcHandoverBridge
 from .runtime import OfficeAgentRuntime, ReservationManager
@@ -107,6 +113,9 @@ __all__ = [
     "LLMProviderConfig",
     "LLMProviderError",
     "MockRobotExecutor",
+    "RobotTaskReceipt",
+    "RobotTaskExecutor",
+    "UnsupportedRobotTaskExecutor",
     "MeetingInvitation",
     "MemoryEntry",
     "MujocoNpcActionDriver",
@@ -129,6 +138,7 @@ __all__ = [
     "SanitizedDialogue",
     "TurnPolicy",
     "RobotTask",
+    "RobotTaskType",
     "RobotTaskStatus",
     "RuntimeEvent",
     "ValidationResult",

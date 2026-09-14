@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import deque
+import json
 from pathlib import Path
 from typing import Iterable, Mapping
 
@@ -40,6 +41,7 @@ class NpcSystem:
         self._last_sequence: dict[str, int] = {}
         self._attachment_claims: dict[str, str] = {}
         self._commands: dict[str, NpcCommand] = {}
+        self._pending_cancel_targets: dict[str, set[str]] = {}
 
     @classmethod
     def from_model(
@@ -78,8 +80,32 @@ class NpcSystem:
         profile_scene = scene_path
         if profile_scene is None and getattr(population, "source_path", None) is not None:
             profile_scene = population.resolve_path(population.scene)
-        routes = cls._scene_trajectory_routes(model, profile_scene)
+        # Schema-v2 population is authoritative.  XML custom text is retained
+        # only for from_model() legacy scenes.
+        routes = cls._population_trajectory_routes(model, population, profile_scene)
         return cls(model, population.npcs, graphs, simulation_seed, routes)
+
+    @staticmethod
+    def _population_trajectory_routes(model, population, scene_path):
+        profile_name = getattr(population, "trajectory_profile", None)
+        if profile_name is None:
+            return {}
+        if scene_path is None:
+            raise ValueError("population_trajectory_profile_requires_scene_path")
+        profile = NpcTrajectoryProfile.from_json(population.resolve_path(profile_name))
+        profile.validate_scene(NpcSystem._profile_scene_path(Path(scene_path), profile.scene))
+        data = mujoco.MjData(model)
+        mujoco.mj_forward(model, data)
+        profile.preflight(model, data)
+        return {
+            route.route_id: TrajectoryRouteContract(
+                route.route_id,
+                route.source,
+                profile.anchors[route.destination].site,
+                frozenset(route.actions),
+            )
+            for route in profile.routes
+        }
 
     @staticmethod
     def _scene_trajectory_routes(
@@ -101,6 +127,7 @@ class NpcSystem:
         return {
             route.route_id: TrajectoryRouteContract(
                 route.route_id,
+                route.source,
                 profile.anchors[route.destination].site,
                 frozenset(route.actions),
             )
@@ -131,12 +158,32 @@ class NpcSystem:
                 candidate = scene_path.parent / candidate
             if candidate.name == expected_name and candidate.is_file():
                 return candidate.resolve()
+        # Population composition keeps the authored base scene byte-for-byte
+        # behind generated wrappers.  Its receipt is the authoritative source
+        # link when the wrapper no longer exposes the original include name.
+        receipt_path = scene_path.with_suffix(".composition.json")
+        if receipt_path.is_file():
+            try:
+                receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                candidate = Path(str(receipt.get("base_scene", ""))).resolve()
+            except (OSError, json.JSONDecodeError, TypeError, ValueError):
+                candidate = Path()
+            if candidate.name == expected_name and candidate.is_file():
+                return candidate
         raise ValueError(f"npc_trajectory_profile_scene_source_missing:{expected_name}")
 
     def submit(self, command: NpcCommand) -> NpcCommandReceipt:
         previous = self._receipts.get(command.command_id)
         if previous is not None:
-            return previous
+            if self._commands.get(command.command_id) == command:
+                return previous
+            return NpcCommandReceipt(
+                command.command_id,
+                command.npc_id,
+                CommandStatus.FAILED,
+                reason="command_id_conflict",
+                finished_at=command.issued_at,
+            )
         controller = self.controllers.get(command.npc_id)
         if controller is None:
             receipt = NpcCommandReceipt(
@@ -185,10 +232,26 @@ class NpcSystem:
                 )
         if command.kind == NpcCommandKind.CANCEL:
             target_id = str(command.payload.get("command_id", ""))
-            receipt = controller.cancel(target_id, command.issued_at)
+            target_receipt = controller.cancel(target_id, command.issued_at)
             target_command = self._commands.get(target_id)
-            if target_command is not None and receipt.status == CommandStatus.CANCELLED:
+            if target_command is not None and target_receipt.status == CommandStatus.CANCELLED:
                 self._release_failed_claim(target_command)
+            # A walking controller acknowledges cancellation at the next foot
+            # marker.  Retain the cancel command's own receipt lifecycle until
+            # that target command reaches its terminal receipt.
+            self._commands[command.command_id] = command
+            self._pending_cancel_targets.setdefault(target_id, set()).add(command.command_id)
+            self._record(target_receipt)
+            if target_receipt.status.terminal:
+                return self._receipts[command.command_id]
+            receipt = NpcCommandReceipt(
+                command.command_id,
+                command.npc_id,
+                target_receipt.status,
+                reason=target_receipt.reason,
+                started_at=target_receipt.started_at,
+                finished_at=target_receipt.finished_at,
+            )
         else:
             receipt = controller.accept(command)
         self._commands[command.command_id] = command
@@ -197,7 +260,7 @@ class NpcSystem:
         return self._record(receipt)
 
     def step(self, model: mujoco.MjModel, data: mujoco.MjData, sim_time: float) -> None:
-        del model
+        had_attachments = any(controller.attachments.held for controller in self.controllers.values())
         for controller in self.controllers.values():
             receipt = controller.step(data, sim_time)
             if receipt is not None:
@@ -208,6 +271,13 @@ class NpcSystem:
                     elif command.kind == NpcCommandKind.DETACH_OBJECT:
                         self._attachment_claims.pop(str(command.payload["object"]), None)
                 self._record(receipt)
+        has_attachments = any(controller.attachments.held for controller in self.controllers.values())
+        if had_attachments or has_attachments:
+            # AttachmentController writes free-joint qpos after mj_step.  Refresh
+            # derived body/site transforms before the camera or semantic state
+            # reads them; otherwise the visible object can remain at its former
+            # world pose even though ownership and qpos already changed.
+            mujoco.mj_forward(model, data)
 
     def states(
         self, data: mujoco.MjData, sim_time: float | None = None
@@ -235,7 +305,7 @@ class NpcSystem:
                 CommandStatus.FAILED,
                 reason=reason,
                 started_at=receipt.started_at,
-                finished_at=receipt.finished_at,
+                finished_at=sim_time,
             )
             controller.last_receipt = receipt
             command = self._commands.get(receipt.command_id)
@@ -246,6 +316,21 @@ class NpcSystem:
     def _record(self, receipt: NpcCommandReceipt) -> NpcCommandReceipt:
         self._receipts[receipt.command_id] = receipt
         self._pending_receipts.append(receipt)
+        if receipt.status.terminal:
+            for cancel_id in self._pending_cancel_targets.pop(receipt.command_id, set()):
+                cancel = self._commands.get(cancel_id)
+                if cancel is None:
+                    continue
+                self._record(
+                    NpcCommandReceipt(
+                        cancel_id,
+                        cancel.npc_id,
+                        receipt.status,
+                        reason=receipt.reason,
+                        started_at=receipt.started_at,
+                        finished_at=receipt.finished_at,
+                    )
+                )
         return receipt
 
     def _release_failed_claim(self, command: NpcCommand) -> None:

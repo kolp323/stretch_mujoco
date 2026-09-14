@@ -9,8 +9,51 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-ACCESSORY_RECIPE_SCHEMA_VERSION = 4
+ACCESSORY_RECIPE_SCHEMA_VERSION = 5
 ACCESSORY_RUNTIME_CONFIG_SCHEMA_VERSION = 2
+
+
+@dataclass(frozen=True)
+class SmplxHeadSurfaceFallback:
+    """Recipe-owned opaque hair underlay for sparse OBJ hair cards."""
+
+    color_bgr: tuple[int, int, int]
+    front_hairline_z_m: float
+    temple_min_z_m: float
+    temple_min_y_m: float
+    rear_min_z_m: float
+    rear_min_y_m: float
+    head_min_z_m: float
+    head_radius_m: float
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "mode": "smplx_head_uv_v1",
+            "color_bgr": list(self.color_bgr),
+            "front_hairline_z_m": self.front_hairline_z_m,
+            "temple_min_z_m": self.temple_min_z_m,
+            "temple_min_y_m": self.temple_min_y_m,
+            "rear_min_z_m": self.rear_min_z_m,
+            "rear_min_y_m": self.rear_min_y_m,
+            "head_min_z_m": self.head_min_z_m,
+            "head_radius_m": self.head_radius_m,
+        }
+
+
+@dataclass(frozen=True)
+class AccessoryRenderPolicy:
+    """Rendering facts that belong to an OBJ accessory recipe, not a receipt."""
+
+    double_sided: bool
+    surface_fallback: SmplxHeadSurfaceFallback | None
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "double_sided": self.double_sided,
+            "surface_fallback": (
+                None if self.surface_fallback is None else self.surface_fallback.as_dict()
+            ),
+        }
 
 
 @dataclass(frozen=True)
@@ -26,6 +69,7 @@ class FusedAccessoryRecipe:
     yaw_degrees: float
     source_vertical_anchor: float | None
     accessory_uv: tuple[float, float]
+    render_policy: AccessoryRenderPolicy
 
     @classmethod
     def from_json(cls, path: str | Path) -> "FusedAccessoryRecipe":
@@ -46,7 +90,8 @@ class FusedAccessoryRecipe:
             "accessory_uv",
         }
         version_3_required = {*version_2_required, "yaw_degrees"}
-        current_required = {*version_3_required, "lateral_offset_m", "roll_degrees"}
+        version_4_required = {*version_3_required, "lateral_offset_m", "roll_degrees"}
+        current_required = {*version_4_required, "render_policy"}
         schema_version = payload.get("schema_version")
         if schema_version == 1:
             required = legacy_required
@@ -54,6 +99,8 @@ class FusedAccessoryRecipe:
             required = version_2_required
         elif schema_version == 3:
             required = version_3_required
+        elif schema_version == 4:
+            required = version_4_required
         else:
             required = current_required
         unknown = set(payload) - required
@@ -63,7 +110,7 @@ class FusedAccessoryRecipe:
                 "Accessory recipe fields mismatch: "
                 f"missing={sorted(missing)}, unknown={sorted(unknown)}"
             )
-        if payload["schema_version"] not in {1, 2, 3, ACCESSORY_RECIPE_SCHEMA_VERSION}:
+        if payload["schema_version"] not in {1, 2, 3, 4, ACCESSORY_RECIPE_SCHEMA_VERSION}:
             raise ValueError("Unsupported accessory recipe schema_version")
         if not isinstance(payload["accessory_id"], str) or not payload["accessory_id"]:
             raise ValueError("Accessory recipe accessory_id must be a non-empty string")
@@ -115,6 +162,7 @@ class FusedAccessoryRecipe:
             or not all(0 <= float(value) <= 1 for value in uv)
         ):
             raise ValueError("Accessory recipe accessory_uv must be two values in [0, 1]")
+        render_policy = _parse_render_policy(payload.get("render_policy"))
         return cls(
             str(payload["accessory_id"]),
             str(payload["attachment_mode"]),
@@ -124,6 +172,7 @@ class FusedAccessoryRecipe:
             yaw_degrees=yaw_degrees,
             source_vertical_anchor=anchor,
             accessory_uv=(float(uv[0]), float(uv[1])),
+            render_policy=render_policy,
         )
 
     def as_dict(self) -> dict[str, object]:
@@ -140,7 +189,67 @@ class FusedAccessoryRecipe:
             "yaw_degrees": self.yaw_degrees,
             "source_vertical_anchor": self.source_vertical_anchor,
             "accessory_uv": list(self.accessory_uv),
+            "render_policy": self.render_policy.as_dict(),
         }
+
+
+def _parse_render_policy(value: object) -> AccessoryRenderPolicy:
+    """Parse the versioned render contract, defaulting legacy recipes safely."""
+    if value is None:
+        return AccessoryRenderPolicy(double_sided=False, surface_fallback=None)
+    if not isinstance(value, dict) or set(value) != {"double_sided", "surface_fallback"}:
+        raise ValueError("Accessory recipe render_policy fields mismatch")
+    double_sided = value["double_sided"]
+    if not isinstance(double_sided, bool):
+        raise ValueError("Accessory recipe render_policy.double_sided must be boolean")
+    raw_fallback = value["surface_fallback"]
+    if raw_fallback is None:
+        return AccessoryRenderPolicy(double_sided=double_sided, surface_fallback=None)
+    required = {
+        "mode",
+        "color_bgr",
+        "front_hairline_z_m",
+        "temple_min_z_m",
+        "temple_min_y_m",
+        "rear_min_z_m",
+        "rear_min_y_m",
+        "head_min_z_m",
+        "head_radius_m",
+    }
+    if not isinstance(raw_fallback, dict) or set(raw_fallback) != required:
+        raise ValueError("Accessory recipe surface_fallback fields mismatch")
+    if raw_fallback["mode"] != "smplx_head_uv_v1":
+        raise ValueError("Accessory recipe surface_fallback mode is unsupported")
+    color = raw_fallback["color_bgr"]
+    if (
+        not isinstance(color, list)
+        or len(color) != 3
+        or not all(isinstance(item, int) and not isinstance(item, bool) for item in color)
+        or not all(0 <= item <= 255 for item in color)
+    ):
+        raise ValueError("Accessory recipe surface_fallback.color_bgr must be three bytes")
+    numeric_names = required - {"mode", "color_bgr"}
+    if not all(
+        isinstance(raw_fallback[name], (int, float)) and not isinstance(raw_fallback[name], bool)
+        for name in numeric_names
+    ):
+        raise ValueError("Accessory recipe surface_fallback thresholds must be numbers")
+    numeric = {name: float(raw_fallback[name]) for name in numeric_names}
+    if not all(math.isfinite(item) for item in numeric.values()) or numeric["head_radius_m"] <= 0:
+        raise ValueError("Accessory recipe surface_fallback thresholds are invalid")
+    return AccessoryRenderPolicy(
+        double_sided=double_sided,
+        surface_fallback=SmplxHeadSurfaceFallback(
+            color_bgr=tuple(color),
+            front_hairline_z_m=numeric["front_hairline_z_m"],
+            temple_min_z_m=numeric["temple_min_z_m"],
+            temple_min_y_m=numeric["temple_min_y_m"],
+            rear_min_z_m=numeric["rear_min_z_m"],
+            rear_min_y_m=numeric["rear_min_y_m"],
+            head_min_z_m=numeric["head_min_z_m"],
+            head_radius_m=numeric["head_radius_m"],
+        ),
+    )
 
 
 def recipe_sha256(path: str | Path) -> str:

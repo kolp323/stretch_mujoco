@@ -41,6 +41,7 @@ def _fused_obj_with_vertices(
     accessory_path: Path,
     accessory_vertices: np.ndarray,
     accessory_uv: tuple[float, float] = (0.0, 0.0),
+    double_sided: bool = False,
 ) -> bytes:
     """Append already-positioned accessory vertices to one body OBJ."""
     body_lines = body_path.read_text(encoding="utf-8").splitlines()
@@ -51,6 +52,8 @@ def _fused_obj_with_vertices(
     if not body_vertices or not body_faces:
         raise ValueError(f"Body OBJ '{body_path}' needs vertices and faces")
     _, accessory_faces = _vertices_and_faces(accessory_path)
+    if double_sided:
+        accessory_faces = [*accessory_faces, *(list(reversed(face)) for face in accessory_faces)]
     # Accessory faces use a single identity-selected UV. This leaves every body
     # UV untouched while keeping each fused mesh valid for the body material
     # path until an authored accessory material pipeline is introduced.
@@ -78,6 +81,7 @@ def fused_obj(
     accessory_path: Path,
     position: list[float],
     accessory_uv: tuple[float, float] = (0.0, 0.0),
+    double_sided: bool = False,
 ) -> bytes:
     """Append a translated accessory to a body OBJ with one stable cap UV."""
     accessory_vertices, _ = _vertices_and_faces(accessory_path)
@@ -86,6 +90,7 @@ def fused_obj(
         accessory_path,
         accessory_vertices + np.asarray(position, dtype=np.float64),
         accessory_uv,
+        double_sided,
     )
 
 
@@ -129,10 +134,17 @@ def fuse_manifest(
     bundle_id: str,
     fused_bundle_id: str | None = None,
     accessory_uv: tuple[float, float] = (0.0, 0.0),
+    double_sided: bool = False,
 ) -> dict[str, object]:
     """Create a target-only fused bundle without modifying the source bundle."""
     source = json.loads(manifest_path.read_text(encoding="utf-8"))
     source_bundle = source["bundles"][bundle_id]
+    source_sit_frames = source_bundle.get("clips", {}).get("sit", {}).get("frames")
+    source_stand_up_frames = source_bundle.get("clips", {}).get("stand_up", {}).get("frames")
+    if isinstance(source_sit_frames, list):
+        source_sit_frames = list(source_sit_frames)
+    if isinstance(source_stand_up_frames, list):
+        source_stand_up_frames = list(source_stand_up_frames)
     fused_bundle_id = fused_bundle_id or bundle_id
     if fused_bundle_id != bundle_id and fused_bundle_id in source["bundles"]:
         raise ValueError(f"Fused bundle already exists: {fused_bundle_id}")
@@ -187,6 +199,7 @@ def fuse_manifest(
                     accessory_path,
                     followed_accessory,
                     accessory_uv,
+                    double_sided,
                 )
             )
             try:
@@ -196,6 +209,16 @@ def fuse_manifest(
             fused_paths[clip_id].append(output_relative)
             hashes[output_relative] = _sha256(destination)
         clip["frames"] = fused_paths[clip_id]
+    if (
+        isinstance(source_sit_frames, list)
+        and isinstance(source_stand_up_frames, list)
+        and source_stand_up_frames == list(reversed(source_sit_frames))
+    ):
+        # The asset contract represents stand_up as the same physical frames
+        # played in reverse. Preserve that identity after fusion rather than
+        # emitting duplicate paths which strict manifest validation rejects.
+        fused_paths["stand_up"] = list(reversed(fused_paths["sit"]))
+        bundle["clips"]["stand_up"]["frames"] = fused_paths["stand_up"]
     source.setdefault("fused_accessories", {})[fused_bundle_id] = {
         "mode": "body_frame_projection",
         "head_follow": "rigid_head_alignment_v1",
@@ -204,6 +227,7 @@ def fuse_manifest(
         "mesh_sha256": _sha256(accessory_path),
         "anchors": str(anchors_path),
         "anchors_sha256": _sha256(anchors_path),
+        "double_sided": double_sided,
     }
     output_manifest.write_text(json.dumps(source, indent=2) + "\n", encoding="utf-8")
     receipt = {
@@ -213,6 +237,7 @@ def fuse_manifest(
         "source_manifest_sha256": _sha256(manifest_path),
         "accessory_sha256": _sha256(accessory_path),
         "anchors_sha256": _sha256(anchors_path),
+        "double_sided": double_sided,
         "clips": fused_paths,
     }
     receipt_path = output_dir / "fused_accessory.receipt.json"
@@ -235,6 +260,7 @@ def main() -> None:
     parser.add_argument("--bundle", default="smplx_office_neutral_v1")
     parser.add_argument("--fused-bundle", required=True)
     parser.add_argument("--accessory-uv", type=float, nargs=2, required=True)
+    parser.add_argument("--double-sided", action="store_true")
     args = parser.parse_args()
     result = fuse_manifest(
         args.asset_manifest.resolve(),
@@ -245,6 +271,7 @@ def main() -> None:
         bundle_id=args.bundle,
         fused_bundle_id=args.fused_bundle,
         accessory_uv=tuple(args.accessory_uv),
+        double_sided=args.double_sided,
     )
     print(json.dumps(result, indent=2))
 
