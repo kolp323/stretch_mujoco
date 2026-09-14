@@ -1,0 +1,209 @@
+{
+  "interaction_points": {
+    "conversation_listener": {
+      "attributes": {
+        "yaw": 1.5707963267948966
+      },
+      "owner": "meeting_table",
+      "role": "conversation_site",
+      "site": "npc_conversation_listener_site"
+    },
+    "conversation_speaker": {
+      "attributes": {
+        "yaw": -1.5707963267948966
+      },
+      "owner": "meeting_table",
+      "role": "conversation_site",
+      "site": "npc_conversation_speaker_site"
+    },
+    "handover_giver": {
+      "attributes": {
+        "yaw": -1.5707963267948966
+      },
+      "owner": "npc_alex_chen",
+      "role": "handover_site",
+      "site": "npc_handover_giver_site"
+    },
+    "handover_receiver": {
+      "attributes": {
+        "yaw": 1.5707963267948966
+      },
+      "owner": "npc_morgan_lee",
+      "role": "handover_site",
+      "site": "npc_handover_receiver_site"
+    },
+    "lounge": {
+      "owner": "lounge",
+      "role": "human_stand_site",
+      "site": "npc_lounge_site"
+    },
+    "meeting": {
+      "attributes": {
+        "yaw": 0.0
+      },
+      "owner": "meeting_table",
+      "role": "meeting_place_site",
+      "site": "npc_meeting_site"
+    },
+    "object_grasp": {
+      "owner": "shared_object",
+      "role": "document_grasp_site",
+      "site": "101_milk-tea_001_grasp_site"
+    },
+    "snack": {
+      "owner": "snack_counter",
+      "role": "human_stand_site",
+      "site": "npc_snack_site"
+    },
+    "spawn_1": {
+      "owner": "workstation",
+      "role": "human_stand_site",
+      "site": "npc_spawn_01_site"
+    },
+    "spawn_2": {
+      "owner": "workstation",
+      "role": "human_stand_site",
+      "site": "npc_spawn_02_site"
+    },
+    "spawn_3": {
+      "owner": "workstation",
+      "role": "human_stand_site",
+      "site": "npc_spawn_03_site"
+    },
+    "stretch_delivery": {
+      "owner": "workstation",
+      "role": "robot_delivery_site",
+      "site": "npc_stretch_delivery_site"
+    },
+    "stretch_rendezvous": {
+      "owner": "stretch_3",
+      "role": "human_stand_site",
+      "site": "npc_stretch_rendezvous_site"
+    },
+    "stretch_request": {
+      "owner": "stretch_3",
+      "role": "robot_request_site",
+      "site": "npc_stretch_request_site"
+    },
+    "work": {
+      "attributes": {
+        "yaw": 0.0
+      },
+      "owner": "workstation",
+      "role": "desk_work_site",
+      "site": "npc_work_site"
+    }
+  },
+  "objects": {
+    "lounge": {
+      "attributes": {
+        "zone": "lounge"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_020_52747515"
+      },
+      "type": "Counter"
+    },
+    "meeting_table": {
+      "attributes": {
+        "zone": "meeting"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_007_new_team"
+      },
+      "type": "MeetingTable"
+    },
+    "npc_alex_chen": {
+      "attributes": {},
+      "binding": {
+        "kind": "body",
+        "name": "npc__npc_alex_chen"
+      },
+      "type": "Employee"
+    },
+    "npc_jordan_patell": {
+      "attributes": {},
+      "binding": {
+        "kind": "body",
+        "name": "npc__npc_jordan_patell"
+      },
+      "type": "Employee"
+    },
+    "npc_morgan_lee": {
+      "attributes": {},
+      "binding": {
+        "kind": "body",
+        "name": "npc__npc_morgan_lee"
+      },
+      "type": "Employee"
+    },
+    "shared_object": {
+      "attributes": {
+        "grasp_site": "101_milk-tea_001_grasp_site",
+        "graspable": true,
+        "location": "snack_counter",
+        "owner": "npc_alex_chen",
+        "source_asset_id": "101_milk-tea",
+        "source_category": "interactive_objects",
+        "source_name": "101_milk-tea"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "101_milk-tea_001"
+      },
+      "type": "Document"
+    },
+    "snack_counter": {
+      "attributes": {
+        "zone": "snack"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "snack_counter"
+      },
+      "type": "Counter"
+    },
+    "stretch_3": {
+      "attributes": {
+        "manipulator": true,
+        "mobile": true
+      },
+      "binding": {
+        "kind": "body",
+        "name": "base_link"
+      },
+      "type": "StretchRobot"
+    },
+    "workstation": {
+      "attributes": {
+        "zone": "work"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_000_new_cb_d"
+      },
+      "type": "Workstation"
+    }
+  },
+  "relations": [
+    {
+      "object": "snack_counter",
+      "relation": "ON",
+      "subject": "shared_object"
+    },
+    {
+      "object": "npc_alex_chen",
+      "relation": "BELONGS_TO",
+      "subject": "shared_object"
+    },
+    {
+      "object": "meeting_table",
+      "relation": "NEAR",
+      "subject": "workstation"
+    }
+  ],
+  "scene": "office_03_long_gallery_npc.xml",
+  "schema_version": 1
+}

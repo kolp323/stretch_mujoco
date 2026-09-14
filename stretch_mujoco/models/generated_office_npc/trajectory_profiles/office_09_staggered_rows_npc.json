@@ -1,0 +1,66 @@
+{
+  "anchors": {
+    "lounge": {
+      "role": "lounge",
+      "site": "npc_lounge_site"
+    },
+    "meeting": {
+      "role": "meeting",
+      "site": "npc_meeting_site"
+    },
+    "snack": {
+      "role": "snack",
+      "site": "npc_snack_site"
+    },
+    "stretch_rendezvous": {
+      "role": "stretch_rendezvous",
+      "site": "npc_stretch_rendezvous_site"
+    },
+    "work": {
+      "role": "workstation",
+      "site": "npc_work_site"
+    }
+  },
+  "profile_id": "office_09_staggered_rows_npc",
+  "routes": [
+    {
+      "actions": [
+        "move_to",
+        "attend_meeting"
+      ],
+      "from": "work",
+      "route_id": "work_to_meeting",
+      "to": "meeting"
+    },
+    {
+      "actions": [
+        "move_to",
+        "rest"
+      ],
+      "from": "meeting",
+      "route_id": "meeting_to_lounge",
+      "to": "lounge"
+    },
+    {
+      "actions": [
+        "move_to",
+        "pick_up"
+      ],
+      "from": "lounge",
+      "route_id": "lounge_to_snack",
+      "to": "snack"
+    },
+    {
+      "actions": [
+        "move_to",
+        "put_down"
+      ],
+      "from": "snack",
+      "route_id": "snack_to_stretch",
+      "to": "stretch_rendezvous"
+    }
+  ],
+  "scene": "office_09_staggered_rows_npc.xml",
+  "scene_sha256": "90c59fa2d971f4d97d3293a137aaa57c4287f322484e7d964570d5f6edf09b5b",
+  "schema_version": 1
+}

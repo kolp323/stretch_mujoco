@@ -1,0 +1,83 @@
+{
+  "generator": "tools/preprocess_generated_office_npcs.py",
+  "scene_id": "office_02_cross_axis",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "67517b91cf9579bcfe377fdb585d2a03936ac6ceeb65dfbb313804711a587b6d",
+    "generator": "fc1998d841db670d38051ff18fb9a2c197d87860582d7e074f148dc2a9f48248",
+    "manifest": "8aa744a50df5a3f64082475c36b623f6aa0745a449861b786dee1abc55055892",
+    "source_scene": "99b4a0328d93b9bee0c2f6e8b69514578c9259ee7f888055202594ff3a0e85dd"
+  },
+  "sites": {
+    "npc_conversation_listener_site": [
+      -7.55,
+      3.85,
+      0.0
+    ],
+    "npc_conversation_speaker_site": [
+      -6.75,
+      3.85,
+      3.1416
+    ],
+    "npc_handover_giver_site": [
+      -6.75,
+      3.85,
+      3.1416
+    ],
+    "npc_handover_receiver_site": [
+      -7.55,
+      3.85,
+      0.0
+    ],
+    "npc_lounge_site": [
+      1.25,
+      3.05,
+      0.0
+    ],
+    "npc_meeting_site": [
+      -6.75,
+      3.85,
+      0.0
+    ],
+    "npc_snack_site": [
+      6.75,
+      2.25,
+      0.0
+    ],
+    "npc_spawn_01_site": [
+      0.05,
+      -1.15,
+      0.0
+    ],
+    "npc_spawn_02_site": [
+      1.25,
+      2.05,
+      0.0
+    ],
+    "npc_spawn_03_site": [
+      6.75,
+      3.85,
+      0.0
+    ],
+    "npc_stretch_delivery_site": [
+      0.65,
+      -4.75,
+      0.0
+    ],
+    "npc_stretch_rendezvous_site": [
+      -6.75,
+      3.85,
+      0.0
+    ],
+    "npc_stretch_request_site": [
+      -0.55,
+      -4.75,
+      0.0
+    ],
+    "npc_work_site": [
+      0.05,
+      -4.75,
+      0.0
+    ]
+  }
+}

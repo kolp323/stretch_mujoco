@@ -1,0 +1,185 @@
+{
+  "appearance_catalog": "../../assets/humanoid/generated/animations/appearance_catalog.json",
+  "asset_manifest": "../../assets/humanoid/generated/animations/manifest.json",
+  "clock": {
+    "minutes_per_second": 1.0,
+    "start": "09:00"
+  },
+  "interaction_templates": {
+    "conversation": {
+      "listener": {
+        "site": "npc_conversation_listener_site",
+        "yaw": 2.761086276477428
+      },
+      "speaker": {
+        "site": "npc_conversation_speaker_site",
+        "yaw": -0.3805063771123652
+      }
+    },
+    "handover": {
+      "giver": {
+        "site": "npc_handover_giver_site",
+        "yaw": -0.3805063771123652
+      },
+      "receiver": {
+        "site": "npc_handover_receiver_site",
+        "yaw": 2.761086276477428
+      }
+    }
+  },
+  "npcs": {
+    "npc_alex_chen": {
+      "capabilities": [
+        "locomotion",
+        "sit",
+        "object_handover",
+        "use_computer"
+      ],
+      "embodiment": {
+        "accessories": [],
+        "animation_graph": "office_humanoid_v1",
+        "appearance": "office_sage_chin_beard_glasses_v2",
+        "appearance_config": {
+          "accessories": [],
+          "bottom": "bottom_denim_fabric_06_v1",
+          "hair": "hair_brown_v1",
+          "scale": 1.0,
+          "shoes": "shoes_cognac_v2",
+          "skin": "skin_warm_v2",
+          "top": "top_rough_linen_v1"
+        },
+        "bundle": "smplx_office_neutral_v1",
+        "collision_profile": "adult_humanoid_v1",
+        "scale": 1.0,
+        "visual_identity": "office_sage_chin_beard_glasses_v2"
+      },
+      "needs": {
+        "fatigue": 0.18,
+        "hunger": 0.22,
+        "thirst": 0.3
+      },
+      "profile": {
+        "department": "Operations",
+        "display_name": "Alex Chen",
+        "personality": {
+          "conscientiousness": 0.85,
+          "sociability": 0.62
+        },
+        "preferences": {
+          "chair": "chair_left",
+          "workstation": "workstation_left"
+        },
+        "role": "Operations Specialist"
+      },
+      "schedule": [],
+      "spawn": {
+        "location": "workstation",
+        "site": "npc_spawn_01_site",
+        "yaw": 0.0
+      }
+    },
+    "npc_jordan_patell": {
+      "agent_id": "npc_jordan_patell",
+      "capabilities": [
+        "locomotion",
+        "sit",
+        "conversation",
+        "use_computer"
+      ],
+      "embodiment": {
+        "accessories": [],
+        "animation_graph": "office_humanoid_v1",
+        "appearance": "office_burgundy_boxed_beard_analytics_v2",
+        "appearance_config": {
+          "accessories": [],
+          "bottom": "bottom_navy_v1",
+          "hair": "hair_auburn_v1",
+          "scale": 1.03,
+          "shoes": "shoes_cognac_v2",
+          "skin": "skin_olive_v1",
+          "top": "top_poly_wool_herringbone_v1"
+        },
+        "bundle": "smplx_office_neutral_v1",
+        "collision_profile": "adult_humanoid_v1",
+        "scale": 1.03,
+        "visual_identity": "office_burgundy_boxed_beard_analytics_v2"
+      },
+      "needs": {
+        "fatigue": 0.25,
+        "hunger": 0.28,
+        "thirst": 0.22
+      },
+      "profile": {
+        "department": "Analytics",
+        "display_name": "Jordan Patell",
+        "personality": {
+          "conscientiousness": 0.82,
+          "sociability": 0.53
+        },
+        "preferences": {
+          "chair": "chair_left",
+          "workstation": "workstation_left"
+        },
+        "role": "Data Analyst"
+      },
+      "schedule": [],
+      "spawn": {
+        "location": "snack_counter",
+        "site": "npc_spawn_03_site",
+        "yaw": 0.0
+      }
+    },
+    "npc_morgan_lee": {
+      "capabilities": [
+        "locomotion",
+        "sit",
+        "object_handover",
+        "use_computer"
+      ],
+      "embodiment": {
+        "animation_graph": "office_humanoid_v1",
+        "appearance": "office_navy_handlebar_moustache_v2",
+        "appearance_config": {
+          "accessories": [],
+          "bottom": "bottom_charcoal_v2",
+          "hair": "hair_black_v1",
+          "scale": 1.0,
+          "shoes": "shoes_black_v1",
+          "skin": "skin_light_v1",
+          "top": "top_bi_stretch_v1"
+        },
+        "bundle": "smplx_office_neutral_v1",
+        "collision_profile": "adult_humanoid_v1",
+        "scale": 1.0,
+        "visual_identity": "office_navy_handlebar_moustache_v2"
+      },
+      "needs": {
+        "fatigue": 0.3,
+        "hunger": 0.35,
+        "thirst": 0.25
+      },
+      "profile": {
+        "department": "Product",
+        "display_name": "Morgan Lee",
+        "personality": {
+          "conscientiousness": 0.75,
+          "sociability": 0.88
+        },
+        "preferences": {
+          "chair": "chair_right",
+          "workstation": "workstation_right"
+        },
+        "role": "Product Manager"
+      },
+      "schedule": [],
+      "spawn": {
+        "location": "lounge",
+        "site": "npc_spawn_02_site",
+        "yaw": 0.0
+      }
+    }
+  },
+  "scene": "../../assets/office_scenes/office_05_team_clusters_npc.xml",
+  "schema_version": 2,
+  "trajectory_profile": "../trajectory_profiles/office_05_team_clusters_npc.json"
+}

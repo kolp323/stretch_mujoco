@@ -126,7 +126,13 @@ def _portable_base_wrapper(base_scene_path: Path, destination: Path) -> Path:
     tree = ET.parse(base_scene_path)
     for include in tree.getroot().findall("include"):
         source = (base_scene_path.parent / include.attrib["file"]).resolve()
-        if source.name == "stretch.xml":
+        # Generated office scenes use a per-scene Stretch include rather than
+        # the canonical file name.  Treat every included model with an
+        # ``assetdir`` compiler as portable: MuJoCo otherwise resolves that
+        # directory from the composed output, not the included source.
+        include_tree = ET.parse(source)
+        compiler = include_tree.getroot().find("compiler")
+        if compiler is not None and compiler.get("assetdir"):
             stretch_tree = ET.parse(source)
             compiler = stretch_tree.getroot().find("compiler")
             if compiler is None:
@@ -134,8 +140,13 @@ def _portable_base_wrapper(base_scene_path: Path, destination: Path) -> Path:
             assetdir = compiler.get("assetdir", "")
             compiler.set("assetdir", str((source.parent / assetdir).resolve()))
             ET.indent(stretch_tree, space="  ")
-            stretch_tree.write(stretch_wrapper, encoding="unicode", xml_declaration=False)
-            include.set("file", str(stretch_wrapper))
+            include_wrapper = (
+                stretch_wrapper
+                if source.name == "stretch.xml"
+                else destination.with_name(f"{destination.stem}.{source.name}")
+            )
+            stretch_tree.write(include_wrapper, encoding="unicode", xml_declaration=False)
+            include.set("file", str(include_wrapper))
         else:
             include.set("file", str(source))
     ET.indent(tree, space="  ")
