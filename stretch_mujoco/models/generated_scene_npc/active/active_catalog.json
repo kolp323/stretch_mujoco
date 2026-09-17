@@ -1,0 +1,188 @@
+{
+  "build_id": "7c4ec1e9cb8edc9b9ada0a1d3f57927dd26626d0699b7a816de25971a4fde6b6",
+  "build_root": "builds/7c4ec1e9cb8edc9b9ada0a1d3f57927dd26626d0699b7a816de25971a4fde6b6",
+  "scene_count": 20,
+  "scenes": {
+    "home_01_102344115": {
+      "coverage": "home_01_102344115/home_01_102344115.semantic_coverage.json",
+      "population": "home_01_102344115/home_01_102344115.population.json",
+      "receipt": "home_01_102344115/home_01_102344115.receipt.json",
+      "scene": "home_01_102344115/home_01_102344115_npc.xml",
+      "semantic_v1": "home_01_102344115/home_01_102344115.semantic.json",
+      "semantic_v2": "home_01_102344115/home_01_102344115.semantic.v2.json",
+      "trajectory_profile": "home_01_102344115/home_01_102344115.trajectory_profile.json"
+    },
+    "home_02_103997919_171031233": {
+      "coverage": "home_02_103997919_171031233/home_02_103997919_171031233.semantic_coverage.json",
+      "population": "home_02_103997919_171031233/home_02_103997919_171031233.population.json",
+      "receipt": "home_02_103997919_171031233/home_02_103997919_171031233.receipt.json",
+      "scene": "home_02_103997919_171031233/home_02_103997919_171031233_npc.xml",
+      "semantic_v1": "home_02_103997919_171031233/home_02_103997919_171031233.semantic.json",
+      "semantic_v2": "home_02_103997919_171031233/home_02_103997919_171031233.semantic.v2.json",
+      "trajectory_profile": "home_02_103997919_171031233/home_02_103997919_171031233.trajectory_profile.json"
+    },
+    "home_03_107734119_175999932": {
+      "coverage": "home_03_107734119_175999932/home_03_107734119_175999932.semantic_coverage.json",
+      "population": "home_03_107734119_175999932/home_03_107734119_175999932.population.json",
+      "receipt": "home_03_107734119_175999932/home_03_107734119_175999932.receipt.json",
+      "scene": "home_03_107734119_175999932/home_03_107734119_175999932_npc.xml",
+      "semantic_v1": "home_03_107734119_175999932/home_03_107734119_175999932.semantic.json",
+      "semantic_v2": "home_03_107734119_175999932/home_03_107734119_175999932.semantic.v2.json",
+      "trajectory_profile": "home_03_107734119_175999932/home_03_107734119_175999932.trajectory_profile.json"
+    },
+    "home_04_103997970_171031287": {
+      "coverage": "home_04_103997970_171031287/home_04_103997970_171031287.semantic_coverage.json",
+      "population": "home_04_103997970_171031287/home_04_103997970_171031287.population.json",
+      "receipt": "home_04_103997970_171031287/home_04_103997970_171031287.receipt.json",
+      "scene": "home_04_103997970_171031287/home_04_103997970_171031287_npc.xml",
+      "semantic_v1": "home_04_103997970_171031287/home_04_103997970_171031287.semantic.json",
+      "semantic_v2": "home_04_103997970_171031287/home_04_103997970_171031287.semantic.v2.json",
+      "trajectory_profile": "home_04_103997970_171031287/home_04_103997970_171031287.trajectory_profile.json"
+    },
+    "home_05_102344094": {
+      "coverage": "home_05_102344094/home_05_102344094.semantic_coverage.json",
+      "population": "home_05_102344094/home_05_102344094.population.json",
+      "receipt": "home_05_102344094/home_05_102344094.receipt.json",
+      "scene": "home_05_102344094/home_05_102344094_npc.xml",
+      "semantic_v1": "home_05_102344094/home_05_102344094.semantic.json",
+      "semantic_v2": "home_05_102344094/home_05_102344094.semantic.v2.json",
+      "trajectory_profile": "home_05_102344094/home_05_102344094.trajectory_profile.json"
+    },
+    "home_06_104348082_171512994": {
+      "coverage": "home_06_104348082_171512994/home_06_104348082_171512994.semantic_coverage.json",
+      "population": "home_06_104348082_171512994/home_06_104348082_171512994.population.json",
+      "receipt": "home_06_104348082_171512994/home_06_104348082_171512994.receipt.json",
+      "scene": "home_06_104348082_171512994/home_06_104348082_171512994_npc.xml",
+      "semantic_v1": "home_06_104348082_171512994/home_06_104348082_171512994.semantic.json",
+      "semantic_v2": "home_06_104348082_171512994/home_06_104348082_171512994.semantic.v2.json",
+      "trajectory_profile": "home_06_104348082_171512994/home_06_104348082_171512994.trajectory_profile.json"
+    },
+    "home_07_104348463_171513588": {
+      "coverage": "home_07_104348463_171513588/home_07_104348463_171513588.semantic_coverage.json",
+      "population": "home_07_104348463_171513588/home_07_104348463_171513588.population.json",
+      "receipt": "home_07_104348463_171513588/home_07_104348463_171513588.receipt.json",
+      "scene": "home_07_104348463_171513588/home_07_104348463_171513588_npc.xml",
+      "semantic_v1": "home_07_104348463_171513588/home_07_104348463_171513588.semantic.json",
+      "semantic_v2": "home_07_104348463_171513588/home_07_104348463_171513588.semantic.v2.json",
+      "trajectory_profile": "home_07_104348463_171513588/home_07_104348463_171513588.trajectory_profile.json"
+    },
+    "home_08_102344193": {
+      "coverage": "home_08_102344193/home_08_102344193.semantic_coverage.json",
+      "population": "home_08_102344193/home_08_102344193.population.json",
+      "receipt": "home_08_102344193/home_08_102344193.receipt.json",
+      "scene": "home_08_102344193/home_08_102344193_npc.xml",
+      "semantic_v1": "home_08_102344193/home_08_102344193.semantic.json",
+      "semantic_v2": "home_08_102344193/home_08_102344193.semantic.v2.json",
+      "trajectory_profile": "home_08_102344193/home_08_102344193.trajectory_profile.json"
+    },
+    "home_09_107734110_175999914": {
+      "coverage": "home_09_107734110_175999914/home_09_107734110_175999914.semantic_coverage.json",
+      "population": "home_09_107734110_175999914/home_09_107734110_175999914.population.json",
+      "receipt": "home_09_107734110_175999914/home_09_107734110_175999914.receipt.json",
+      "scene": "home_09_107734110_175999914/home_09_107734110_175999914_npc.xml",
+      "semantic_v1": "home_09_107734110_175999914/home_09_107734110_175999914.semantic.json",
+      "semantic_v2": "home_09_107734110_175999914/home_09_107734110_175999914.semantic.v2.json",
+      "trajectory_profile": "home_09_107734110_175999914/home_09_107734110_175999914.trajectory_profile.json"
+    },
+    "home_10_104862513_172226580": {
+      "coverage": "home_10_104862513_172226580/home_10_104862513_172226580.semantic_coverage.json",
+      "population": "home_10_104862513_172226580/home_10_104862513_172226580.population.json",
+      "receipt": "home_10_104862513_172226580/home_10_104862513_172226580.receipt.json",
+      "scene": "home_10_104862513_172226580/home_10_104862513_172226580_npc.xml",
+      "semantic_v1": "home_10_104862513_172226580/home_10_104862513_172226580.semantic.json",
+      "semantic_v2": "home_10_104862513_172226580/home_10_104862513_172226580.semantic.v2.json",
+      "trajectory_profile": "home_10_104862513_172226580/home_10_104862513_172226580.trajectory_profile.json"
+    },
+    "office_01_linear_bench": {
+      "coverage": "office_01_linear_bench/office_01_linear_bench.semantic_coverage.json",
+      "population": "office_01_linear_bench/office_01_linear_bench.population.json",
+      "receipt": "office_01_linear_bench/office_01_linear_bench.receipt.json",
+      "scene": "office_01_linear_bench/office_01_linear_bench_npc.xml",
+      "semantic_v1": "office_01_linear_bench/office_01_linear_bench.semantic.json",
+      "semantic_v2": "office_01_linear_bench/office_01_linear_bench.semantic.v2.json",
+      "trajectory_profile": "office_01_linear_bench/office_01_linear_bench.trajectory_profile.json"
+    },
+    "office_02_cross_axis": {
+      "coverage": "office_02_cross_axis/office_02_cross_axis.semantic_coverage.json",
+      "population": "office_02_cross_axis/office_02_cross_axis.population.json",
+      "receipt": "office_02_cross_axis/office_02_cross_axis.receipt.json",
+      "scene": "office_02_cross_axis/office_02_cross_axis_npc.xml",
+      "semantic_v1": "office_02_cross_axis/office_02_cross_axis.semantic.json",
+      "semantic_v2": "office_02_cross_axis/office_02_cross_axis.semantic.v2.json",
+      "trajectory_profile": "office_02_cross_axis/office_02_cross_axis.trajectory_profile.json"
+    },
+    "office_03_long_gallery": {
+      "coverage": "office_03_long_gallery/office_03_long_gallery.semantic_coverage.json",
+      "population": "office_03_long_gallery/office_03_long_gallery.population.json",
+      "receipt": "office_03_long_gallery/office_03_long_gallery.receipt.json",
+      "scene": "office_03_long_gallery/office_03_long_gallery_npc.xml",
+      "semantic_v1": "office_03_long_gallery/office_03_long_gallery.semantic.json",
+      "semantic_v2": "office_03_long_gallery/office_03_long_gallery.semantic.v2.json",
+      "trajectory_profile": "office_03_long_gallery/office_03_long_gallery.trajectory_profile.json"
+    },
+    "office_04_central_meeting": {
+      "coverage": "office_04_central_meeting/office_04_central_meeting.semantic_coverage.json",
+      "population": "office_04_central_meeting/office_04_central_meeting.population.json",
+      "receipt": "office_04_central_meeting/office_04_central_meeting.receipt.json",
+      "scene": "office_04_central_meeting/office_04_central_meeting_npc.xml",
+      "semantic_v1": "office_04_central_meeting/office_04_central_meeting.semantic.json",
+      "semantic_v2": "office_04_central_meeting/office_04_central_meeting.semantic.v2.json",
+      "trajectory_profile": "office_04_central_meeting/office_04_central_meeting.trajectory_profile.json"
+    },
+    "office_05_team_clusters": {
+      "coverage": "office_05_team_clusters/office_05_team_clusters.semantic_coverage.json",
+      "population": "office_05_team_clusters/office_05_team_clusters.population.json",
+      "receipt": "office_05_team_clusters/office_05_team_clusters.receipt.json",
+      "scene": "office_05_team_clusters/office_05_team_clusters_npc.xml",
+      "semantic_v1": "office_05_team_clusters/office_05_team_clusters.semantic.json",
+      "semantic_v2": "office_05_team_clusters/office_05_team_clusters.semantic.v2.json",
+      "trajectory_profile": "office_05_team_clusters/office_05_team_clusters.trajectory_profile.json"
+    },
+    "office_06_diagonal_flow": {
+      "coverage": "office_06_diagonal_flow/office_06_diagonal_flow.semantic_coverage.json",
+      "population": "office_06_diagonal_flow/office_06_diagonal_flow.population.json",
+      "receipt": "office_06_diagonal_flow/office_06_diagonal_flow.receipt.json",
+      "scene": "office_06_diagonal_flow/office_06_diagonal_flow_npc.xml",
+      "semantic_v1": "office_06_diagonal_flow/office_06_diagonal_flow.semantic.json",
+      "semantic_v2": "office_06_diagonal_flow/office_06_diagonal_flow.semantic.v2.json",
+      "trajectory_profile": "office_06_diagonal_flow/office_06_diagonal_flow.trajectory_profile.json"
+    },
+    "office_07_u_bench": {
+      "coverage": "office_07_u_bench/office_07_u_bench.semantic_coverage.json",
+      "population": "office_07_u_bench/office_07_u_bench.population.json",
+      "receipt": "office_07_u_bench/office_07_u_bench.receipt.json",
+      "scene": "office_07_u_bench/office_07_u_bench_npc.xml",
+      "semantic_v1": "office_07_u_bench/office_07_u_bench.semantic.json",
+      "semantic_v2": "office_07_u_bench/office_07_u_bench.semantic.v2.json",
+      "trajectory_profile": "office_07_u_bench/office_07_u_bench.trajectory_profile.json"
+    },
+    "office_08_dual_island": {
+      "coverage": "office_08_dual_island/office_08_dual_island.semantic_coverage.json",
+      "population": "office_08_dual_island/office_08_dual_island.population.json",
+      "receipt": "office_08_dual_island/office_08_dual_island.receipt.json",
+      "scene": "office_08_dual_island/office_08_dual_island_npc.xml",
+      "semantic_v1": "office_08_dual_island/office_08_dual_island.semantic.json",
+      "semantic_v2": "office_08_dual_island/office_08_dual_island.semantic.v2.json",
+      "trajectory_profile": "office_08_dual_island/office_08_dual_island.trajectory_profile.json"
+    },
+    "office_09_staggered_rows": {
+      "coverage": "office_09_staggered_rows/office_09_staggered_rows.semantic_coverage.json",
+      "population": "office_09_staggered_rows/office_09_staggered_rows.population.json",
+      "receipt": "office_09_staggered_rows/office_09_staggered_rows.receipt.json",
+      "scene": "office_09_staggered_rows/office_09_staggered_rows_npc.xml",
+      "semantic_v1": "office_09_staggered_rows/office_09_staggered_rows.semantic.json",
+      "semantic_v2": "office_09_staggered_rows/office_09_staggered_rows.semantic.v2.json",
+      "trajectory_profile": "office_09_staggered_rows/office_09_staggered_rows.trajectory_profile.json"
+    },
+    "office_10_social_core": {
+      "coverage": "office_10_social_core/office_10_social_core.semantic_coverage.json",
+      "population": "office_10_social_core/office_10_social_core.population.json",
+      "receipt": "office_10_social_core/office_10_social_core.receipt.json",
+      "scene": "office_10_social_core/office_10_social_core_npc.xml",
+      "semantic_v1": "office_10_social_core/office_10_social_core.semantic.json",
+      "semantic_v2": "office_10_social_core/office_10_social_core.semantic.v2.json",
+      "trajectory_profile": "office_10_social_core/office_10_social_core.trajectory_profile.json"
+    }
+  },
+  "schema_version": 1
+}

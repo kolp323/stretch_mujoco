@@ -9,21 +9,21 @@
     "conversation": {
       "listener": {
         "site": "npc_conversation_listener_site",
-        "yaw": 0.0
+        "yaw": 1.5707963267948966
       },
       "speaker": {
         "site": "npc_conversation_speaker_site",
-        "yaw": 3.141592653589793
+        "yaw": -1.5707963267948966
       }
     },
     "handover": {
       "giver": {
         "site": "npc_handover_giver_site",
-        "yaw": 3.141592653589793
+        "yaw": -1.5707963267948966
       },
       "receiver": {
         "site": "npc_handover_receiver_site",
-        "yaw": 0.0
+        "yaw": 1.5707963267948966
       }
     }
   },
@@ -75,7 +75,7 @@
       "spawn": {
         "location": "workstation",
         "site": "npc_spawn_01_site",
-        "yaw": 0.0
+        "yaw": -1.0245534773797205
       }
     },
     "npc_jordan_patell": {
@@ -175,7 +175,7 @@
       "spawn": {
         "location": "lounge",
         "site": "npc_spawn_02_site",
-        "yaw": 0.0
+        "yaw": 3.141592653589793
       }
     }
   },

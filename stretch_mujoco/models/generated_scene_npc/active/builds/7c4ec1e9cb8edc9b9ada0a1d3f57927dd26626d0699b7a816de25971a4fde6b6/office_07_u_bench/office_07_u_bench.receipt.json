@@ -1,0 +1,18 @@
+{
+  "generator": "stretch_mujoco.npc.scene_compiler",
+  "scene_id": "office_07_u_bench",
+  "schema_version": 1,
+  "sha256": {
+    "coverage": "ad6183c14872923fddf3ddcf6bd63fc9a80f193575f126d8441111794a4ba445",
+    "generated_scene": "cdc588fee50bd21d3081c23278b9f72d8be037fe8db0a73d48030bcec791ed99",
+    "npc_catalog": "0fcb40363a246edc17c8526f085ad07e98cf0342ce12d86d2e86b5dd7c982284",
+    "population": "0f85e40df2591e5722bf5944a49118d720c73e9df53d49c1ccf55c45d1c0e4ef",
+    "scene_config": "403d8900959e7e0bc4aff745683f23f7b563177e30b8e7cb324f528bda508c55",
+    "semantic_policy": "560475e4e4947c25c480e123fecc06b72c84a8733bbabd776e2a8e20fe6677e8",
+    "semantic_v1": "04a4651cd4d5ee261814bf99269a926bcb628e6f4081863c6c4d4e76b1c0088f",
+    "semantic_v2": "0f16780425b6f1ecc5038edf14768b26b0c83c3e6e9356bc3f80fc3cc5837cd8",
+    "source_manifest": "08fd1e6d914efb1f4f53328247cf6af58bcab957d373e767154066a1ba293cf1",
+    "source_mjcf": "8c57b2369250f9b3935fc8063fd0ca13220680b2d836422fc07e91ee8e1cba03",
+    "trajectory_profile": "337bd9fcbc6f8e7dccdacc6073b2966dc146cbd12408121389c13b6c54b079c0"
+  }
+}

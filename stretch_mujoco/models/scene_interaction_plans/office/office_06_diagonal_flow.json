@@ -1,0 +1,393 @@
+{
+  "conversation_stations": [
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_06_diagonal_flow.01",
+      "region": "zone.snack",
+      "roles": {
+        "listener": {
+          "position": [
+            9.48,
+            4.8,
+            0.025
+          ],
+          "yaw": 1.0636978224025586
+        },
+        "speaker": {
+          "position": [
+            10.2,
+            5.2,
+            0.025
+          ],
+          "yaw": -2.0778948311872347
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_06_diagonal_flow.02",
+      "region": "zone.work",
+      "roles": {
+        "listener": {
+          "position": [
+            -9.8,
+            -3.84,
+            0.025
+          ],
+          "yaw": -2.634494149197456
+        },
+        "speaker": {
+          "position": [
+            -10.2,
+            -4.56,
+            0.025
+          ],
+          "yaw": 0.5070985043923372
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_06_diagonal_flow.03",
+      "region": "zone.meeting",
+      "roles": {
+        "listener": {
+          "position": [
+            3.24,
+            -4.8,
+            0.025
+          ],
+          "yaw": -2.077894831187234
+        },
+        "speaker": {
+          "position": [
+            2.52,
+            -5.2,
+            0.025
+          ],
+          "yaw": 1.0636978224025595
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "handover_stations": [
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_06_diagonal_flow.01",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "101_milk-tea_001"
+      ],
+      "region": "zone.lounge",
+      "roles": {
+        "giver": {
+          "position": [
+            -2.04,
+            5.2,
+            0.025
+          ],
+          "yaw": 2.6344941491974563
+        },
+        "receiver": {
+          "position": [
+            -1.64,
+            4.48,
+            0.025
+          ],
+          "yaw": -0.507098504392337
+        },
+        "robot": {
+          "position": [
+            -2.04,
+            5.2,
+            0.025
+          ],
+          "yaw": 2.6344941491974563
+        }
+      },
+      "transfer_position": [
+        -1.84,
+        4.84,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_06_diagonal_flow.02",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "101_milk-tea_001"
+      ],
+      "region": "zone.lounge",
+      "roles": {
+        "giver": {
+          "position": [
+            -10.2,
+            4.24,
+            0.025
+          ],
+          "yaw": 2.6344941491974554
+        },
+        "receiver": {
+          "position": [
+            -9.8,
+            3.52,
+            0.025
+          ],
+          "yaw": -0.5070985043923381
+        },
+        "robot": {
+          "position": [
+            -10.2,
+            4.24,
+            0.025
+          ],
+          "yaw": 2.6344941491974554
+        }
+      },
+      "transfer_position": [
+        -10.0,
+        3.88,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_06_diagonal_flow.03",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "101_milk-tea_001"
+      ],
+      "region": "zone.meeting",
+      "roles": {
+        "giver": {
+          "position": [
+            10.2,
+            -4.48,
+            0.025
+          ],
+          "yaw": -2.077894831187234
+        },
+        "receiver": {
+          "position": [
+            9.48,
+            -4.88,
+            0.025
+          ],
+          "yaw": 1.0636978224025595
+        },
+        "robot": {
+          "position": [
+            10.2,
+            -4.48,
+            0.025
+          ],
+          "yaw": -2.077894831187234
+        }
+      },
+      "transfer_position": [
+        9.84,
+        -4.68,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "scene_id": "office_06_diagonal_flow",
+  "schema": "interaction_site_plan/v1",
+  "seat_exemptions": [],
+  "seat_slots": [
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_009_new_dini.01",
+      "ingress": {
+        "position": [
+          7.8,
+          -3.04,
+          0.025
+        ],
+        "yaw": -3.3728294418992096e-15
+      },
+      "owner_entity": "asset_009_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          7.8,
+          -2.25,
+          0.45
+        ],
+        "yaw": -3.3728294418992096e-15
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_010_new_dini.01",
+      "ingress": {
+        "position": [
+          6.28,
+          -0.24,
+          0.025
+        ],
+        "yaw": 1.7669595002935488
+      },
+      "owner_entity": "asset_010_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          7.025,
+          -0.388045,
+          0.45
+        ],
+        "yaw": 1.7669595002935488
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_011_new_dini.01",
+      "ingress": {
+        "position": [
+          5.48,
+          0.4,
+          0.025
+        ],
+        "yaw": -3.135247926468377
+      },
+      "owner_entity": "asset_011_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          5.475,
+          -0.388045,
+          0.45
+        ],
+        "yaw": -3.135247926468377
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_012_new_dini.01",
+      "ingress": {
+        "position": [
+          4.68,
+          -3.04,
+          0.025
+        ],
+        "yaw": 0.025311049142846632
+      },
+      "owner_entity": "asset_012_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          4.7,
+          -2.25,
+          0.45
+        ],
+        "yaw": 0.025311049142846632
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_013_new_dini.01",
+      "ingress": {
+        "position": [
+          5.48,
+          -4.88,
+          0.025
+        ],
+        "yaw": -0.0065099400187418836
+      },
+      "owner_entity": "asset_013_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          5.475,
+          -4.111955,
+          0.45
+        ],
+        "yaw": -0.0065099400187418836
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_014_new_dini.01",
+      "ingress": {
+        "position": [
+          6.28,
+          -4.24,
+          0.025
+        ],
+        "yaw": 1.4005863482126275
+      },
+      "owner_entity": "asset_014_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          7.025,
+          -4.111955,
+          0.45
+        ],
+        "yaw": 1.4005863482126275
+      },
+      "slot_index": 1
+    }
+  ],
+  "workstations": [
+    {
+      "computer_entity": "asset_008_new_imac",
+      "id": "workstation.office_06_diagonal_flow.01",
+      "seat_slot": "seat.asset_009_new_dini.01",
+      "work_site": {
+        "position": [
+          7.8,
+          -2.25,
+          0.72
+        ],
+        "yaw": -3.3728294418992096e-15
+      },
+      "workstation_entity": "asset_007_new_team"
+    }
+  ]
+}

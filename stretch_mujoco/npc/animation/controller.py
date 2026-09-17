@@ -55,9 +55,14 @@ class AnimationController:
         self._deferred_clip: str | None = None
         self._pending_events: list[AnimationEvent] = []
         self._speed_scale = 1.0
+        self.last_sampled_clip: str | None = None
 
     def request(self, clip: str, *, force: bool = False) -> None:
         """Request a clip without interrupting an unsafe mesh frame sequence."""
+        if force:
+            # A forced request starts a new action boundary.  Do not let a
+            # previously deferred interrupt reappear after this request.
+            self._deferred_clip = None
         current = self.clips.get(self.resolved_clip, ClipDefinition())
         if clip != self.resolved_clip and not force:
             if current.interrupt_policy == InterruptPolicy.UNINTERRUPTIBLE:
@@ -130,7 +135,15 @@ class AnimationController:
         requested = "walk" if locomotion == "walk" else self.requested_clip
         self._speed_scale = speed_scale if locomotion == "walk" else 1.0
         clips = self.backend.available_clips
-        resolved = requested if requested in clips else self.graph.fallback_clip
+        # A backend may expose a compatibility pose name (for example
+        # ``seated_idle``) even when the active graph has no registered clip
+        # definition for it.  Never let that name reach the graph lookup below;
+        # fall back to the graph-owned stable clip instead.
+        resolved = (
+            requested
+            if requested in clips and requested in self.clips
+            else self.graph.fallback_clip
+        )
         if resolved not in clips:
             resolved = "idle" if "idle" in clips else clips[0]
         events = self._pending_events
@@ -189,6 +202,7 @@ class AnimationController:
             self._deferred_clip = None
             self.request(deferred, force=True)
         self.backend.sample(self.resolved_clip, self.phase)
+        self.last_sampled_clip = self.resolved_clip
         return tuple(events)
 
     def _crossed_markers(

@@ -1,0 +1,119 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -4.28176309918689,
+        3.350044176046762
+      ],
+      "bounds_z": [
+        -1.193178138312362e-08,
+        0.7517758963892923
+      ],
+      "object_id": "hssd_object_008",
+      "semantic_name": "Supra Sofa Bed",
+      "sit": [
+        -4.28176309918689,
+        2.9000441760467623
+      ],
+      "yaw": 3.141592653589793
+    },
+    {
+      "approach": [
+        -10.679059105273037,
+        1.4186430638049048
+      ],
+      "bounds_z": [
+        -4.86586550722467e-08,
+        1.4730000947627164
+      ],
+      "object_id": "hssd_object_034",
+      "semantic_name": "Logan Queen Panel Bed",
+      "sit": [
+        -10.229059105273036,
+        1.4186430638049048
+      ],
+      "yaw": -1.5707963267948966
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_09_107734110_175999914_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "c5d66378adc7218659055f4279ec6becf795f5411d1ebd50f26c8eb04dc32c14",
+    "population": "0ddf57dd871293d873da2fb7b4061ca6459a054d0a63d53a78c3f56cf03c3e15",
+    "semantic": "d52064538c76591e2810ec56f10ccd13b2574fc9ca76fcc5c8c6b9bde2361615",
+    "source_scene": "a6fb18808055eb7e5a7bd9ece09bd0889caa03a703e0b283ea539495effb6ad2"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -10.926228183,
+        3.597587568,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -7.359556061,
+        7.913920907,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        0.487122606,
+        7.194532017,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -6.646221637,
+        8.633309796,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_09_107734110_175999914.xml"
+}

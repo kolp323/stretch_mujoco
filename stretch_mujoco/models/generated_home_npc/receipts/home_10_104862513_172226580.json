@@ -1,0 +1,136 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -1.6233906916853063,
+        -2.4021035243363786
+      ],
+      "bounds_z": [
+        -1.4773633743346887e-07,
+        1.4264084236241987
+      ],
+      "object_id": "hssd_object_010",
+      "semantic_name": "Pearson Upholstered 57'' Queen Gallery Storage Bed, Ebony",
+      "sit": [
+        -1.6233906916853063,
+        -2.8521035243363784
+      ],
+      "yaw": 3.141592653589793
+    },
+    {
+      "approach": [
+        1.926427593355572,
+        -3.0267654763218896
+      ],
+      "bounds_z": [
+        -3.338565883947569e-07,
+        0.6927754171300642
+      ],
+      "object_id": "hssd_object_013",
+      "semantic_name": "Martin Cabin Bed with Comfort Mattress",
+      "sit": [
+        1.926427593355572,
+        -3.47676547632189
+      ],
+      "yaw": 3.141592653589793
+    },
+    {
+      "approach": [
+        5.7514300063252275,
+        -4.25171969332995
+      ],
+      "bounds_z": [
+        -3.3984895497219406e-07,
+        0.8363404392170469
+      ],
+      "object_id": "hssd_object_041",
+      "semantic_name": "Jessica Single Cabin Bed - Frame Only.",
+      "sit": [
+        5.301430006325227,
+        -4.25171969332995
+      ],
+      "yaw": 1.5707963267948966
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_10_104862513_172226580_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "7a7880b835966bad930cc05d64c43f795e55f81020d83bb284ccf2714842130f",
+    "population": "2861ba772ac505a98aca772ac61c10177da5194f6a74331b7d2d651fbe17d8c0",
+    "semantic": "4890cdf15ae52dd8a5be5472ba290ce91b471e0e59131a7885978a7de2deb4db",
+    "source_scene": "a805fe56d826a48811f94ca7dc981bad44065e6a4150e09a1f738bbe4225fd1e"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        1.7,
+        0.5,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        0.0,
+        -1.0,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        1.0,
+        -0.2,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        0.2,
+        0.8,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_10_104862513_172226580.xml"
+}

@@ -25,6 +25,9 @@ class ObjectType(str, Enum):
     COFFEE_MACHINE = "CoffeeMachine"
     DOOR = "Door"
     COUNTER = "Counter"
+    BED = "Bed"
+    GENERIC = "Generic"
+    SEAT_SLOT = "SeatSlot"
 
 
 class RelationType(str, Enum):
@@ -37,6 +40,7 @@ class RelationType(str, Enum):
     REQUESTED_BY = "REQUESTED_BY"
     RESERVED_BY = "RESERVED_BY"
     ALLOWED_FOR = "ALLOWED_FOR"
+    PART_OF = "PART_OF"
 
 
 class InteractionRole(str, Enum):
@@ -53,6 +57,13 @@ class InteractionRole(str, Enum):
     ROBOT_REQUEST = "robot_request_site"
     ROBOT_DELIVERY = "robot_delivery_site"
     CONVERSATION = "conversation_site"
+    CONVERSATION_SPEAKER = "conversation_speaker_site"
+    CONVERSATION_LISTENER = "conversation_listener_site"
+    HANDOVER_GIVER = "handover_giver_site"
+    HANDOVER_RECEIVER = "handover_receiver_site"
+    HANDOVER_ROBOT = "handover_robot_site"
+    HANDOVER_TRANSFER = "handover_transfer_site"
+    SEAT_INGRESS = "seat_ingress_site"
 
 
 class BindingKind(str, Enum):
@@ -137,10 +148,7 @@ class SemanticWorld:
         self._validate_graph()
 
     @classmethod
-    def from_json(cls, path: str | Path) -> "SemanticWorld":
-        source_path = Path(path).resolve()
-        payload = json.loads(source_path.read_text(encoding="utf-8"))
-
+    def from_v1_json_payload(cls, payload: dict[str, Any], source_path: Path | None = None) -> "SemanticWorld":
         objects: dict[str, SemanticObject] = {}
         for object_id, definition in payload.get("objects", {}).items():
             binding = definition.get("binding", {})
@@ -181,11 +189,106 @@ class SemanticWorld:
         )
 
     @classmethod
+    def _from_v2_payload(cls, payload, source_path=None):
+        aliases = {
+            "furniture.seat": ObjectType.CHAIR,
+            "furniture.bed": ObjectType.BED,
+            "furniture.storage": ObjectType.STORAGE_CABINET,
+            "furniture.workstation": ObjectType.WORKSTATION,
+            "furniture.counter": ObjectType.COUNTER,
+            "device.computer": ObjectType.COMPUTER,
+            "resource.seat_slot": ObjectType.SEAT_SLOT,
+            "region.work": ObjectType.WORKSTATION,
+            "region.meeting": ObjectType.MEETING_TABLE,
+            "region.lounge": ObjectType.COUNTER,
+            "region.snack": ObjectType.COUNTER,
+            "region.home": ObjectType.COUNTER,
+        }
+        objects = {}
+        for object_id, definition in payload.get("entities", {}).items():
+            binding = definition.get("source", {}).get("xml_binding", {})
+            binding_name = binding.get("name")
+            # Region/component entities are topology facts, not MuJoCo bodies.
+            # Preserve their v2 metadata without forcing an invented XML bind.
+            if not binding_name:
+                if str(definition.get("semantic_class", "")).startswith("region."):
+                    # A synthetic site binding makes a component-owned v2
+                    # navigation point inspectable while validate_model skips
+                    # it through the explicit topology marker.
+                    attributes = {
+                        "semantic_class": definition.get("semantic_class"),
+                        "topology_only": True,
+                        "labels": definition.get("labels", {}),
+                        "affordances": definition.get("affordances", []),
+                        "navigation_requirement": definition.get("navigation_requirement"),
+                        "points": definition.get("points", {}),
+                    }
+                    objects[object_id] = SemanticObject(
+                        object_id,
+                        aliases.get(definition.get("semantic_class"), ObjectType.GENERIC),
+                        SemanticBinding(BindingKind.SITE, ""),
+                        attributes,
+                    )
+                    continue
+                raise SemanticValidationError(f"Entity '{object_id}' has no XML binding")
+            attributes = {
+                "semantic_class": definition.get("semantic_class"),
+                "labels": definition.get("labels", {}),
+                "affordances": definition.get("affordances", []),
+                "navigation_requirement": definition.get("navigation_requirement"),
+                "points": definition.get("points", {}),
+            }
+            objects[object_id] = SemanticObject(
+                object_id,
+                aliases.get(definition.get("semantic_class"), ObjectType.GENERIC),
+                SemanticBinding(
+                    _enum_value(BindingKind, binding.get("kind", "body")), binding_name
+                ),
+                attributes,
+            )
+        points = {}
+        for point_id, definition in payload.get("points", {}).items():
+            if not definition.get("owner") or not definition.get("site"):
+                raise SemanticValidationError(f"Point '{point_id}' missing owner/site")
+            role = definition.get("role", InteractionRole.HUMAN_STAND.value)
+            points[point_id] = InteractionPoint(
+                point_id,
+                _enum_value(InteractionRole, role),
+                definition["owner"],
+                definition["site"],
+                dict(definition),
+            )
+        relations = tuple(
+            SemanticRelation(
+                subject=item["subject"],
+                relation=_enum_value(RelationType, item["relation"]),
+                object=item["object"],
+            )
+            for item in payload.get("relations", [])
+        )
+        return cls(
+            objects,
+            relations,
+            points,
+            scene=payload.get("scene_id") or payload.get("scene"),
+            source_path=source_path,
+        )
+
+    @classmethod
+    def from_json(cls, path: str | Path) -> "SemanticWorld":
+        source_path = Path(path).resolve()
+        payload = json.loads(source_path.read_text(encoding="utf-8"))
+        if payload.get("schema_version") == 2 or "entities" in payload:
+            return cls._from_v2_payload(payload, source_path)
+        return cls.from_v1_json_payload(payload, source_path)
+
+    @classmethod
     def for_scene(cls, scene_xml_path: str | Path | None) -> "SemanticWorld | None":
         if scene_xml_path is None:
             return None
         scene_path = Path(scene_xml_path).resolve()
         candidates = (
+            scene_path.with_suffix(".semantic.v2.json"),
             scene_path.with_suffix(".semantic.json"),
             scene_path.with_name(f"{scene_path.stem.removesuffix('_scene')}_semantics.json"),
         )
@@ -255,7 +358,10 @@ class SemanticWorld:
                 # the generated canonical body while preserving user-facing
                 # semantic attributes.
                 self.objects[npc_id] = SemanticObject(
-                    npc_id, ObjectType.EMPLOYEE, SemanticBinding(BindingKind.BODY, body), existing.attributes
+                    npc_id,
+                    ObjectType.EMPLOYEE,
+                    SemanticBinding(BindingKind.BODY, body),
+                    existing.attributes,
                 )
             else:
                 self.objects[npc_id] = SemanticObject(
@@ -286,6 +392,8 @@ class SemanticWorld:
         errors: list[str] = []
         for semantic_object in self.objects.values():
             binding = semantic_object.binding
+            if binding.name == "" and semantic_object.attributes.get("topology_only"):
+                continue
             if mujoco.mj_name2id(model, _MJ_OBJECT_TYPES[binding.kind], binding.name) < 0:
                 errors.append(
                     f"{semantic_object.object_id} binds missing {binding.kind.value} "
@@ -464,6 +572,8 @@ class SemanticWorld:
 
     def object_pose(self, object_id: str, model: mujoco.MjModel, data: mujoco.MjData) -> np.ndarray:
         binding = self.object(object_id).binding
+        if binding.name == "" and self.object(object_id).attributes.get("topology_only"):
+            raise SemanticValidationError(f"Topology-only semantic object '{object_id}' has no physical pose")
         if binding.kind == BindingKind.JOINT:
             raise ValueError("Joint bindings do not expose a Cartesian pose")
         mj_type = _MJ_OBJECT_TYPES[binding.kind]
@@ -499,6 +609,8 @@ class SemanticWorld:
     def pose_snapshot(self, model: mujoco.MjModel, data: mujoco.MjData) -> dict[str, Any]:
         objects: dict[str, Any] = {}
         for object_id, semantic_object in self.objects.items():
+            if semantic_object.attributes.get("topology_only"):
+                continue
             if semantic_object.binding.kind == BindingKind.JOINT:
                 continue
             pose = self.object_pose(object_id, model, data)

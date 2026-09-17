@@ -1198,5 +1198,10 @@
     </body>
     <camera name="overview" mode="targetbody" target="scene_center" pos="0 -20.16 17.1" fovy="48" />
     <camera name="top" mode="targetbody" target="scene_center" pos="0 0 21.6" fovy="45" />
+    <site name="showcase_office_conversation_speaker" pos="-6.7500 3.8500 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_office_conversation_listener" pos="-7.5500 3.8500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_office_handover_giver" pos="-0.5500 -4.7500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_office_handover_receiver" pos="0.6500 -4.7500 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_office_robot_approach" pos="-0.5500 -4.7500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
   </worldbody>
 </mujoco>

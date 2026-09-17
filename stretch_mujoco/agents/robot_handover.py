@@ -45,6 +45,18 @@ class RobotToNpcHandoverBridge:
         self.interaction_yaws = dict(interaction_yaws or {})
         self.timeout_seconds = timeout_seconds
 
+    def _next_sequence(self, npc_id: str) -> int:
+        """Use the simulator's authoritative sequence allocator when present."""
+        system = getattr(self.simulator, "system", None)
+        allocator = getattr(system, "next_sequence", None)
+        if callable(allocator):
+            sequence = int(allocator(npc_id))
+            self._sequences[npc_id] = sequence
+            return sequence
+        sequence = self._sequences.get(npc_id, -1) + 1
+        self._sequences[npc_id] = sequence
+        return sequence
+
     def accept_released_object(
         self,
         robot_id: str,
@@ -64,8 +76,7 @@ class RobotToNpcHandoverBridge:
             session_id=session_id,
         )
         self.coordinator.acknowledge(session.session_id, robot_id, "released")
-        sequence = self._sequences.get(npc_id, -1) + 1
-        self._sequences[npc_id] = sequence
+        sequence = self._next_sequence(npc_id)
         issued_at = float(self.simulator.pull_status().time)
         command = NpcCommand(
             f"{session_id}:receive",
@@ -213,8 +224,7 @@ class RobotToNpcHandoverBridge:
         kind: NpcCommandKind,
         payload: dict[str, object],
     ) -> str:
-        sequence = self._sequences.get(npc_id, -1) + 1
-        self._sequences[npc_id] = sequence
+        sequence = self._next_sequence(npc_id)
         issued_at = float(self.simulator.pull_status().time)
         command = NpcCommand(
             f"{session_id}:{stage}",

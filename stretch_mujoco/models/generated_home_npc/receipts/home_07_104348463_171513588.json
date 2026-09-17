@@ -1,0 +1,102 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -6.163339629802322,
+        13.18319054154358
+      ],
+      "bounds_z": [
+        6.77806520243962e-07,
+        1.3673571944236755
+      ],
+      "object_id": "hssd_object_027",
+      "semantic_name": "Queen Modern Wing Upholstered Bed, Ivory",
+      "sit": [
+        -6.163339629802322,
+        12.73319054154358
+      ],
+      "yaw": 3.141592653589793
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_07_104348463_171513588_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "48cb4c3a448c2d40722fe695e398f05c1c416fac3643cf0fd9779e1ea797a842",
+    "population": "99044817f0b343a428924c438d6357eee4eaa20ed9419cca754b15239423d2a1",
+    "semantic": "80d2858caa893fd20e316d0ec051cd44a6d0125e20c081e2804dd850c91d66eb",
+    "source_scene": "f27bbc51346caef008e5024582b6c5d34f0f0e859cc8a022add10f09e575552a"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -10.37,
+        7.75,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -9.62,
+        7.0,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -8.62,
+        6.75,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -10.37,
+        6.25,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_07_104348463_171513588.xml"
+}

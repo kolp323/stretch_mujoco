@@ -1,0 +1,1699 @@
+{
+  "anchors": {
+    "point.object.001_bottle_024.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__001_bottle_024__approach__01"
+    },
+    "point.object.025_chips-tub_026.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__025_chips-tub_026__approach__01"
+    },
+    "point.object.025_chips-tub_027.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__025_chips-tub_027__approach__01"
+    },
+    "point.object.035_apple_025.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__035_apple_025__approach__01"
+    },
+    "point.object.038_milk-box_022.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__038_milk-box_022__approach__01"
+    },
+    "point.object.043_book_002.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__043_book_002__approach__01"
+    },
+    "point.object.071_can_028.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__071_can_028__approach__01"
+    },
+    "point.object.075_bread_020.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__075_bread_020__approach__01"
+    },
+    "point.object.075_bread_021.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__075_bread_021__approach__01"
+    },
+    "point.object.116_keyboard_001.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__116_keyboard_001__approach__01"
+    },
+    "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.17.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__9a0e617b83c901d346ce9fb020b49bf91442273c__17__approach__01"
+    },
+    "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.18.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__9a0e617b83c901d346ce9fb020b49bf91442273c__18__approach__01"
+    },
+    "point.object.green_apple_023.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__green_apple_023__approach__01"
+    },
+    "point.object.new_cb_desk_2400.0.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_cb_desk_2400__0__approach__01"
+    },
+    "point.object.new_dining_chair.10.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dining_chair__10__approach__01"
+    },
+    "point.object.new_dining_chair.11.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dining_chair__11__approach__01"
+    },
+    "point.object.new_dining_chair.12.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dining_chair__12__approach__01"
+    },
+    "point.object.new_dining_chair.13.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dining_chair__13__approach__01"
+    },
+    "point.object.new_dining_chair.8.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dining_chair__8__approach__01"
+    },
+    "point.object.new_dining_chair.9.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dining_chair__9__approach__01"
+    },
+    "point.object.new_dry_wipe_module.14.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_dry_wipe_module__14__observation__01"
+    },
+    "point.object.new_imac_24.7.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_imac_24__7__observation__01"
+    },
+    "point.object.new_teaming_table.6.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__new_teaming_table__6__approach__01"
+    },
+    "point.object.procedural_Area Rug.16.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Area Rug__16__observation__01"
+    },
+    "point.object.procedural_Area Rug.5.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Area Rug__5__observation__01"
+    },
+    "point.object.procedural_Office Plant.15.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Office Plant__15__observation__01"
+    },
+    "point.object.procedural_Office Plant.19.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Office Plant__19__observation__01"
+    },
+    "point.object.procedural_Office Plant.3.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Office Plant__3__observation__01"
+    },
+    "point.object.procedural_Office Plant.32.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Office Plant__32__observation__01"
+    },
+    "point.object.procedural_Snack Counter.29.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Snack Counter__29__approach__01"
+    },
+    "point.object.procedural_Snack Storage Cabinet.30.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Snack Storage Cabinet__30__approach__01"
+    },
+    "point.object.procedural_Waste Bin.31.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Waste Bin__31__observation__01"
+    },
+    "point.object.procedural_Waste Bin.4.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__object__procedural_Waste Bin__4__observation__01"
+    },
+    "point.spawn.anchor.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__01"
+    },
+    "point.spawn.anchor.02": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__02"
+    },
+    "point.spawn.anchor.03": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__03"
+    },
+    "point.spawn.anchor.04": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__04"
+    },
+    "point.spawn.anchor.05": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__05"
+    },
+    "point.spawn.anchor.06": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__06"
+    },
+    "point.spawn.anchor.07": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__07"
+    },
+    "point.spawn.anchor.08": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__08"
+    },
+    "point.spawn.anchor.09": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__09"
+    },
+    "point.spawn.anchor.10": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__spawn__anchor__10"
+    },
+    "point.zone.lounge.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__zone__lounge__approach__01"
+    },
+    "point.zone.meeting.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__zone__meeting__approach__01"
+    },
+    "point.zone.snack.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__zone__snack__approach__01"
+    },
+    "point.zone.work.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__office_10_social_core__point__zone__work__approach__01"
+    }
+  },
+  "navigation": {
+    "agent_radius": 0.16,
+    "clearance": 0.06,
+    "exclude_body_roots": [
+      "base_link"
+    ],
+    "resolution": 0.08,
+    "surface": "office_floor"
+  },
+  "profile_id": "office_10_social_core_coverage",
+  "routes": [
+    {
+      "actions": [
+        "move_to",
+        "attend_meeting"
+      ],
+      "from": "point.spawn.anchor.01",
+      "mode": "fixed_contract",
+      "route_id": "business_work_to_meeting",
+      "to": "point.zone.meeting.approach.01"
+    },
+    {
+      "actions": [
+        "move_to",
+        "take_break"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "mode": "audited_dynamic",
+      "route_id": "business_meeting_to_snack",
+      "to": "point.zone.snack.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0000",
+      "to": "point.object.001_bottle_024.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0001",
+      "to": "point.object.025_chips-tub_026.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0002",
+      "to": "point.object.025_chips-tub_027.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0003",
+      "to": "point.object.035_apple_025.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0004",
+      "to": "point.object.038_milk-box_022.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0005",
+      "to": "point.object.043_book_002.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0006",
+      "to": "point.object.071_can_028.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0007",
+      "to": "point.object.075_bread_020.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0008",
+      "to": "point.object.075_bread_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0009",
+      "to": "point.object.116_keyboard_001.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0010",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.17.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0011",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.18.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0012",
+      "to": "point.object.green_apple_023.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0013",
+      "to": "point.object.new_cb_desk_2400.0.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0014",
+      "to": "point.object.new_dining_chair.10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0015",
+      "to": "point.object.new_dining_chair.11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0016",
+      "to": "point.object.new_dining_chair.12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0017",
+      "to": "point.object.new_dining_chair.13.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0018",
+      "to": "point.object.new_dining_chair.8.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0019",
+      "to": "point.object.new_dining_chair.9.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0020",
+      "to": "point.object.new_dry_wipe_module.14.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0021",
+      "to": "point.object.new_imac_24.7.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0022",
+      "to": "point.object.new_teaming_table.6.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0023",
+      "to": "point.object.procedural_Area Rug.16.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0024",
+      "to": "point.object.procedural_Area Rug.5.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0025",
+      "to": "point.object.procedural_Office Plant.15.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0026",
+      "to": "point.object.procedural_Office Plant.19.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0027",
+      "to": "point.object.procedural_Office Plant.3.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0028",
+      "to": "point.object.procedural_Office Plant.32.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0029",
+      "to": "point.object.procedural_Snack Counter.29.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0030",
+      "to": "point.object.procedural_Snack Storage Cabinet.30.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0031",
+      "to": "point.object.procedural_Waste Bin.31.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0032",
+      "to": "point.object.procedural_Waste Bin.4.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0033",
+      "to": "point.zone.lounge.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0034",
+      "to": "point.zone.meeting.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0035",
+      "to": "point.zone.snack.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0037",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0038",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0039",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0040",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0041",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0042",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0043",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0044",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0045",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0046",
+      "to": "point.spawn.anchor.10"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0000",
+      "to": "point.object.001_bottle_024.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0001",
+      "to": "point.object.025_chips-tub_026.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0002",
+      "to": "point.object.025_chips-tub_027.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0003",
+      "to": "point.object.035_apple_025.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0004",
+      "to": "point.object.038_milk-box_022.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0005",
+      "to": "point.object.043_book_002.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0006",
+      "to": "point.object.071_can_028.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0007",
+      "to": "point.object.075_bread_020.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0008",
+      "to": "point.object.075_bread_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0009",
+      "to": "point.object.116_keyboard_001.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0010",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.17.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0011",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.18.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0012",
+      "to": "point.object.green_apple_023.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0013",
+      "to": "point.object.new_cb_desk_2400.0.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0014",
+      "to": "point.object.new_dining_chair.10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0015",
+      "to": "point.object.new_dining_chair.11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0016",
+      "to": "point.object.new_dining_chair.12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0017",
+      "to": "point.object.new_dining_chair.13.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0018",
+      "to": "point.object.new_dining_chair.8.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0019",
+      "to": "point.object.new_dining_chair.9.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0020",
+      "to": "point.object.new_dry_wipe_module.14.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0021",
+      "to": "point.object.new_imac_24.7.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0022",
+      "to": "point.object.new_teaming_table.6.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0023",
+      "to": "point.object.procedural_Area Rug.16.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0024",
+      "to": "point.object.procedural_Area Rug.5.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0025",
+      "to": "point.object.procedural_Office Plant.15.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0026",
+      "to": "point.object.procedural_Office Plant.19.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0027",
+      "to": "point.object.procedural_Office Plant.3.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0028",
+      "to": "point.object.procedural_Office Plant.32.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0029",
+      "to": "point.object.procedural_Snack Counter.29.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0030",
+      "to": "point.object.procedural_Snack Storage Cabinet.30.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0031",
+      "to": "point.object.procedural_Waste Bin.31.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0032",
+      "to": "point.object.procedural_Waste Bin.4.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0033",
+      "to": "point.zone.lounge.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0035",
+      "to": "point.zone.snack.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0036",
+      "to": "point.zone.work.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0037",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0038",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0039",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0040",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0041",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0042",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0043",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0044",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0045",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.meeting.approach.01",
+      "route_id": "coverage_01_0046",
+      "to": "point.spawn.anchor.10"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0000",
+      "to": "point.object.001_bottle_024.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0001",
+      "to": "point.object.025_chips-tub_026.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0002",
+      "to": "point.object.025_chips-tub_027.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0003",
+      "to": "point.object.035_apple_025.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0004",
+      "to": "point.object.038_milk-box_022.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0005",
+      "to": "point.object.043_book_002.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0006",
+      "to": "point.object.071_can_028.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0007",
+      "to": "point.object.075_bread_020.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0008",
+      "to": "point.object.075_bread_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0009",
+      "to": "point.object.116_keyboard_001.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0010",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.17.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0011",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.18.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0012",
+      "to": "point.object.green_apple_023.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0013",
+      "to": "point.object.new_cb_desk_2400.0.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0014",
+      "to": "point.object.new_dining_chair.10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0015",
+      "to": "point.object.new_dining_chair.11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0016",
+      "to": "point.object.new_dining_chair.12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0017",
+      "to": "point.object.new_dining_chair.13.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0018",
+      "to": "point.object.new_dining_chair.8.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0019",
+      "to": "point.object.new_dining_chair.9.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0020",
+      "to": "point.object.new_dry_wipe_module.14.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0021",
+      "to": "point.object.new_imac_24.7.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0022",
+      "to": "point.object.new_teaming_table.6.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0023",
+      "to": "point.object.procedural_Area Rug.16.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0024",
+      "to": "point.object.procedural_Area Rug.5.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0025",
+      "to": "point.object.procedural_Office Plant.15.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0026",
+      "to": "point.object.procedural_Office Plant.19.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0027",
+      "to": "point.object.procedural_Office Plant.3.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0028",
+      "to": "point.object.procedural_Office Plant.32.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0029",
+      "to": "point.object.procedural_Snack Counter.29.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0030",
+      "to": "point.object.procedural_Snack Storage Cabinet.30.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0031",
+      "to": "point.object.procedural_Waste Bin.31.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0032",
+      "to": "point.object.procedural_Waste Bin.4.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0034",
+      "to": "point.zone.meeting.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0035",
+      "to": "point.zone.snack.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0036",
+      "to": "point.zone.work.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0037",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0038",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0039",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0040",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0041",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0042",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0043",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0044",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0045",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.lounge.approach.01",
+      "route_id": "coverage_02_0046",
+      "to": "point.spawn.anchor.10"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0000",
+      "to": "point.object.001_bottle_024.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0001",
+      "to": "point.object.025_chips-tub_026.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0002",
+      "to": "point.object.025_chips-tub_027.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0003",
+      "to": "point.object.035_apple_025.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0004",
+      "to": "point.object.038_milk-box_022.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0005",
+      "to": "point.object.043_book_002.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0006",
+      "to": "point.object.071_can_028.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0007",
+      "to": "point.object.075_bread_020.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0008",
+      "to": "point.object.075_bread_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0009",
+      "to": "point.object.116_keyboard_001.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0010",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.17.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0011",
+      "to": "point.object.9a0e617b83c901d346ce9fb020b49bf91442273c.18.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0012",
+      "to": "point.object.green_apple_023.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0013",
+      "to": "point.object.new_cb_desk_2400.0.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0014",
+      "to": "point.object.new_dining_chair.10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0015",
+      "to": "point.object.new_dining_chair.11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0016",
+      "to": "point.object.new_dining_chair.12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0017",
+      "to": "point.object.new_dining_chair.13.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0018",
+      "to": "point.object.new_dining_chair.8.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0019",
+      "to": "point.object.new_dining_chair.9.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0020",
+      "to": "point.object.new_dry_wipe_module.14.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0021",
+      "to": "point.object.new_imac_24.7.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0022",
+      "to": "point.object.new_teaming_table.6.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0023",
+      "to": "point.object.procedural_Area Rug.16.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0024",
+      "to": "point.object.procedural_Area Rug.5.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0025",
+      "to": "point.object.procedural_Office Plant.15.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0026",
+      "to": "point.object.procedural_Office Plant.19.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0027",
+      "to": "point.object.procedural_Office Plant.3.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0028",
+      "to": "point.object.procedural_Office Plant.32.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0029",
+      "to": "point.object.procedural_Snack Counter.29.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0030",
+      "to": "point.object.procedural_Snack Storage Cabinet.30.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0031",
+      "to": "point.object.procedural_Waste Bin.31.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0032",
+      "to": "point.object.procedural_Waste Bin.4.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0033",
+      "to": "point.zone.lounge.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0034",
+      "to": "point.zone.meeting.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0036",
+      "to": "point.zone.work.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0037",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0038",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0039",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0040",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0041",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0042",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0043",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0044",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0045",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.snack.approach.01",
+      "route_id": "coverage_03_0046",
+      "to": "point.spawn.anchor.10"
+    }
+  ],
+  "scene": "office_10_social_core_npc.xml",
+  "scene_sha256": "d4292bd4a2553715a71c074a533847b7019c39871accf411440515ce071548df",
+  "schema_version": 1
+}

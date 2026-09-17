@@ -1,0 +1,9 @@
+{
+  "scene_id": "minimal_scene",
+  "zones": [{"type": "work", "bounds": [-4, -2, -1, 1]}],
+  "assets": [
+    {"object_id": "chair_01", "body": "chair_01", "category": "chair", "semantic_name": "Office chair", "bounds_mujoco": [[0.75, -0.25, 0], [1.25, 0.25, 0.8]]},
+    {"object_id": "table_01", "body": "table_01", "category": "table", "semantic_name": "Table", "bounds_mujoco": [[0.5, -2.5, 0], [1.5, -1.5, 0.7]]},
+    {"object_id": "cup_01", "body": "cup_01", "category": "interactive", "semantic_name": "Cup", "support": "table_01", "grasp_site": "cup_01_grasp_site", "bounds_mujoco": [[0.9, -2.1, 0.7], [1.1, -1.9, 0.9]]}
+  ]
+}

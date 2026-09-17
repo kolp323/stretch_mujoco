@@ -1,416 +1,385 @@
-# NPC 系统指南
+# NPC 系统使用指南
 
-本指南是本仓库 NPC（Non-Player Character）系统的当前使用入口。它说明代码和
-资产各自的职责、从配置到 MuJoCo 场景的构建流程，以及 Agent、动作回执和会话
-如何组合。实现迁移的逐项历史证据在 `aaa_workspace/docs/current.md`；早期设计
-目标保留在 `docs/npc_system_optimization.md`，不应把它当作当前接口说明。
+本文件是办公室与家庭场景 NPC 系统的使用入口。当前事实源是严格的
+`scene_npc_config/v1` 配置和 active 编译目录；它取代了早期按办公室/家庭分别
+预处理的 NPC 派生文件。实现与验证记录见
+[`aaa_workspace/docs/current.md`](../aaa_workspace/docs/current.md) 的“办公室/家庭统一语义场景编译”章节。
 
-## 1. 能力边界
+## 1. 先确认什么是“有效配置”
 
-系统将“谁要做什么”和“MuJoCo 中是否已经完成”分开处理。
-
-- `agents/` 维护员工的意图、日程、任务、会话和语义提交；它不会自行宣布动作
-  成功。
-- `npc/` 为每个 NPC 建立独立的运动、动画、物体附着和命令状态机。
-- MuJoCo 是姿态、碰撞、动画帧可见性和 attachment 的事实来源。
-- `semantics/` 只在收到成功的物理回执并完成验证后接收世界状态效果。
-
-因此，逻辑任务完成、动画播放完成和物理动作完成不是同一件事。带 marker 的
-动作（例如拾取、放置、交接）必须等到对应 marker 和物理回执；移动必须由
-`NpcController` 的实时导航完成；未知 NPC、过期 sequence、忙碌状态、缺少 clip
-或无效资产都会得到失败回执，而不是静默回退。
-
-当前系统支持 deterministic OBJ mesh-sequence 动画、多人独立控制、导航/转向、
-坐下与起立、受控的拾取/放置/交接、可选的 Agent 会话和离线回放。生产 SMPL-X
-资产、AMASS 动作和外部纹理是本地受限资产；仓库自带 CesiumMan preview bundle，
-仅用于可复现的示例和测试。
-
-## 2. 目录与所有权
+运行时应从以下链路加载，不应直接挑选旧的 `*_npc.xml` 或手改生成 JSON：
 
 ```text
-stretch_mujoco/
-├── npc/                         # embodied NPC 协议、控制器、场景构建
-│   ├── protocol.py              # 命令、回执、runtime state 的可序列化契约
-│   ├── system.py                # 多 NPC 注册、顺序、幂等和 attachment claim
-│   ├── controller.py            # 单 NPC 生命周期与 MuJoCo 交互
-│   ├── locomotion.py            # 实时导航和朝向对齐
-│   ├── animation/               # graph、marker、mesh-sequence backend
-│   ├── appearance_pipeline/     # 外观 catalog、图层和烘焙
-│   └── scene_builder.py         # population + manifest -> MJCF
-├── agents/                      # 员工意图、动作 recipe、driver、会话
-├── semantics/                   # 语义世界；只消费已验证的效果
-├── humanoid/                    # SMPL-X/AMASS intake 与 animation baker
-├── models/
-│   ├── office_population*.json  # population 配置
-│   ├── npc_assets.example.json  # 可再分发 preview manifest
-│   ├── appearance_recipes/      # 版本化人设/外观 recipe 和 lock
-│   ├── accessories/             # 版本化配饰 recipe/runtime 配置
-│   └── assets/humanoid/         # preview、sources、private、generated 资产边界
-├── tools/                       # build、validate、render 和 intake CLI
-└── tests/                       # schema、assets、controller、agent 回归测试
+scene_npc_configs/catalog.json
+        │ 列出 20 个受控场景源配置
+        ▼
+scene_npc_config/v1（每场景的语义、人口、业务路线）
+        │ + source MJCF/manifest + semantic policy + NPC catalog
+        ▼
+generated_scene_npc/active/active_catalog.json
+        │ 指向一个不可变的内容寻址 build
+        ▼
+<build>/<scene_id>/{*_npc.xml, population, semantic.v2,
+                   semantic.v1, semantic_coverage, trajectory_profile, receipt}
 ```
 
-运行时的单向数据流如下：
+截至本文档更新时，active build 是
+`6ecc0ea9c8d86957031ed5ebac761c8d52a31fac9d039d54b48462a6e30896ff`，入口为：
 
 ```text
-population JSON + asset manifest + scene/profile
-                    │  (严格 hash/schema preflight)
-                    ▼
-            scene_builder -> MJCF -> NpcSystem
-                                      │
-Agent ActionCommand -> ActionDriver -> NpcCommand -> NpcController -> MuJoCo
-                                      │                              │
-                                      └──── NpcCommandReceipt ◄───────┘
-                                                     │
-                                                     ▼
-                                           validated semantic effect
+stretch_mujoco/models/generated_scene_npc/active/active_catalog.json
 ```
 
-不要绕过 `NpcSystem.submit()` 直接修改 controller 或语义世界。`NpcSystem` 负责
-command ID 幂等、每个 NPC 的递增 sequence、附件的跨 NPC claim 和待消费 receipts；
-绕过它会破坏这些保证。
+它包含全部 20 个场景：10 个办公室和 10 个家庭。全量产物中共有 1,310 个已注册
+语义实体、1,350 个 required navigation point、62 个 NPC 实例和 4,100 条路线；
+`unresolved`、`unbound`、`unreachable`、显式豁免均为 0，所有场景均强连通。
 
-## 3. 快速验证与构建
+`active_catalog.json` 只存 scene ID 和 build 根目录；加载某一场景时，先读取其
+`build_root`，再拼接 `<build_root>/<scene_id>/`。例如 office_02 的有效 population 是：
 
-以下命令在仓库根目录执行。preview population 不需要私有 SMPL-X 资源；production
-population 需要本地 `generated/` 和 `private/` 投影已就绪。
-
-```bash
-# 1. 验证 population、manifest、散列、OBJ 拓扑和 texture 可读性。
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run validate_npc_assets \
-  --population stretch_mujoco/models/office_population.json
-
-# 2. 兼容入口：生成可 include 的 NPC-only MJCF。
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run build_npc_scene \
-  --population stretch_mujoco/models/office_population.json \
-  --output /tmp/npc_preview.xml
-
-# 3. 正式入口：由 population.scene 自动组合完整办公室 + NPC MJCF，
-#    并写入同名 composition receipt；不接受独立 scene 参数。
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run compose_npc_scene \
-  --population stretch_mujoco/models/office_population.json \
-  --output outputs/npc_preview_office.xml
-
-# 4. 运行核心回归测试。
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
-  tests/test_npc_assets.py tests/test_npc_schema.py \
-  tests/test_npc_system.py tests/test_npc_scene_builder.py
+```text
+stretch_mujoco/models/generated_scene_npc/active/builds/
+  6ecc0ea9c8d86957031ed5ebac761c8d52a31fac9d039d54b48462a6e30896ff/
+  office_02_cross_axis/office_02_cross_axis.population.json
 ```
 
-标准运行入口也可直接接收 population；它会在系统临时目录生成/复用组合 MJCF，且
-`population.scene` 是唯一基础场景来源。可选 `--semantics` 用于新场景的显式语义图：
+生成目录是可验证投影，不是编辑入口。修改必须从第 4 节的源配置开始，然后重新发布
+active build。
 
-```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run launch_sim --headless \
-  --population stretch_mujoco/models/office_population.json \
-  --semantics stretch_mujoco/models/office_semantics.json
-```
+## 2. 当前场景、人口与业务路线
 
-schema-v2 的 `population.trajectory_profile` 是路线事实源，会直接传入 `NpcSystem` 和
-action driver；MJCF 的 `npc_trajectory_profile` custom text 只供 schema-v1/legacy scene
-fallback，新 population 不需要同时写它。旧 schema-v2 文件中的 `agent_id` 仍可读取，
-但它只是兼容别名；具身运行时、语义对象和动作协议统一以 `npcs` 的映射键 `npc_id` 为准。
-`capabilities` 会在 planner 和 runtime action validation 中约束 locomotion、sit、
-conversation、object handover 与 computer use；idle/stand-up 保持 recovery 可用。
-新语义场景可在 interaction point 的 attributes 中用 `binding` 声明 `location`、
-`seat_navigation`、`placement`、`object_approach` 或 `robot_request`；对话/交接 role site
-使用 `conversation_role`/`handover_role` 加 `participants` 与 `participant`。可选 `yaw`
-随 site 一起声明，避免在 Python 中加入场景专用坐标或名称。
+所有有效源配置由
+`stretch_mujoco/models/scene_npc_configs/catalog.json` 列出。办公室配置在
+`office/`，家庭配置在 `home/`。
 
-schema-v2 population 可用 `interaction_templates` 为整个 `npcs` roster 声明 wildcard
-互动站位。`conversation` 必须有 `speaker` 和 `listener`，`handover` 必须有 `giver` 和
-`receiver`；每个角色写 `{ "site": "...", "yaw": ... }`，其中 `yaw` 可省略。模板只会
-为 roster 中不同的两个 NPC 展开：每个有序 pair 都有一组角色站位，所以 `(A, B)` 的第一位
-分别是 speaker/giver，`(B, A)` 则交换实际扮演该角色的 NPC。模板 site 必须是该 scene 的
-真实 site；运行时以 semantic world 的 interaction points 校验，composition 也会对编译后的
-MuJoCo model 复核。
+| 场景 | 人数 | 当前 NPC |
+| --- | ---: | --- |
+| `office_01_linear_bench` | 3 | Alex、Morgan、Jordan |
+| `office_02_cross_axis` | 4 | Alex、Priya、Morgan、Jordan |
+| `office_03_long_gallery` | 2 | Alex、Morgan |
+| `office_04_central_meeting` | 4 | Alex、Priya、Morgan、Jordan |
+| `office_05_team_clusters` | 3 | Alex、Priya、Jordan |
+| `office_06_diagonal_flow` | 3 | Alex、Morgan、Jordan |
+| `office_07_u_bench` | 3 | Alex、Priya、Morgan |
+| `office_08_dual_island` | 4 | Alex、Priya、Morgan、Jordan |
+| `office_09_staggered_rows` | 2 | Alex、Jordan |
+| `office_10_social_core` | 4 | Alex、Priya、Morgan、Jordan |
+| `home_01_102344115` 至 `home_10_104862513_172226580` | 各 3 | Alex、Jordan、Morgan |
 
-站位优先级是显式 semantic `conversation_role`/`handover_role` pair binding、population
-wildcard template、旧的 legacy fallback，依次降低。显式 handover binding 的 yaw 也按角色
-逐项覆盖：未声明的角色继续继承 wildcard yaw；没有模板时才使用 legacy yaw。迁移旧
-schema-v2 population 时，在保留 `schema_version: 2` 的前提下加入模板，并把原先 Python
-常量对应的 site 名称写入配置；不含模板的旧 schema-v2 与 schema-v1 会继续使用 legacy
-fallback。
+NPC 的 canonical ID 分别为 `npc_alex_chen`、`npc_jordan_patell`、
+`npc_morgan_lee` 与 `npc_priya_narayanan`。当前 62 个实例的分布为 Alex 20、Jordan
+18、Morgan 18、Priya 6；其余 6 个 catalog 人设可供后续场景选用，但尚未出现在 active
+scene roster 中。
 
-生产 population 的常用预检是：
+每个场景另外都有两条显式业务路线：办公室为 `work_to_meeting` 和
+`meeting_to_snack`；家庭为 `living_to_kitchen` 和 `bedroom_to_living`。编译器会再从
+每个 NPC spawn 自动生成到所有 required navigation point 的 coverage route。覆盖路线不应
+手写或删改，它们是“每位 NPC 都能到达每个有意义区域”的可验证保证。
 
-```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run validate_npc_assets \
-  --population stretch_mujoco/models/office_population.production.example.json
+## 3. 资源地图与职责
 
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run build_npc_scene \
-  --population stretch_mujoco/models/office_population.production.example.json \
-  --output /tmp/npc_production.xml
-```
+| 资源 | 位置 | 用途与编辑规则 |
+| --- | --- | --- |
+| 有效场景清单 | `models/scene_npc_configs/catalog.json` | 20 个源配置的唯一清单；新增场景后才加入。 |
+| 单场景配置 | `models/scene_npc_configs/office/*.json`、`home/*.json` | 唯一的语义点、人口、业务路线、导航和失败策略编辑入口。 |
+| 办公室人口方案 | `models/scene_npc_configs/office_population_plans.json` | 各办公室 2–4 人 roster 的共享输入。 |
+| 家庭 slot 初始资源 | `models/assets/home_scenes/npc_slot_overrides.json` | 家庭历史 slot 的可审计输入；生成后坐标已写回每户配置。 |
+| 场景基础资产 | `models/assets/office_scenes/`、`models/assets/home_scenes/` | 原始 MJCF 和 manifest；配置引用它们，编译器不修改源 XML。 |
+| 分类 policy | `models/semantic_policies/office.json`、`home.json` | 将 manifest/XML 实体映射为 semantic class、affordance 和点位 bundle。 |
+| 家庭实例例外 | `models/semantic_policies/home_scene_overrides.json` | reviewed 的每户 entity override 入口；当前为空。不能用无理由豁免绕过 coverage。 |
+| NPC catalog | `models/office_population.production.example.json` | active 配置目前引用的 schema-v2 roster/embodiment 输入；含 10 位经 catalog 描述的人设。 |
+| 资产与外观 | `models/assets/humanoid/`、`models/appearance_recipes/`、`models/accessories/` | manifest、appearance catalog、动画、配饰和受限资产的归属位置。配置只能引用 manifest 中已验证的 bundle/appearance。 |
+| 家庭 slot/room 溯源 | `models/generated_scene_npc/provenance/home_slot_migration.json`、`home_room_overlays.json` | 记录 legacy slot 到可达格点的投影，以及由房间 hint 得到的 room seed；只读审计资源。 |
+| active 产物 | `models/generated_scene_npc/active/` | 正式加载入口与不可变 build；只能由 audit 发布。 |
+| fixture | `models/scene_npc_configs/fixtures/minimal_scene.*` | schema/compiler 测试样例，不能登记到 active catalog。 |
 
-`build_npc_scene` 在写入前加载基场景、验证 population 与 manifest，并为每个 NPC
-生成稳定命名的 mocap body、visual mesh frame、碰撞体和 interaction site。它保留为
-NPC-only include 的兼容入口；追加 `--include-base-scene` 可以生成 combined MJCF。
+仍保留但不是办公室/家庭的当前事实源的资源：
 
-正式加载使用 `compose_npc_scene`：它以 `population.scene` 为唯一基场景来源，不允许
-再传一个会冲突的 scene 参数；产物编译 MuJoCo、验证每个 canonical body、handover
-site 与 spawn site，并写入 population、base scene、manifest 和生成场景的 SHA-256
-receipt。相同输入会复用 receipt 完整且可编译的产物。`load_composed_npc_runtime()` 是
-Python facade，会从同一个 population 同时构造 `MjModel`、`NpcSystem`、
-`SemanticWorld` 与 `OfficeAgentRuntime`，避免 body 和 agent ID 分别加载导致的
-`unknown_npc`/semantic binding conflict。
+- `models/generated_office_npc/`、`models/generated_home_npc/`：旧的预处理投影，供兼容测试、
+  demo 或历史流程使用；不得作为新增语义/路线/人口的编辑入口。
+- `models/office_population.json`：preview 示例；
+  `office_population.production.example.json` 是可复用 roster/资产 catalog 输入，不等同于
+  某一个 active 办公室场景。
+- `npc/trajectory_profiles/office_v1.json` 和 MJCF `npc_trajectory_profile` custom text：
+  legacy fallback。新统一场景使用 active build 中同场景生成的
+  `*.trajectory_profile.json`。
 
-MuJoCo 的 `MjModel` 编译后不能热插入 body；要改变人数、appearance 或 spawn，请改
-population 后重新 compose/reload。`recording/native_scene.py` 的 humanoid clone 仅是
-legacy recording fixture，不能作为 production NPC 加载路径。生成的 MJCF、wrapper、
-receipt 与视频都应写入被忽略的 `outputs/` 或 `/tmp`，不得加入版本控制；基础 office
-XML 不会被该流程修改。
+## 4. `scene_npc_config/v1`：需要配置什么
 
-## 4. Population 配置
+配置由 `stretch_mujoco.npc.scene_config.load_scene_npc_config()` 严格读取：重复 JSON key、
+未知字段、未开启的发现源、重复 NPC/spawn、无效导航参数和不完整 coverage contract 都会失败。
+相对路径一律相对于配置文件本身，而不是当前工作目录。
 
-`models/office_population.json` 是可分发 preview 示例，
-`models/office_population.production.example.json` 是需要本地受限资产的 production
-示例。schema 当前为 v2。顶层关键字段如下：
+最小结构如下；fixture 中有一份可运行的完整样例：
+`models/scene_npc_configs/fixtures/minimal_scene.json`。
 
 ```json
 {
-  "schema_version": 2,
-  "scene": "office_scene.xml",
-  "asset_manifest": "npc_assets.example.json",
-  "clock": {"start": "09:00", "minutes_per_second": 1.0},
-  "npcs": {
-    "employee_01": {
-      "profile": {"display_name": "Alex Chen", "role": "Operations Specialist"},
-      "embodiment": {
-        "bundle": "cesium_man_preview_v1",
-        "appearance": "cesium_default_v1",
-        "animation_graph": "office_humanoid_v1",
-        "collision_profile": "adult_humanoid_v1",
-        "scale": 1.0
-      },
-      "spawn": {"location": "workstation_left", "site": "desk_left_work_site", "yaw": 3.1415926},
-      "capabilities": ["locomotion", "sit"],
-      "needs": {"hunger": 0.22, "thirst": 0.30, "fatigue": 0.18},
-      "schedule": []
+  "schema": "scene_npc_config/v1",
+  "scene": {
+    "id": "my_scene",
+    "kind": "office",
+    "source_mjcf": "../../assets/office_scenes/my_scene.xml",
+    "source_manifest": "../../assets/office_scenes/my_scene.json",
+    "semantic_policy": "../../semantic_policies/office.json",
+    "npc_catalog": "../../office_population.production.example.json",
+    "navigation": {
+      "surface": "office_floor",
+      "planner": "collision_geometry_v1",
+      "agent_radius": 0.16,
+      "clearance": 0.06,
+      "resolution": 0.08
     }
+  },
+  "semantic_registration": {
+    "strict_coverage": true,
+    "discover": {
+      "manifest_assets": true,
+      "manifest_zones": true,
+      "xml_semantic_sites": true
+    },
+    "region_overrides": {},
+    "entity_overrides": {},
+    "custom_targets": {}
+  },
+  "population": {
+    "members": [
+      {
+        "npc": "npc_alex_chen",
+        "spawn": "point.zone.work.approach.01",
+        "initial_region": "zone.work"
+      }
+    ]
+  },
+  "route_coverage": {
+    "origins": "all_population_spawns",
+    "targets": "all_required_navigation_points",
+    "connectivity": "strongly_connected",
+    "preflight": "required"
+  },
+  "routes": [],
+  "interactions": {},
+  "runtime": {"max_replans": 3, "route_failure": "fail"}
+}
+```
+
+`scene.navigation` 必须与实际碰撞模型一致。当前办公室使用 `office_floor`、半径
+0.16 m、额外 clearance 0.06 m、resolution 0.08 m；家庭使用
+`hssd_floor_collision`、半径 0.16 m、clearance 0、resolution 0.06 m。家庭不额外膨胀
+障碍物是为了不把真实可通行的窄门离散为断开的导航岛。
+
+`population.members` 是一个场景的实例 roster：`npc` 必须存在于 `npc_catalog.npcs`，
+`spawn` 必须是唯一、带 `navigation` 和 `spawn` usage 的注册点，`initial_region` 必须是
+已注册实体。编译后的 population 会保留 catalog 中的 profile、embodiment、capability、
+need 与 schedule，并把 spawn site/yaw 改为本场景的点位。
+
+`routes` 是显式业务意图，而非世界坐标轨迹。每条路线需有唯一 `id`、不同的 `from`/`to`、
+非空 `actions`，并选择 `fixed_contract`、`audited_dynamic` 或 `optional`。端点既可写
+navigation point ID，也可写语义实体/区域 ID；后者会解析到该实体的稳定 navigation point。
+运行前，trajectory profile 会基于当前碰撞几何求路径，而不会复用可能失效的 waypoint。
+
+## 5. 注册语义点、区域和例外
+
+编译器始终从三类来源发现信息：manifest assets、manifest zones 和 XML semantic/action
+sites。三者在 `discover` 中必须全部为 `true`。发现到的实体先由 policy 分类，随后生成
+可达 navigation/action point 并写入 `semantic.v2.json`；`semantic.json` 只是保守的 v1
+兼容投影。
+
+大多数新增资产只需更新 manifest 和对应 policy；不要在 Agent 或 Python 中硬编码坐标。
+需要场景特化时使用以下字段：
+
+- `custom_targets`：新增明确的自由点。ID 必须以 `point.` 开头，包含 `owner`、二维或三维
+  `position`、`yaw` 和非空 `usages`。典型 usage 为 `navigation` + `spawn`、`activity` 或
+  某个业务标签。给定位置必须已在主可达连通分量内；编译器会拒绝不自由或不可达的点。
+- `region_overrides`：新增或修正 `room.*`/`zone.*` 区域。当前仅支持
+  `geometry: {"mode": "seed_and_component", "seed": [x, y, z]}`，且必须标记
+  `required: true`。这表示从种子所在的可达分量定义区域，而不是伪造房间边界。
+- `entity_overrides`：纠正单一实体的 `semantic_class`、`affordances`、
+  `navigation_requirement` 和 `point_bundle`。可选 `explicit_point` 或
+  `action_navigation_site` 用于已有稳定站点。
+- `exemption`：只允许在 `navigation_requirement: "none"` 时使用，且必须给出具体
+  `reason`；active 场景目前不含任何 exemption。优先修复 manifest/XML/policy，而不是豁免。
+
+例如，为家庭新增可达活动点可写为：
+
+```json
+"custom_targets": {
+  "point.home.reading_area": {
+    "owner": "room.living_room",
+    "position": [-8.4, 1.2],
+    "yaw": 1.57,
+    "usages": ["navigation", "activity"]
   }
 }
 ```
 
-`profile` 由 Agent 层使用；`embodiment` 选择经 manifest 认证的 bundle、appearance、
-动画图和尺度；`spawn.site` 必须存在于场景；capabilities 决定 Agent 可规划的行为。
-当顶层提供 `appearance_catalog` 时，每个 NPC 还必须提供 `visual_identity`，并且
-`appearance_config` 中的 `skin`、`hair`、`top`、`bottom`、`shoes` 选择必须与该
-identity 的 catalog 图层完全一致。
+区域、对象和 XML action site 的注册结果应以生成的 `semantic.v2.json` 为准。每个实体含
+semantic class、affordance、source XML binding，以及 `points.navigation` / `points.action`。
+coverage sidecar 同时给出 discovered/classified/registered/unresolved/unbound 计数、导航参数、
+主连通分量和到每个 required point 的预检结果。
 
-新增 production NPC 的最小流程：先登记/烘焙 appearance 和 bundle，再在 population
-里引用它，最后执行 asset preflight 和 scene build。不要只编辑 XML 来复制一个人形；
-那会绕过 manifest、hash、spawn 和 Agent-ID 校验。
+## 6. 办公室和家庭的差异化配置
 
-## 5. Asset manifest 与动画图
-
-`NpcAssetManifest`（当前 schema v1）是运行时资产的入口。一个 bundle 要声明：
-
-- 坐标与尺寸：`format`、`topology_id`、`coordinate_system: "mujoco_z_up"`、
-  `unit: "meter"`、`height_m`；
-- 材质：不重复的 `material_slots`，以及每个 appearance 的 texture 路径与同一
-  topology ID；
-- 动画：每个 clip 的 `fps`、`loop`、`root_motion`、OBJ `frames` 和可选 marker；
-- 配饰：每个 accessory 的 mesh 和逐帧 anchor；
-- 完整性：所有被引用文件的 `sha256` 和 `asset_quality`。
-
-`preview` bundle 至少需要 `idle`；`production` 与 `restricted` bundle 必须满足
-`OFFICE_CLIPS` 的完整 clip 合约。预检还会检查 hash、PNG 解码、OBJ 顶点/UV/面拓扑
-的一致性，以及 Cesium preview 不能伪装成 SMPL-X production。manifest 相对路径一律
-相对于 manifest 自身，不要依赖当前工作目录。
-
-动画图从已验证的 manifest 生成，而不是由 driver 内嵌一个不受资产约束的 clip
-列表。marker 是物理语义的完成条件，例如 `grasp`、`release`、`standing`；若
-requested clip 不存在，controller 会发出 fallback/failure，而不是把动作视为成功。
-
-## 6. 外观、人设与配饰
-
-`models/appearance_recipes/office_personas_v1.roster.json` 是 production 人设的
-版本化输入。它引用 flat、hair、face-detail 和 textile layer spec；
-`tools/build_npc_persona_roster.py` 生成 catalog、atlas、thumbnail、appearance receipt
-并更新本地生成 manifest。该工具可以重建派生投影，不能接受未经审查的 source。
-
-```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python tools/build_npc_persona_roster.py \
-  --roster stretch_mujoco/models/appearance_recipes/office_personas_v1.roster.json \
-  --asset-root stretch_mujoco/models/assets/humanoid/generated/animations \
-  --manifest stretch_mujoco/models/assets/humanoid/generated/animations/manifest.json
-```
-
-纺织 layer 必须在版本化 spec 中钉住 archive SHA-256、source URL、license、archive
-member、semantic mask、输出路径和 seed。来源 ZIP 存于 `assets/humanoid/sources/`，
-生成的 RGBA layer、receipt 和 thumbnail 存于 `generated/`。生成命令拒绝 hash 不符
-的 archive 和越出 asset root 的输出路径。
-
-OBJ/GLB 配饰以 `models/accessories/<accessory_id>.recipe.json` 和
-`<accessory_id>.runtime.json` 为唯一版本化事实源。源文件在 `sources/`，规范化 OBJ、
-anchor、fused frame 和 runtime manifest 在 `generated/`。修改配饰 pose 后必须从 recipe
-重新构建，不能手改某一帧的 generated OBJ。
-
-资产目录的管理规则为：
-
-| 资产类型 | 位置 | 可提交性 |
+| 方面 | 办公室 | 家庭 |
 | --- | --- | --- |
-| 可再分发 preview fixture | `models/assets/humanoid/` | 提交，并在 manifest 中固定 hash |
-| 配置、recipe、manifest 模板、selection example | `models/` | 提交 |
-| 审核后的 source archive | `models/assets/humanoid/sources/` | 本地共享，不提交 payload |
-| SMPL-X/AMASS 和受限 receipt | `models/assets/humanoid/private/` | 本地，不提交 |
-| OBJ frame、atlas、anchor、生成 manifest、视频 | `models/assets/humanoid/generated/` 或 `/tmp` | 本地，不提交 |
+| 场景语义 | manifest category rule + office zone | category rule + exact semantic-name taxonomy + room overlay |
+| 常用区域 | `zone.work`、`zone.meeting`、`zone.lounge`、`zone.snack` | `room.bathroom`、`room.bedroom`、`room.kitchen`、`room.living_room`，按该户实际发现结果注册 |
+| 人口来源 | `office_population_plans.json`，每场景 2–4 人 | 每个 `home/*.json` 的 `population.members`，当前固定 3 人 |
+| 自定义点 | 通常从 zone/家具自动生成 approach、seat、observation 点 | 已迁移的 household spawn/activity targets 存在每户 `custom_targets`；不要恢复旧硬编码 slot |
+| 导航 | `office_floor` / 0.16 / 0.06 / 0.08 | `hssd_floor_collision` / 0.16 / 0 / 0.06 |
+| 业务路线 | work→meeting、meeting→snack | living→kitchen、bedroom→living |
+| 例外入口 | 优先补充 office policy 或 manifest | `home_scene_overrides.json` 用于受审查的具体实体修正 |
 
-`sources/`、`private/`、`generated/` 是主工作区共享资源树；其他维护 worktree 应链接到
-它们的物理所有者，不能保留分支私有副本。详情见各目录 README 和仓库 `AGENTS.md`。
+家庭 `room` seed 由单房间 `found_in` hint 的 medoid 投影得到，并在
+`generated_scene_npc/provenance/home_room_overlays.json` 记录来源。这些是可达的语义种子，
+不是人工标绘的精确房间多边形；若需要更精细的空间边界，应先扩展 schema/发现器，而不是
+把未经验证的坐标散落到 Agent 代码。
 
-## 7. 运行时命令、回执与状态
+## 7. 新增或修改配置的推荐流程
 
-公开协议定义在 `stretch_mujoco.npc.protocol`：
+1. 放入或更新源 MJCF 与 manifest，确认每个有意义的 body/geom/site 有稳定名称或 manifest
+   记录。不要修改 active build 内的 XML。
+2. 选用或补充 `office.json` / `home.json` policy。新增一个家庭实例纠正时，将具体验证过的
+   override 写入 `home_scene_overrides.json`。
+3. 复制同类 `scene_npc_config/v1`，设定 source、navigation、人口、业务路线与必要的
+   custom/region/entity override；新配置加入 `catalog.json`。
+4. 若要加入新的 NPC identity，先在 schema-v2 NPC catalog 和其 asset manifest/
+   appearance catalog 中完成可验证登记；然后才能在 `population.members` 引用该 ID。
+   只复制 XML 人形不会得到合法的 NPC 身份、资产散列或动作能力。
+5. 先运行 config-only audit，再编译单场景；检查 `semantic.v2` 与 coverage，修复任何
+   unresolved、unbound 或 unreachable。
+6. 全量 audit 成功后发布新的 active build；以新 `active_catalog.json` 的 build ID 作为
+   handoff 版本。
 
-- `NpcCommand`：不可为空的 command ID、每 NPC 单调递增的 `sequence`、目标 NPC、
-  kind、payload、发出时间和可选 deadline；
-- `NpcCommandKind`：`move_to`、`align_to`、`play_animation`、`attach_object`、
-  `detach_object`、`interaction_cue`、`cancel`；
-- `NpcCommandReceipt`：`accepted`、`running`、`succeeded`、`failed`、`cancelled` 或
-  `timed_out`；后四种是终态；
-- `NpcRuntimeState`：实体位置/四元数、locomotion、requested/resolved clip、phase、
-  marker、route、held objects、active command 与最后 receipt 的只读快照。
-
-最小的原生集成循环如下。实际服务端已经将这一步封装；示例用于说明 ownership。
-
-```python
-import mujoco
-from stretch_mujoco.npc import NpcCommand, NpcCommandKind
-from stretch_mujoco.npc.system import NpcSystem
-
-model = mujoco.MjModel.from_xml_path("/tmp/npc_preview.xml")
-data = mujoco.MjData(model)
-system = NpcSystem.from_model(model, scene_path="stretch_mujoco/models/office_scene.xml")
-
-receipt = system.submit(NpcCommand(
-    command_id="employee_01-move-0001",
-    sequence=0,
-    npc_id="employee_01",
-    kind=NpcCommandKind.MOVE_TO,
-    payload={"site": "desk_right_work_site", "speed": 0.6},
-    issued_at=0.0,
-    deadline=30.0,
-))
-assert receipt.status.value == "accepted"
-
-while not any(item.status.terminal for item in system.drain_receipts()):
-    mujoco.mj_step(model, data)
-    system.step(model, data, data.time)
-```
-
-真实服务端应在每个物理 step 调用 `system.step(model, data, sim_time)`，再用
-`drain_receipts()` 把新 receipt 交给 Agent driver。不要用“提交成功”取代最终 receipt；
-`accepted` 只说明 controller 接受了命令。
-
-## 8. Agent driver、交接与会话
-
-`MujocoNpcActionDriver` 将 `ActionCommand` 降级为一个或多个 `NpcCommand`，并只在
-全部相关 receipt 成功后返回 `ExecutionStatus.SUCCEEDED`。它维护 per-NPC sequence、
-action deadline、移动后 location、object workflow 和 handover barrier。构造标准 office
-driver 时使用：
-
-```python
-from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
-
-driver = create_mujoco_action_driver(
-    simulator,
-    npc_ids=population.npcs,
-    interaction_templates=population.interaction_templates,
-)
-```
-
-其中 `simulator` 必须实现 `pull_status()`、`submit_npc_command()`、
-`pull_npc_receipts()` 和 `cancel_npc_command()`。生产动作的可用集合会被 manifest
-中已批准的 clips 收窄；缺 clip 的 action 在发出物理命令前失败。
-
-### 工位 work 会话
-
-提交 `ActionType.WORK` 不会让 NPC 在工位旁站立工作。runtime 会将其展开为
-`MOVE_TO(chair) → SIT(chair) → WORK(workstation) → STAND_UP(chair) → IDLE`，并等待每一步
-的终态回执；特别是 `WORK` 只有在 `SIT` 已提交 chair occupancy 后才会开始，椅子仅在
-`STAND_UP` 成功后释放。
-
-场景通过语义关系而非 object ID 命名定义这条规则：每个可工作的 workstation 必须有且仅有
-一条 `Chair --NEAR--> Workstation`。用于实体执行时，该 chair 必须有一个带有限
-`attributes.yaw` 的 `chair_sit_site`，workstation 必须有一个 `desk_work_site`。缺少或歧义
-任一项会拒绝 action/driver 装配，避免场景迁移后静默退化为站立 work。
-
-`agents/conversation.py` 的 `ConversationSession` 归 runtime 所有，记录 participants、
-topic、turn、transcript、timeout、status 与 interrupt policy。逻辑/mock 会话和实体接入
-是不同层：只有 `InteractionDriver` 在每个参与者的接近、朝向和 talk cue receipt
-均成功后，才可以把会话推进为实体可播放的 turn。LLM（如启用）仅提供受 schema
-约束的候选文本/意图；会话状态、超时、中断、冷却、审计事件和最终效果仍由确定性
-runtime 验证。
-
-可生成无 LLM 的对话验收回放：
+单场景的无写入 semantic 检查：
 
 ```bash
-MUJOCO_GL=egl PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python \
-  examples/npc_conversation_acceptance.py \
-  --output-dir /tmp/npc-conversation --render both --fps 5 --width 640 --height 360
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python tools/compile_scene_npc_config.py \
+  stretch_mujoco/models/scene_npc_configs/office/office_02_cross_axis.json \
+  --config-only
 ```
 
-该回放是 session/receipt 的验证证据；它不会替代 production 资产验证，也不能证明
-尚未实际执行的物理行为。
-
-## 9. 场景与轨迹配置
-
-schema-v2 population 应通过 `trajectory_profile` 声明路线配置；只有 legacy scene
-直接由 `NpcSystem.from_model()` 加载时，才读取 MuJoCo custom text 中的
-`npc_trajectory_profile`。
-`npc/trajectory_profiles/office_v1.json` 将语义 anchor（site + role）和允许的 route
-分开，并钉住源 MJCF 的 SHA-256。运行时从实时碰撞几何重新规划，profile 不保存容易
-过期的世界坐标 waypoint。
-
-新增场景时，请按以下顺序操作：
-
-1. 在 MJCF 中定义稳定的 NPC spawn、interaction 和 navigation site。
-2. 新建版本化 trajectory profile，声明 anchors、routes、允许 action 和 scene hash。
-3. 运行路径预检；失败时修改场景/profile，而不是把硬编码坐标写进 Agent。
-4. 在 population 中引用新 scene、site 和 profile，再运行 asset/scene 验证。
+编译一个候选场景到非正式输出位置。`--output` 是输出文件的基名；编译器会在同目录写入
+同名 XML、population、semantic、coverage、trajectory 和 receipt：
 
 ```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python tools/validate_npc_trajectories.py \
-  --scene stretch_mujoco/models/office_scene.xml \
-  --profile stretch_mujoco/npc/trajectory_profiles/office_v1.json \
-  --receipt /tmp/office_v1_trajectory_receipt.json
+mkdir -p outputs/scene_npc_candidate
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python tools/compile_scene_npc_config.py \
+  stretch_mujoco/models/scene_npc_configs/office/office_02_cross_axis.json \
+  --output outputs/scene_npc_candidate/office_02_cross_axis_npc.xml
 ```
 
-receipt 是一次运行的审计投影，不是后续运行时配置。若场景 bytes、site、profile hash
-或 route 可达性漂移，preflight 必须失败。
-
-## 10. 修改检查清单
-
-更改配置、动作或资产后，至少执行与改动相符的检查：
+全量检查并原子发布 active build：
 
 ```bash
-# Python contract / asset / scene regression
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python tools/audit_active_scene_semantics.py \
+  --report stretch_mujoco/models/generated_scene_npc/coverage/active_inventory.json \
+  --compile-output-root stretch_mujoco/models/generated_scene_npc/active
+```
+
+该命令先在 `active/builds/` 的临时 staging 中完成全部场景编译，只有全成功才更新
+`active_catalog.json`；失败不会半发布。`tools/generate_scene_npc_resources.py` 用于从办公室
+manifest、家庭 slot 计划和 taxonomy 重新生成基线配置/policy/provenance，会覆盖这些派生资源，
+不应用于保留手工 scene override 的日常修改。
+
+## 8. 从 active build 组成并运行
+
+每个 active 场景目录内的 `*.population.json` 是 population-driven composition 的输入；
+`*.trajectory_profile.json` 已被 population 引用，`*_npc.xml` 是已插入语义 site 的基础场景。
+若本地 production asset projection 已就绪，可组成完整 MuJoCo 场景：
+
+```bash
+ACTIVE=stretch_mujoco/models/generated_scene_npc/active
+BUILD=6ecc0ea9c8d86957031ed5ebac761c8d52a31fac9d039d54b48462a6e30896ff
+POPULATION="$ACTIVE/builds/$BUILD/office_02_cross_axis/office_02_cross_axis.population.json"
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python -m stretch_mujoco.npc.composition \
+  --population "$POPULATION" \
+  --output outputs/office_02_cross_axis_with_npcs.xml
+```
+
+`NpcPopulation.from_json()` 解析 population；`NpcSystem.from_population()` 会加载并校验
+trajectory profile 与 scene SHA-256；`MujocoNpcActionDriver` 仅在动作与 profile 中的
+source/destination/action 授权相符时采用 audited route，其他可达移动为动态重规划。每个物理
+step 都必须执行 `NpcSystem.step()`，并让 Agent 消费 terminal receipt；`accepted` 不是动作
+已完成。
+
+运行时不会再按场景类型猜测导航地面：`NpcSystem` 将 profile 的 `surface`、`agent_radius`、
+`clearance`、`resolution` 与 `exclude_body_roots` 原样交给每个 `LocomotionController`。因此
+办公室按 `office_floor/0.16/0.06/0.08`，家庭按
+`hssd_floor_collision/0.16/0/0.06` 建立同一套碰撞网格；重规划和动态 NPC 占用检查也使用
+该契约。profile 已绑定但指定 surface 不存在、无法建图或无法找到路线时，控制器以
+`navigation_surface_missing:*` 或 `route_unavailable` 终止，绝不回退为直线移动。仅没有
+trajectory profile 的历史最小单元测试 fixture 保留旧 `office_floor` fallback，不能用于
+办公室或家庭 production scene。
+
+MuJoCo 已编译的 `MjModel` 不能热插入 body。因此人数、spawn、appearance 或 scene 改动后
+必须重新编译并重新加载，不能在运行中篡改 XML/JSON 或直接改 controller 状态。
+
+## 9. 修改后的检查清单
+
+至少执行与修改范围相符的检查：
+
+```bash
+# 20 个配置的严格发现/分类检查（无 active 发布）
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run python tools/audit_active_scene_semantics.py \
+  --report /tmp/scene_npc_inventory.json
+
+# 本轮统一场景编译的回归集
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q \
-  tests/test_npc_assets.py tests/test_npc_schema.py tests/test_npc_system.py \
-  tests/test_npc_scene_builder.py tests/test_animation_controller.py
-
-# Production payload 已配置时的严格 preflight
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run validate_npc_assets \
-  --population stretch_mujoco/models/office_population.production.example.json
+  tests/test_generated_home_npc_preprocessing.py \
+  tests/test_generated_office_npc_preprocessing.py \
+  tests/test_npc_composition.py \
+  tests/test_scene_npc_compiler.py \
+  tests/test_npc_trajectory_profile.py
 ```
 
-当变更外观、人设或配饰时，还要验证 roster/catalog、所有被引用的 SHA-256、manifest
-和 production population 的同步；当变更 scene/profile 时，再运行 trajectory
-preflight。对生产外观需要使用原办公室 MJCF 的 native lighting 生成验收 render；不要
-把 review-only 灯光或替代场景伪装为真实验收。
+若改动 NPC asset、appearance 或 bundle，还应运行相应 population 的
+`validate_npc_assets`，并确认 manifest、appearance catalog、所有受引用文件 SHA-256 和
+capability/clip 合约均一致。若改动 MJCF 碰撞、点位、surface、半径或 clearance，必须重新
+运行全量发布命令；旧的 trajectory profile 或 receipt 不能证明新几何仍可达。
 
-## 11. 常见故障
+## 10. 常见错误
 
-| 现象 | 优先检查 |
+| 现象 | 优先处理方式 |
 | --- | --- |
-| `asset is missing` 或 hash mismatch | manifest 相对路径、文件散列、`sources/private/generated` 的共享投影；不要修改 hash 来掩盖文件漂移。 |
-| `restricted production clips are incomplete` | 完整批准的 `OFFICE_CLIPS`、每个 OBJ frame 和 manifest hash；不能用 preview frame 补缺。 |
-| `unknown_npc` / `unknown_target_site` | population ID、构建后的 MJCF 命名和对应 scene site。 |
-| `stale_sequence` / `npc_busy` | 同一 NPC 的 driver sequence 和未完成命令；等待 terminal receipt 或先 cancel。 |
-| action 一直不完成 | deadline、marker 名称、route/site 和 MuJoCo 的 controller step 是否每帧调用。 |
-| 会话没有实体动作 | 区分 logical session 与 embodied path；检查所有参与者的 movement/alignment/talk receipt，而不是仅检查 transcript。 |
+| `unknown_root_fields`、`duplicate_key` 或 schema 错误 | 严格按第 4 节字段写 JSON；不要试图加入 loader 未支持的扩展字段。 |
+| `npc_catalog_member_missing` | 先在 NPC catalog/asset manifest 中登记身份，再在 scene roster 引用。 |
+| route endpoint unbound / no navigation point | 修复 manifest/XML binding 或 policy/override；不要改 Agent 中的坐标。 |
+| unreachable / 非强连通 | 检查 surface、机器人排除体、NPC 半径、clearance、障碍碰撞和 spawn；通过实际碰撞几何修复。 |
+| 生成的 XML 找不到 include/asset | 使用同一 active scene 目录的完整产物；不要把文件单独复制到其他目录。 |
+| 修改生成 JSON 后下次消失 | 这是预期行为；将改动移动到 `scene_npc_configs`、policy、manifest 或 roster 资源。 |
+| production asset 缺失 | 明确使用 preview 示例做测试，或补齐本地受限资产投影；不要把 preview 伪装为 production。 |
+## Active showcase foundation (partial evidence)
 
-如果完整 production 资产不可用，使用 `office_population.json` 运行 preview 验证，并在交付
-中明确标记为 preview；不要把缺失或不受限的资源改名为 production。
+The reusable runner is `tools/render_active_scene_showcase.py`. Its source scenarios live in
+`aaa_workspace/showcases/office_02_day_in_the_life.json` and
+`aaa_workspace/showcases/home_04_household_assistance.json`. The runner resolves the active
+catalog, validates every declared route/action against the active trajectory profile, delegates
+movement to the profile-bound `NpcSystem`, and writes a video plus a JSON receipt with profile
+preflight and collision trace audit. The runner currently executes only its selected movement
+phase; every other phase is marked `not_executed`, so this is partial evidence, not a complete
+demo. Conversation and robot handover phases now use the active population's explicit capability
+projection: unsupported source capabilities remain fail-safe with their configured reason, while
+supported capabilities are reported ready for their corresponding executor.
+
+### 10.1 Source scene traffic and interaction capabilities
+
+Every office/home source scene config declares a `traffic` contract and exactly two interaction
+capability outcomes under `interactions`: `conversation` and `robot_handover`. Traffic uses
+`sequential_route_reservation`, enables dynamic-obstacle handling, and sets
+`no_direct_fallback: true`; a profile-bound controller must wait/replan or fail safely.
+
+Each capability is either `supported` or `unsupported`. Unsupported entries require a concrete
+`reason`. Supported conversation entries require at least two named role sites. Supported robot
+handover entries additionally require two role sites, a manifest-backed object, and a source-MJCF
+robot approach site. The compiler validates these bindings against source resources and rejects
+claims that cannot be proven.
+
+The compiler projects the source declarations into the generated population as
+`traffic_policy` and `interaction_capabilities`. Showcase consumers read only these projections;
+they must not infer support from scene kind or from an empty interaction map. Current source
+scenes explicitly mark both capabilities unsupported because no complete source-backed contract
+has been registered yet. To add support, register real named sites in source MJCF, bind the
+object in the source manifest, update the matching source config, then run strict compilation and
+preflight. Never edit generated active JSON directly.

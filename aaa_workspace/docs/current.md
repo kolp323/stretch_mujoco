@@ -831,9 +831,9 @@ conversation 工作流随后以开发主分支 `feat/npc-system@4541df0`（`merg
 
 `stretch_mujoco/humanoid/babel_intake.py` 新增 `prepare_babel_npc_candidates`，它只读取本地 BABEL v1.0 release ZIP 与既有 AMASS candidate index，不解压或复制原始动作。它只支持 BABEL 中与本地 AMASS stage-II member 一一对应的 BMLmovi 与 CMU 路径，校验该 member 已在 index 中以 SMPL-X 技术可用状态登记，并把 BABEL 逐帧秒级边界转换为 source FPS 帧区间。候选仅接受精确的、空白规范化后的标签；宽泛的 `gesture`、`transition` 和 `interact with/use object` 不会被静默映射为 office clip。
 
-本地 BABEL 处理生成 ignored、`pending_visual_review` 的 provenance candidate record，而不是 intake selection 或 baker input。当前 BMLmovi 可由精确 BABEL frame label 覆盖 `idle`、`walk`、`sit_down`、`stand_up`、`gesture_wave`、`gesture_point`、`pick_up`、`place`、`talk` 与 `receive`；仍缺 `seated_idle`、`work`、`use_computer`、`eat` 和 `give`，因此 restricted production bundle 仍必须保持不完整失败，不能宣称视觉动作完成。BABEL 全集元数据已定位到单一 CMU AMASS source archive 中的 typing、eat、give 和 seated 候选；在该 archive 按其许可取得并完成同样的 index/visual review 前，不将其加入 selection。
+本地 BABEL 处理生成 ignored、`pending_visual_review` 的 provenance candidate record，而不是 intake selection 或 baker input。当前 BMLmovi 可由精确 BABEL frame label 覆盖 `idle`、`walk`、`sit_down`、`stand_up`、`gesture_wave`、`gesture_point`、`pick_up`、`place`、`talk` 与 `receive`；其中 `gesture_point` 已按 2026-09-14 用户授权完成 CMU/BABEL sequence `3182` 的 production projection。除该已登记动作外，仍缺 `seated_idle`、`work`、`use_computer`、`eat` 和 `give`，因此这些动作仍不能宣称视觉动作完成。BABEL 全集元数据已定位到单一 CMU AMASS source archive 中的 typing、eat、give 和 seated 候选；在该 archive 按其许可取得并完成同样的 index/visual review 前，不将其加入 selection。
 
-本地 CMU archive 已完成 bzip2 全流校验（解压 9,210,675,200 bytes；压缩 archive SHA-256 `5a5207d1968740164b2487bdbeaf644046a63b09984ac2baaa72916a0b333df3`；解压字节流 SHA-256 `b566adec09d9fc3b440079248b50de00ce76b668ee089dd133281579f28d7225`），并以 ignored `raw_resources/CMU.candidates.jsonl` 登记 2,079 个 NPZ。与 BABEL 交叉后，精确标签候选覆盖 14/15 个 `OFFICE_CLIPS`；CMU 自身只缺 `receive`，但已有 BMLmovi 精确候选覆盖该 clip。`type motion` 只被并列列为 `use_computer` 和 `work` 的候选，不是批准的语义重用。BMLmovi 的 10 个和 CMU 的 13 个去重 source-frame range 均已使用与 baker 相同的 canonical root policy 重渲染，receipt SHA 已全部复核。坐标/大位移显示问题已经消除，但候选质量审查拒绝当前 BMLmovi `sit_down`（深蹲后回站）及 CMU `sit_down`/`stand_up`（没有可提交的椅子过渡）。额外登记的 Transitions archive（111 NPZ，110 个技术可用）有 BABEL 精确标注的同一 `sit_stand` 序列，但真实帧是站立到地面深蹲、再从地面起身，也被拒绝为 chair transition。当前三套本地授权来源均没有可自动批准的 `sit_down`/`stand_up`；`pick_up`、`place`、`receive`、`give` 及 typing/work 仍因物体/桌椅语义不可从无环境人体图中自动批准。所有候选继续为 `pending_visual_review`，没有 selection、baker input、manifest 或 production 完成声明；完整 production bundle 必须保持失败。
+本地 CMU archive 已完成 bzip2 全流校验（解压 9,210,675,200 bytes；压缩 archive SHA-256 `5a5207d1968740164b2487bdbeaf644046a63b09984ac2baaa72916a0b333df3`；解压字节流 SHA-256 `b566adec09d9fc3b440079248b50de00ce76b668ee089dd133281579f28d7225`），并以 ignored `raw_resources/CMU.candidates.jsonl` 登记 2,079 个 NPZ。与 BABEL 交叉后，精确标签候选覆盖 14/15 个 `OFFICE_CLIPS`；CMU 自身只缺 `receive`，但已有 BMLmovi 精确候选覆盖该 clip。`type motion` 只被并列列为 `use_computer` 和 `work` 的候选，不是批准的语义重用。BMLmovi 的 10 个和 CMU 的 13 个去重 source-frame range 均已使用与 baker 相同的 canonical root policy 重渲染，receipt SHA 已全部复核。坐标/大位移显示问题已经消除，但候选质量审查拒绝当前 BMLmovi `sit_down`（深蹲后回站）及 CMU `sit_down`/`stand_up`（没有可提交的椅子过渡）。额外登记的 Transitions archive（111 NPZ，110 个技术可用）有 BABEL 精确标注的同一 `sit_stand` 序列，但真实帧是站立到地面深蹲、再从地面起身，也被拒绝为 chair transition。当前三套本地授权来源均没有可自动批准的 `sit_down`/`stand_up`；`pick_up`、`place`、`receive`、`give` 及 typing/work 仍因物体/桌椅语义不可从无环境人体图中自动批准。`gesture_point` 已有 experiment selection、baker input、production manifest 和派生 bundle projection；其余候选继续为 `pending_visual_review`，没有 production 完成声明；完整 production bundle 仍需其他缺失动作闭包后才能作为整体宣称完成。
 
 Focused verification:
 
@@ -856,7 +856,7 @@ Success: no issues found in 1 source file
 
 2026-09-10 用户确认此前已审核通过 `stand_up`、`put_down` 和 `gesture_wave`，并明确授权 production 注册。这是对第 18 节自动候选审查结果的人工验收决定，而不是把尚未审查的 queue 条目直接标为完成。受限本地 intake approval record 固定三项来源和裁剪：BMLmovi Subject 11 `1005:1536` → `stand_up`，Subject 50 `573:1085` → `place`（`PUT_DOWN` 的 runtime clip），以及 Subject 14 `37:287` → `gesture_wave`；全部按 8 FPS canonical root policy 生成可复现 baker input。
 
-`bake_and_register_additional_clips()` 只接受已准备的本地 motion：它先写入并 SHA-256 登记每个 OBJ frame，之后才原子更新 production manifest，绝不生成合成帧或注册缺失文件。production manifest 的 `stand_up` 现直接注册为 `sit`（或 production 的 `sit_down`）的逆序帧；配饰派生 manifest 亦同。`stand_up` 的动作名和 `standing` marker 不变，但严格 manifest loader 会拒绝任何重新登记原始 stand-up OBJ 序列的 bundle；`MeshSequenceBackend` 仅为旧的已生成场景保留相同的兼容解析。`OFFICE_CLIPS` 与 `MujocoNpcActionDriver` 因而允许 `STAND_UP`、`PUT_DOWN`、`GESTURE_WAVE`；`GESTURE_POINT` 仍无已批准及烘焙的 mesh asset，继续在提交物理命令之前拒绝。wave 是完整 mesh sequence 的直接播放，不宣称 OBJ backend 具备尚未实现的上半身 overlay。
+`bake_and_register_additional_clips()` 只接受已准备的本地 motion：它先写入并 SHA-256 登记每个 OBJ frame，之后才原子更新 production manifest，绝不生成合成帧或注册缺失文件。production manifest 的 `stand_up` 现直接注册为 `sit`（或 production 的 `sit_down`）的逆序帧；配饰派生 manifest 亦同。`stand_up` 的动作名和 `standing` marker 不变，但严格 manifest loader 会拒绝任何重新登记原始 stand-up OBJ 序列的 bundle；`MeshSequenceBackend` 仅为旧的已生成场景保留相同的兼容解析。2026-09-14 用户确认 CMU/BABEL sequence `3182` 的 `point to the right` 候选可用于本地 production 注册；它以 8 FPS、22 帧、`gesture_point_complete @ 0.9` 烘焙并登记在共享的 ignored production manifest 中。`OFFICE_CLIPS` 与 `MujocoNpcActionDriver` 因而允许 `STAND_UP`、`PUT_DOWN`、`GESTURE_WAVE` 和 `GESTURE_POINT`；point/wave 都是直接播放的完整 mesh sequence，不宣称 OBJ backend 具备尚未实现的上半身 overlay。
 
 ## 19. NPC 场景轨迹 profile（当前事实）
 
@@ -987,3 +987,780 @@ stretch_mujoco/models/office_population.production.example.json` 返回
 `Validated 10 NPC(s) and 1 bundle(s)`；版本库中四份 control-sequence YAML 均经
 `tools/validate_control_sequence.py <yaml> --strict` 验证为 `passed: true`。核心模块
 `compileall` 和 `git diff --check` 通过。以上不代表完整 `tests/` suite 已在本轮运行。
+
+## 24. 办公室/家庭统一语义场景编译（当前事实）
+
+`stretch_mujoco.npc.scene_config`、`scene_compiler` 和
+`semantics.scene_discovery` 已提供统一的严格 JSON `scene_npc_config/v1` 路径。编译器同时
+发现 manifest asset/zone 和 XML semantic/action site，反向验证 body、geom、site 绑定，按
+office/home policy 与家庭 exact-name taxonomy 分类，并生成 semantic v2、保守的 runtime v1
+投影、带语义 site 的可移植 MJCF、population、trajectory、coverage 和 SHA-256 receipt。配置、
+taxonomy、家庭实例豁免、办公室可变人口计划、家庭 room/slot provenance 均保存在
+`stretch_mujoco/models` 的对应资源目录；临时目录只用于原子 staging，不作为事实源。
+
+点位生成使用与 runtime NPC torso capsule 一致的 `agent_radius=0.16`。办公室采用
+`clearance=0.06`、`resolution=0.08`；家庭窄门场景采用 `clearance=0`、`resolution=0.06`，
+避免栅格离散和额外膨胀把实际可通过的门洞误切为孤岛。自动点必须位于主可行走连通分量。
+桌面 graspable 复用支撑家具 approach；seat 同时生成可达
+approach 和位于资产顶面的 sit action point；observation 排除 render-only geom 并要求碰撞组
+视线。家庭旧 demo slot 会确定性投影到主分量内的互异位置，并把最终坐标写入逐场景配置；
+bathroom、bedroom、kitchen、living-room、office 以 asset-hint medoid 生成逐场景 room seed
+overlay，并在 provenance 中记录 anchor。办公室人口由 `office_population_plans.json` 配置为
+2–4 人，家庭人口由逐户 roster 配置；两类场景都有差异化业务路线，全部 NPC 到全部 required
+点的覆盖路线由编译器自动生成。`home_scene_overrides.json` 保留实例修正入口；当前 20 个
+active 场景不需要语义豁免。
+
+`tools/audit_active_scene_semantics.py --compile-output-root` 先在隐藏 staging 中编译所有场景，
+全部成功后才以内容寻址 build 和原子 `active_catalog.json` 发布。当前 active build ID 为
+`6ecc0ea9c8d86957031ed5ebac761c8d52a31fac9d039d54b48462a6e30896ff`：20/20 场景、1310 个
+语义实体、1350 个 required navigation point、62 个 NPC、4100 条业务/覆盖路线，所有正式
+coverage 均为 `unresolved=0`、`unbound=0`、`unreachable=[]` 且 `strongly_connected=true`。
+相同输入连续两次全量构建得到同一 build ID；所有输出 receipt hash、population、semantic
+v1 和 trajectory loader 均已复核，办公室 02 与家庭 06 的生成 MJCF/runtime trajectory
+preflight 实际通过。
+
+运行时导航已与上述编译契约统一：`NpcSystem.from_population()` 和带 profile 的
+`NpcSystem.from_model()` 都把 trajectory profile 的 surface、NPC 半径、clearance、grid
+resolution 与排除 body roots 注入每个 `LocomotionController`。所以办公室使用
+`office_floor/0.16/0.06/0.08`，家庭使用
+`hssd_floor_collision/0.16/0/0.06`，首次规划、超时重规划和动态 NPC 占用检查均在同一份
+碰撞几何上执行。profile 已绑定却缺少指定 surface 时稳定失败为
+`navigation_surface_missing:<surface>`，route 无法生成时失败为 `route_unavailable`；生产
+场景不存在直线 fallback。旧 fallback 只保留给没有 profile 的最小协议 fixture。
+
+聚焦回归命令为 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q
+tests/test_generated_home_npc_preprocessing.py tests/test_generated_office_npc_preprocessing.py
+tests/test_npc_composition.py tests/test_scene_npc_compiler.py tests/test_npc_trajectory_profile.py`，结果
+`42 passed in 414.64s`。本轮没有执行会物化大型 DEM/DOM 资产的 Resolve。
+### Active NPC showcase foundation (partial evidence)
+
+The version-controlled scenarios are under `aaa_workspace/showcases/`, with the shared runner at
+`tools/render_active_scene_showcase.py`. Office and home movement uses the active trajectory
+profile and emits the existing route/preflight/continuous collision receipts. The runner currently
+executes only one selected movement phase; all other phases are marked `not_executed`, so these
+outputs are partial evidence rather than complete demos. Conversation and robot handover status
+is read from the generated population capability projection; unsupported source declarations keep
+their explicit fail-safe reason.
+Generated active artifacts are not edited by the showcase runner.
+
+All 20 office/home source scene configs now carry the same strict `traffic` policy and explicit
+`conversation`/`robot_handover` capability outcomes. The compiler projects these into each
+population as `traffic_policy` and `interaction_capabilities`; the showcase runner reads those
+projections and reports the configured reason for unsupported phases. No source scene currently
+claims supported interaction without source-backed sites, object binding, and preflight.
+
+## 25. Three-NPC asynchronous LLM/MuJoCo benchmark (verified 2026-09-17)
+
+`examples/llm_multiagent_mujoco_benchmark.py` runs a reproducible accelerated workday with three NPCs
+in the active office scene `office_01_linear_bench`. It creates a temporary, model-validated benchmark
+fixture from the active office assets; the active source assets are not modified. Each NPC has an
+independent deterministic LLM session, while `Transport.step()` continues advancing MuJoCo during
+provider waits. The scenario covers work, drink, rest (`sit -> idle -> stand_up`), and dialogue.
+
+Verified command:
+
+`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python examples/llm_multiagent_mujoco_benchmark.py --output aaa_workspace/experiments/llm_multiagent_benchmark/report.json --provider-latency 0.01`
+
+The report passed with 3 NPCs/3 sessions, 8 physics steps during LLM wait, workday clock 09:00 to
+18:00, replan and safe-idle recovery, 0 collision contacts, minimum separation `0.580 m` against
+the policy threshold `0.44 m`, conversation receipts `approach=2`, `alignment=2`, `talk=1`, and
+semantic orphan count `0`. The JSON report is at
+`aaa_workspace/experiments/llm_multiagent_benchmark/report.json`.
+
+The active source population declares conversation unsupported, so this benchmark uses a temporary
+role-site fixture and reports it as `benchmark_fixture`; this does not claim that production
+population conversation capability is enabled. The provider is an injectable asynchronous test
+adapter; a real LLM API adapter can replace it without changing the physics/receipt contract.
+
+The same runner now accepts `--video-output`, `--video-fps`, `--video-width`, and
+`--video-height`. Video mode renders the live composed MuJoCo state with a fixed global top-down
+camera and a three-column subtitle panel for LLM request/result/recovery events, every physics
+advance, and terminal action receipts. The verified H.264 artifact is
+`aaa_workspace/experiments/llm_multiagent_benchmark/three_npc_global_topdown.mp4`; its matching
+report is `video_report.json`. The verified file is 1280x720 at 10 FPS, contains 731 frames
+(73.1 seconds), ends at workday clock 18:00, and the benchmark remains `passed: true`.
+
+## 26. Three-NPC active-home LLM/MuJoCo video demo (verified 2026-09-17)
+
+`examples/llm_multiagent_home_mujoco_demo.py` runs three independent LLM sessions in active scene
+`home_04_103997970_171031287`. It creates a temporary population projection only to start the
+runtime clock at 18:00; active scene, trajectory, population, and semantic artifacts are not
+modified. The demo follows the declared sequential route-reservation policy and executes three
+compile-time-audited routes: Alex to the kitchen, Jordan to the living room, and Morgan to the
+bedroom. One injected Morgan provider failure is recovered by replan while physics continues.
+
+The home runtime semantic projection exposes the coarse action location `zone.home`; exact room
+destinations remain owned by the trajectory profile and are recorded separately in the report.
+Generated home furniture includes seatable classifications without complete `chair_sit_site`
+bindings, so this demo deliberately limits its action driver to explicit MOVE_TO route/site
+mappings. It does not bypass the seat validation contract or claim conversation/robot handover,
+both of which remain `unsupported` in the active population.
+
+The verified H.264 artifact is
+`aaa_workspace/experiments/llm_multiagent_home_demo/three_npc_home_global_topdown.mp4`, with matching
+`report.json`. It is 1280x720 at 10 FPS, contains 269 frames (26.9 seconds), uses a fixed global
+top-down camera, and displays LLM, physics, and terminal action-receipt timelines. The report is
+`passed: true`, records three isolated sessions, 4 physics steps during LLM waits, no NPC collision,
+and minimum NPC separation `0.767 m` against the home policy threshold `0.32 m`. The shared office
+benchmark regression remains green: `1 passed in 86.79s` for
+`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_llm_multiagent_mujoco.py --tb=short`.
+
+## 27. Interaction site plan schema Phase 1A（2026-09-17，candidate only）
+
+`stretch_mujoco.npc.interaction_station` 新增严格的
+`interaction_site_plan/v1` 权威源 loader/model。该模块只拥有 authored interaction facts、
+稳定 site-name 派生和 source manifest/MJCF cross-reference；它不拥有导航、碰撞、动作执行或
+runtime capability/evidence 判定。plan schema 不包含 `validated_for_runtime`；该字段只能由
+Phase 1B compiler receipt 拥有。loader 拒绝未知/缺失字段、非 array root collection、重复
+JSON key、NaN/Inf、非法 yaw、重复
+resource ID、同位或不相向的角色、距离契约违规、未绑定或类别错误的 seat/workstation/computer、
+非 dynamic/graspable handover object、未绑定 region、缺失 seat ingress 和未绑定 workstation
+seat slot。MJCF
+body inventory 会递归读取本地 include，因此 manifest 中的 `base_link` 必须在实际 included
+robot XML 中存在。
+
+`stretch_mujoco/models/scene_interaction_plans/office/office_02_cross_axis.json` 是首个 candidate
+权威 plan，包含 1 个 conversation station、1 个 handover station、2 个独立 seat slot 和
+1 个 workstation binding。它复用 source manifest/MJCF 中的 chair、workstation、iMac、
+graspable bottle 和 Stretch body 身份，并投影 `PART_OF`、`Computer ON Workstation` 与
+`SeatSlot NEAR Workstation` 关系。handover 按 declared mode 校验同时参与的角色对；candidate
+当前声明 `npc_to_npc` 和 `robot_to_npc`，不预先宣称尚未布局验证的 `npc_to_robot`。alternative
+giver/robot role 可以共享位置，但每个 declared mode 中同时出现的 pair 都必须满足距离和相向约束。
+
+本切片没有修改 `scene_npc_config/v1`、population v2、compiler、runtime、active catalog 或
+generated artifact，也没有改变 20 个生产场景的 capability status。office_02 candidate 的坐标
+和绑定仅通过 strict schema/source identity 检查，不构成 NPC/robot navigation、静态碰撞、
+work pose、sit marker 或 handover workspace 的物理证据。unreachable pose 和 robot route
+failure 必须等 Phase 1B compiler/preflight 使用 MuJoCo navigation mesh 后再做 planted negative；
+Phase 1B receipt 必须写 `validated_for_runtime: false`，直到物理验收闭包。本节不得被引用为
+conversation、handover、sit 或 work 的 runtime support 声明。
+
+Phase 0 基线：
+
+- `python -m py_compile` 对 scene config/compiler/schema/world/scene discovery/drivers/
+  interactions/runtime/robot handover 通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 ... pytest tests/test_interactions.py
+  tests/test_npc_runtime_safety.py`：`6 passed`。
+- compiler/semantic/action 聚焦集合：`50 passed, 1 failed`；既有失败为
+  `test_production_driver_requires_scene_binding_for_registered_gesture_point`，实际集合比旧断言多
+  `ActionType.IDLE`。Phase 1A 未修复或隐藏该无关 mismatch。
+- `tests/test_robot_handover.py` 当前不存在。
+
+Phase 1A 验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/npc/interaction_station.py
+  tests/test_interaction_station_schema.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_interaction_station_schema.py --tb=short`：`19 passed in 0.52s`。
+- 同一环境运行 `tests/test_interaction_station_schema.py tests/test_scene_npc_compiler.py
+  --tb=short`：`32 passed in 1.63s`；旧 v1 compiler 路径未受 Phase 1A schema 修正影响。
+
+## 28. Scene config v2 与 population v3 Phase 1B-1（2026-09-17）
+
+`stretch_mujoco.npc.scene_config` 现可严格读取 `scene_npc_config/v1` 和
+`scene_npc_config/v2`。v2 用 `SceneInteractionPlanRef` 引用唯一 authored
+`interaction_site_plan/v1`，并通过 `required_capabilities` 声明 compiler 必须验证的
+conversation/handover/sit/work 范围；`RobotNavigationConfig` 独立声明 Stretch footprint、
+clearance 和 resolution。v2 root 不接受旧 `interactions`，plan ref 也不接受 `status` 或
+`sites`，因此作者不能用配置文字绕过 compiler receipt。v1 loader 的既有 interaction
+status/sites 读取和错误语义保持兼容，但其 `interaction_plan`/`robot_navigation` 始终为空，不能
+被解释为 multi-station evidence。v2 在 compiler 接入前只保守投影内部 unsupported declaration，
+不产生 production support。
+
+`stretch_mujoco.npc.schema` 新增 population schema v3 parser/model。v3 以完整
+`interaction_stations` catalog 表示 conversation、handover、seat 和 workstation；每项严格校验
+role 集、site/yaw、actor pairs、handover modes、object IDs 和字段集合。conversation/handover
+还必须保留严格的 `distance_m` 和 `yaw_tolerance_rad`，handover 额外必须声明
+`transfer_site`，seat 额外必须声明 `slot_index` 和 `clearance_radius_m`。调用方提供
+MuJoCo site universe 时，parser 验证每个 role site 和 transfer site 均存在。station ID 在全部
+kind 间必须唯一；workstation 的
+`seat_slot` 必须引用同一 catalog 中的 seat station。v3 root 使用明确 required/optional 字段集合，
+拒绝所有未知字段并单独拒绝旧 `interaction_templates`。schema v2 root 行为保持宽松兼容，且不解析
+或存储 v3-only 的严格 `spawn_policy`；已有 template 只投影为带
+`legacy_single_station: true`、`production_evidence: false` 的 adapter，不能成为生产支持证据。
+
+本 checkpoint 尚未修改 scene compiler 或 `SemanticWorld`，没有生成 v3 population/MJCF/receipt，
+没有执行 NPC/robot route preflight，也没有修改 generated artifacts、active catalog 或 20 个生产
+config capability status。这些属于后续 Phase 1B compiler checkpoint。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/npc/scene_config.py
+  stretch_mujoco/npc/schema.py tests/test_scene_contract_v2.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_scene_contract_v2.py --tb=short`：`17 passed in 0.48s`。
+- 同一环境运行 `tests/test_scene_contract_v2.py tests/test_scene_npc_compiler.py
+  tests/test_semantic_action_bindings.py tests/test_npc_assets.py --tb=short`：
+  `42 passed in 63.43s`。
+
+## 29. SemanticWorld v2 role/relation fidelity Phase 1B-2A（2026-09-17）
+
+`SemanticWorld._from_v2_payload()` 现按 point payload 的 `role` 构造
+`InteractionPoint`，不再把全部 v2 point 降为 `human_stand_site`。新增且严格解析的角色值为
+`conversation_speaker_site`、`conversation_listener_site`、`handover_giver_site`、
+`handover_receiver_site`、`handover_robot_site`、`handover_transfer_site` 和 `seat_ingress_site`；seat sit 与 desk work
+继续使用既有兼容字符串 `chair_sit_site` 和 `desk_work_site`。原有
+`conversation_site`、`handover_site` 等枚举值未改名。
+
+v2 loader 新增 `ObjectType.SEAT_SLOT`（`resource.seat_slot`）和
+`RelationType.PART_OF`，并将 payload `relations` 解析为 `SemanticRelation`。关系端点继续由
+`SemanticWorld._validate_graph()` 验证；未知 role、未知 relation、未注册 subject/object 均
+fail closed。point payload 的 `station_id`、`slot_id`、`binding`、`target`、`yaw` 及其他字段
+保留在 `InteractionPoint.attributes`。无 XML binding 的 region 仍作为明确
+`topology_only` object 加载，保持既有 v2 region 行为。legacy v1 parser 未修改。
+
+本 checkpoint 只提高 loader fidelity；scene compiler 尚未生成上述角色、seat slot entity 或
+relations，也未产生 route/collision/runtime evidence。没有修改 compiler、runtime、generated
+artifacts、active catalog 或生产 capability status。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/semantics/world.py
+  tests/test_semantic_world_v2.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_semantic_world_v2.py --tb=short`：`6 passed in 0.43s`。
+- 同一环境运行 `tests/test_semantic_world_v2.py tests/test_semantic_action_bindings.py
+  tests/test_scene_npc_compiler.py tests/test_scene_contract_v2.py --tb=short`：
+  `39 passed in 1.57s`。
+
+## 30. Interaction plan 纯投影 Phase 1B-2B1（2026-09-17）
+
+`stretch_mujoco.npc.interaction_projection.project_interaction_plan()` 现将已通过严格 loader 的
+`SceneInteractionPlan` 确定性投影为候选 derived-site descriptor、semantic entity/point/relation
+fragment、population v3 `interaction_stations` 以及 candidate receipt 骨架。纯投影函数本身不写文件；
+后续 Phase 1B-2B2a 已将其 MJCF/population 子集接入 `compile_scene_npc_config()`，见下节。
+
+投影包含所有 conversation speaker/listener、handover giver/receiver/robot/transfer、seat
+ingress/sit 和 workstation work site。handover transfer 是专用透明 site 和
+`handover_transfer_site` semantic point，不伪装成 actor role。catalog 保留 plan 中的 distance
+range、yaw tolerance、transfer site、seat slot index 和 clearance radius。跨不同 station ID 的完全
+相同 coordinate+yaw 会以 `duplicate_physical_station_pose` fail closed；同一 handover station 内不同
+mode 不同时使用的重合 giver/robot 仍按 authored contract 保留。
+
+office_02 候选 plan 投影 11 个 interaction site，其中包含 1 个 transfer site。测试中将第二组
+conversation/handover 的所有 role position 和 transfer position 显式偏移后，投影完整产生 17 个
+site，不存在 `[0:2]` 截断。candidate receipt 仅可记录 `plan_schema` 与派生 ID 唯一性；
+`source_bindings`、NPC/robot navigation、terminal collision、handover reach、sit action 和 work action
+全部是 `not_run`，`validated_for_runtime` 固定为 `false`。这些 fragment 不是生产运行支持证据。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/npc/interaction_projection.py
+  stretch_mujoco/npc/schema.py stretch_mujoco/semantics/world.py
+  tests/test_interaction_projection.py tests/test_scene_contract_v2.py
+  tests/test_semantic_world_v2.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_interaction_projection.py tests/test_scene_contract_v2.py
+  tests/test_semantic_world_v2.py --tb=short`：`35 passed in 0.56s`。
+- 同一环境运行 `tests/test_interaction_projection.py tests/test_interaction_station_schema.py
+  tests/test_scene_contract_v2.py tests/test_semantic_world_v2.py
+  tests/test_semantic_action_bindings.py tests/test_scene_npc_compiler.py --tb=short`：
+  `73 passed in 1.81s`。
+
+## 31. v2 MJCF/population 原子写出 Phase 1B-2B2a（2026-09-17）
+
+`compile_scene_npc_config()` 现在加载 config 后仅按 `config.schema` 分流；v1 分支相对
+`aaa_workspace/archive/20260917_repository_cleanup/stretch_mujoco/npc/scene_compiler.py.bak-20260917_103207`
+除四行 v2 dispatch 外字节不变。v2 分支由
+`stretch_mujoco.npc.scene_compiler_v2` 负责，使用 config 的 scene ID、source manifest 和 source
+MJCF 重新调用 `load_interaction_site_plan()`，然后调用唯一的
+`project_interaction_plan()`。
+
+2B2a 仅在 output 目录的 temporary staging directory 内组装候选 MJCF 和 population，所有
+schema/source/projection/population 校验成功后才用 `os.replace()` 替换最终文件。MJCF 包含既有基础
+semantic sites 和全部 11 个 office_02 interaction sites，派生 site 均为 `rgba="0 0 0 0"`
+透明站点。population 为 schema v3，包含完整 `interaction_stations`，并保留选中 NPC 的
+profile/embodiment/needs/schedule/capabilities、clock、asset/appearance/trajectory references、traffic 和
+spawn policy。资源路径按最终 output 目录重写，写出前使用 `NpcPopulation.from_dict()` 做 v3
+contract 自检。
+
+本 checkpoint 当时故意不写 semantic interaction additions、coverage、trajectory projection 或 receipt；
+该输出限制已被后续 Phase 1B-2B2b 部分取代，见下节。2B2a 和当前 2B2b 都不执行
+NPC/robot navigation、collision、reach、sit/work action preflight。population 的
+`interaction_capabilities.production_evidence` 为 `false`；这两个输出不能被解释为 runtime
+validation 或 production support。输出只写入测试 `tmp_path`，未修改 active/generated tree。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/npc/scene_compiler.py
+  stretch_mujoco/npc/scene_compiler_v2.py tests/test_scene_compiler_v2.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_scene_compiler_v2.py --tb=short`：`3 passed in 0.68s`。
+- 同一环境运行 `tests/test_scene_compiler_v2.py tests/test_scene_npc_compiler.py
+  tests/test_interaction_projection.py tests/test_scene_contract_v2.py --tb=short`：
+  `45 passed in 1.83s`。
+
+## 32. v2 semantic/receipt 候选写出 Phase 1B-2B2b（2026-09-17）
+
+`stretch_mujoco.npc.scene_compiler_v2` 现在保持 2B2a 的私有 backend 边界，公开入口仍只有
+`compile_scene_npc_config()`。v2 编译先以 config scene ID/source manifest/source MJCF 重新加载
+plan，并 fail closed 校验 `required_capabilities` 中的 conversation/handover/sit/work 都有对应
+plan resource。
+
+compiler 通过 base semantic entity 的 `source.id` 和 `source.xml_binding.name` 将 plan 中的
+XML-body alias 唯一解析为 canonical semantic ID。新 seat-slot entity、11 个 interaction point 和
+`PART_OF`/`ON`/`NEAR` relation 会合并到 `compile_semantics()` 的 v2 输出；workstation/computer
+仅做 targeted update。递归 merge 保留既有 source binding、labels、navigation/action points 及其他
+discovery metadata，并将 work point 追加到 workstation `points.action`。new entity/point ID 冲突、
+unbound/ambiguous alias、重复或同 subject+relation 指向不同 object 的 relation 均 fail closed。写出的
+semantic v2 在替换最终文件前必须通过 `SemanticWorld.from_json()`。
+
+v2 现与 v1 保持相同的七类输出键：scene、semantic v2、semantic v1、coverage、population、
+trajectory profile 和 receipt。semantic v1 仅保留 base compatibility projection，明确写入
+`projection_scope: base_compatibility_only` 和 `interaction_station_support: false`，不投影新 station
+role。coverage 的 `navigation_preflight` 为 `not_run`；trajectory 仅是可被
+`NpcTrajectoryProfile` 解析的声明式 route contract，未执行 preflight。
+
+candidate receipt 组合纯投影 validator state，并记录 config、plan、source MJCF、source manifest、
+semantic policy 和 NPC catalog 六个输入 SHA-256，以及 receipt 之外全部六个输出文件的
+SHA-256。receipt 不自哈希，不包含 timestamp 或 temporary path，同一 config/output path 两次编译的
+所有输出字节一致。只有 compiler 完成 plan loader、source alias、semantic graph 和 population/profile
+contract 检查后，top-level `source_bindings` 才为 `passed`；嵌套的纯 projection state 仍是
+`not_run`。`npc_navigation`、`robot_navigation`、`terminal_collision`、`handover_reach`、
+`sit_action` 和 `work_action` 全部为 `not_run`，`validated_for_runtime` 为 `false`。
+
+测试使用 `tmp_path` 构造非 active office_02 v2 config，逐一复算全部 input/output hash，并植入
+required capability 缺失、semantic entity ID 冲突、relation 冲突和 printer-as-computer。编译前后
+active catalog SHA-256 保持为
+`bf1d638c6ae56305f84c0780b2f3c5bdc3dd2eb23c46d9b7cfe326d029871365`。生产 capability
+status 未修改，此 checkpoint 仍不是 runtime support 证据。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/npc/scene_compiler.py
+  stretch_mujoco/npc/scene_compiler_v2.py stretch_mujoco/npc/interaction_projection.py
+  tests/test_scene_compiler_v2.py tests/test_interaction_projection.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_scene_compiler_v2.py tests/test_interaction_projection.py --tb=short`：
+  `13 passed in 0.81s`。
+- 同一环境运行 `tests/test_scene_compiler_v2.py tests/test_scene_npc_compiler.py
+  tests/test_interaction_projection.py tests/test_interaction_station_schema.py
+  tests/test_scene_contract_v2.py tests/test_semantic_world_v2.py
+  tests/test_semantic_action_bindings.py --tb=short`：`81 passed in 2.05s`。
+
+## 33. v2 NPC/robot navigation preflight Phase 1B-2C（2026-09-17）
+
+`stretch_mujoco.npc.interaction_station` 在 source identity 校验之外新增三项 authored
+semantic-spatial integrity guard。manifest zone/region 提供 bounds 时，conversation 的每个 role
+以及 handover 的每个 role 和 transfer XY 必须位于所声明区域内，否则稳定失败为
+`station_pose_outside_region`。seat ingress 到 sit pose 的水平距离必须严格大于该 slot 的
+`clearance_radius_m` 且不超过成人接近上限 `1.25m`，否则为
+`seat_ingress_distance_invalid`。computer 有显式 `support` 时必须解析到同一 workstation；没有
+显式 support 时，manifest 必须提供可用的 workstation/computer XY 和非负 workstation
+collision radius；任一证据缺失或不可用均稳定失败为
+`workstation_computer_support_unverifiable`。证据完整时，computer 必须位于该 footprint 加
+`0.25m` 容差内，否则为 `workstation_computer_support_mismatch`。缺 workstation position、缺
+computer position、缺 radius 和 measurable mismatch 均有 planted negative；compiler 不会把证据
+不足或不一致的 authored fact 自动移动、补值或重绑。显式 `support` 的严格解析路径保持不变。
+
+`stretch_mujoco.npc.scene_compiler_v2` 现将 public
+`compile_scene_npc_config(..., check_navigation=...)` 的开关同时传给基础
+`compile_semantics()` 和 interaction preflight。`True` 使用基础 compiler 已有的物理投影点和
+coverage evidence；`False` 保留基础 `navigation_preflight: not_run`，并将 NPC/robot interaction
+validator 明确写为 `not_run / check_navigation_false / candidate_only`，不能成为 runtime evidence。
+
+interaction preflight 从实际 staging MJCF 创建两个 `OfficeNavigationMesh`，两者使用同一配置
+surface，且都排除 manifest 声明的 Stretch root body。NPC mesh 使用
+`agent_radius=0.16 + clearance=0.06`，robot mesh 使用独立的
+`footprint_radius=0.32 + clearance=0.08`；二者 resolution 均为 `0.08`。每个目标必须是主连通域
+中的 free cell，之后才规划路线，不会对 authored interaction target 做 nearest snapping。NPC 从
+每个配置 population spawn 到 conversation speaker/listener、mode 对应的 handover giver/receiver、
+每个 seat ingress 规划；workstation 复用其 seat ingress。相同 ingress 的 sit/workstation usage
+只生成一个物理目标和一组路线，但 receipt 在该 target 的 `usages`/`consumers` 中保留两种用途。
+robot 从 source MJCF 观测到的 `base_link` XY 到 robot_npc conversation 的两个可变角色点及
+robot handover role 规划。receipt 保存 footprint、主连通域、origin、target、site 和路径长度。
+
+office_02 candidate plan 已根据上述真实 mesh、manifest bounds 和 owner geometry 做
+navigation-only 校准。meeting conversation speaker/listener 分别为
+`[-7.26, 1.82, 0.025] / yaw=-1.57079633` 和
+`[-8.06, 1.82, 0.025] / yaw=1.57079633`，间距 `0.8m`，均在
+`zone.meeting=[-9,-2]x[0,6]` 内并同时属于 NPC/robot 主连通域。handover 保留已测量的 work-zone
+位置：giver/robot `[-0.36,-4.88,0.025]`、receiver `[0.84,-4.88,0.025]`、transfer
+`[0.24,-4.88,0.92]`。
+
+seat pilot 使用 manifest meeting chair 013 和 011。chair 013 的 sit/ingress 为
+`[-7.05,3.00,0.46] / [-7.98,3.02,0.025]`，水平距离 `0.930215m`；chair 011 为
+`[-4.725,4.73205081,0.46] / [-4.38,5.58,0.025]`，水平距离 `0.915447m`。两者都满足
+`0.28m < distance <= 1.25m` 并在 NPC 主连通域。chair 010 的最近 NPC-free 主连通域 cell 为
+`[-3.90,5.18]`，距 owner/sit `2.180573m`，因此明确排除出本 pilot，没有使用远程 ingress。
+
+workstation 绑定改为 manifest instance 8 / XML body `asset_008_new_team` / authored alias
+`object.asset_008_new_team` / canonical semantic ID `object.new_teaming_table.8`，computer 为
+`object.asset_009_new_imac`，两者 manifest center XY 都是 `[-5.5,3.0]`，水平支撑距离为 `0m`。
+workstation 使用 `seat.object.asset_013_new_dini.01`，work pose 为
+`[-7.05,3.0,0.73] / yaw=1.57079633`。yaw、station distance/facing contract 均未放宽。基础 compiler
+将四个原始 population spawn 物理投影为 `[0.02,-1.30]`、`[-6.70,3.82]`、
+`[1.25,3.00]`、`[6.74,3.74]`。
+
+当前成功 receipt 为 4 个 NPC、6 个唯一 NPC target、24 条 NPC route，以及 3 个 robot target、
+3 条 robot route。导航 planted negatives 分别稳定失败为
+`npc_navigation_target_unavailable:point.conversation.meeting.01.speaker` 和
+`robot_navigation_mesh_unavailable`；前者是 meeting bounds 内但落在 meeting-table 膨胀障碍中的
+合法相向 pair，后者只把 schema-valid robot footprint 扩大到 `5.5`，且同次 preflight 在创建
+robot mesh 前已经完成 NPC 24 条路线。输出 MJCF 由 MuJoCo 实际加载，而不只是 XML parse。
+
+这些坐标仅为 navigation-validated candidate。`terminal_collision`、`handover_reach`、
+`sit_action`、`work_action` 仍为 `not_run`，sit/work 高度与动作 marker 尚未物理验收，receipt 的
+`validated_for_runtime` 继续为 `false`。没有发布 v2 candidate、修改 active catalog 或启用生产
+capability；20 个 office/home source config 仍保留 40 条 `status: unsupported`。active catalog
+SHA-256 仍为
+`bf1d638c6ae56305f84c0780b2f3c5bdc3dd2eb23c46d9b7cfe326d029871365`。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/npc/scene_compiler.py
+  stretch_mujoco/npc/scene_compiler_v2.py stretch_mujoco/npc/interaction_station.py
+  tests/test_interaction_station_schema.py tests/test_interaction_projection.py
+  tests/test_scene_compiler_v2.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_interaction_station_schema.py tests/test_interaction_projection.py
+  tests/test_scene_contract_v2.py tests/test_semantic_world_v2.py
+  tests/test_semantic_action_bindings.py tests/test_scene_npc_compiler.py
+  --tb=short`：`76 passed in 1.74s`。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_scene_compiler_v2.py --tb=short`：`12 passed in 101.70s`。
+- Final Phase 1 correction：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_interaction_station_schema.py --tb=short`：`28 passed in 0.59s`；同轮
+  `.venv/bin/python -m py_compile stretch_mujoco/npc/interaction_station.py
+  tests/test_interaction_station_schema.py` 与 `git diff --check` 通过。该 correction 未修改
+  compiler 或 plan，因此未重复运行约 102 秒的 compiler v2 suite。
+
+## Phase 2A interaction station allocator（未接入 runtime）
+
+`stretch_mujoco.agents.interaction_stations` 现提供 population v3
+`interaction_stations` 的严格不可变 catalog adapter 和基于 `RLock` 的内存 allocator。
+conversation 支持 `npc_npc`/`robot_npc`，handover 支持
+`npc_to_npc`/`robot_to_npc`/`npc_to_robot`；选择按 actor-aware route cost 总和、
+station ID 确定性排序。一次 lease 原子占用 station、分配的 role sites、
+participants 和可选 object。session acquire 和 terminal release 的精确重放都不会
+重复转换；release 必须提供 terminal receipt 和
+`succeeded`/`failed`/`cancelled`/`timed_out` outcome。legacy v2 single-station adapter
+仍被拒绝，不能作为 production evidence。
+
+allocator 的 append-only journal 事件保存完整 lease/request/resource 证据、单调 sequence，
+以及 release receipt/outcome。提供带内部 `RLock` 的内存 journal 和 durable JSONL
+journal；JSONL 使用确定性序列化、严格字段解码和重复 JSON key 拒绝，append
+在 flush/fsync 后才允许 allocator 提交内存转换。append 失败保留转换前状态。
+reconstruction 重新校验 catalog role assignment、session signature、resource set 及事件顺序；
+只有 active lease 恢复资源占用，已终止 session 保留幂等历史且不会重新 acquire。
+
+该 allocator/journal 尚未接入 conversation/handover driver、agent runtime 或
+simulation bridge，也尚未执行跨进程 file locking。因此这是 Phase 2A 的独立可审查
+状态核心，不构成 runtime/production support；active catalog 和 20 个生产场景的
+unsupported capability 声明未修改。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/agents/interaction_stations.py
+  tests/test_interaction_station_allocator.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_interaction_station_allocator.py --tb=short`：`30 passed in 0.48s`。
+- `git diff --check -- stretch_mujoco/agents/interaction_stations.py
+  tests/test_interaction_station_allocator.py aaa_workspace/docs/current.md`：通过。
+
+## Phase 2B NPC-NPC conversation station migration（未发布）
+
+population schema v3 现可由 `OfficeAgentRuntime.from_json()` 真实解析，并从完整
+`interaction_stations` catalog 构造 `InteractionStationAllocator`。embodied simulator assembly 将同一
+allocator 注入 `MujocoNpcActionDriver`，并将该 driver 同时设为 runtime
+`interaction_driver`。schema v2 仍仅保留可运行的 pair/site compatibility adapter，其
+session、receipt 和 event 均标记
+`compatibility_mode: population_v2_legacy_adapter` 与 `production_evidence: false`；该路径不会把
+legacy single station 升格为多 station runtime support。schema v3 当前同样标记
+`compatibility_mode: population_v3_candidate` 与 `production_evidence: false`，不构成已通过生产验证的证据。
+
+Phase 2B 仅实现 NPC-NPC conversation。runtime 对 robot participant 稳定返回
+`phase_2b_npc_conversation_only`，不会把 robot 交给 NPC command transport。conversation session
+原子 acquire station/role-site/participant lease，`preferred_station_id` 可精确指定 station；
+忙碌、无兼容 station 或 route unavailable 均保留 allocator 稳定错误。driver 不再为
+v3 production conversation 降级到 pair-to-fixed-site map。
+
+每个 phase 保留两个 participant 的确定顺序 terminal command receipt IDs。approach 后
+双方按 leased role yaw 对齐，再各自执行 alignment gate；该 gate 同时验证自己仍处于
+leased target site、authored distance min/max 及 mutual-facing tolerance。turn 不再只命令
+speaker：speaker 必须获得 `talk_cycle` receipt，listener 同时必须获得 hold/gaze/
+target-site receipt；任一失败都终止 session，不写 transcript、memory 或
+`dialogue_turn_committed`。LLM future 路径未改为 physics-loop blocking wait。
+
+`ConversationReceipt`、session memory 和 terminal/commit events 现显式携带 `station_id`、
+`lease_id` 与完整 `physical_receipt_ids`。成功、失败、取消和超时都通过唯一
+runtime cleanup 路径释放 participant 和 allocator resources，重放不重复发送 terminal event。
+partial command submit 会取消已提交命令并回滚 lease，不留部分占用。
+
+`RuntimeEvent.event_id` 在追加式 runtime audit history 中全局唯一；`tick()`/
+`drain_events()` 只消费独立 pending 队列，不删除审计历史。动作物理成功时，
+`action_succeeded` 保留自身 event ID，后续 `semantic_commit` 使用新 event ID，并以
+`causation_id` 指向 `action_succeeded.event_id`；action memory 中的 `event_id` 仍精确对应
+`action_succeeded`。
+
+physical receipt 与 fail-closed cleanup evidence 严格分离。只有 poll 到当前命令自身的
+`FAILED`/`CANCELLED`/`TIMED_OUT` terminal receipt，才会将该 command ID 写为
+allocator `terminal_receipt_id`。显式 cancel 或 runtime deadline timeout 时，当前 transport API
+不返回 cancellation terminal ack；因此使用 `release_unconfirmed(cleanup_evidence_id=...)`
+释放资源，老的 approach/alignment receipts 只保留为前序链，不会被冒充为取消/
+超时物理确认。
+
+当前 runtime assembly 没有同步 live navmesh route estimator。因此 schema-v3 runtime 构造的
+allocator route callback 明确返回 unavailable，production conversation 会 fail closed 为
+`interaction_station_route_unavailable`。compiler navigation preflight 仍是 candidate build evidence，不会被伪装成
+运行时动态可达性。注入实际 route callback 的 focused runtime 已验证双 station 并发，
+但在 live estimator/cancellation ack 接入前不宣称 runtime 或 production supported。
+
+验证：
+
+- `.venv/bin/python -m py_compile stretch_mujoco/agents/actions.py
+  stretch_mujoco/agents/conversation.py stretch_mujoco/agents/drivers.py
+  stretch_mujoco/agents/interaction_stations.py stretch_mujoco/agents/runtime.py
+  stretch_mujoco/agents/simulation_bridge.py stretch_mujoco/stretch_mujoco_simulator.py
+  tests/test_conversation_station_runtime.py tests/test_office_agents.py`：通过。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_conversation_station_runtime.py tests/test_interaction_station_allocator.py
+  tests/test_conversation.py tests/test_npc_stretch_e2e_acceptance.py
+  tests/test_semantic_action_bindings.py tests/test_interactions.py`：`86 passed in 55.04s`。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_office_agents.py::test_action_success_causes_distinct_semantic_commit_event
+  tests/test_conversation_station_runtime.py::test_success_uses_one_cleanup_path_and_does_not_double_emit`：
+  `2 passed in 0.50s`。
+- `git diff --check`：通过。
+- active catalog SHA-256 仍为
+  `bf1d638c6ae56305f84c0780b2f3c5bdc3dd2eb23c46d9b7cfe326d029871365`；20 个
+  office/home production configs 仍有 40 条 `unsupported`。
+
+## Phase 2C NPC-NPC handover station migration（未发布）
+
+`MujocoNpcActionDriver` 的 population-v3 NPC-NPC handover 现从同一
+`InteractionStationAllocator` 原子 acquire station、giver/receiver role sites、双方 participant
+和 object claim。候选 station 仍依 route callback 总成本和 station ID 确定选择，
+`preferred_station_id` 从 `ActionCommand.parameters` 贯穿到 allocator。忙碌 station/site/
+participant/object 和 route unavailable 继续使用 allocator 的稳定 fail-closed 错误，
+任一 acquire 失败都不保留部分资源。
+
+lease assignment 是 giver/receiver site 和 authored yaw 的唯一 v3 来源；station 的
+`distance_m`、`yaw_tolerance_rad` 用于双方 readiness marker gate，DETACH payload
+显式使用 authored `transfer_site`。成功链为双方 approach receipts -> 双方 align
+receipts -> giver/receiver `handover_ready` marker receipts -> giver DETACH receipt -> receiver
+ATTACH receipt -> `pull_npc_states()` 唯一 observed receiver owner -> allocator terminal release ->
+runtime semantic commit。命令提交或 duration 不会被当作 marker、attachment observation 或
+terminal receipt。
+
+rendezvous/aligned/ready 的双命令提交共用 handover 自身的 partial-submit
+rollback：第二条 submit 抛错会取消已提交命令，以 unconfirmed cleanup evidence
+释放 lease/object claim，且 cleanup ID 不进入 physical receipt chain。release/receive/
+rollback submit exception 也同样 fail closed。如 DETACH 已成功而 receiver ATTACH 未成功，
+receive failure、cancel 或 timeout 都先尝试 giver reattach reconciliation；只有 rollback
+terminal receipt 成功才记录恢复。rollback submit/receipt 失败会记录
+`handover_reconciliation_required` cleanup evidence，不宣称 owner 已恢复，也不提交
+receiver 语义 owner。
+
+handover `DriverResult`、`ActionExecution`、action memory 和 runtime events 保留 station/lease、
+完整有序 physical receipt IDs、cleanup evidence、compatibility mode 和
+`production_evidence: false`。`action_succeeded` 以最后 attachment terminal receipt 为
+causation，后续唯一 ID 的 `semantic_commit` 再指向 `action_succeeded.event_id`。
+重放同一 terminal execution ID 返回原结果，不二次 transfer 或 reacquire。
+
+population v2 旧 pair-to-fixed-role map 仍可运行，但 receipt/event 明确标记
+`compatibility_mode: population_v2_legacy_adapter` 和 `production_evidence: false`。legacy
+conversation pair 已恢复 `(speaker.site, listener.site)` 的顺序映射：first participant ->
+speaker，second participant -> listener。MuJoCo E2E 临时 fixture 按实际可达路径把 Priya
+设为首轮 speaker、Jordan 设为 listener，不再以反转角色映射规避路径。
+
+Phase 2C 仅实现 NPC-NPC。`npc_to_robot`/`robot_to_npc` 和 robot participant 在命令
+进入 NPC transport 前稳定拒绝为 `phase_2c_npc_handover_only`。生产 runtime
+assembly 仍没有 live route estimator，v3 allocator 因此在 acquire 阶段返回
+`interaction_station_route_unavailable`。没有修改 active catalog 或 capability status，不宣称
+runtime/production supported。
+
+验证：
+
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_handover_station_runtime.py --tb=short`：`20 passed in 0.52s`。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_handover_station_runtime.py tests/test_action_driver.py
+  tests/test_npc_runtime_safety.py tests/test_interaction_station_allocator.py
+  -k 'not test_production_driver_requires_scene_binding_for_registered_gesture_point'
+  --tb=short`：`87 passed, 1 deselected in 0.58s`。deselected 项仍是 Phase 0 已记录的
+  `ActionType.IDLE` expectation mismatch，本阶段未修复。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_conversation_station_runtime.py tests/test_interaction_station_allocator.py
+  tests/test_conversation.py tests/test_npc_stretch_e2e_acceptance.py
+  tests/test_semantic_action_bindings.py tests/test_interactions.py`：`86 passed in 50.11s`。
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_npc_stretch_e2e_acceptance.py --tb=short`：`1 passed in 49.13s`。
+- `.venv/bin/python -m py_compile stretch_mujoco/agents/actions.py
+  stretch_mujoco/agents/drivers.py stretch_mujoco/agents/runtime.py
+  tests/test_handover_station_runtime.py tests/test_npc_stretch_e2e_acceptance.py`：通过。
+- `git diff --check`：通过。
+- active catalog SHA-256 仍为
+  `bf1d638c6ae56305f84c0780b2f3c5bdc3dd2eb23c46d9b7cfe326d029871365`；20 个
+  office/home production configs 仍有 40 条 `unsupported`。
+
+## Phase 4 minimal seat-slot and desk-work runtime slice (2026-09-17)
+
+This worktree now has a private population-v3 seat-slot execution path. The
+immutable interaction catalog preserves seat owner/type/index/clearance and
+workstation/computer/seat bindings. `SeatSlotAllocator` reserves and occupies
+the slot ID itself under an `RLock`: separate slots on one sofa are independent,
+while a second session cannot reserve an already reserved or occupied slot.
+
+For a v3 slot, `MujocoNpcActionDriver` executes ingress movement, authored-yaw
+alignment, the `seated` animation marker, and an injected seat contact/collision
+verification callback. Only the complete physical receipt chain marks the slot
+occupied. `STAND_UP` retains occupancy until its marker, optional ingress exit,
+and standing verification receipt all succeed. `MOVE_TO` remains fail-closed
+while the driver records the NPC as seated. A missing verifier fails closed;
+the callback is an integration boundary and this slice does not manufacture a
+MuJoCo contact receipt. Legacy Chair execution remains a compatibility adapter.
+
+`USE_COMPUTER` resolves `Computer --ON--> Workstation` and then exactly one
+`SeatSlot --NEAR--> Workstation`. The existing desk-work session lowers it to
+`SIT -> WORK(work_cycle marker) -> STAND_UP -> IDLE`; command parameters and
+runtime event/memory evidence carry computer, workstation, slot, session, and
+the accumulated physical receipt IDs. A work failure leaves the already queued
+safe stand/idle path available; a stand failure retains the seated slot and
+semantic occupancy rather than claiming release.
+
+Focused evidence:
+
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_seat_work_runtime.py`: 5 passed.
+- Phase 4 plus action-driver compatibility: 39 passed and the unchanged
+  pre-existing `test_production_driver_requires_scene_binding_for_registered_gesture_point`
+  failure caused by the already-present extra `ActionType.IDLE`.
+- Two legacy desk-work/conversation interruption regressions: 7 passed after
+  retaining the original Chair `MOVE -> SIT` adapter.
+- Final Phase 2 + Phase 4 regression command covering the new focused file,
+  conversation station runtime, allocator, conversation, MuJoCo E2E, semantic
+  bindings, interactions, and handover station runtime: 111 passed in 51.48s.
+- `py_compile` for all five touched source modules and the focused test passed;
+  `git diff --check` passed. The active catalog SHA-256 remains
+  `bf1d638c6ae56305f84c0780b2f3c5bdc3dd2eb23c46d9b7cfe326d029871365`,
+  and the office/home production configs still contain 40 `unsupported`
+  declarations.
+
+Limitations remain explicit: this is not production evidence, generated scene
+projections and active capability declarations are unchanged, REST is not
+migrated in this minimal slice, and no real Stretch robot executor or Phase 5/6
+authoring was added. Population-v3 live use still requires the simulator owner
+to provide a real `verify_seat_contact` callback.
+
+## Phase 5 candidate authoring for twenty scenes (2026-09-17)
+
+The twenty office/home source scenes now have deterministic
+`interaction_site_plan/v1` candidates and `scene_npc_config/v2` configs. The
+authoring path is owned by `tools/author_scene_interaction_plans.py` and
+`tools/propose_interaction_sites.py`: each scene loads its own manifest and
+MJCF, builds its own NPC navmesh, selects six distributed same-region pairs,
+and emits three NPC-NPC conversation plus three NPC-NPC handover stations. No
+office_02 coordinates are copied to other scenes.
+
+Seat authoring closes every manifest seating entity with either a local
+navmesh-backed slot or a named exemption. Across the twenty scenes the current
+candidate inventory is 136 seat slots and 13 exemptions. Every scene has one
+physically bound workstation/computer/seat binding. Homes outside the three
+native workstation scenes (home 03/05/06) receive an idempotent,
+redistributable MuJoCo primitive desk/computer/chair/cup kit in the source MJCF
+and manifest, with `primitive_workstation_kit/v1` provenance and CC0 metadata.
+Handover objects are manifest-backed, dynamic, graspable free-joint bodies.
+
+`tools/generate_scene_npc_resources.py` now emits all twenty configs as v2,
+references the authored plans, and declares only the scoped NPC capabilities:
+conversation, handover, sit, and work. The previous 40 conversation/
+robot-handover `unsupported` placeholders are absent. Compiling these configs
+produces population schema v3 projections; generated projections were not
+manually edited and the active catalog was not published or changed.
+
+`tools/validate_interaction_site_plan.py` and the interaction-site audit mode
+report schema, source binding, plan hash, counts, and NPC navmesh evidence.
+Robot-NPC conversation, robot handover, robot footprint preflight, and a real
+Stretch executor are explicitly `deferred_out_of_scope`; they are not NPC
+completion or publication gates. Static collision/contact and per-seat visual
+or animation acceptance remain Phase 6 work, so every record remains
+candidate-only with `production_evidence: false`.
+
+Observed inventory and checks:
+
+- 20 plans and 20 v2 configs; 60 conversation stations, 60 NPC-NPC handover
+  stations, 136 seat slots, 13 named exemptions, and 20 workstation bindings.
+- `unsupported` occurrences in the twenty configs: 0.
+- `tests/test_twenty_scene_interaction_plans.py`: 23 passed independently.
+- Applicable v2 schema contract plus the batch suite: 47 passed in 71.16s.
+- `py_compile` for the author/proposal/validator/generator/audit tools, plan
+  loader, and batch test passed; `git diff --check` passed.
+- Active catalog SHA-256 remains
+  `bf1d638c6ae56305f84c0780b2f3c5bdc3dd2eb23c46d9b7cfe326d029871365`.
+
+The earlier office_02 pilot tests that hard-code one conversation, one
+handover, robot modes, old resource IDs, and conversion from a v1 config are
+superseded by this 3+3 NPC-only authored catalog. They require fixture migration
+before being used as Phase 5 evidence; runtime physical acceptance is not
+claimed from the static batch suite.
+
+## Production V2 fitted no-hair appearance bundle (2026-09-17)
+
+The V2 fitted no-hair proposal is preserved for future review but is **not**
+the production default: the ten-NPC production catalog uses the original
+`smplx_office_neutral_v1` bundle and its original appearance identities. The
+versioned V2 recipe is
+`models/appearance_recipes/office_personas_v2_fitted_no_hair.runtime.json`, and
+`tools/build_npc_v2_fitted_appearance.py` reproducibly projects all 215 unique
+source animation frames into a stable fused topology. Each frame retains the
+SMPL-X body and appends UV-preserving surface shells for the top, trousers and
+shoe uppers at 10 mm, 9 mm and 12 mm offsets. It also appends 12 mm thick,
+foot-outline soles with a narrowed arch and heel. Keeping these parts in each
+body OBJ avoids MuJoCo's independent-mesh recentering problem.
+
+The V2 catalog adds `hair_none_v1`, a transparent layer used only by its ten
+versioned identities. Its glasses remain the original `glasses_thin_round_v4`
+`accessory_2d` texture layer for Alex, Priya, Daniel and Lena; no geometric
+glasses are generated or loaded. The original `smplx_office_neutral_v1` bundle
+and original hair/appearance identities are the active production selection.
+All office/home scene configs continue to reference
+`office_population.production.example.json`, so future scene compilation uses
+that restored default rather than embedding the V2 proposal.
+
+Generated local runtime assets live under
+`models/assets/humanoid/generated/animations/v2_fitted_no_hair_v1/` (215 OBJ
+frames, about 371 MiB) with a hash receipt. They remain ignored local projections
+and can be rebuilt from the tracked recipe/tool; licensed source assets are not
+committed. The manifest validates 10 NPCs and 2 bundles. Focused tests
+`tests/test_npc_production_appearance_roster.py tests/test_npc_assets.py` pass
+(`14 passed`). A composed native-office MJCF compiles to 70 bodies, 2,626 geoms,
+2,244 meshes, 27 textures and 61 materials. A 40-frame Alex front/rear/left/
+right/top walk-and-sit acceptance render passes with scene-native lighting and
+no color, transparency or occlusion failures.
+
+
+## 2026-09-17 Live MuJoCo representative seat acceptance (not production)
+
+The candidate-static plans were exercised against all twenty compiled MJCF scenes using
+the in-process NpcSystem transport, real MuJoCo model/data, mj_step,
+controller-issued move/align/sit/stand commands, animation completion markers, live
+root-to-site measurements, and MuJoCo contact scans. The reports live under
+aaa_workspace/archive/20260917_repository_cleanup/aaa_workspace/interaction_acceptance_physical/.
+
+This is a representative per-scene seat check, not an exhaustive 136-slot campaign:
+one deterministic authored seat slot was selected per scene. All 20 reports are
+physical_mujoco_candidate, retain production_evidence: false, and the aggregate
+result is passed: false. No active catalog was published.
+
+Observed blockers are physical and fail closed: 16 scene checks ended
+route_static_collision, 4 ended route_unavailable; office_01 also observed an NPC
+torso penetration against 075_bread_022_collision. The current mocap mesh NPC asset
+has no force-bearing chair proxy, so seat evidence is explicitly limited to a live
+root-to-sit-site tolerance plus a clean MuJoCo unexpected-contact scan. It must not
+be relabeled as force contact.
+
+Verification:
+
+- PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+  tests/test_candidate_interaction_acceptance.py tests/test_seat_work_runtime.py --tb=short:
+  7 passed in 2.34s.
+- PYTHONPATH=. .venv/bin/python tools/run_scene_interaction_acceptance.py --all
+  --live-mujoco --output-root aaa_workspace/interaction_acceptance_physical:
+  completed 20 reports, aggregate passed: false.
+- .venv/bin/python -m py_compile tools/run_scene_interaction_acceptance.py and
+  git diff --check: passed.
+
+The next physical-correction slice is to resolve each reported ingress/seat route,
+move or exclude overlapping dynamic props at spawn, add a force-bearing NPC seat
+proxy if contact-level acceptance is required, then rerun all seat slots rather than
+only the representative slot.

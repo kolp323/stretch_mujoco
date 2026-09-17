@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+import math
 from pathlib import Path
 
 import mujoco
@@ -63,6 +64,11 @@ class NpcTrajectoryProfile:
     scene_sha256: str
     anchors: dict[str, TrajectoryAnchor]
     routes: tuple[TrajectoryRoute, ...]
+    navigation_surface: str = "office_floor"
+    agent_radius: float = 0.25
+    clearance: float = 0.0
+    resolution: float = 0.08
+    exclude_body_roots: tuple[str, ...] = ()
     source_path: Path | None = None
 
     @classmethod
@@ -119,7 +125,56 @@ class NpcTrajectoryProfile:
                 raise TrajectoryProfileError(f"trajectory_route_invalid:{route_id or '<unnamed>'}")
             route_ids.add(route_id)
             routes.append(TrajectoryRoute(route_id, source_anchor, destination, tuple(actions)))
-        return cls(profile_id, scene, scene_sha256, anchors, tuple(routes), source.resolve())
+        navigation = payload.get("navigation", {})
+        if not isinstance(navigation, dict) or set(navigation) - {
+            "surface",
+            "agent_radius",
+            "clearance",
+            "resolution",
+            "exclude_body_roots",
+        }:
+            raise TrajectoryProfileError("trajectory_navigation_invalid")
+        surface = navigation.get("surface", "office_floor")
+        agent_radius = navigation.get("agent_radius", 0.25)
+        clearance = navigation.get("clearance", 0.0)
+        resolution = navigation.get("resolution", 0.08)
+        raw_exclude_body_roots = navigation.get("exclude_body_roots", [])
+        if not isinstance(surface, str) or not surface:
+            raise TrajectoryProfileError("trajectory_navigation_surface_invalid")
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            or value < 0
+            for value in (agent_radius, clearance)
+        ):
+            raise TrajectoryProfileError("trajectory_navigation_clearance_invalid")
+        if (
+            isinstance(resolution, bool)
+            or not isinstance(resolution, (int, float))
+            or not math.isfinite(resolution)
+            or not 0.01 <= resolution <= 0.2
+        ):
+            raise TrajectoryProfileError("trajectory_navigation_resolution_invalid")
+        if (
+            not isinstance(raw_exclude_body_roots, list)
+            or not all(isinstance(value, str) and value for value in raw_exclude_body_roots)
+            or len(set(raw_exclude_body_roots)) != len(raw_exclude_body_roots)
+        ):
+            raise TrajectoryProfileError("trajectory_navigation_exclude_body_roots_invalid")
+        return cls(
+            profile_id,
+            scene,
+            scene_sha256,
+            anchors,
+            tuple(routes),
+            surface,
+            float(agent_radius),
+            float(clearance),
+            float(resolution),
+            tuple(raw_exclude_body_roots),
+            source.resolve(),
+        )
 
     def route_for(
         self, source_anchor: str | None, destination_site: str, action: str
@@ -167,13 +222,22 @@ class NpcTrajectoryProfile:
             raise TrajectoryProfileError(
                 "trajectory_anchor_site_missing:" + ",".join(sorted(missing_sites))
             )
-        if mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, "office_floor") < 0:
-            raise TrajectoryProfileError("trajectory_navigation_geometry_missing:office_floor")
+        if mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, self.navigation_surface) < 0:
+            raise TrajectoryProfileError(
+                f"trajectory_navigation_geometry_missing:{self.navigation_surface}"
+            )
         try:
-            navigation = OfficeNavigationMesh.from_model(model, data)
+            navigation = OfficeNavigationMesh.from_model(
+                model,
+                data,
+                resolution=self.resolution,
+                agent_radius=self.agent_radius + self.clearance,
+                floor_geom_name=self.navigation_surface,
+                exclude_body_roots=self.exclude_body_roots,
+            )
         except NavigationPathError as error:
             raise TrajectoryProfileError(
-                "trajectory_navigation_geometry_invalid:office_floor"
+                f"trajectory_navigation_geometry_invalid:{self.navigation_surface}"
             ) from error
         compiled: list[PreflightRoute] = []
         for route in self.routes:
@@ -231,7 +295,12 @@ class NpcTrajectoryProfile:
                 for sample_index in range(10000):
                     completed = controller.step(data, sample_index * sample_period)
                     mujoco.mj_forward(model, data)
-                    contacts = self._npc_scene_contacts(model, data, collision_ids)
+                    contacts = self._npc_scene_contacts(
+                        model,
+                        data,
+                        collision_ids,
+                        floor_geom_name=self.navigation_surface,
+                    )
                     if contacts:
                         raise TrajectoryProfileError(
                             f"trajectory_route_collision:{route.route_id}:{contacts[0]}"
@@ -256,6 +325,8 @@ class NpcTrajectoryProfile:
         model: mujoco.MjModel,
         data: mujoco.MjData,
         collision_ids: set[int],
+        *,
+        floor_geom_name: str = "office_floor",
     ) -> tuple[str, ...]:
         contacts: set[str] = set()
         for contact_index in range(data.ncon):
@@ -266,7 +337,7 @@ class NpcTrajectoryProfile:
                 continue
             other = second if first in collision_ids else first
             other_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, other) or str(other)
-            if other_name == "office_floor" or other in collision_ids:
+            if other_name == floor_geom_name or other in collision_ids:
                 continue
             npc = first if first in collision_ids else second
             npc_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, npc) or str(npc)

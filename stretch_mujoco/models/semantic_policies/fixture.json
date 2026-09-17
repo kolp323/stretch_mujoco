@@ -1,0 +1,12 @@
+{
+  "schema": "semantic_policy/v1",
+  "kind": "fixture",
+  "fallback": "unresolved",
+  "rules": [
+    {"id": "regions", "match": {"kind": "region"}, "semantic_class": "region.work", "affordances": ["navigate"], "navigation_requirement": "region", "point_bundle": "region_samples"},
+    {"id": "chairs", "match": {"category": "chair"}, "semantic_class": "furniture.seat", "affordances": ["approach", "sit"], "navigation_requirement": "approach", "point_bundle": "seat"},
+    {"id": "tables", "match": {"category": "table"}, "semantic_class": "furniture.counter", "affordances": ["approach"], "navigation_requirement": "approach", "point_bundle": "perimeter_approach"},
+    {"id": "graspables", "match": {"category": "interactive"}, "semantic_class": "object.graspable", "affordances": ["approach", "grasp"], "navigation_requirement": "approach", "point_bundle": "graspable_on_support"}
+  ],
+  "semantic_name_taxonomy": {}
+}

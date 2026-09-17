@@ -27,7 +27,13 @@ def discover_capabilities(sequence: BehaviorSequence) -> ControlCapabilities:
     site_ids = frozenset(
         node.attrib["name"] for node in root.iter("site") if node.attrib.get("name")
     )
-    semantics_path = scene_path.with_name("office_semantics.json")
+    # Generated scenes keep their portable semantic graph beside the generated
+    # population rather than beside the immutable scene XML.  A sequence may
+    # therefore declare ``scene.semantic_world`` explicitly; legacy sequences
+    # retain the adjacent-file convention.
+    semantics_path = sequence.scene.get(
+        "semantic_world", scene_path.with_name("office_semantics.json")
+    )
     object_ids: set[str] = set()
     robot_ids: set[str] = set()
     if semantics_path.is_file():

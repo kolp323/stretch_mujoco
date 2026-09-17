@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "classified": 38,
+    "discovered": 38,
+    "explicitly_exempt": 0,
+    "registered": 38,
+    "unbound": 0,
+    "unresolved": 0
+  },
+  "exemptions": [],
+  "navigation_preflight": "passed",
+  "planner": {
+    "agent_radius": 0.16,
+    "clearance": 0.06,
+    "name": "collision_geometry_v1",
+    "primary_component_cells": 17461,
+    "primary_component_id": 0,
+    "resolution": 0.08
+  },
+  "reachability": {
+    "all_reachable": true,
+    "origins": 4,
+    "pair_count": 192,
+    "targets": 48
+  },
+  "reachability_matrix_sha256": "9e4d757333330d907bd65e0d03cf67c71a3127b026cce87f60aa6ba6fc911d74",
+  "reachable_navigation_points": 48,
+  "required_navigation_points": 48,
+  "scene_id": "office_08_dual_island",
+  "schema_version": 1,
+  "strongly_connected": true,
+  "unreachable": []
+}

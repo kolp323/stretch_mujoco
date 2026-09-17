@@ -174,11 +174,11 @@ def write_npc_asset_manifest(output_dir: Path, target_height: float) -> dict[str
     return manifest
 
 
-def _load_retargeted_body_pose_clips(
+def _load_prepared_motion_clips(
     motion_root: Path, torch: Any, clip_names: Iterable[str] = OFFICE_CLIPS
-) -> dict[str, tuple[list[Any], list[Any]]]:
-    """Load all locally selected, provenance-backed baker inputs."""
-    clips: dict[str, tuple[list[Any], list[Any]]] = {}
+) -> dict[str, tuple[list[Any], list[Any], list[Any]]]:
+    """Load selected body and optional hand poses from provenance-backed inputs."""
+    clips: dict[str, tuple[list[Any], list[Any], list[Any]]] = {}
     missing: list[str] = []
     for clip_name in clip_names:
         path = motion_root / f"{clip_name}.npz"
@@ -193,12 +193,26 @@ def _load_retargeted_body_pose_clips(
                 payload["transl"] if "transl" in payload else np.zeros((poses.shape[0], 3)),
                 dtype=np.float32,
             )
+            hand_poses = np.asarray(
+                payload["pose_hand"]
+                if "pose_hand" in payload
+                else np.zeros((poses.shape[0], 90), dtype=np.float32),
+                dtype=np.float32,
+            )
         if poses.ndim != 2 or poses.shape[0] < 2 or poses.shape[1] != 63:
             raise SmplxAssetError(
                 f"Motion clip '{path}' body_pose must have shape (frames >= 2, 63)"
             )
         if not np.isfinite(poses).all():
             raise SmplxAssetError(f"Motion clip '{path}' body_pose contains non-finite values")
+        if (
+            hand_poses.ndim != 2
+            or hand_poses.shape != (poses.shape[0], 90)
+            or not np.isfinite(hand_poses).all()
+        ):
+            raise SmplxAssetError(
+                f"Motion clip '{path}' pose_hand must have shape ({poses.shape[0]}, 90)"
+            )
         try:
             canonical_transl = canonicalize_vertical_translation(transl)
         except AmassIntakeError as error:
@@ -206,6 +220,7 @@ def _load_retargeted_body_pose_clips(
         clips[clip_name] = (
             [torch.from_numpy(pose).reshape(1, -1) for pose in poses],
             [torch.from_numpy(trans).reshape(1, -1) for trans in canonical_transl],
+            [torch.from_numpy(hand).reshape(1, -1) for hand in hand_poses],
         )
     if missing:
         raise SmplxAssetError(
@@ -263,7 +278,7 @@ def bake_and_register_additional_clips(
     texture_coordinates, texture_faces = _load_texture_topology(model_file)
     if texture_coordinates is None or texture_faces is None:
         raise SmplxAssetError("SMPL-X model does not contain UV topology.")
-    motions = _load_retargeted_body_pose_clips(motion_root, torch, selected_clips)
+    motions = _load_prepared_motion_clips(motion_root, torch, selected_clips)
 
     with torch.no_grad():
         reference = model(
@@ -275,11 +290,19 @@ def bake_and_register_additional_clips(
     scale = float(bundle["height_m"]) / float(reference_vertices[:, 2].ptp())
     ground_offset = float(reference_vertices[:, 2].min()) * scale
 
-    for clip_name, (poses, translations) in motions.items():
+    for clip_name, (poses, translations, hand_poses) in motions.items():
         frames: list[str] = []
-        for frame_index, (body_pose, translation) in enumerate(zip(poses, translations)):
+        for frame_index, (body_pose, translation, hand_pose) in enumerate(
+            zip(poses, translations, hand_poses)
+        ):
             with torch.no_grad():
-                result = model(body_pose=body_pose, transl=translation, return_verts=True)
+                result = model(
+                    body_pose=body_pose,
+                    transl=translation,
+                    left_hand_pose=hand_pose[:, :45],
+                    right_hand_pose=hand_pose[:, 45:],
+                    return_verts=True,
+                )
             vertices = _to_mujoco_coordinates(result.vertices[0].detach().cpu().numpy())
             vertices *= scale
             vertices[:, 2] -= ground_offset
@@ -440,7 +463,7 @@ def bake_smplx_animations(
     face_groups = _face_material_groups(model, faces)
     if motion_root is None:
         raise SmplxAssetError("Restricted production baking requires a local --motion-root")
-    clips = _load_retargeted_body_pose_clips(motion_root, torch)
+    clips = _load_prepared_motion_clips(motion_root, torch)
 
     with torch.no_grad():
         reference = model(
@@ -461,10 +484,18 @@ def bake_smplx_animations(
     )
     mesh_elements = []
 
-    for clip_name, (poses, translations) in clips.items():
-        for frame_index, (body_pose, translation) in enumerate(zip(poses, translations)):
+    for clip_name, (poses, translations, hand_poses) in clips.items():
+        for frame_index, (body_pose, translation, hand_pose) in enumerate(
+            zip(poses, translations, hand_poses)
+        ):
             with torch.no_grad():
-                result = model(body_pose=body_pose, transl=translation, return_verts=True)
+                result = model(
+                    body_pose=body_pose,
+                    transl=translation,
+                    left_hand_pose=hand_pose[:, :45],
+                    right_hand_pose=hand_pose[:, 45:],
+                    return_verts=True,
+                )
             vertices = _to_mujoco_coordinates(result.vertices[0].detach().cpu().numpy())
             vertices *= scale
             vertices[:, 2] -= ground_offset

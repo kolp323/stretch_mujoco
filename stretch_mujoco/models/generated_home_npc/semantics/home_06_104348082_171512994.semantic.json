@@ -1,0 +1,136 @@
+{
+  "interaction_points": {
+    "bed_01_approach": {
+      "attributes": {
+        "binding": "seat_navigation",
+        "target": "bed_01"
+      },
+      "owner": "bed_01",
+      "role": "human_stand_site",
+      "site": "npc_home_bed_01_approach_site"
+    },
+    "bed_01_sit": {
+      "attributes": {
+        "binding": "location",
+        "seat_type": "bed",
+        "target": "bed_01",
+        "yaw": -1.5707963267948966
+      },
+      "owner": "bed_01",
+      "role": "chair_sit_site",
+      "site": "npc_home_bed_01_sit_site"
+    },
+    "bed_02_approach": {
+      "attributes": {
+        "binding": "seat_navigation",
+        "target": "bed_02"
+      },
+      "owner": "bed_02",
+      "role": "human_stand_site",
+      "site": "npc_home_bed_02_approach_site"
+    },
+    "bed_02_sit": {
+      "attributes": {
+        "binding": "location",
+        "seat_type": "bed",
+        "target": "bed_02",
+        "yaw": 0.0
+      },
+      "owner": "bed_02",
+      "role": "chair_sit_site",
+      "site": "npc_home_bed_02_sit_site"
+    },
+    "home_activity": {
+      "attributes": {
+        "binding": "location",
+        "target": "home",
+        "usage": "activity",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "activity_area"
+    },
+    "home_spawn_npc_alex_chen": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_alex_chen",
+        "slot_id": "alex_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "alex_spawn"
+    },
+    "home_spawn_npc_jordan_patell": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_jordan_patell",
+        "slot_id": "jordan_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "jordan_spawn"
+    },
+    "home_spawn_npc_morgan_lee": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_morgan_lee",
+        "slot_id": "morgan_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "morgan_spawn"
+    }
+  },
+  "objects": {
+    "bed_01": {
+      "attributes": {
+        "capacity": 1,
+        "furniture_kind": "bed",
+        "region": "home",
+        "semantic_name": "Tremont Full Storage Bed, Dry Branch Natural"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_090"
+      },
+      "type": "Bed"
+    },
+    "bed_02": {
+      "attributes": {
+        "capacity": 1,
+        "furniture_kind": "bed",
+        "region": "home",
+        "semantic_name": "Zara Queen Panel Bed, blue"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_104"
+      },
+      "type": "Bed"
+    },
+    "home": {
+      "attributes": {
+        "capacity": 3,
+        "region": "home"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "activity_area"
+      },
+      "type": "Counter"
+    }
+  },
+  "relations": [],
+  "scene": "home_06_104348082_171512994_npc.xml",
+  "schema_version": 1
+}

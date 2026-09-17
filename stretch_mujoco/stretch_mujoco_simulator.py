@@ -489,7 +489,11 @@ class StretchMujocoSimulator:
                 },
                 world=self.semantic_world,
                 interaction_templates=self.agent_runtime.population_interaction_templates,
+                interaction_station_allocator=getattr(
+                    self.agent_runtime, "interaction_station_allocator", None
+                ),
             )
+            self.agent_runtime.interaction_driver = self.agent_runtime.action_driver
         return self.agent_runtime
 
     def is_reached_set_position(self, actuator: str | Actuators, position_tolerance: float = 0.05):

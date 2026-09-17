@@ -43,6 +43,18 @@ def _payload_int(value: object, field: str) -> int:
 class ActiveNpcCommand:
     command: NpcCommand
     started_at: float | None = None
+    requested_clip: str | None = None
+    clip_activated: bool = False
+    clip_sampled: bool = False
+    clip_activated_at: float | None = None
+    clip_sampled_at: float | None = None
+
+    def __post_init__(self) -> None:
+        if self.command.kind in {
+            NpcCommandKind.PLAY_ANIMATION,
+            NpcCommandKind.INTERACTION_CUE,
+        }:
+            self.requested_clip = str(self.command.payload.get("clip", "idle"))
 
 
 @dataclass(frozen=True)
@@ -105,6 +117,9 @@ class NpcController:
                     command.payload.get("progress_timeout", 2.0), "progress_timeout"
                 )
                 max_replans = _payload_int(command.payload.get("max_replans", 0), "max_replans")
+                allow_final_ingress = command.payload.get("allow_final_ingress", False)
+                if not isinstance(allow_final_ingress, bool):
+                    raise ValueError("allow_final_ingress_must_be_boolean")
                 self._validate_trajectory_route(command, site)
                 self.locomotion.move_to(
                     site,
@@ -116,6 +131,7 @@ class NpcController:
                         if command.payload.get("navigation_site") is None
                         else str(command.payload["navigation_site"])
                     ),
+                    allow_final_ingress=allow_final_ingress,
                 )
                 self._walk_motion_started = False
                 self._move_completion_pending = False
@@ -134,7 +150,13 @@ class NpcController:
                         raise ValueError(f"object_not_attached:{reveal_object}")
                 self.animation.set_execution(command.command_id)
                 if command.payload.get("interaction_target") is None:
-                    self.animation.request(str(command.payload["clip"]))
+                    # A direct play command is an explicit action boundary.
+                    # The preceding MOVE_TO may have just requested its idle
+                    # arrival pose while the resolved clip is still walk;
+                    # allowing the normal safe-marker deferral here can lose
+                    # the requested action when the walk clip transitions to
+                    # idle on the next step.
+                    self.animation.request(str(command.payload["clip"]), force=True)
                 else:
                     self._validate_interaction_gate(command.payload)
                     # Do not expose a social clip until the other participant is
@@ -142,7 +164,15 @@ class NpcController:
                     self.animation.request("idle", force=True)
             elif command.kind == NpcCommandKind.INTERACTION_CUE:
                 self.animation.set_execution(command.command_id)
-                self.animation.request(str(command.payload.get("clip", "idle")))
+                requested_clip = str(command.payload.get("clip", "idle"))
+                if command.payload.get("interaction_target") is not None:
+                    self._validate_interaction_gate(command.payload)
+                    self.animation.request("idle", force=True)
+                else:
+                    # Interaction cues without a spatial gate are explicit
+                    # action boundaries just like direct PLAY_ANIMATION
+                    # commands; do not strand them behind a completed walk.
+                    self.animation.request(requested_clip, force=True)
             elif command.kind == NpcCommandKind.ATTACH_OBJECT:
                 object_name = str(command.payload["object"])
                 visible = command.payload.get("visible", True)
@@ -267,6 +297,7 @@ class NpcController:
 
         complete = False
         interaction_ready = True
+        duration: float | None = None
         if active is not None:
             if active.command.kind == NpcCommandKind.MOVE_TO:
                 return self._step_move(data, sim_time, active, running_receipt)
@@ -291,23 +322,17 @@ class NpcController:
                     self._require_target_site_proximity(data, active.command.payload)
                 except ValueError as error:
                     return self._finish(CommandStatus.FAILED, sim_time, str(error))
-                if active.command.kind == NpcCommandKind.PLAY_ANIMATION and (
-                    active.command.payload.get("interaction_target") is not None
-                ):
+                if active.command.payload.get("interaction_target") is not None:
+                    assert active.requested_clip is not None
                     interaction_ready = self._interaction_ready(data, active.command.payload)
                     self.animation.request(
-                        str(active.command.payload["clip"]) if interaction_ready else "idle",
+                        active.requested_clip if interaction_ready else "idle",
                         force=True,
                     )
                 reveal_object = active.command.payload.get("reveal_object")
                 if interaction_ready and reveal_object is not None:
                     self.attachments.set_visible(str(reveal_object), True)
                 duration = _payload_float(active.command.payload.get("duration", 0.0), "duration")
-                complete = (
-                    interaction_ready
-                    and duration > 0
-                    and (active.started_at is not None and sim_time - active.started_at >= duration)
-                )
             elif active.command.kind == NpcCommandKind.ATTACH_OBJECT:
                 object_name = str(active.command.payload["object"])
                 self.attachments.attach(
@@ -358,13 +383,32 @@ class NpcController:
             NpcCommandKind.PLAY_ANIMATION,
             NpcCommandKind.INTERACTION_CUE,
         }:
+            assert active.requested_clip is not None
+            if (
+                interaction_ready
+                and self.animation.resolved_clip == active.requested_clip
+                and self.animation.last_sampled_clip == active.requested_clip
+            ):
+                active.clip_activated = True
+                active.clip_sampled = True
+                if active.clip_activated_at is None:
+                    active.clip_activated_at = sim_time
+                if active.clip_sampled_at is None:
+                    active.clip_sampled_at = sim_time
             completion_marker = active.command.payload.get("completion_marker")
-            if not interaction_ready:
+            if not interaction_ready or not active.clip_activated or not active.clip_sampled:
                 complete = False
             elif completion_marker is not None:
                 complete = str(completion_marker) in self._animation_events
-            elif _payload_float(active.command.payload.get("duration", 0.0), "duration") <= 0:
-                complete = self.animation.phase >= 1.0
+            else:
+                assert duration is not None
+                if duration > 0:
+                    complete = (
+                        active.clip_activated_at is not None
+                        and sim_time - active.clip_activated_at >= duration
+                    )
+                else:
+                    complete = self.animation.phase >= 1.0
         self.attachments.step(data)
         self._last_step_time = sim_time
         if complete:

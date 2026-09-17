@@ -76,10 +76,24 @@ MUJOCO_LOG.TXT
 # Shared experimental payloads stay local; document their layout outside them.
 /aaa_workspace/experiments/**
 
+# Retired local backups and superseded outputs are preserved here, never committed.
+/aaa_workspace/archive/
+
+# Local visual demos, acceptance runs, and generated diagnostics.
+/aaa_workspace/demo1/
+/aaa_workspace/demo_new/
+/aaa_workspace/interaction_acceptance_candidate/
+/aaa_workspace/interaction_acceptance_noncontact_all_slots/
+/aaa_workspace/active_scene_semantics_report*.json
+/aaa_workspace/showcases/*
+!/aaa_workspace/showcases/office_02_day_in_the_life.json
+!/aaa_workspace/showcases/home_04_household_assistance.json
+
 # Temp runtime XML 
 stretch_temp_abs.xml
 stretch_mujoco/models/.npc_*.xml
 stretch_mujoco/models/.*.xml
+stretch_mujoco/models/generated_scene_npc/active/builds/.scene-npc-active-*/
 
 # Licensed humanoid model parameters must not be redistributed.
 models_smplx_*.zip

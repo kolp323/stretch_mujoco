@@ -1,0 +1,376 @@
+{
+  "conversation_stations": [
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.home_06_104348082_171512994.01",
+      "region": "zone.home",
+      "roles": {
+        "listener": {
+          "position": [
+            -0.57073,
+            0.55842,
+            0.025
+          ],
+          "yaw": 2.51279636717436
+        },
+        "speaker": {
+          "position": [
+            -0.09073,
+            -0.10158,
+            0.025
+          ],
+          "yaw": -0.6287962864154334
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.home_06_104348082_171512994.02",
+      "region": "zone.home",
+      "roles": {
+        "listener": {
+          "position": [
+            -7.77073,
+            8.95842,
+            0.025
+          ],
+          "yaw": -2.19959261321033
+        },
+        "speaker": {
+          "position": [
+            -8.43073,
+            8.47842,
+            0.025
+          ],
+          "yaw": 0.9420000403794634
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.home_06_104348082_171512994.03",
+      "region": "zone.home",
+      "roles": {
+        "listener": {
+          "position": [
+            -9.03073,
+            -0.16158,
+            0.025
+          ],
+          "yaw": -2.1995926132103296
+        },
+        "speaker": {
+          "position": [
+            -9.69073,
+            -0.64158,
+            0.025
+          ],
+          "yaw": 0.9420000403794637
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "handover_stations": [
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.home_06_104348082_171512994.01",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "017_calculator_home_00"
+      ],
+      "region": "zone.home",
+      "roles": {
+        "giver": {
+          "position": [
+            -0.69073,
+            9.01842,
+            0.025
+          ],
+          "yaw": -1.7975951748487817
+        },
+        "receiver": {
+          "position": [
+            -1.47073,
+            8.83842,
+            0.025
+          ],
+          "yaw": 1.3439974787410114
+        },
+        "robot": {
+          "position": [
+            -0.69073,
+            9.01842,
+            0.025
+          ],
+          "yaw": -1.7975951748487817
+        }
+      },
+      "transfer_position": [
+        -1.08073,
+        8.92842,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.home_06_104348082_171512994.02",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "017_calculator_home_00"
+      ],
+      "region": "zone.home",
+      "roles": {
+        "giver": {
+          "position": [
+            -5.07073,
+            3.67842,
+            0.025
+          ],
+          "yaw": -1.869295258381076
+        },
+        "receiver": {
+          "position": [
+            -5.85073,
+            3.43842,
+            0.025
+          ],
+          "yaw": 1.272297395208717
+        },
+        "robot": {
+          "position": [
+            -5.07073,
+            3.67842,
+            0.025
+          ],
+          "yaw": -1.869295258381076
+        }
+      },
+      "transfer_position": [
+        -5.46073,
+        3.55842,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.home_06_104348082_171512994.03",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "017_calculator_home_00"
+      ],
+      "region": "zone.home",
+      "roles": {
+        "giver": {
+          "position": [
+            -4.77073,
+            -0.94158,
+            0.025
+          ],
+          "yaw": -1.2722973952087175
+        },
+        "receiver": {
+          "position": [
+            -5.55073,
+            -0.70158,
+            0.025
+          ],
+          "yaw": 1.8692952583810758
+        },
+        "robot": {
+          "position": [
+            -4.77073,
+            -0.94158,
+            0.025
+          ],
+          "yaw": -1.2722973952087175
+        }
+      },
+      "transfer_position": [
+        -5.16073,
+        -0.82158,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "scene_id": "home_06_104348082_171512994",
+  "schema": "interaction_site_plan/v1",
+  "seat_exemptions": [
+    {
+      "evidence": "navmesh_search_within_1.25m",
+      "owner_entity": "hssd_object_019",
+      "reason": "no_local_primary_component_ingress"
+    }
+  ],
+  "seat_slots": [
+    {
+      "clearance_radius_m": 0.225226,
+      "id": "seat.hssd_object_052.01",
+      "ingress": {
+        "position": [
+          -8.37073,
+          8.47842,
+          0.025
+        ],
+        "yaw": 0.057627809186718594
+      },
+      "owner_entity": "hssd_object_052",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -8.34317,
+          8.956129,
+          0.3
+        ],
+        "yaw": 0.057627809186718594
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.226793,
+      "id": "seat.hssd_object_055.01",
+      "ingress": {
+        "position": [
+          -8.49073,
+          2.05842,
+          0.025
+        ],
+        "yaw": -3.110204058187819
+      },
+      "owner_entity": "hssd_object_055",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -8.50779,
+          1.5151,
+          0.495271
+        ],
+        "yaw": -3.110204058187819
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.hssd_object_056.01",
+      "ingress": {
+        "position": [
+          -4.11073,
+          3.31842,
+          0.025
+        ],
+        "yaw": 3.116828297279111
+      },
+      "owner_entity": "hssd_object_056",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -4.0995,
+          2.865045,
+          0.495
+        ],
+        "yaw": 3.116828297279111
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.hssd_object_057.01",
+      "ingress": {
+        "position": [
+          -6.03073,
+          2.83842,
+          0.025
+        ],
+        "yaw": 1.5096043454896746
+      },
+      "owner_entity": "hssd_object_057",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -5.59617,
+          2.865045,
+          0.495
+        ],
+        "yaw": 1.5096043454896746
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.hssd_object_058.01",
+      "ingress": {
+        "position": [
+          -4.89073,
+          3.31842,
+          0.025
+        ],
+        "yaw": 3.1152848881719026
+      },
+      "owner_entity": "hssd_object_058",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -4.8788,
+          2.865045,
+          0.495
+        ],
+        "yaw": 3.1152848881719026
+      },
+      "slot_index": 1
+    }
+  ],
+  "workstations": [
+    {
+      "computer_entity": "hssd_object_075",
+      "id": "workstation.home_06_104348082_171512994.01",
+      "seat_slot": "seat.hssd_object_055.01",
+      "work_site": {
+        "position": [
+          -8.50779,
+          1.5151,
+          0.765271
+        ],
+        "yaw": -3.110204058187819
+      },
+      "workstation_entity": "hssd_object_073"
+    }
+  ]
+}

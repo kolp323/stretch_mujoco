@@ -1,0 +1,509 @@
+{
+  "agent_radius": 0.16,
+  "clearance": 0.0,
+  "method": "nearest_distinct_cell_in_primary_component",
+  "resolution": 0.06,
+  "scenes": {
+    "home_01_102344115": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.030517576,
+        "legacy_position": [
+          -2.544386428,
+          0.918631648
+        ],
+        "registered_position": [
+          -2.51639975,
+          0.93079998
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.035611293,
+        "legacy_position": [
+          -2.836673093,
+          0.060077202
+        ],
+        "registered_position": [
+          -2.81639975,
+          0.03079998
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.016752091,
+        "legacy_position": [
+          -3.71353309,
+          3.494294986
+        ],
+        "registered_position": [
+          -3.71639975,
+          3.51079998
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.029417231,
+        "legacy_position": [
+          -3.71353309,
+          0.060077202
+        ],
+        "registered_position": [
+          -3.71639975,
+          0.03079998
+        ]
+      }
+    },
+    "home_02_103997919_171031233": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.019401525,
+        "legacy_position": [
+          -0.330388869,
+          5.678277844
+        ],
+        "registered_position": [
+          -0.31100079,
+          5.67900005
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.033397104,
+        "legacy_position": [
+          -2.984722487,
+          4.518388953
+        ],
+        "registered_position": [
+          -3.01100079,
+          4.53900005
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.00390876,
+        "legacy_position": [
+          -3.427111423,
+          2.198611173
+        ],
+        "registered_position": [
+          -3.43100079,
+          2.19900005
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.026288225,
+        "legacy_position": [
+          -2.984722487,
+          5.678277844
+        ],
+        "registered_position": [
+          -3.01100079,
+          5.67900005
+        ]
+      }
+    },
+    "home_03_107734119_175999932": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.01667639,
+        "legacy_position": [
+          -1.720555728,
+          4.78666683
+        ],
+        "registered_position": [
+          -1.73500084,
+          4.79499994
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.032871932,
+        "legacy_position": [
+          -5.59166722,
+          6.023333589
+        ],
+        "registered_position": [
+          -5.57500084,
+          5.99499994
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.012019046,
+        "legacy_position": [
+          -2.688333601,
+          5.40500021
+        ],
+        "registered_position": [
+          -2.69500084,
+          5.39499994
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.028469539,
+        "legacy_position": [
+          -3.172222537,
+          6.023333589
+        ],
+        "registered_position": [
+          -3.17500084,
+          5.99499994
+        ]
+      }
+    },
+    "home_04_103997970_171031287": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.864293121,
+        "legacy_position": [
+          -10.376824193,
+          1.241821373
+        ],
+        "registered_position": [
+          -10.36836436,
+          2.10607309
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 1.508607182,
+        "legacy_position": [
+          -10.376824193,
+          -0.015011579
+        ],
+        "registered_position": [
+          -8.86836436,
+          0.00607309
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.037896819,
+        "legacy_position": [
+          -9.022203699,
+          2.498654325
+        ],
+        "registered_position": [
+          -9.04836436,
+          2.52607309
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.021099134,
+        "legacy_position": [
+          -7.667583205,
+          -0.015011579
+        ],
+        "registered_position": [
+          -7.66836436,
+          0.00607309
+        ]
+      }
+    },
+    "home_05_102344094": {
+      "activity_area": {
+        "component_id": 1,
+        "displacement_m": 0.01431596,
+        "legacy_position": [
+          -6.6,
+          2.3
+        ],
+        "registered_position": [
+          -6.59057999,
+          2.31078008
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 1,
+        "displacement_m": 0.01318118,
+        "legacy_position": [
+          -7.14,
+          1.48
+        ],
+        "registered_position": [
+          -7.13057999,
+          1.47078008
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 1,
+        "displacement_m": 0.100002743,
+        "legacy_position": [
+          -7.89,
+          0.98
+        ],
+        "registered_position": [
+          -7.79057999,
+          0.99078008
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 1,
+        "displacement_m": 0.02943035,
+        "legacy_position": [
+          -6.14,
+          1.23
+        ],
+        "registered_position": [
+          -6.11057999,
+          1.23078008
+        ]
+      }
+    },
+    "home_06_104348082_171512994": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.029893623,
+        "legacy_position": [
+          -5.2,
+          6.95
+        ],
+        "registered_position": [
+          -5.19072994,
+          6.97841997
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.012523175,
+        "legacy_position": [
+          -4.0,
+          7.15
+        ],
+        "registered_position": [
+          -3.99072994,
+          7.15841997
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.014833446,
+        "legacy_position": [
+          -4.6,
+          6.75
+        ],
+        "registered_position": [
+          -4.59072994,
+          6.73841997
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.029893623,
+        "legacy_position": [
+          -5.2,
+          6.35
+        ],
+        "registered_position": [
+          -5.19072994,
+          6.37841997
+        ]
+      }
+    },
+    "home_07_104348463_171513588": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.018487238,
+        "legacy_position": [
+          -10.37,
+          7.75
+        ],
+        "registered_position": [
+          -10.38841946,
+          7.7484184
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.030687365,
+        "legacy_position": [
+          -9.62,
+          7.0
+        ],
+        "registered_position": [
+          -9.60841946,
+          7.0284184
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.035685167,
+        "legacy_position": [
+          -8.62,
+          6.75
+        ],
+        "registered_position": [
+          -8.64841946,
+          6.7284184
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.018487238,
+        "legacy_position": [
+          -10.37,
+          6.25
+        ],
+        "registered_position": [
+          -10.38841946,
+          6.2484184
+        ]
+      }
+    },
+    "home_08_102344193": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.014940063,
+        "legacy_position": [
+          -4.77,
+          4.42
+        ],
+        "registered_position": [
+          -4.76000027,
+          4.40889996
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.036677348,
+        "legacy_position": [
+          -5.27,
+          4.67
+        ],
+        "registered_position": [
+          -5.30000027,
+          4.64889996
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.021382308,
+        "legacy_position": [
+          -3.27,
+          5.17
+        ],
+        "registered_position": [
+          -3.26000027,
+          5.18889996
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.013386706,
+        "legacy_position": [
+          -4.77,
+          5.42
+        ],
+        "registered_position": [
+          -4.76000027,
+          5.42889996
+        ]
+      }
+    },
+    "home_09_107734110_175999914": {
+      "activity_area": {
+        "component_id": 1,
+        "displacement_m": 0.021562033,
+        "legacy_position": [
+          -10.926228183,
+          3.597587568
+        ],
+        "registered_position": [
+          -10.93956261,
+          3.58064312
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 1,
+        "displacement_m": 0.024000786,
+        "legacy_position": [
+          -7.359556061,
+          7.913920907
+        ],
+        "registered_position": [
+          -7.33956261,
+          7.90064312
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 1,
+        "displacement_m": 0.986782963,
+        "legacy_position": [
+          0.487122606,
+          7.194532017
+        ],
+        "registered_position": [
+          -0.49956261,
+          7.18064312
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 1,
+        "displacement_m": 0.029515223,
+        "legacy_position": [
+          -6.646221637,
+          8.633309796
+        ],
+        "registered_position": [
+          -6.61956261,
+          8.62064312
+        ]
+      }
+    },
+    "home_10_104862513_172226580": {
+      "activity_area": {
+        "component_id": 0,
+        "displacement_m": 0.0301751,
+        "legacy_position": [
+          1.7,
+          0.5
+        ],
+        "registered_position": [
+          1.69000038,
+          0.528470058
+        ]
+      },
+      "alex_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.030175351,
+        "legacy_position": [
+          0.0,
+          -1.0
+        ],
+        "registered_position": [
+          0.01000038,
+          -0.971529942
+        ]
+      },
+      "jordan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.031172409,
+        "legacy_position": [
+          1.0,
+          -0.2
+        ],
+        "registered_position": [
+          0.97000038,
+          -0.191529942
+        ]
+      },
+      "morgan_spawn": {
+        "component_id": 0,
+        "displacement_m": 0.151859526,
+        "legacy_position": [
+          0.2,
+          0.8
+        ],
+        "registered_position": [
+          0.19000038,
+          0.648470058
+        ]
+      }
+    }
+  },
+  "schema_version": 1
+}

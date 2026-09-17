@@ -124,6 +124,12 @@ def _portable_base_wrapper(base_scene_path: Path, destination: Path) -> Path:
     stretch_wrapper = destination.with_name(f"{destination.stem}.stretch.xml")
     destination.parent.mkdir(parents=True, exist_ok=True)
     tree = ET.parse(base_scene_path)
+    root_compiler = tree.getroot().find("compiler")
+    if root_compiler is not None and root_compiler.get("assetdir"):
+        root_compiler.set(
+            "assetdir",
+            str((base_scene_path.parent / root_compiler.get("assetdir", "")).resolve()),
+        )
     for include in tree.getroot().findall("include"):
         source = (base_scene_path.parent / include.attrib["file"]).resolve()
         # Generated office scenes use a per-scene Stretch include rather than

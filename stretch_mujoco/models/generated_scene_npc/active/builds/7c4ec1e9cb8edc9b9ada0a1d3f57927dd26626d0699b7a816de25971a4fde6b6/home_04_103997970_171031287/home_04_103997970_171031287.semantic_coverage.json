@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "classified": 89,
+    "discovered": 89,
+    "explicitly_exempt": 0,
+    "registered": 89,
+    "unbound": 0,
+    "unresolved": 0
+  },
+  "exemptions": [],
+  "navigation_preflight": "passed",
+  "planner": {
+    "agent_radius": 0.16,
+    "clearance": 0.0,
+    "name": "collision_geometry_v1",
+    "primary_component_cells": 9647,
+    "primary_component_id": 0,
+    "resolution": 0.06
+  },
+  "reachability": {
+    "all_reachable": true,
+    "origins": 3,
+    "pair_count": 309,
+    "targets": 103
+  },
+  "reachability_matrix_sha256": "08b10bc73b028469ad8b50a8bdf45f08e72d8f06198b5ddf1f20fe48066a5612",
+  "reachable_navigation_points": 103,
+  "required_navigation_points": 103,
+  "scene_id": "home_04_103997970_171031287",
+  "schema_version": 1,
+  "strongly_connected": true,
+  "unreachable": []
+}

@@ -1,0 +1,8 @@
+<mujoco model="semantic_fixture">
+  <worldbody>
+    <geom name="office_floor" type="box" pos="0 0 0" size="5 5 0.02" contype="0" conaffinity="0"/>
+    <body name="chair_01" pos="1 0 0.4"><geom name="chair_geom" type="box" size="0.25 0.25 0.4"/></body>
+    <body name="table_01" pos="1 -2 0.35"><geom name="table_geom" type="box" size="0.5 0.5 0.35"/></body>
+    <body name="cup_01" pos="1 -2 0.8"><geom name="cup_geom" type="box" size="0.1 0.1 0.1"/><site name="cup_01_grasp_site" pos="0 0 0.1"/></body>
+  </worldbody>
+</mujoco>

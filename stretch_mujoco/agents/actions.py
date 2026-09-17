@@ -144,6 +144,12 @@ class ActionExecution:
     driver_handle: str | None = None
     remaining_minutes: float = 0.0
     error: str | None = None
+    station_id: str | None = None
+    lease_id: str | None = None
+    physical_receipt_ids: tuple[str, ...] = ()
+    cleanup_evidence_id: str | None = None
+    compatibility_mode: str | None = None
+    production_evidence: bool = False
 
     @property
     def is_busy(self) -> bool:
@@ -206,6 +212,7 @@ class ConversationRequest:
     interrupt_policy: str = "finish_turn"
     correlation_id: str | None = None
     semantic_snapshot: dict[str, Any] | None = None
+    preferred_station_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -215,3 +222,9 @@ class ConversationReceipt:
     status: str
     error: str | None = None
     correlation_id: str | None = None
+    station_id: str | None = None
+    lease_id: str | None = None
+    physical_receipt_ids: tuple[str, ...] = ()
+    cleanup_evidence_id: str | None = None
+    compatibility_mode: str | None = None
+    production_evidence: bool = False

@@ -1,0 +1,20 @@
+<mujoco model="semantic_fixture">
+  <worldbody>
+    <geom name="office_floor" type="box" pos="0 0 0" size="5 5 0.02" contype="0" conaffinity="0" />
+    <body name="chair_01" pos="1 0 0.4">
+      <geom name="chair_geom" type="box" size="0.25 0.25 0.4" />
+    </body>
+    <body name="table_01" pos="1 -2 0.35">
+      <geom name="table_geom" type="box" size="0.5 0.5 0.35" />
+    </body>
+    <body name="cup_01" pos="1 -2 0.8">
+      <geom name="cup_geom" type="box" size="0.1 0.1 0.1" />
+      <site name="cup_01_grasp_site" pos="0 0 0.1" />
+    </body>
+    <site name="npc__minimal_scene__point__object__chair_01__approach__01" pos="1.65 0 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__minimal_scene__point__object__chair_01__action__sit" pos="1 0 0.8" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__minimal_scene__point__object__cup_01__approach__01" pos="1.9 -2 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__minimal_scene__point__object__table_01__approach__01" pos="1.9 -2 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__minimal_scene__point__zone__work__approach__01" pos="-3 0 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+  </worldbody>
+</mujoco>

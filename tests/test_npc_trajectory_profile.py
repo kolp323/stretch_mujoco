@@ -12,6 +12,7 @@ from stretch_mujoco.npc.trajectory_profile import (
     TrajectoryRoute,
 )
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
+from stretch_mujoco.npc.locomotion import NavigationGeometryContract
 from stretch_mujoco.npc.system import NpcSystem
 
 
@@ -123,6 +124,12 @@ def test_scene_profile_is_preflighted_and_enforced_by_the_runtime_controller() -
     system = NpcSystem.from_model(model, scene_path=OFFICE_SCENE)
 
     controller = system.controllers["employee_01"]
+    assert controller.locomotion.navigation_geometry == NavigationGeometryContract(
+        surface="office_floor",
+        agent_radius=0.25,
+        clearance=0.0,
+        resolution=0.08,
+    )
     assert set(controller.trajectory_routes) == {
         "workstation_left_to_meeting",
         "workstation_right_to_meeting",
@@ -161,3 +168,27 @@ def test_scene_profile_is_preflighted_and_enforced_by_the_runtime_controller() -
     )
     assert rejected.status == CommandStatus.FAILED
     assert rejected.reason == "trajectory_route_missing_source:workstation_left_to_meeting"
+
+
+def test_profile_bound_controller_never_falls_back_to_a_direct_route_when_surface_is_missing() -> (
+    None
+):
+    """A wrong profile surface is a startup/configuration failure, never a shortcut."""
+    model = mujoco.MjModel.from_xml_path(str(OFFICE_SCENE))
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model, scene_path=OFFICE_SCENE)
+    locomotion = system.controllers["employee_01"].locomotion
+    locomotion.configure_navigation(
+        NavigationGeometryContract(
+            surface="hssd_floor_collision",
+            agent_radius=0.16,
+            clearance=0.0,
+            resolution=0.06,
+        )
+    )
+    locomotion.move_to("meeting_human_stand_site")
+
+    assert not locomotion.step(data, 0.0)
+    assert locomotion.failure_reason == "navigation_surface_missing:hssd_floor_collision"
+    assert locomotion.target_site is None

@@ -1,0 +1,119 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -2.841718988586994,
+        7.784689101977231
+      ],
+      "bounds_z": [
+        0.000282726832665503,
+        1.3737444877624512
+      ],
+      "object_id": "hssd_object_090",
+      "semantic_name": "Tremont Full Storage Bed, Dry Branch Natural",
+      "sit": [
+        -2.3917189885869936,
+        7.784689101977231
+      ],
+      "yaw": -1.5707963267948966
+    },
+    {
+      "approach": [
+        -2.3777297999999907,
+        -0.09004462479348518
+      ],
+      "bounds_z": [
+        -2.8487340841820696e-07,
+        1.3792201280593872
+      ],
+      "object_id": "hssd_object_104",
+      "semantic_name": "Zara Queen Panel Bed, blue",
+      "sit": [
+        -2.3777297999999907,
+        0.35995537520651477
+      ],
+      "yaw": 0.0
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_06_104348082_171512994_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "6dc0c6442c18b2334572b0ff5489f1e067a19f19384ae52413f5ce36c963fe53",
+    "population": "250c8b5d8933932c03f0064b53fb410300b167c6a239dacf88b0d276c422243e",
+    "semantic": "cb451351cf4d88d757532024ddd1567e48f558907e63c15e2be3235b8aa8174b",
+    "source_scene": "5b0198f6ee03cefb80a0380bddacd01947908f018ff728a8073b13e410bf888a"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -5.2,
+        6.95,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -4.0,
+        7.15,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -4.6,
+        6.75,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -5.2,
+        6.35,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_06_104348082_171512994.xml"
+}

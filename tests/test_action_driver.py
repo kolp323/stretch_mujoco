@@ -17,7 +17,7 @@ from stretch_mujoco.agents import (
     RobotTask,
     RobotToNpcHandoverBridge,
 )
-from stretch_mujoco.agents.drivers import MujocoNpcActionDriver
+from stretch_mujoco.agents.drivers import LocationSlotAllocator, MujocoNpcActionDriver
 from stretch_mujoco.agents.action_recipes import ACTION_RECIPES
 from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind, NpcCommandReceipt
@@ -56,6 +56,14 @@ class FakeSimulator:
 
     def cancel_npc_command(self, npc_id, command_id):
         self.cancelled.append((npc_id, command_id))
+
+
+def _move_execution(execution_id: str, npc_id: str, target: str) -> ActionExecution:
+    return ActionExecution(
+        execution_id=execution_id,
+        command=ActionCommand(npc_id, ActionType.MOVE_TO, target),
+        status=ExecutionStatus.RUNNING,
+    )
 
 
 class NpcSystemSimulator:
@@ -194,6 +202,128 @@ def test_failed_physical_move_does_not_commit_location() -> None:
     assert agent.state.availability == "available"
 
 
+def test_location_slot_allocator_is_idempotent_exclusive_and_releasable() -> None:
+    allocator = LocationSlotAllocator(
+        {"meeting_table": {"meeting_01": "meeting_a", "meeting_02": "meeting_b"}}
+    )
+
+    assert allocator.acquire("meeting_table", "npc_a") == "meeting_a"
+    assert allocator.acquire("meeting_table", "npc_a") == "meeting_a"
+    assert allocator.acquire("meeting_table", "npc_b") == "meeting_b"
+    with pytest.raises(ValueError, match="location_slots_exhausted:meeting_table"):
+        allocator.acquire("meeting_table", "npc_c")
+    assert allocator.release("meeting_a", "npc_b") is False
+    assert allocator.release("meeting_a", "npc_a") is True
+    assert allocator.acquire("meeting_table", "npc_c") == "meeting_a"
+    with pytest.raises(ValueError, match="shared by 'meeting_table' and 'lounge'"):
+        LocationSlotAllocator(
+            {
+                "meeting_table": {"meeting_01": "shared_slot"},
+                "lounge": {"lounge_01": "shared_slot"},
+            }
+        )
+
+
+def test_move_to_location_slots_uses_unique_sites_and_terminal_receipts_settle_leases() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {},
+        location_slot_sites={
+            "meeting_table": {
+                "meeting_01": "meeting_slot_01",
+                "meeting_02": "meeting_slot_02",
+                "meeting_03": "meeting_slot_03",
+            },
+            "lounge": {"lounge_01": "lounge_slot_01"},
+        },
+    )
+    executions = [
+        _move_execution(f"meeting-{index}", npc_id, "meeting_table")
+        for index, npc_id in enumerate(("npc_a", "npc_b", "npc_c"), 1)
+    ]
+
+    results = [driver.start(execution) for execution in executions]
+    assert all(result.status is ExecutionStatus.RUNNING for result in results)
+    for execution, result in zip(executions, results):
+        execution.driver_handle = result.handle
+    assert [command.payload["site"] for command in simulator.commands] == [
+        "meeting_slot_01",
+        "meeting_slot_02",
+        "meeting_slot_03",
+    ]
+    exhausted = driver.start(_move_execution("meeting-4", "npc_d", "meeting_table"))
+    assert exhausted.status is ExecutionStatus.FAILED
+    assert exhausted.error == "location_slots_exhausted:meeting_table"
+
+    for command in tuple(simulator.commands):
+        simulator.receipts.append(
+            NpcCommandReceipt(
+                command.command_id,
+                command.npc_id,
+                CommandStatus.SUCCEEDED,
+                started_at=10.0,
+                finished_at=11.0,
+            )
+        )
+    for execution in executions:
+        assert driver.poll(execution).status is ExecutionStatus.SUCCEEDED
+    assert driver.location_slots.snapshot() == {
+        "meeting_slot_01": "npc_a",
+        "meeting_slot_02": "npc_b",
+        "meeting_slot_03": "npc_c",
+    }
+
+    move_away = _move_execution("move-away", "npc_a", "lounge")
+    assert driver.start(move_away).status is ExecutionStatus.RUNNING
+    move_away.driver_handle = simulator.command.command_id
+    simulator.receipts.append(
+        NpcCommandReceipt(
+            simulator.command.command_id,
+            "npc_a",
+            CommandStatus.SUCCEEDED,
+            started_at=12.0,
+            finished_at=13.0,
+        )
+    )
+    assert driver.poll(move_away).status is ExecutionStatus.SUCCEEDED
+    assert driver.location_slots.snapshot() == {
+        "meeting_slot_02": "npc_b",
+        "meeting_slot_03": "npc_c",
+        "lounge_slot_01": "npc_a",
+    }
+
+    cancelled = _move_execution("cancelled", "npc_a", "meeting_table")
+    started = driver.start(cancelled)
+    cancelled.driver_handle = started.handle
+    assert driver.cancel(cancelled, "test_cancel").status is ExecutionStatus.CANCELLED
+    assert driver.location_slots.snapshot() == {
+        "meeting_slot_02": "npc_b",
+        "meeting_slot_03": "npc_c",
+        "lounge_slot_01": "npc_a",
+    }
+
+    failed = _move_execution("failed", "npc_a", "meeting_table")
+    started = driver.start(failed)
+    failed.driver_handle = started.handle
+    simulator.receipts.append(
+        NpcCommandReceipt(
+            str(started.handle),
+            "npc_a",
+            CommandStatus.TIMED_OUT,
+            reason="deadline_exceeded",
+            started_at=14.0,
+            finished_at=15.0,
+        )
+    )
+    assert driver.poll(failed).status is ExecutionStatus.TIMED_OUT
+    assert driver.location_slots.snapshot() == {
+        "meeting_slot_02": "npc_b",
+        "meeting_slot_03": "npc_c",
+        "lounge_slot_01": "npc_a",
+    }
+
+
 def test_sit_approaches_aligns_and_marks_seated_before_semantic_commit() -> None:
     simulator = FakeSimulator()
     world = SemanticWorld.from_json(MODELS / "office_semantics.json")
@@ -280,6 +410,29 @@ def test_move_to_chair_uses_the_chair_ingress_not_the_sit_center() -> None:
     assert result.phase == "navigate"
     assert simulator.command.kind == NpcCommandKind.MOVE_TO
     assert simulator.command.payload["site"] == "chair_right_approach_site"
+
+
+def test_sit_allows_only_its_final_declared_chair_ingress() -> None:
+    simulator = FakeSimulator()
+    driver = MujocoNpcActionDriver(
+        simulator,
+        {"chair_right": "chair_right_sit"},
+        seat_yaws={"chair_right": math.pi},
+        seat_navigation_sites={"chair_right": "chair_right_approach_site"},
+    )
+    execution = ActionExecution(
+        command=ActionCommand("employee_01", ActionType.SIT, "chair_right"),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    assert driver.start(execution).phase == "approach_seat"
+    assert simulator.command.payload == {
+        "site": "chair_right_sit",
+        "arrival_clip": "idle",
+        "max_replans": 1,
+        "navigation_site": "chair_right_approach_site",
+        "allow_final_ingress": True,
+    }
 
 
 def test_robot_request_requires_npc_approach_and_spoken_receipt_before_success() -> None:
@@ -541,15 +694,31 @@ def test_real_handover_gate_blocks_far_or_misaligned_participants_before_transfe
     }
     system.submit(
         NpcCommand(
-            "give", 1, "employee_01", NpcCommandKind.PLAY_ANIMATION,
-            {"clip": "give", "completion_marker": "handover_ready", "interaction_target": "employee_02", **gate},
+            "give",
+            1,
+            "employee_01",
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "give",
+                "completion_marker": "handover_ready",
+                "interaction_target": "employee_02",
+                **gate,
+            },
             0.0,
         )
     )
     system.submit(
         NpcCommand(
-            "receive", 0, "employee_02", NpcCommandKind.PLAY_ANIMATION,
-            {"clip": "receive", "completion_marker": "handover_ready", "interaction_target": "employee_01", **gate},
+            "receive",
+            0,
+            "employee_02",
+            NpcCommandKind.PLAY_ANIMATION,
+            {
+                "clip": "receive",
+                "completion_marker": "handover_ready",
+                "interaction_target": "employee_01",
+                **gate,
+            },
             0.0,
         )
     )
@@ -678,7 +847,7 @@ def test_handover_session_timeout_cancels_current_physical_stage() -> None:
 
     driver.start(execution)
     assert {command.npc_id for command in simulator.commands} == {"employee_01", "employee_02"}
-    simulator.time = 56.0
+    simulator.time = 10.0 + ACTION_RECIPES[ActionType.HANDOVER].timeout_seconds + 1.0
     result = driver.poll(execution)
 
     assert result.status == ExecutionStatus.TIMED_OUT
@@ -719,7 +888,7 @@ def test_production_handover_uses_population_npc_ids_and_generic_role_sites() ->
     assert driver.interaction_yaws["npc_morgan_lee"] == math.pi / 2
 
 
-def test_production_driver_excludes_unregistered_actions_before_submitting_command() -> None:
+def test_production_driver_requires_scene_binding_for_registered_gesture_point() -> None:
     simulator = FakeSimulator()
     driver = create_mujoco_action_driver(simulator)
     assert driver.supported_actions == frozenset(
@@ -733,15 +902,14 @@ def test_production_driver_excludes_unregistered_actions_before_submitting_comma
             ActionType.HANDOVER,
             ActionType.USE_COMPUTER,
             ActionType.TALK,
+            ActionType.GESTURE_POINT,
             ActionType.GESTURE_WAVE,
             ActionType.EAT,
             ActionType.DRINK,
             ActionType.REQUEST_ROBOT,
         }
     )
-    assert {
-        ActionType.GESTURE_POINT,
-    }.isdisjoint(driver.supported_actions)
+    assert ActionType.GESTURE_POINT in driver.supported_actions
     execution = ActionExecution(
         command=ActionCommand("employee_01", ActionType.GESTURE_POINT, "employee_02"),
         status=ExecutionStatus.RUNNING,
@@ -749,7 +917,7 @@ def test_production_driver_excludes_unregistered_actions_before_submitting_comma
 
     result = driver.start(execution)
 
-    assert result.error == "unsupported_action"
+    assert result.error == "recipe_missing_site"
     assert simulator.commands == []
 
 
@@ -814,7 +982,7 @@ def test_desk_work_driver_plays_at_the_seated_chair_until_session_duration() -> 
     }
 
 
-def test_runtime_rejects_candidate_without_registered_production_clip() -> None:
+def test_runtime_does_not_reject_registered_gesture_point_as_unavailable() -> None:
     simulator = FakeSimulator()
     world = SemanticWorld.from_json(MODELS / "office_semantics.json")
     runtime = OfficeAgentRuntime.from_json(
@@ -829,7 +997,7 @@ def test_runtime_rejects_candidate_without_registered_production_clip() -> None:
     )
 
     assert not result.valid
-    assert any("unavailable in the active NPC asset bundle" in error for error in result.errors)
+    assert not any("unavailable in the active NPC asset bundle" in error for error in result.errors)
     assert simulator.commands == []
 
 
@@ -850,6 +1018,65 @@ def test_driver_attaches_declared_trajectory_route_for_matching_agent_transition
 
     assert result.status == ExecutionStatus.RUNNING
     assert simulator.commands[0].payload["trajectory_route"] == "workstation_left_to_meeting"
+
+
+def test_driver_honors_explicit_trajectory_route_without_ambiguous_lookup() -> None:
+    simulator = FakeSimulator()
+    profile = NpcTrajectoryProfile.from_json(OFFICE_PROFILE)
+    route = profile.routes[0]
+    destination_site = profile.anchors[route.destination].site
+    driver = create_mujoco_action_driver(
+        simulator,
+        trajectory_profile=profile,
+        agent_locations={"employee_01": route.source},
+    )
+    driver.location_sites[destination_site] = destination_site
+    execution = ActionExecution(
+        execution_id="explicit_profile_move",
+        command=ActionCommand(
+            "employee_01",
+            ActionType.MOVE_TO,
+            destination_site,
+            {
+                "trajectory_route": route.route_id,
+                "trajectory_source": route.source,
+            },
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.status == ExecutionStatus.RUNNING
+    assert simulator.commands[0].payload["trajectory_route"] == route.route_id
+    assert simulator.commands[0].payload["trajectory_source"] == route.source
+
+
+def test_driver_rejects_explicit_trajectory_route_contract_mismatch() -> None:
+    simulator = FakeSimulator()
+    profile = NpcTrajectoryProfile.from_json(OFFICE_PROFILE)
+    route = profile.routes[0]
+    destination_site = profile.anchors[route.destination].site
+    driver = create_mujoco_action_driver(simulator, trajectory_profile=profile)
+    driver.location_sites[destination_site] = destination_site
+    execution = ActionExecution(
+        execution_id="invalid_explicit_profile_move",
+        command=ActionCommand(
+            "employee_01",
+            ActionType.MOVE_TO,
+            destination_site,
+            {
+                "trajectory_route": route.route_id,
+                "trajectory_source": "wrong-source",
+            },
+        ),
+        status=ExecutionStatus.RUNNING,
+    )
+
+    result = driver.start(execution)
+
+    assert result.status == ExecutionStatus.FAILED
+    assert result.error == f"trajectory_route_contract_mismatch:{route.route_id}"
 
 
 def test_handover_receive_failure_reattaches_to_giver_before_reporting_failure() -> None:
@@ -1088,7 +1315,10 @@ def test_mock_robot_handover_waits_for_receive_marker_before_release_and_attach(
     runtime = OfficeAgentRuntime.from_json(world, MODELS / "office_agents.json", auto_plan=False)
     runtime.agents["employee_02"] = EmployeeAgent.from_dict(
         "employee_02",
-        {"profile": {"role": "Receiver", "department": "QA"}, "initial_location": "workstation_right"},
+        {
+            "profile": {"role": "Receiver", "department": "QA"},
+            "initial_location": "workstation_right",
+        },
     )
     task = RobotTask(
         "employee_01", "deliver", "document_report", "workstation_right", recipient="employee_02"
@@ -1134,9 +1364,14 @@ def test_mock_robot_handover_timeout_fails_without_attachment() -> None:
     runtime = OfficeAgentRuntime.from_json(world, MODELS / "office_agents.json", auto_plan=False)
     runtime.agents["employee_02"] = EmployeeAgent.from_dict(
         "employee_02",
-        {"profile": {"role": "Receiver", "department": "QA"}, "initial_location": "workstation_right"},
+        {
+            "profile": {"role": "Receiver", "department": "QA"},
+            "initial_location": "workstation_right",
+        },
     )
-    task = RobotTask("employee_01", "deliver", "document_report", "workstation_right", recipient="employee_02")
+    task = RobotTask(
+        "employee_01", "deliver", "document_report", "workstation_right", recipient="employee_02"
+    )
     runtime.robot_tasks[task.task_id] = task
     robot = MockRobotExecutor(0.1, npc_transport=simulator)
 
@@ -1150,7 +1385,9 @@ def test_mock_robot_handover_timeout_fails_without_attachment() -> None:
 def test_runtime_rejects_handover_success_without_all_physical_evidence() -> None:
     world = SemanticWorld.from_json(MODELS / "office_semantics.json")
     runtime = OfficeAgentRuntime.from_json(world, MODELS / "office_agents.json", auto_plan=False)
-    task = RobotTask("employee_01", "deliver", "document_report", "workstation_right", recipient="employee_01")
+    task = RobotTask(
+        "employee_01", "deliver", "document_report", "workstation_right", recipient="employee_01"
+    )
     runtime.robot_tasks[task.task_id] = task
 
     completed = runtime.complete_robot_task(task.task_id, success=True)

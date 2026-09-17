@@ -58,6 +58,8 @@ from .desk_work import (
     WORK_DURATION_SECONDS_PARAMETER,
     WORK_SESSION_ID_PARAMETER,
     WORK_SESSION_SEAT_PARAMETER,
+    WORK_SESSION_COMPUTER_PARAMETER,
+    WORK_SESSION_WORKSTATION_PARAMETER,
     REQUESTED_WORK_DURATION_SECONDS_PARAMETER,
     chair_for_workstation,
     desk_work_session_actions,
@@ -143,6 +145,8 @@ class OfficeAgentRuntime:
         conversation_policy: DialoguePolicy | None = None,
         population_npc_ids: Iterable[str] | None = None,
         population_interaction_templates: dict[str, object] | None = None,
+        interaction_station_allocator: object | None = None,
+        population_schema_version: int | None = None,
         trajectory_profile_path: Path | None = None,
         conversation_max_observation_age: float = DEFAULT_MAX_OBSERVATION_AGE,
     ) -> None:
@@ -179,6 +183,7 @@ class OfficeAgentRuntime:
             str, dict[str, tuple[str | None, AgentAvailability, str, PlanCheckpoint]]
         ] = {}
         self.events: list[RuntimeEvent] = []
+        self._pending_events: list[RuntimeEvent] = []
         self.llm = EventDrivenLLMGateway(llm_daily_budget)
         self.llm_provider_config = llm_provider_config
         self.action_driver = action_driver
@@ -193,6 +198,8 @@ class OfficeAgentRuntime:
             None if population_npc_ids is None else frozenset(population_npc_ids)
         )
         self.population_interaction_templates = dict(population_interaction_templates or {})
+        self.interaction_station_allocator = interaction_station_allocator
+        self.population_schema_version = population_schema_version
         self.trajectory_profile_path = trajectory_profile_path
         self.office_event_generator = DailyOfficeEventGenerator(seed)
         self.daily_events_enabled = daily_events
@@ -207,6 +214,7 @@ class OfficeAgentRuntime:
         self._event_sequence = 0
         self._applied_event_ids: set[str] = set()
         self._conversation_receipts: dict[str, ConversationReceipt] = {}
+        self._finished_conversation_ids: set[str] = set()
         # A candidate is retained only while its physical talk command is in flight.
         # Transcript/memory effects are delayed until the terminal receipt arrives.
         self._pending_dialogue_candidates: dict[tuple[str, str], tuple[DialogueCandidate, bool]] = (
@@ -226,6 +234,7 @@ class OfficeAgentRuntime:
         seed: int | None = None,
         auto_plan: bool = True,
         action_driver: object | None = None,
+        daily_events: bool | None = None,
     ) -> "OfficeAgentRuntime":
         source_path = Path(path).resolve()
         payload = json.loads(source_path.read_text(encoding="utf-8"))
@@ -234,8 +243,12 @@ class OfficeAgentRuntime:
         utility_interval = frequencies.get("utility_interval_seconds", [5.0, 15.0])
         start_hour, start_minute = (int(part) for part in clock.get("start", "09:00").split(":"))
         version = payload.get("schema_version")
-        if version == 2:
+        if version in {2, 3}:
             from stretch_mujoco.npc.schema import NpcPopulation
+            from .interaction_stations import (
+                InteractionStationAllocator,
+                InteractionStationCatalog,
+            )
 
             population = NpcPopulation.from_dict(
                 payload,
@@ -257,6 +270,14 @@ class OfficeAgentRuntime:
                 world.add_relation("document_report", RelationType.ALLOWED_FOR, "npc_alex_chen")
             population_npc_ids = population.npcs.keys()
             population_interaction_templates = population.interaction_templates
+            interaction_station_allocator = (
+                InteractionStationAllocator(
+                    InteractionStationCatalog.from_population(population),
+                    route_cost=lambda _participant, _actor_kind, _site: None,
+                )
+                if version == 3
+                else None
+            )
             trajectory_profile_path = (
                 None
                 if population.trajectory_profile is None
@@ -276,11 +297,12 @@ class OfficeAgentRuntime:
             }
             population_npc_ids = None
             population_interaction_templates = None
+            interaction_station_allocator = None
             trajectory_profile_path = None
             conversation_policy = None
         else:
             raise ValueError(
-                f"Unsupported office agent schema_version {version!r}; expected 1 or 2"
+                f"Unsupported office agent schema_version {version!r}; expected 1, 2, or 3"
             )
         llm_provider_config = None
         llm_config_name = payload.get("llm_config")
@@ -302,11 +324,13 @@ class OfficeAgentRuntime:
                 float(utility_interval[1]),
             ),
             llm_daily_budget=int(payload.get("llm_daily_budget", 30)),
-            daily_events=bool(payload.get("daily_events", True)),
+            daily_events=bool(payload.get("daily_events", True)) if daily_events is None else daily_events,
             llm_provider_config=llm_provider_config,
             action_driver=action_driver,
             population_npc_ids=population_npc_ids,
             population_interaction_templates=population_interaction_templates,
+            interaction_station_allocator=interaction_station_allocator,
+            population_schema_version=int(version),
             trajectory_profile_path=trajectory_profile_path,
             conversation_policy=conversation_policy,
         )
@@ -369,6 +393,7 @@ class OfficeAgentRuntime:
             self.action_driver is not None
             and command.action in candidate_actions
             and command.action not in supported_actions
+            and command.action != ActionType.REQUEST_ROBOT
         ):
             errors.append(
                 f"Action '{command.action.value}' is unavailable in the active NPC asset bundle"
@@ -377,12 +402,12 @@ class OfficeAgentRuntime:
         if command.action == ActionType.MOVE_TO:
             self._require_target(target, errors)
         elif command.action == ActionType.SIT:
-            self._require_type(target, ObjectType.CHAIR, errors)
+            self._require_seat_target(target, errors)
             if self.action_driver is None or ActionType.SIT not in supported_actions:
                 self._require_location(agent, target, errors)
             self._require_available(target, command.agent_id, errors)
         elif command.action == ActionType.STAND_UP:
-            self._require_type(target, ObjectType.CHAIR, errors)
+            self._require_seat_target(target, errors)
             self._require_location(agent, target, errors)
             if not self.world.find_relations(
                 subject=target,
@@ -434,7 +459,7 @@ class OfficeAgentRuntime:
                             f"'{self.reservations.owner(chair)}'"
                         )
         elif command.action == ActionType.REST:
-            self._require_type(target, ObjectType.CHAIR, errors)
+            self._require_seat_target(target, errors)
             self._require_location(agent, target, errors)
             self._require_available(target, command.agent_id, errors)
         elif command.action == ActionType.ATTEND_MEETING:
@@ -468,6 +493,16 @@ class OfficeAgentRuntime:
             if agent.state.held_object is None:
                 errors.append("Agent is not holding an object")
             self._require_target(target, errors)
+            if target not in self.agents:
+                errors.append("phase_2c_npc_handover_only")
+            actor_mode = command.parameters.get("actor_mode", "npc_to_npc")
+            if actor_mode != "npc_to_npc":
+                errors.append("phase_2c_npc_handover_only")
+            preferred_station_id = command.parameters.get("preferred_station_id")
+            if preferred_station_id is not None and (
+                not isinstance(preferred_station_id, str) or not preferred_station_id
+            ):
+                errors.append("preferred_station_id must be a non-empty string")
         elif command.action == ActionType.REQUEST_ROBOT:
             self._validate_robot_request(agent, target, command.parameters, errors)
 
@@ -507,7 +542,11 @@ class OfficeAgentRuntime:
                 normalized.agent_id,
                 ActionType.WORK,
                 workstation.object_id,
-                {"_requested_action": ActionType.USE_COMPUTER.value, **normalized.parameters},
+                {
+                    "_requested_action": ActionType.USE_COMPUTER.value,
+                    WORK_SESSION_COMPUTER_PARAMETER: normalized.target,
+                    **normalized.parameters,
+                },
             )
         if normalized.action == ActionType.WORK and not is_desk_work_session(normalized):
             return self._submit_desk_work_session(normalized)
@@ -555,6 +594,7 @@ class OfficeAgentRuntime:
             agent.executor.phase = result.phase
             agent.executor.driver_handle = result.handle
             agent.executor.error = result.error
+            self._record_action_driver_evidence(agent.executor, result)
             if result.status in {
                 ExecutionStatus.FAILED,
                 ExecutionStatus.CANCELLED,
@@ -604,6 +644,11 @@ class OfficeAgentRuntime:
                 command.target,
                 duration_seconds=float(requested_duration),
                 session_id=session_id,
+                computer_id=(
+                    str(command.parameters[WORK_SESSION_COMPUTER_PARAMETER])
+                    if WORK_SESSION_COMPUTER_PARAMETER in command.parameters
+                    else None
+                ),
             )
         except ValueError as error:
             return ValidationResult(False, (str(error),))
@@ -616,7 +661,12 @@ class OfficeAgentRuntime:
         self._emit(
             "desk_work_session_started",
             command.agent_id,
-            {"workstation": command.target, "chair": chair},
+            {
+                "workstation": command.target,
+                "computer": command.parameters.get(WORK_SESSION_COMPUTER_PARAMETER),
+                "seat_slot": chair,
+                "session_id": session_id,
+            },
         )
         agent.planner.action_queue.extend(actions[1:])
         first_result = self.submit_action(actions[0])
@@ -844,6 +894,13 @@ class OfficeAgentRuntime:
             return ConversationReceipt(
                 request.session_id, False, "rejected", "physical_driver_required"
             )
+        if any(participant not in self.agents for participant in request.participants):
+            return ConversationReceipt(
+                request.session_id,
+                False,
+                "rejected",
+                "phase_2b_npc_conversation_only",
+            )
         if request.semantic_snapshot is None:
             return ConversationReceipt(
                 request.session_id, False, "rejected", "observation_required"
@@ -877,20 +934,23 @@ class OfficeAgentRuntime:
                 parent_event_id=request.correlation_id,
                 require_spatial_ready=False,
             )
+            session.preferred_station_id = request.preferred_station_id
+            session.compatibility_mode = {
+                2: "population_v2_legacy_adapter",
+                3: "population_v3_candidate",
+            }.get(self.population_schema_version)
+            session.production_evidence = False
             self.conversations.mark_approaching(session.session_id)
             for participant in request.participants:
                 self._participant_reservations[participant] = session.session_id
             self._lock_conversation_agents(session)
             result = self.interaction_driver.prepare_conversation(session)
+            self._record_conversation_driver_evidence(session, result)
             if result.status == ExecutionStatus.SUCCEEDED:
                 self.conversations.mark_aligned(session.session_id, (result.handle or "ready",))
-                receipt = ConversationReceipt(
-                    session.session_id, True, "ready", correlation_id=request.correlation_id
-                )
+                receipt = self._conversation_receipt(session, True, "ready")
             elif result.status == ExecutionStatus.RUNNING:
-                receipt = ConversationReceipt(
-                    session.session_id, True, "approaching", correlation_id=request.correlation_id
-                )
+                receipt = self._conversation_receipt(session, True, "approaching")
             else:
                 raise RuntimeError(result.error or "conversation_prepare_failed")
         except (KeyError, RuntimeError, ValueError) as error:
@@ -901,12 +961,20 @@ class OfficeAgentRuntime:
             else:
                 for participant in request.participants:
                     self._participant_reservations.pop(participant, None)
-            receipt = ConversationReceipt(request.session_id, False, "failed", str(error))
+            session = self.conversations.sessions.get(request.session_id)
+            receipt = (
+                ConversationReceipt(request.session_id, False, "failed", str(error))
+                if session is None
+                else self._conversation_receipt(session, False, "failed", str(error))
+            )
         self._conversation_receipts[request.session_id] = receipt
         return receipt
 
     def conversation(self, session_id: str) -> ConversationSession:
         return self.conversations.sessions[session_id]
+
+    def conversation_receipt(self, session_id: str) -> ConversationReceipt:
+        return self._conversation_receipts[session_id]
 
     def active_conversations(self) -> tuple[ConversationSession, ...]:
         return tuple(
@@ -927,9 +995,16 @@ class OfficeAgentRuntime:
                 raise RuntimeError("physical_driver_required")
             turn = session.dialogue_turns[sanitized.candidate.turn_id]
             result = self.interaction_driver.play_turn(session, turn)
+            self._record_conversation_driver_evidence(session, result)
             if result.status not in {ExecutionStatus.RUNNING, ExecutionStatus.SUCCEEDED}:
                 self.conversations.reject_turn(
                     session.session_id, turn.turn_id, result.error or result.status.value
+                )
+                self.conversations.fail(
+                    session.session_id, result.error or "turn_physical_receipt_required"
+                )
+                self._finish_conversation(
+                    session.session_id, result.error or "turn_physical_receipt_required"
                 )
                 return ValidationResult(False, (result.error or "turn_physical_receipt_required",))
             execution_id = result.handle or f"conversation:{session.session_id}:{turn.turn_id}"
@@ -959,6 +1034,10 @@ class OfficeAgentRuntime:
             }:
                 continue
             result = poll(session.session_id)
+            self._record_conversation_driver_evidence(session, result)
+            self._conversation_receipts[session.session_id] = self._conversation_receipt(
+                session, True, result.phase, result.error
+            )
             if result.status == ExecutionStatus.RUNNING:
                 if session.phase == ConversationPhase.APPROACHING and result.phase == "align":
                     self.conversations.mark_aligning(session.session_id)
@@ -978,6 +1057,9 @@ class OfficeAgentRuntime:
                 self.conversations.mark_aligned(session.session_id, (result.handle or "ready",))
             elif session.active_turn_id is not None:
                 self._commit_dialogue_turn(session, session.active_turn_id)
+            self._conversation_receipts[session.session_id] = self._conversation_receipt(
+                session, True, "ready"
+            )
 
     def _commit_dialogue_turn(self, session: ConversationSession, turn_id: str) -> None:
         """Apply transcript, memory, and events after a successful talk receipt only."""
@@ -1013,6 +1095,11 @@ class OfficeAgentRuntime:
                 "act": turn.act.value,
                 "text": turn.text,
                 "fallback_used": fallback_used,
+                "station_id": session.station_id,
+                "lease_id": session.lease_id,
+                "physical_receipt_ids": list(session.physical_receipt_ids),
+                "compatibility_mode": session.compatibility_mode,
+                "production_evidence": session.production_evidence,
             },
             event_id=event_id,
             correlation_id=session.parent_event_id or session.session_id,
@@ -1026,9 +1113,7 @@ class OfficeAgentRuntime:
         session = self.conversation(session_id)
         self.conversations.interrupt(session_id, reason, self.elapsed_minutes)
         self._finish_conversation(session_id, reason)
-        receipt = ConversationReceipt(session.session_id, True, session.status.value, reason)
-        self._conversation_receipts[session_id] = receipt
-        return receipt
+        return self._conversation_receipts[session_id]
 
     def start_conversation(
         self,
@@ -1153,7 +1238,7 @@ class OfficeAgentRuntime:
 
     def complete_conversation(self, session_id: str) -> ConversationSession:
         session = self.conversations.complete(session_id)
-        self._close_conversation(session, ConversationEvent.COMPLETED.value)
+        self._finish_conversation(session_id, ConversationEvent.COMPLETED.value)
         return session
 
     def cancel_conversation(
@@ -1161,13 +1246,13 @@ class OfficeAgentRuntime:
     ) -> ConversationSession:
         """Cancel once and restore the exact locked plan state without touching reservations."""
         session = self.conversations.cancel(session_id, reason)
-        self._close_conversation(session, ConversationEvent.CANCELLED.value)
+        self._finish_conversation(session_id, reason)
         return session
 
     def fail_conversation(self, session_id: str, reason: str) -> ConversationSession:
         """Record a logical/receipt failure and use the common terminal cleanup path."""
         session = self.conversations.fail(session_id, reason)
-        self._close_conversation(session, ConversationEvent.FAILED.value)
+        self._finish_conversation(session_id, reason)
         return session
 
     def request_robot_task(
@@ -1507,8 +1592,8 @@ class OfficeAgentRuntime:
         return ValidationResult(not errors, tuple(errors))
 
     def drain_events(self) -> tuple[RuntimeEvent, ...]:
-        events = tuple(self.events)
-        self.events.clear()
+        events = tuple(self._pending_events)
+        self._pending_events.clear()
         return events
 
     def pending_robot_tasks(self) -> tuple[RobotTask, ...]:
@@ -1618,6 +1703,60 @@ class OfficeAgentRuntime:
                 elif session.robot_task_id is not None:
                     errors.append("Conversation already has a robot task")
 
+    @staticmethod
+    def _record_action_driver_evidence(execution: ActionExecution, result: object) -> None:
+        for receipt_id in getattr(result, "receipt_ids", ()):
+            if receipt_id not in execution.physical_receipt_ids:
+                execution.physical_receipt_ids += (receipt_id,)
+        cleanup_evidence_id = getattr(result, "cleanup_evidence_id", None)
+        if cleanup_evidence_id is not None:
+            execution.cleanup_evidence_id = cleanup_evidence_id
+        for attribute in ("station_id", "lease_id", "compatibility_mode"):
+            value = getattr(result, attribute, None)
+            if value is not None:
+                setattr(execution, attribute, value)
+        execution.production_evidence = bool(
+            getattr(result, "production_evidence", False)
+        )
+
+    @staticmethod
+    def _handover_event_evidence(execution: ActionExecution) -> dict[str, object]:
+        if execution.command is None:
+            return {}
+        evidence: dict[str, object] = {
+            "station_id": execution.station_id,
+            "lease_id": execution.lease_id,
+            "physical_receipt_ids": list(execution.physical_receipt_ids),
+            "cleanup_evidence_id": execution.cleanup_evidence_id,
+            "compatibility_mode": execution.compatibility_mode,
+            "production_evidence": execution.production_evidence,
+        }
+        if execution.command.action in {
+            ActionType.SIT,
+            ActionType.REST,
+            ActionType.STAND_UP,
+            ActionType.WORK,
+        }:
+            evidence.update(
+                {
+                    "seat_slot": execution.command.parameters.get(
+                        WORK_SESSION_SEAT_PARAMETER, execution.command.target
+                    ),
+                    "computer": execution.command.parameters.get(
+                        WORK_SESSION_COMPUTER_PARAMETER
+                    ),
+                    "workstation": execution.command.parameters.get(
+                        WORK_SESSION_WORKSTATION_PARAMETER
+                    ),
+                    "session_id": execution.command.parameters.get(
+                        WORK_SESSION_ID_PARAMETER, execution.lease_id
+                    ),
+                }
+            )
+        elif execution.command.action != ActionType.HANDOVER:
+            return {}
+        return evidence
+
     def _complete_action(self, agent: EmployeeAgent) -> None:
         command = agent.executor.command
         if command is None:
@@ -1637,6 +1776,13 @@ class OfficeAgentRuntime:
             agent.executor.status = ExecutionStatus.SUCCEEDED
             self._consecutive_failures[agent.agent_id] = 0
             event_id = self._new_event_id()
+            handover_evidence = self._handover_event_evidence(agent.executor)
+            terminal_receipt_id = (
+                agent.executor.physical_receipt_ids[-1]
+                if command.action == ActionType.HANDOVER
+                and agent.executor.physical_receipt_ids
+                else None
+            )
             self._remember(
                 agent,
                 "action_succeeded",
@@ -1645,6 +1791,7 @@ class OfficeAgentRuntime:
                     "target": command.target,
                     "execution_id": agent.executor.execution_id,
                     "event_id": event_id,
+                    **handover_evidence,
                 },
             )
             self._emit(
@@ -1654,8 +1801,11 @@ class OfficeAgentRuntime:
                     "action": command.action.value,
                     "target": command.target,
                     "execution_id": agent.executor.execution_id,
+                    **handover_evidence,
                 },
                 event_id=event_id,
+                correlation_id=agent.executor.lease_id,
+                causation_id=terminal_receipt_id,
             )
             self._emit(
                 "semantic_commit",
@@ -1663,8 +1813,10 @@ class OfficeAgentRuntime:
                 {
                     "action": command.action.value,
                     "execution_id": agent.executor.execution_id,
+                    **handover_evidence,
                 },
-                event_id=event_id,
+                correlation_id=agent.executor.lease_id,
+                causation_id=event_id,
             )
             session_id = command.parameters.get(WORK_SESSION_ID_PARAMETER)
             if command.action == ActionType.IDLE and isinstance(session_id, str):
@@ -1708,16 +1860,18 @@ class OfficeAgentRuntime:
             if session is not None and session["agent_id"] == agent.agent_id:
                 session["status"] = ExecutionStatus.FAILED.value
                 session["error"] = error
-                agent.planner.clear_plan()
+                if command.action != ActionType.WORK:
+                    agent.planner.clear_plan()
+        handover_evidence = self._handover_event_evidence(agent.executor)
         self._record_failure(
             agent.agent_id,
-            {"action": command.action.value, "error": error},
+            {"action": command.action.value, "error": error, **handover_evidence},
         )
         self._release_failed_action(command)
         self._remember(
             agent,
             "action_failed",
-            {"action": command.action.value, "error": error},
+            {"action": command.action.value, "error": error, **handover_evidence},
         )
         self._emit(
             "action_failed",
@@ -1726,7 +1880,14 @@ class OfficeAgentRuntime:
                 "action": command.action.value,
                 "error": error,
                 "execution_id": agent.executor.execution_id,
+                **handover_evidence,
             },
+            correlation_id=agent.executor.lease_id,
+            causation_id=(
+                agent.executor.physical_receipt_ids[-1]
+                if agent.executor.physical_receipt_ids
+                else None
+            ),
         )
         agent.state.current_action = "idle"
         agent.state.animation_state = "idle"
@@ -1896,6 +2057,19 @@ class OfficeAgentRuntime:
         if target in self.world.objects and self.world.object(target).object_type != object_type:
             errors.append(f"Target '{target}' must be {object_type.value}")
 
+    def _require_seat_target(self, target: str | None, errors: list[str]) -> None:
+        self._require_target(target, errors)
+        if target not in self.world.objects:
+            return
+        object_type = self.world.object(target).object_type
+        allowed = (
+            {ObjectType.SEAT_SLOT}
+            if self.population_schema_version == 3
+            else {ObjectType.SEAT_SLOT, ObjectType.CHAIR}
+        )
+        if object_type not in allowed:
+            errors.append(f"Target '{target}' must be SeatSlot")
+
     @staticmethod
     def _require_location(agent: EmployeeAgent, target: str | None, errors: list[str]) -> None:
         if target is not None and agent.state.location != target:
@@ -1943,6 +2117,7 @@ class OfficeAgentRuntime:
                     if result.handle is not None:
                         agent.executor.driver_handle = result.handle
                     agent.executor.error = result.error
+                    self._record_action_driver_evidence(agent.executor, result)
                     if result.status == ExecutionStatus.SUCCEEDED:
                         self._complete_action(agent)
                     elif result.status in {
@@ -2220,6 +2395,8 @@ class OfficeAgentRuntime:
 
     def _finish_conversation(self, session_id: str, reason: str) -> None:
         """Single cleanup path for receipt failure, timeout, completion, and interruption."""
+        if session_id in self._finished_conversation_ids:
+            return
         session = self.conversations.sessions.get(session_id)
         if session is None:
             return
@@ -2229,17 +2406,31 @@ class OfficeAgentRuntime:
         if not session.status.terminal:
             self.conversations.fail(session_id, reason)
         if self.interaction_driver is not None:
-            cancel = getattr(self.interaction_driver, "cancel_conversation", None)
-            if callable(cancel):
-                cancel(session_id, reason)
+            if session.status == ConversationStatus.COMPLETED:
+                finish = getattr(self.interaction_driver, "finish_conversation", None)
+                result = finish(session_id, "succeeded") if callable(finish) else None
+            else:
+                outcome = {
+                    ConversationStatus.CANCELLED: "cancelled",
+                    ConversationStatus.TIMED_OUT: "timed_out",
+                }.get(session.status, "failed")
+                terminate = getattr(self.interaction_driver, "terminate_conversation", None)
+                if callable(terminate):
+                    result = terminate(session_id, outcome, reason)
+                else:
+                    cancel = getattr(self.interaction_driver, "cancel_conversation", None)
+                    result = cancel(session_id, reason) if callable(cancel) else None
+            if result is not None:
+                self._record_conversation_driver_evidence(session, result)
         for participant in session.participants:
             if self._participant_reservations.get(participant) == session_id:
                 del self._participant_reservations[participant]
         locks = self._conversation_locks.pop(session_id, {})
-        event_id = self._new_event_id()
+        self._finished_conversation_ids.add(session_id)
         for participant, (attention, availability, goal, checkpoint) in locks.items():
             agent = self.agents[participant]
             if agent.state.conversation_id == session_id:
+                event_id = self._new_event_id()
                 agent.state.conversation_id = None
                 agent.state.attention_target = attention
                 agent.state.set_availability(availability)
@@ -2263,15 +2454,72 @@ class OfficeAgentRuntime:
                         "session_id": session_id,
                         "status": session.status.value,
                         "reason": reason,
+                        "station_id": session.station_id,
+                        "lease_id": session.lease_id,
+                        "physical_receipt_ids": list(session.physical_receipt_ids),
+                        "cleanup_evidence_ids": list(session.cleanup_evidence_ids),
+                        "compatibility_mode": session.compatibility_mode,
+                        "production_evidence": session.production_evidence,
                     },
                 )
                 self._emit(
                     "conversation_terminal",
                     participant,
-                    {"session_id": session_id, "status": session.status.value, "reason": reason},
+                    {
+                        "session_id": session_id,
+                        "status": session.status.value,
+                        "reason": reason,
+                        "station_id": session.station_id,
+                        "lease_id": session.lease_id,
+                        "physical_receipt_ids": list(session.physical_receipt_ids),
+                        "cleanup_evidence_ids": list(session.cleanup_evidence_ids),
+                        "compatibility_mode": session.compatibility_mode,
+                        "production_evidence": session.production_evidence,
+                    },
                     event_id=event_id,
                     correlation_id=session.parent_event_id or session_id,
                 )
+        self._conversation_receipts[session_id] = self._conversation_receipt(
+            session,
+            True,
+            session.status.value,
+            session.failure_reason,
+        )
+
+    @staticmethod
+    def _record_conversation_driver_evidence(
+        session: ConversationSession, result: object
+    ) -> None:
+        for receipt_id in getattr(result, "receipt_ids", ()):
+            if receipt_id not in session.physical_receipt_ids:
+                session.physical_receipt_ids.append(receipt_id)
+        cleanup_evidence_id = getattr(result, "cleanup_evidence_id", None)
+        if (
+            cleanup_evidence_id is not None
+            and cleanup_evidence_id not in session.cleanup_evidence_ids
+        ):
+            session.cleanup_evidence_ids.append(cleanup_evidence_id)
+
+    def _conversation_receipt(
+        self,
+        session: ConversationSession,
+        accepted: bool,
+        status: str,
+        error: str | None = None,
+    ) -> ConversationReceipt:
+        return ConversationReceipt(
+            session.session_id,
+            accepted,
+            status,
+            error,
+            session.parent_event_id,
+            session.station_id,
+            session.lease_id,
+            tuple(session.physical_receipt_ids),
+            session.cleanup_evidence_ids[-1] if session.cleanup_evidence_ids else None,
+            session.compatibility_mode,
+            session.production_evidence,
+        )
 
     def _new_event_id(self) -> str:
         self._event_sequence += 1
@@ -2335,4 +2583,5 @@ class OfficeAgentRuntime:
             causation_id,
         )
         self.events.append(runtime_event)
+        self._pending_events.append(runtime_event)
         return runtime_event

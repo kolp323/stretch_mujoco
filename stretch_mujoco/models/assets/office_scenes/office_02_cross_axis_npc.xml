@@ -1199,19 +1199,26 @@
     </body>
     <camera name="overview" mode="targetbody" target="scene_center" pos="0 -20.16 17.1" fovy="48" />
     <camera name="top" mode="targetbody" target="scene_center" pos="0 0 21.6" fovy="45" />
-    <site name="npc_work_site" pos="0.0500 -4.7500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_meeting_site" pos="-6.7500 3.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_lounge_site" pos="1.2500 3.0500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_snack_site" pos="6.7500 2.2500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_spawn_01_site" pos="0.0500 -1.1500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_spawn_02_site" pos="1.2500 2.0500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_work_site" pos="0.0500 -4.7500 0.025" euler="0 0 -2.09269492" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_meeting_site" pos="-6.7500 3.8500 0.025" euler="0 0 0.973619669" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_lounge_site" pos="1.2500 3.0500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_snack_site" pos="6.7500 2.2500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_spawn_01_site" pos="0.0500 -1.1500 0.025" euler="0 0 -1.02455348" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_spawn_02_site" pos="1.2500 2.0500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
     <site name="npc_spawn_03_site" pos="6.7500 3.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_conversation_speaker_site" pos="-6.7500 3.8500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_conversation_listener_site" pos="-7.5500 3.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_handover_giver_site" pos="-6.7500 3.8500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_handover_receiver_site" pos="-7.5500 3.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_stretch_request_site" pos="-0.5500 -4.7500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_stretch_delivery_site" pos="0.6500 -4.7500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_stretch_rendezvous_site" pos="-6.7500 3.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_conversation_speaker_site" pos="-6.7500 3.8500 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_conversation_listener_site" pos="-7.5500 3.8500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_handover_giver_site" pos="-6.7500 3.8500 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_handover_receiver_site" pos="-7.5500 3.8500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_stretch_request_site" pos="-0.5500 -4.7500 0.025" euler="0 0 -2.19239481" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_stretch_delivery_site" pos="0.6500 -4.7500 0.025" euler="0 0 -2.01861695" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_stretch_rendezvous_site" pos="-6.7500 3.8500 0.025" euler="0 0 0.973619669" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_meeting_slot_02_site" pos="-6.7500 2.0500 0.025" euler="0 0 2.22066678" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_meeting_slot_03_site" pos="-4.1500 3.8500 0.025" euler="0 0 -1.00887476" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_lounge_slot_02_site" pos="0.8500 2.4500 0.025" euler="0 0 2.9996956" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_lounge_slot_03_site" pos="1.6500 2.4500 0.025" euler="0 0 -2.9996956" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_snack_slot_02_site" pos="6.7500 3.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_snack_slot_03_site" pos="5.9500 2.2500 0.025" euler="0 0 2.32394761" size="0.015" rgba="0 0 0 0" />
+    <camera name="office_overview" mode="targetbody" target="scene_center" pos="0 -20.16 17.1" fovy="48" />
   </worldbody>
 </mujoco>

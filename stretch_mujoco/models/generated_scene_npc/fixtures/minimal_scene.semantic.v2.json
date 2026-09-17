@@ -1,0 +1,192 @@
+{
+  "entities": {
+    "object.chair_01": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Office chair",
+        "source_category": "chair"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.chair_01.action.sit"
+        ],
+        "navigation": [
+          "point.object.chair_01.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "chair_01",
+        "xml_binding": {
+          "kind": "body",
+          "name": "chair_01"
+        }
+      }
+    },
+    "object.cup_01": {
+      "affordances": [
+        "approach",
+        "grasp"
+      ],
+      "labels": {
+        "canonical": "Cup",
+        "source_category": "interactive"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.cup_01.action"
+        ],
+        "navigation": [
+          "point.object.cup_01.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "cup_01",
+        "xml_binding": {
+          "kind": "body",
+          "name": "cup_01"
+        }
+      }
+    },
+    "object.table_01": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Table",
+        "source_category": "table"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.table_01.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "table_01",
+        "xml_binding": {
+          "kind": "body",
+          "name": "table_01"
+        }
+      }
+    },
+    "zone.work": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "work",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.zone.work.approach.01"
+        ]
+      },
+      "semantic_class": "region.work",
+      "source": {
+        "id": "work",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    }
+  },
+  "points": {
+    "point.object.chair_01.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.chair_01.approach.01",
+      "owner": "object.chair_01",
+      "position": [
+        1.0,
+        0.0,
+        0.8
+      ],
+      "required": false,
+      "site": "npc__minimal_scene__point__object__chair_01__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.chair_01.approach.01": {
+      "kind": "navigation",
+      "owner": "object.chair_01",
+      "position": [
+        1.65,
+        0.0,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__minimal_scene__point__object__chair_01__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.cup_01.action": {
+      "kind": "action",
+      "navigation_site": "point.object.cup_01.approach.01",
+      "owner": "object.cup_01",
+      "required": false,
+      "site": "cup_01_grasp_site"
+    },
+    "point.object.cup_01.approach.01": {
+      "kind": "navigation",
+      "owner": "object.cup_01",
+      "position": [
+        1.9,
+        -2.0,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__minimal_scene__point__object__cup_01__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.table_01.approach.01": {
+      "kind": "navigation",
+      "owner": "object.table_01",
+      "position": [
+        1.9,
+        -2.0,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__minimal_scene__point__object__table_01__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.zone.work.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -3.0,
+        0.0,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__minimal_scene__point__zone__work__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "scene": "minimal_scene.xml",
+  "scene_id": "minimal_scene",
+  "schema_version": 2
+}

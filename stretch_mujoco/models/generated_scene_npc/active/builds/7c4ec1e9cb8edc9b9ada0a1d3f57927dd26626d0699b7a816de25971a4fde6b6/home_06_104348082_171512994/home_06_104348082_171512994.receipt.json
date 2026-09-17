@@ -1,0 +1,18 @@
+{
+  "generator": "stretch_mujoco.npc.scene_compiler",
+  "scene_id": "home_06_104348082_171512994",
+  "schema_version": 1,
+  "sha256": {
+    "coverage": "ebc5783445727db58470dfb8eeea7381d5b67b1ebff39f98a19aab8f40b879e6",
+    "generated_scene": "9029952ae6745ba20a648ef787fad0f49d5c5e207a8b1136ee44904e57f0379a",
+    "npc_catalog": "0fcb40363a246edc17c8526f085ad07e98cf0342ce12d86d2e86b5dd7c982284",
+    "population": "ffc3f4532673028ad009f4a05874d3b18d7ee1dbc8a76ab446412a2ba4949e9a",
+    "scene_config": "b587e622654616cfcddc0d456b275e72a4b4aaee814aa01468466c4283c093ca",
+    "semantic_policy": "1eb3742f3da713885be02bd14184cf3f44d8618f5e26954d2d696b9f5866a644",
+    "semantic_v1": "5085afaf318f1c3f06eb3ee96509f6a344045c14fa8b778890d91c6666da361a",
+    "semantic_v2": "f4912b64871063af95d338a2cc12f1c241d565249ed561309ad7aa8cb7efbc0f",
+    "source_manifest": "9685c8bb2997ab5a0060b774c984fe300e9952b1a129ce5dcca5bb151407ac5e",
+    "source_mjcf": "5b0198f6ee03cefb80a0380bddacd01947908f018ff728a8073b13e410bf888a",
+    "trajectory_profile": "90af987d2787d9fabd28d0eb0d19a5f1cf8cf0c71cf87e0d772075ded08f5aa5"
+  }
+}

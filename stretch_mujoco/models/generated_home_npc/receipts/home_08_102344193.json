@@ -1,0 +1,102 @@
+{
+  "beds": [
+    {
+      "approach": [
+        2.0490315228294373,
+        1.7442533521316528
+      ],
+      "bounds_z": [
+        5.849193621543236e-05,
+        1.14352548122406
+      ],
+      "object_id": "hssd_object_028",
+      "semantic_name": "Brushed Gold Queen Metal Bed",
+      "sit": [
+        1.5990315228294374,
+        1.7442533521316528
+      ],
+      "yaw": 1.5707963267948966
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_08_102344193_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "2e70721fdb8a3143db288ea99c59b76a6e7219e4be0e1f810c8a4731ee53ac3b",
+    "population": "2f662f776407956b0cfea2cefd19da0691bd08eaa56570ac7264be92bfcc62b8",
+    "semantic": "b1498bcee29f3667a57f4af658ca14612dd9bee7ca99f688008092aa8c1a5edc",
+    "source_scene": "0fa36aa7b521762065814a21f445338465913ae128dee1a9c023d456e51fe1e2"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -4.77,
+        4.42,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -5.27,
+        4.67,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -3.27,
+        5.17,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -4.77,
+        5.42,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_08_102344193.xml"
+}

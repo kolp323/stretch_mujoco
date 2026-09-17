@@ -1,0 +1,3983 @@
+{
+  "entities": {
+    "object.001_bottle_home_05": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "001_bottle",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.001_bottle_home_05.action"
+        ],
+        "navigation": [
+          "point.object.001_bottle_home_05.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "001_bottle_home_05",
+        "xml_binding": {
+          "kind": "body",
+          "name": "001_bottle_home_05"
+        }
+      }
+    },
+    "object.017_calculator_home_00": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "017_calculator",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.017_calculator_home_00.action"
+        ],
+        "navigation": [
+          "point.object.017_calculator_home_00.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "017_calculator_home_00",
+        "xml_binding": {
+          "kind": "body",
+          "name": "017_calculator_home_00"
+        }
+      }
+    },
+    "object.035_apple_home_07": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "035_apple",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.035_apple_home_07.action"
+        ],
+        "navigation": [
+          "point.object.035_apple_home_07.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "035_apple_home_07",
+        "xml_binding": {
+          "kind": "body",
+          "name": "035_apple_home_07"
+        }
+      }
+    },
+    "object.038_milk-box_home_08": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "038_milk-box",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.038_milk-box_home_08.action"
+        ],
+        "navigation": [
+          "point.object.038_milk-box_home_08.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "038_milk-box_home_08",
+        "xml_binding": {
+          "kind": "body",
+          "name": "038_milk-box_home_08"
+        }
+      }
+    },
+    "object.043_book_home_01": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "043_book",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.043_book_home_01.action"
+        ],
+        "navigation": [
+          "point.object.043_book_home_01.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "043_book_home_01",
+        "xml_binding": {
+          "kind": "body",
+          "name": "043_book_home_01"
+        }
+      }
+    },
+    "object.069_vagetable_home_12": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "069_vagetable",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.069_vagetable_home_12.action"
+        ],
+        "navigation": [
+          "point.object.069_vagetable_home_12.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "069_vagetable_home_12",
+        "xml_binding": {
+          "kind": "body",
+          "name": "069_vagetable_home_12"
+        }
+      }
+    },
+    "object.071_can_home_09": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "071_can",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.071_can_home_09.action"
+        ],
+        "navigation": [
+          "point.object.071_can_home_09.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "071_can_home_09",
+        "xml_binding": {
+          "kind": "body",
+          "name": "071_can_home_09"
+        }
+      }
+    },
+    "object.075_bread_home_11": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "075_bread",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.075_bread_home_11.action"
+        ],
+        "navigation": [
+          "point.object.075_bread_home_11.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "075_bread_home_11",
+        "xml_binding": {
+          "kind": "body",
+          "name": "075_bread_home_11"
+        }
+      }
+    },
+    "object.116_keyboard_home_02": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "116_keyboard",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.116_keyboard_home_02.action"
+        ],
+        "navigation": [
+          "point.object.116_keyboard_home_02.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "116_keyboard_home_02",
+        "xml_binding": {
+          "kind": "body",
+          "name": "116_keyboard_home_02"
+        }
+      }
+    },
+    "object.green_apple_home_10": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "green_apple",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.green_apple_home_10.action"
+        ],
+        "navigation": [
+          "point.object.green_apple_home_10.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "green_apple_home_10",
+        "xml_binding": {
+          "kind": "body",
+          "name": "green_apple_home_10"
+        }
+      }
+    },
+    "object.hssd_object_000": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Strata Runner",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_000.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_000",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_000"
+        }
+      }
+    },
+    "object.hssd_object_001": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "YOO OH Kitchen 250, EARTH",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_001.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_001",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_001"
+        }
+      }
+    },
+    "object.hssd_object_002": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Molten Disc Wall Art LG, Silver Leaf",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_002.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_002",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_002"
+        }
+      }
+    },
+    "object.hssd_object_003": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Vivian Ottoman, Charcoal",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_003.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_003.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_003",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_003"
+        }
+      }
+    },
+    "object.hssd_object_004": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Black And Gold Modern 2 Door Chest",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_004.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_004",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_004"
+        }
+      }
+    },
+    "object.hssd_object_005": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Black and White Graphic XVI",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_005.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_005",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_005"
+        }
+      }
+    },
+    "object.hssd_object_006": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Gold Floral Fan",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_006.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_006",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_006"
+        }
+      }
+    },
+    "object.hssd_object_007": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "KEW - Fridge",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_007.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_007",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_007"
+        }
+      }
+    },
+    "object.hssd_object_008": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Royal System Shelving Unit A",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_008.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_008",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_008"
+        }
+      }
+    },
+    "object.hssd_object_009": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Scott Dunwoodie - Hydrangea Framed Print, 68 x 51cm",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_009.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_009",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_009"
+        }
+      }
+    },
+    "object.hssd_object_010": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "baltic pillar candle, set of 2",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_010.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_010",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_010"
+        }
+      }
+    },
+    "object.hssd_object_011": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Chavez 8' x 10'' Handwoven Kilim Rug",
+        "source_category": "floor_covering"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_011.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_011",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_011"
+        }
+      }
+    },
+    "object.hssd_object_012": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Hammered Brass Drum End Table",
+        "source_category": "support_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_012.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.support",
+      "source": {
+        "id": "hssd_object_012",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_012"
+        }
+      }
+    },
+    "object.hssd_object_013": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Motion Abstracts 4 - Large",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_013.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_013",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_013"
+        }
+      }
+    },
+    "object.hssd_object_014": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Gold Channel Back Sofa",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_014.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_014.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_014",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_014"
+        }
+      }
+    },
+    "object.hssd_object_015": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Morning Light",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_015.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_015",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_015"
+        }
+      }
+    },
+    "object.hssd_object_016": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Quilted Star I",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_016.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_016",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_016"
+        }
+      }
+    },
+    "object.hssd_object_017": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Sleeping Beauty IV",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_017.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_017",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_017"
+        }
+      }
+    },
+    "object.hssd_object_018": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Abstract Lines II",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_018.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_018",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_018"
+        }
+      }
+    },
+    "object.hssd_object_019": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Abstract Lines II",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_019.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_019",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_019"
+        }
+      }
+    },
+    "object.hssd_object_020": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Rolled Up Towel",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_020.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_020",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_020"
+        }
+      }
+    },
+    "object.hssd_object_021": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Statue",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_021.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_021",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_021"
+        }
+      }
+    },
+    "object.hssd_object_022": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Black Textured Stripe Bath Mat.",
+        "source_category": "floor_covering"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_022.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_022",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_022"
+        }
+      }
+    },
+    "object.hssd_object_023": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Mesh Wall Art",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_023.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_023",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_023"
+        }
+      }
+    },
+    "object.hssd_object_024": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Black and White Graphic XIII",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_024.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_024",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_024"
+        }
+      }
+    },
+    "object.hssd_object_025": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Waschplatz/zone lavabo Vanity Pathos 120 x 35 x 55.5 cm schwarz/noir",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_025.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_025",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_025"
+        }
+      }
+    },
+    "object.hssd_object_026": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Lyra Dresser Mirror",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_026.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_026",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_026"
+        }
+      }
+    },
+    "object.hssd_object_027": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "55'' Led TV",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_027.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_027",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_027"
+        }
+      }
+    },
+    "object.hssd_object_028": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Curtain",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_028.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_028",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_028"
+        }
+      }
+    },
+    "object.hssd_object_029": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Curtain",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_029.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_029",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_029"
+        }
+      }
+    },
+    "object.hssd_object_030": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Herbs, Basil",
+        "source_category": "plant"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_030.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_030",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_030"
+        }
+      }
+    },
+    "object.hssd_object_031": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Small Horse Shoe Sculpture",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_031.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_031",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_031"
+        }
+      }
+    },
+    "object.hssd_object_032": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Water Tower",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_032.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_032",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_032"
+        }
+      }
+    },
+    "object.hssd_object_033": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Reese Shaded Pendant",
+        "source_category": "lighting"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_033.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_033",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_033"
+        }
+      }
+    },
+    "object.hssd_object_034": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Gold Foil Symbiotic",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_034.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_034",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_034"
+        }
+      }
+    },
+    "object.hssd_object_035": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Dana White Canister, Small",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_035.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_035",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_035"
+        }
+      }
+    },
+    "object.hssd_object_036": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "YNGVAR Bar stool, Anthracite",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_036.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_036.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_036",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_036"
+        }
+      }
+    },
+    "object.hssd_object_037": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "YNGVAR Bar stool, Anthracite",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_037.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_037.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_037",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_037"
+        }
+      }
+    },
+    "object.hssd_object_038": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "YNGVAR Bar stool, Anthracite",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_038.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_038.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_038",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_038"
+        }
+      }
+    },
+    "object.hssd_object_039": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "YNGVAR Bar stool, Anthracite",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_039.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_039.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_039",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_039"
+        }
+      }
+    },
+    "object.hssd_object_040": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Royce Morgan Akita Freestanding Bath",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_040.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.fixture",
+      "source": {
+        "id": "hssd_object_040",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_040"
+        }
+      }
+    },
+    "object.hssd_object_041": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Creme Caramel Hide",
+        "source_category": "floor_covering"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_041.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_041",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_041"
+        }
+      }
+    },
+    "object.hssd_object_042": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Landers Dining Table, Walnut",
+        "source_category": "support_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_042.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.support",
+      "source": {
+        "id": "hssd_object_042",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_042"
+        }
+      }
+    },
+    "object.hssd_object_043": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Urban Lines Queen Metal Bed",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_043.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_043.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.bed",
+      "source": {
+        "id": "hssd_object_043",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_043"
+        }
+      }
+    },
+    "object.hssd_object_044": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "ProCasa Tre Papierhalter/Porte-papier/Portacarta",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_044.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_044",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_044"
+        }
+      }
+    },
+    "object.hssd_object_045": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Matador Shearling Chair",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_045.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_045.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_045",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_045"
+        }
+      }
+    },
+    "object.hssd_object_046": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Matador Shearling Chair",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_046.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_046.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_046",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_046"
+        }
+      }
+    },
+    "object.hssd_object_047": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Gold Foil Floral II",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_047.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_047",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_047"
+        }
+      }
+    },
+    "object.hssd_object_048": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Camera",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_048.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_048",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_048"
+        }
+      }
+    },
+    "object.hssd_object_049": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Bamboo Tree",
+        "source_category": "plant"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_049.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_049",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_049"
+        }
+      }
+    },
+    "object.hssd_object_050": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "plant",
+        "source_category": "plant"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_050.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_050",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_050"
+        }
+      }
+    },
+    "object.hssd_object_051": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Deco Antler Skull, Aluminum",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_051.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_051",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_051"
+        }
+      }
+    },
+    "object.hssd_object_052": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "ROSALIND END TABLE",
+        "source_category": "support_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_052.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.support",
+      "source": {
+        "id": "hssd_object_052",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_052"
+        }
+      }
+    },
+    "object.hssd_object_053": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Cooke & Lewis Romeo Modern Close-Coupled Toilet with Soft Close Seat",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_053.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.fixture",
+      "source": {
+        "id": "hssd_object_053",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_053"
+        }
+      }
+    },
+    "object.hssd_object_054": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "African Basket V",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_054.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_054",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_054"
+        }
+      }
+    },
+    "object.hssd_object_055": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Black and White Graphic IV",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_055.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_055",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_055"
+        }
+      }
+    },
+    "object.hssd_object_056": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Belfast Floating Shelf",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_056.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_056",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_056"
+        }
+      }
+    },
+    "object.hssd_object_057": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Belfast Floating Shelf",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_057.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_057",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_057"
+        }
+      }
+    },
+    "object.hssd_object_058": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Belfast Floating Shelf",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_058.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_058",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_058"
+        }
+      }
+    },
+    "object.hssd_object_059": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Erebus Buffet Mirror",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_059.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_059",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_059"
+        }
+      }
+    },
+    "object.hssd_object_060": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Luna Floor Lamp",
+        "source_category": "lighting"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_060.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_060",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_060"
+        }
+      }
+    },
+    "object.hssd_object_061": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Pavilion Dresser by Nate Berkus and Jeremiah Brent",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_061.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_061",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_061"
+        }
+      }
+    },
+    "object.hssd_object_062": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Revolve II Swivel Accent Chair",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_062.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_062.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_062",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_062"
+        }
+      }
+    },
+    "object.hssd_object_063": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Highland Buffet, Walnut",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_063.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_063",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_063"
+        }
+      }
+    },
+    "object.hssd_object_064": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Ring Of Fire Art",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_064.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_064",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_064"
+        }
+      }
+    },
+    "object.hssd_object_065": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Faux Potted Monstera Plant 29\"",
+        "source_category": "plant"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_065.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_065",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_065"
+        }
+      }
+    },
+    "object.hssd_object_066": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Gold Foil Floral I",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_066.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_066",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_066"
+        }
+      }
+    },
+    "object.hssd_object_067": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Gold Foil Floral I",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_067.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_067",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_067"
+        }
+      }
+    },
+    "object.hssd_object_068": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Abstract Lines I",
+        "source_category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_068.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_068",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_068"
+        }
+      }
+    },
+    "object.hssd_object_069": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "201-2",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_069.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_069",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_069"
+        }
+      }
+    },
+    "object.hssd_object_070": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "3755-0",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_070.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_070",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_070"
+        }
+      }
+    },
+    "object.hssd_object_071": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "3755-0",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_071.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_071",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_071"
+        }
+      }
+    },
+    "object.hssd_object_072": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "3755-0",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_072.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_072",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_072"
+        }
+      }
+    },
+    "object.hssd_object_073": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "3755-0",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_073.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_073",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_073"
+        }
+      }
+    },
+    "room.bathroom": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.bathroom",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.bathroom.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.bathroom",
+      "source": {
+        "id": "room.bathroom",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.bedroom": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.bedroom",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.bedroom.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.bedroom",
+      "source": {
+        "id": "room.bedroom",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.kitchen": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.kitchen",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.kitchen.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.kitchen",
+      "source": {
+        "id": "room.kitchen",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.living_room": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.living_room",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.living_room.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.living_room",
+      "source": {
+        "id": "room.living_room",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "zone.home": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "home",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [
+          "point.zone.home.action"
+        ],
+        "navigation": [
+          "point.zone.home.approach.01",
+          "point.home.activity_area",
+          "point.home.alex_spawn",
+          "point.home.jordan_spawn",
+          "point.home.morgan_spawn",
+          "point.spawn.anchor.01",
+          "point.spawn.anchor.02",
+          "point.spawn.anchor.03",
+          "point.spawn.anchor.04",
+          "point.spawn.anchor.05",
+          "point.spawn.anchor.06",
+          "point.spawn.anchor.07",
+          "point.spawn.anchor.08",
+          "point.spawn.anchor.09",
+          "point.spawn.anchor.10"
+        ]
+      },
+      "semantic_class": "region.home",
+      "source": {
+        "id": "home",
+        "xml_binding": {
+          "kind": "site",
+          "name": "zone_home_center"
+        }
+      }
+    }
+  },
+  "points": {
+    "point.home.activity_area": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -10.36836436,
+        2.10607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__home__activity_area",
+      "usages": [
+        "navigation",
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "point.home.alex_spawn": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -8.86836436,
+        0.00607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__home__alex_spawn",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.home.jordan_spawn": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -9.04836436,
+        2.52607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__home__jordan_spawn",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.home.morgan_spawn": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -7.66836436,
+        0.00607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__home__morgan_spawn",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.object.001_bottle_home_05.action": {
+      "kind": "action",
+      "navigation_site": "point.object.001_bottle_home_05.approach.01",
+      "owner": "object.001_bottle_home_05",
+      "required": false,
+      "site": "001_bottle_home_05_grasp_site"
+    },
+    "point.object.001_bottle_home_05.approach.01": {
+      "kind": "navigation",
+      "owner": "object.001_bottle_home_05",
+      "position": [
+        -6.40836436,
+        3.18607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__001_bottle_home_05__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.7248183597980677
+    },
+    "point.object.017_calculator_home_00.action": {
+      "kind": "action",
+      "navigation_site": "point.object.017_calculator_home_00.approach.01",
+      "owner": "object.017_calculator_home_00",
+      "required": false,
+      "site": "017_calculator_home_00_grasp_site"
+    },
+    "point.object.017_calculator_home_00.approach.01": {
+      "kind": "navigation",
+      "owner": "object.017_calculator_home_00",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__017_calculator_home_00__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5482889130886677
+    },
+    "point.object.035_apple_home_07.action": {
+      "kind": "action",
+      "navigation_site": "point.object.035_apple_home_07.approach.01",
+      "owner": "object.035_apple_home_07",
+      "required": false,
+      "site": "035_apple_home_07_grasp_site"
+    },
+    "point.object.035_apple_home_07.approach.01": {
+      "kind": "navigation",
+      "owner": "object.035_apple_home_07",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__035_apple_home_07__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.972575010613834
+    },
+    "point.object.038_milk-box_home_08.action": {
+      "kind": "action",
+      "navigation_site": "point.object.038_milk-box_home_08.approach.01",
+      "owner": "object.038_milk-box_home_08",
+      "required": false,
+      "site": "038_milk-box_home_08_grasp_site"
+    },
+    "point.object.038_milk-box_home_08.approach.01": {
+      "kind": "navigation",
+      "owner": "object.038_milk-box_home_08",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__038_milk-box_home_08__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.078303609029002
+    },
+    "point.object.043_book_home_01.action": {
+      "kind": "action",
+      "navigation_site": "point.object.043_book_home_01.approach.01",
+      "owner": "object.043_book_home_01",
+      "required": false,
+      "site": "043_book_home_01_grasp_site"
+    },
+    "point.object.043_book_home_01.approach.01": {
+      "kind": "navigation",
+      "owner": "object.043_book_home_01",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__043_book_home_01__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.0344868738492403
+    },
+    "point.object.069_vagetable_home_12.action": {
+      "kind": "action",
+      "navigation_site": "point.object.069_vagetable_home_12.approach.01",
+      "owner": "object.069_vagetable_home_12",
+      "required": false,
+      "site": "069_vagetable_home_12_grasp_site"
+    },
+    "point.object.069_vagetable_home_12.approach.01": {
+      "kind": "navigation",
+      "owner": "object.069_vagetable_home_12",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__069_vagetable_home_12__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.7107720620479556
+    },
+    "point.object.071_can_home_09.action": {
+      "kind": "action",
+      "navigation_site": "point.object.071_can_home_09.approach.01",
+      "owner": "object.071_can_home_09",
+      "required": false,
+      "site": "071_can_home_09_grasp_site"
+    },
+    "point.object.071_can_home_09.approach.01": {
+      "kind": "navigation",
+      "owner": "object.071_can_home_09",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__071_can_home_09__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.590834432770188
+    },
+    "point.object.075_bread_home_11.action": {
+      "kind": "action",
+      "navigation_site": "point.object.075_bread_home_11.approach.01",
+      "owner": "object.075_bread_home_11",
+      "required": false,
+      "site": "075_bread_home_11_grasp_site"
+    },
+    "point.object.075_bread_home_11.approach.01": {
+      "kind": "navigation",
+      "owner": "object.075_bread_home_11",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__075_bread_home_11__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8721418179224303
+    },
+    "point.object.116_keyboard_home_02.action": {
+      "kind": "action",
+      "navigation_site": "point.object.116_keyboard_home_02.approach.01",
+      "owner": "object.116_keyboard_home_02",
+      "required": false,
+      "site": "116_keyboard_home_02_grasp_site"
+    },
+    "point.object.116_keyboard_home_02.approach.01": {
+      "kind": "navigation",
+      "owner": "object.116_keyboard_home_02",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__116_keyboard_home_02__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4813578219557446
+    },
+    "point.object.green_apple_home_10.action": {
+      "kind": "action",
+      "navigation_site": "point.object.green_apple_home_10.approach.01",
+      "owner": "object.green_apple_home_10",
+      "required": false,
+      "site": "green_apple_home_10_grasp_site"
+    },
+    "point.object.green_apple_home_10.approach.01": {
+      "kind": "navigation",
+      "owner": "object.green_apple_home_10",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__green_apple_home_10__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5775706883487612
+    },
+    "point.object.hssd_object_000.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_000",
+      "position": [
+        -3.185141032183146,
+        5.717469857783901,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_000__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_001.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_001",
+      "position": [
+        -4.24836436,
+        5.94607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_001__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.0425086354827156
+    },
+    "point.object.hssd_object_002.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_002",
+      "position": [
+        -6.849225230275983,
+        -1.505210206053449,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_002__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.570796326794897
+    },
+    "point.object.hssd_object_003.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_003.approach.01",
+      "owner": "object.hssd_object_003",
+      "position": [
+        -6.7383698116574475,
+        2.390319518861207,
+        0.45621235346818506
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_003__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_003.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_003",
+      "position": [
+        -6.014768116189034,
+        2.390319518861207,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_003__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948963
+    },
+    "point.object.hssd_object_004.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_004",
+      "position": [
+        -9.918880271611211,
+        3.841219650942395,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_004__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948974
+    },
+    "point.object.hssd_object_005.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_005",
+      "position": [
+        -3.2283643600000005,
+        -2.6939269099999996,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_005__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.01677342417516515
+    },
+    "point.object.hssd_object_006.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_006",
+      "position": [
+        -9.08015943468094,
+        -3.894529360135416,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_006__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.0606440646117514
+    },
+    "point.object.hssd_object_007.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_007",
+      "position": [
+        -3.3483643600000006,
+        5.886073089999999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_007__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.7093008361290067
+    },
+    "point.object.hssd_object_008.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_008",
+      "position": [
+        -8.507232486914019,
+        0.7144098916791133,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_008__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_009.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_009",
+      "position": [
+        -4.54836436,
+        -3.53392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_009__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.8433113870604547
+    },
+    "point.object.hssd_object_010.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_010",
+      "position": [
+        -10.067538487313406,
+        -2.876299963316984,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_010__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.925574432567323
+    },
+    "point.object.hssd_object_011.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_011",
+      "position": [
+        -4.550028457323468,
+        -1.928770991504793,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_011__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.1666228986904374
+    },
+    "point.object.hssd_object_012.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_012",
+      "position": [
+        -6.40836436,
+        3.18607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_012__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.7208576700552247
+    },
+    "point.object.hssd_object_013.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_013",
+      "position": [
+        -6.64836436,
+        6.546073089999999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_013__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.7558045388202064
+    },
+    "point.object.hssd_object_014.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_014.approach.01",
+      "owner": "object.hssd_object_014",
+      "position": [
+        -4.99931001663208,
+        3.6656385114182743,
+        0.7739809225379715
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_014__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_014.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_014",
+      "position": [
+        -3.4957554960250854,
+        3.6656385114182743,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_014__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_015.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_015",
+      "position": [
+        -3.28836436,
+        -2.6939269099999996,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_015__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.0060727958918950975
+    },
+    "point.object.hssd_object_016.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_016",
+      "position": [
+        -9.537646735442175,
+        6.135059366809061,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_016__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948952
+    },
+    "point.object.hssd_object_017.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_017",
+      "position": [
+        -6.04836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_017__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.6560966006148519
+    },
+    "point.object.hssd_object_018.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_018",
+      "position": [
+        -3.2920567313836364,
+        -0.4884898970088728,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_018__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.9018503317077333
+    },
+    "point.object.hssd_object_019.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_019",
+      "position": [
+        -3.2920567313836364,
+        -0.4884898970088728,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_019__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.020194601182949
+    },
+    "point.object.hssd_object_020.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_020",
+      "position": [
+        -10.067538487313406,
+        -2.876299963316984,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_020__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.9690822040047963
+    },
+    "point.object.hssd_object_021.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_021",
+      "position": [
+        -9.918880271611211,
+        3.841219650942395,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_021__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.0064171754448465
+    },
+    "point.object.hssd_object_022.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_022",
+      "position": [
+        -7.6083643599999995,
+        -3.41392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_022__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5784424257429888
+    },
+    "point.object.hssd_object_023.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_023",
+      "position": [
+        -8.637544830441033,
+        -1.9886837666562522,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_023__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.987935939801003
+    },
+    "point.object.hssd_object_024.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_024",
+      "position": [
+        -6.64836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_024__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.6600371898322845
+    },
+    "point.object.hssd_object_025.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_025",
+      "position": [
+        -7.06836436,
+        -3.95392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_025__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5866322643380195
+    },
+    "point.object.hssd_object_026.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_026",
+      "position": [
+        -10.06836436,
+        3.84607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_026__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.577415972934001
+    },
+    "point.object.hssd_object_027.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_027",
+      "position": [
+        -4.308364360000001,
+        1.4460730900000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_027__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.8577243834487012
+    },
+    "point.object.hssd_object_028.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_028",
+      "position": [
+        -3.1083643600000004,
+        4.806073090000001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_028__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.3348106746935319
+    },
+    "point.object.hssd_object_029.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_029",
+      "position": [
+        -3.1083643600000004,
+        1.26607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_029__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 2.8210382740337705
+    },
+    "point.object.hssd_object_030.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_030",
+      "position": [
+        -10.067538487313406,
+        -2.876299963316984,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_030__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.3472323548908065
+    },
+    "point.object.hssd_object_031.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_031",
+      "position": [
+        -8.507232486914019,
+        0.7144098916791133,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_031__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3355232307400455
+    },
+    "point.object.hssd_object_032.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_032",
+      "position": [
+        -9.531126468828088,
+        5.105149817927508,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_032__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.570796326794898
+    },
+    "point.object.hssd_object_033.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_033",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_033__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.532399080079699
+    },
+    "point.object.hssd_object_034.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_034",
+      "position": [
+        -5.98836436,
+        1.0260730899999997,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_034__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.9951535090357848
+    },
+    "point.object.hssd_object_035.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_035",
+      "position": [
+        -8.507232486914019,
+        0.7144098916791133,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_035__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.863314288561562
+    },
+    "point.object.hssd_object_036.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_036.approach.01",
+      "owner": "object.hssd_object_036",
+      "position": [
+        -8.861184931887447,
+        5.678770323756054,
+        1.003692747550619
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_036__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_036.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_036",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_036__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.741092472606449
+    },
+    "point.object.hssd_object_037.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_037.approach.01",
+      "owner": "object.hssd_object_037",
+      "position": [
+        -7.457102265241408,
+        4.729777513234351,
+        1.00369270459473
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_037__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_037.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_037",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_037__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.937938914578296
+    },
+    "point.object.hssd_object_038.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_038.approach.01",
+      "owner": "object.hssd_object_038",
+      "position": [
+        -8.54057048768546,
+        4.662834451831317,
+        1.0036926996255613
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_038__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_038.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_038",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_038__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.2401516886864443
+    },
+    "point.object.hssd_object_039.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_039.approach.01",
+      "owner": "object.hssd_object_039",
+      "position": [
+        -7.346104612858012,
+        5.7389894642873305,
+        1.0036927492119971
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_039__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_039.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_039",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_039__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.147452860363479
+    },
+    "point.object.hssd_object_040.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_040",
+      "position": [
+        -8.637544830441033,
+        -1.9886837666562522,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_040__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_041.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_041",
+      "position": [
+        -3.6483643600000004,
+        2.1060730899999998,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_041__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.760152595112452
+    },
+    "point.object.hssd_object_042.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_042",
+      "position": [
+        -6.675684231359996,
+        5.302947886652505,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_042__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_043.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_043.approach.01",
+      "owner": "object.hssd_object_043",
+      "position": [
+        -4.577340156688492,
+        -0.4884898970088728,
+        1.2672114959690932
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_043__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_043.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_043",
+      "position": [
+        -3.2920567313836364,
+        -0.4884898970088728,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_043__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_044.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_044",
+      "position": [
+        -9.10836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_044__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.18275616589610108
+    },
+    "point.object.hssd_object_045.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_045.approach.01",
+      "owner": "object.hssd_object_045",
+      "position": [
+        -5.325699848675511,
+        -1.928770991504793,
+        0.6416168634900346
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_045__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_045.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_045",
+      "position": [
+        -4.550028457323468,
+        -1.928770991504793,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_045__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_046.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_046.approach.01",
+      "owner": "object.hssd_object_046",
+      "position": [
+        -3.877910578176051,
+        -1.9312309304572532,
+        0.6416168687829268
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_046__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_046.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_046",
+      "position": [
+        -3.086922814947189,
+        -1.9312309304572532,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_046__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_047.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_047",
+      "position": [
+        -5.98836436,
+        1.0260730899999997,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_047__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.0158026240992524
+    },
+    "point.object.hssd_object_048.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_048",
+      "position": [
+        -3.7683643600000005,
+        -2.6939269099999996,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_048__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.018572045037136126
+    },
+    "point.object.hssd_object_049.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_049",
+      "position": [
+        -9.22836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_049__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4904455189769574
+    },
+    "point.object.hssd_object_050.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_050",
+      "position": [
+        -2.86836436,
+        -2.57392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_050__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.6014408968086188
+    },
+    "point.object.hssd_object_051.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_051",
+      "position": [
+        -3.2283643600000005,
+        3.6660730900000003,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_051__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.4391793559232565
+    },
+    "point.object.hssd_object_052.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_052",
+      "position": [
+        -3.40836436,
+        2.1060730899999998,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_052__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -3.1224092809423314
+    },
+    "point.object.hssd_object_053.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_053",
+      "position": [
+        -9.08015943468094,
+        -3.894529360135416,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_053__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_054.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_054",
+      "position": [
+        -6.04836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_054__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.7700714203866309
+    },
+    "point.object.hssd_object_055.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_055",
+      "position": [
+        -6.64836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_055__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.6607866359104538
+    },
+    "point.object.hssd_object_056.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_056",
+      "position": [
+        -10.067538487313406,
+        -2.876299963316984,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_056__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948972
+    },
+    "point.object.hssd_object_057.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_057",
+      "position": [
+        -10.067538487313406,
+        -2.8657196936572467,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_057__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948972
+    },
+    "point.object.hssd_object_058.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_058",
+      "position": [
+        -10.067538487313406,
+        -2.896019863226491,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_058__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948972
+    },
+    "point.object.hssd_object_059.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_059",
+      "position": [
+        -4.54836436,
+        -3.53392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_059__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.6178182321513223
+    },
+    "point.object.hssd_object_060.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_060",
+      "position": [
+        -3.293000179628538,
+        1.148359851318014,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_060__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_061.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_061",
+      "position": [
+        -4.54836436,
+        -3.53392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_061__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.8420881217709106
+    },
+    "point.object.hssd_object_062.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_062.approach.01",
+      "owner": "object.hssd_object_062",
+      "position": [
+        -7.303559614743981,
+        3.27434943673921,
+        0.8968792483475156
+      ],
+      "required": false,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_062__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_062.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_062",
+      "position": [
+        -6.46836436,
+        3.18607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_062__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6761008109220763
+    },
+    "point.object.hssd_object_063.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_063",
+      "position": [
+        -4.308364360000001,
+        1.4460730900000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_063__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.0285936963575892
+    },
+    "point.object.hssd_object_064.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_064",
+      "position": [
+        -9.34836436,
+        6.546073089999999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_064__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 2.043048943456275
+    },
+    "point.object.hssd_object_065.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_065",
+      "position": [
+        -3.40836436,
+        2.1060730899999998,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_065__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.999988772622809
+    },
+    "point.object.hssd_object_066.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_066",
+      "position": [
+        -3.28836436,
+        1.0260730899999997,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_066__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.1358572523707207
+    },
+    "point.object.hssd_object_067.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_067",
+      "position": [
+        -3.28836436,
+        1.0260730899999997,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_067__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.145737134692774
+    },
+    "point.object.hssd_object_068.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_068",
+      "position": [
+        -3.2920567313836364,
+        -0.4884898970088728,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_068__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.2818606406303505
+    },
+    "point.object.hssd_object_069.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_069",
+      "position": [
+        -10.277540271658424,
+        2.7622997830927325,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_069__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_070.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_070",
+      "position": [
+        -3.1083643600000004,
+        4.806073090000001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_070__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.5564308910163364
+    },
+    "point.object.hssd_object_071.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_071",
+      "position": [
+        -2.86836436,
+        -0.59392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_071__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.3097348377182846
+    },
+    "point.object.hssd_object_072.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_072",
+      "position": [
+        -2.86836436,
+        -2.57392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_072__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.3823393521890499
+    },
+    "point.object.hssd_object_073.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_073",
+      "position": [
+        -3.1083643600000004,
+        1.26607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__object__hssd_object_073__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 2.7673195110610114
+    },
+    "point.room.bathroom.approach.01": {
+      "kind": "navigation",
+      "owner": "room.bathroom",
+      "position": [
+        -9.22836436,
+        -3.89392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__room__bathroom__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.bedroom.approach.01": {
+      "kind": "navigation",
+      "owner": "room.bedroom",
+      "position": [
+        -3.40836436,
+        -0.47392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__room__bedroom__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.kitchen.approach.01": {
+      "kind": "navigation",
+      "owner": "room.kitchen",
+      "position": [
+        -5.20836436,
+        5.94607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__room__kitchen__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.living_room.approach.01": {
+      "kind": "navigation",
+      "owner": "room.living_room",
+      "position": [
+        -8.62836436,
+        0.72607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__room__living_room__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.01": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -3.10836436,
+        5.88607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__01",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.02": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -2.86836436,
+        -2.57392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__02",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.03": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -3.70836436,
+        1.62607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__03",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.04": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -9.64836436,
+        6.54607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__04",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.05": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -6.76836436,
+        -3.95392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__05",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.06": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -10.18836436,
+        -3.23392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__06",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.07": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -6.46836436,
+        4.92607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__07",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.08": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -6.10836436,
+        2.40607309,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__08",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.09": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -5.98836436,
+        -1.67392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__09",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.10": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -8.20836436,
+        -2.21392691,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__spawn__anchor__10",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.zone.home.action": {
+      "kind": "action",
+      "navigation_site": "point.zone.home.approach.01",
+      "owner": "zone.home",
+      "required": false,
+      "site": "zone_home_center"
+    },
+    "point.zone.home.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -6.7645028755129815,
+        1.241821373272661,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_04_103997970_171031287__point__zone__home__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "scene": "home_04_103997970_171031287.xml",
+  "scene_id": "home_04_103997970_171031287",
+  "schema_version": 2
+}

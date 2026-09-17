@@ -1,0 +1,84 @@
+{
+  "beds": [],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_01_102344115_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "2e74e240e47254240f11e309783f3bfb78e11a04a9de8eb6b37633fd992d1218",
+    "population": "575d32a3f85294240a0b64b64c4611aa8eaf79dfb953e81f9555d88ea66caaf8",
+    "semantic": "0463ce5427faa80438b3774779abe72917f165cf9f8d4ec2163ec3ad9e519c1d",
+    "source_scene": "eff8e329a2c661867e194a8198e9a65e9370b209e97847d28e244ba13e3a26f9"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -2.544386428,
+        0.918631648,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -2.836673093,
+        0.060077202,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -3.71353309,
+        3.494294986,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -3.71353309,
+        0.060077202,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_01_102344115.xml"
+}

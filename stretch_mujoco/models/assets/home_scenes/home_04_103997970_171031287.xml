@@ -1335,6 +1335,26 @@
       </body>
       <geom name="069_vagetable_home_12_collision" type="box" pos="2.42659036e-05 0.0484027535 -4.68113565e-05" size="0.0762956461 0.0497391704 0.0536636558" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
     </body>
+    <site name="showcase_home_conversation_speaker" pos="-8.8500 1.3000 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_home_conversation_listener" pos="-8.0500 1.3000 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_home_handover_giver" pos="-8.8500 3.3000 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_home_handover_receiver" pos="-8.0500 3.3000 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="showcase_home_robot_approach" pos="-8.8500 3.3000 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <body name="primitive_workstation_table" pos="-2.868364 -0.473927 0">
+      <geom name="primitive_workstation_table_geom" type="box" size="0.6 0.35 0.36" pos="0 0 0.36" rgba="0.45 0.45 0.48 1" />
+      <site name="primitive_workstation_work_site" pos="0 -0.58 0.73" size="0.02" rgba="0 0 0 0" />
+    </body>
+    <body name="primitive_workstation_computer" pos="-2.868364 -0.473927 0.78">
+      <geom name="primitive_workstation_computer_geom" type="box" size="0.22 0.06 0.16" rgba="0.12 0.14 0.16 1" />
+    </body>
+    <body name="primitive_workstation_chair" pos="-2.868364 -1.3739270000000001 0">
+      <geom name="primitive_workstation_chair_geom" type="box" size="0.28 0.28 0.22" pos="0 0 0.22" rgba="0.25 0.35 0.45 1" />
+    </body>
+    <body name="primitive_handover_cup" pos="-2.518364 -0.473927 0.82">
+      <freejoint />
+      <geom name="primitive_handover_cup_geom" type="cylinder" size="0.04 0.07" mass="0.12" rgba="0.2 0.55 0.8 1" />
+      <site name="primitive_handover_cup_grasp_site" pos="0 0 0" size="0.015" />
+    </body>
   </worldbody>
   <statistic center="-6.76450288 1.24182137 1.66481395" extent="11.3115" />
 </mujoco>

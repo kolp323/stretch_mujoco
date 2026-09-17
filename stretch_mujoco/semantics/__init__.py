@@ -12,6 +12,7 @@ from .world import (
     SemanticValidationError,
     SemanticWorld,
 )
+from .transaction import SemanticCommit, SemanticTransaction
 
 __all__ = [
     "BindingKind",
@@ -24,4 +25,6 @@ __all__ = [
     "SemanticRelation",
     "SemanticValidationError",
     "SemanticWorld",
+    "SemanticCommit",
+    "SemanticTransaction",
 ]

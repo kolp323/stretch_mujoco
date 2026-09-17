@@ -1,6 +1,7 @@
 import mujoco
 import numpy as np
 import math
+import pytest
 
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
 from stretch_mujoco.npc.animation import MeshSequenceBackend
@@ -21,6 +22,7 @@ def _model() -> mujoco.MjModel:
     seated_idle_frames = frames("seated_idle", 4)
     stand_up_frames = frames("stand_up", 8)
     talk_frames = frames("talk", 8)
+    gesture_wave_frames = frames("gesture_wave", 8)
     walk_frames = frames("walk", 8)
     give_frames = frames("give", 8)
     return mujoco.MjModel.from_xml_string(
@@ -34,6 +36,7 @@ def _model() -> mujoco.MjModel:
               {seated_idle_frames}
               {stand_up_frames}
               {talk_frames}
+              {gesture_wave_frames}
               {walk_frames}
               {give_frames}
               <site name="npc__employee_01__handover" pos="0 0 1"/>
@@ -143,6 +146,37 @@ def test_social_animation_waits_for_distance_and_mutual_facing() -> None:
     mujoco.mj_forward(model, data)
     system.step(model, data, 0.125)
     assert system.states(data)["employee_01"].resolved_clip == "talk"
+
+
+def test_gated_animation_duration_waits_for_clip_activation() -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    command = _command(
+        NpcCommandKind.PLAY_ANIMATION,
+        {
+            "clip": "talk",
+            "duration": 0.1,
+            "interaction_target": "employee_02",
+            "interaction_distance_min": 0.45,
+            "interaction_distance_max": 0.95,
+            "interaction_yaw_tolerance": 0.30,
+        },
+        0,
+    )
+    assert system.submit(command).status == CommandStatus.ACCEPTED
+
+    system.step(model, data, 0.0)
+    system.step(model, data, 1.0)
+
+    controller = system.controllers["employee_01"]
+    state = system.states(data)["employee_01"]
+    assert controller.active_command is not None
+    assert controller.active_command.clip_activated is False
+    assert controller.active_command.clip_sampled is False
+    assert state.resolved_clip == "idle"
+    assert state.last_receipt is None
 
 
 def test_attach_and_detach_receipts_follow_physical_state() -> None:
@@ -396,6 +430,43 @@ def test_move_waits_for_walk_marker_before_start_and_stop() -> None:
     assert state.last_receipt.status == CommandStatus.SUCCEEDED
     assert state.stop_marker in {"left_foot", "right_foot"}
     np.testing.assert_allclose(data.mocap_pos[0, :2], (2.0, 0.0), atol=1e-6)
+
+
+@pytest.mark.parametrize(
+    "kind",
+    (NpcCommandKind.PLAY_ANIMATION, NpcCommandKind.INTERACTION_CUE),
+)
+def test_direct_action_interrupts_walk_transition_after_move(kind: NpcCommandKind) -> None:
+    model = _model()
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    system = NpcSystem.from_model(model)
+    system.submit(_command(NpcCommandKind.MOVE_TO, {"site": "drop_site"}, 0))
+
+    for index in range(1, 100):
+        system.step(model, data, index * 0.125)
+        state = system.states(data)["employee_01"]
+        if state.last_receipt is not None and state.last_receipt.status.terminal:
+            break
+    assert state.last_receipt is not None
+    assert state.last_receipt.status == CommandStatus.SUCCEEDED
+
+    wave = _command(
+        kind,
+        {"clip": "gesture_wave", "duration": 1.0},
+        1,
+    )
+    assert system.submit(wave).status == CommandStatus.ACCEPTED
+    system.step(model, data, (index + 1) * 0.125)
+
+    state = system.states(data)["employee_01"]
+    controller = system.controllers["employee_01"]
+    assert state.requested_animation == "gesture_wave"
+    assert state.resolved_clip == "gesture_wave"
+    assert controller.animation.last_sampled_clip == "gesture_wave"
+    assert controller.active_command is not None
+    assert controller.active_command.clip_activated is True
+    assert controller.active_command.clip_sampled is True
 
 
 def test_delayed_walk_cancel_finalizes_both_target_and_cancel_receipts() -> None:

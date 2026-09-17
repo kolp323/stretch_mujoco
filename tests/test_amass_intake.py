@@ -105,6 +105,33 @@ def test_prepare_motions_resamples_and_writes_provenance_receipt(tmp_path: Path)
     assert receipt["root_translation_policy"] == "relative_smpl_y_only_runtime_anchor"
 
 
+def test_prepare_motions_retains_smplx_hand_pose_for_hand_gestures(tmp_path: Path) -> None:
+    source_dir = tmp_path / "source" / "Transitions"
+    source_dir.mkdir(parents=True)
+    poses = np.zeros((30, 63), dtype=np.float32)
+    hands = np.arange(30 * 90, dtype=np.float32).reshape(30, 90)
+    np.savez(
+        source_dir / "example.npz",
+        pose_body=poses,
+        pose_hand=hands,
+        mocap_frame_rate=np.array(30.0),
+        surface_model_type=np.array("smplx"),
+        gender=np.array("neutral"),
+    )
+    selection = tmp_path / "selection.json"
+    _write_selection(selection)
+
+    (output,) = prepare_motions(
+        tmp_path / "source", selection, tmp_path / "motions", tmp_path / "receipts"
+    )
+
+    with np.load(output, allow_pickle=False) as prepared:
+        assert prepared["pose_hand"].shape == (10, 90)
+        assert np.array_equal(prepared["pose_hand"], hands[::3])
+    receipt = json.loads((tmp_path / "receipts" / "stand_up.receipt.json").read_text())
+    assert receipt["retained_pose_fields"] == ["body_pose", "pose_hand", "transl"]
+
+
 def test_canonicalize_vertical_translation_pins_horizontal_motion() -> None:
     source = np.array([[5.0, 2.0, -3.0], [7.0, 2.5, 9.0]], dtype=np.float32)
 

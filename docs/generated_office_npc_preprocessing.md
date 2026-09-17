@@ -28,9 +28,19 @@ It writes these source-controlled artifacts:
 
 The `*_npc.xml` scenes provide three separated spawn sites; work, meeting,
 lounge and snack anchors; opposing conversation and handover stations; and
-Stretch request, delivery, and rendezvous locations.  Seat approach points
-are deliberately not declared: generated furniture does not expose a stable
-seat semantic/body contract across all ten layouts.
+Stretch request, delivery, and rendezvous locations.  Meeting, lounge and
+snack also declare three collision-free `binding: location` interaction
+points with a shared `target` and distinct `slot_id` values.  The embodied
+driver leases one of those concrete sites per NPC while the NPC remains in the
+region, releases a new lease on failed/cancelled navigation, and releases the
+previous slot only after a successful move elsewhere.  Existing one-site
+`binding: location` entries remain valid for legacy scenes.  Every generated
+work, meeting, lounge, snack, and spawn site derives its yaw from the actual
+owned furniture centre, so a stationary NPC and a completed regional move face
+the relevant desk, table, sofa, or snack counter; conversation and handover
+stations instead face their counterpart.  Seat approach
+points are deliberately not declared: generated furniture does not expose a
+stable seat semantic/body contract across all ten layouts.
 
 For runtime composition, keep generated scene files out of source directories:
 

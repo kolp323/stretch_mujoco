@@ -1,0 +1,422 @@
+{
+  "interaction_points": {
+    "point.object.e94ede305ff3f873dd34f8e95274bb54679df6b4.18.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.e94ede305ff3f873dd34f8e95274bb54679df6b4.18"
+      },
+      "owner": "object.e94ede305ff3f873dd34f8e95274bb54679df6b4.18",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__e94ede305ff3f873dd34f8e95274bb54679df6b4__18__approach__01"
+    },
+    "point.object.e94ede305ff3f873dd34f8e95274bb54679df6b4.19.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.e94ede305ff3f873dd34f8e95274bb54679df6b4.19"
+      },
+      "owner": "object.e94ede305ff3f873dd34f8e95274bb54679df6b4.19",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__e94ede305ff3f873dd34f8e95274bb54679df6b4__19__approach__01"
+    },
+    "point.object.new_cb_desk_2400.0.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_cb_desk_2400.0"
+      },
+      "owner": "object.new_cb_desk_2400.0",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_cb_desk_2400__0__approach__01"
+    },
+    "point.object.new_cb_desk_2400.1.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_cb_desk_2400.1"
+      },
+      "owner": "object.new_cb_desk_2400.1",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_cb_desk_2400__1__approach__01"
+    },
+    "point.object.new_dining_chair.10.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_dining_chair.10"
+      },
+      "owner": "object.new_dining_chair.10",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_dining_chair__10__approach__01"
+    },
+    "point.object.new_dining_chair.11.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_dining_chair.11"
+      },
+      "owner": "object.new_dining_chair.11",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_dining_chair__11__approach__01"
+    },
+    "point.object.new_dining_chair.12.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_dining_chair.12"
+      },
+      "owner": "object.new_dining_chair.12",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_dining_chair__12__approach__01"
+    },
+    "point.object.new_dining_chair.13.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_dining_chair.13"
+      },
+      "owner": "object.new_dining_chair.13",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_dining_chair__13__approach__01"
+    },
+    "point.object.new_dining_chair.14.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_dining_chair.14"
+      },
+      "owner": "object.new_dining_chair.14",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_dining_chair__14__approach__01"
+    },
+    "point.object.new_dining_chair.9.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_dining_chair.9"
+      },
+      "owner": "object.new_dining_chair.9",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_dining_chair__9__approach__01"
+    },
+    "point.object.new_teaming_table.7.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.new_teaming_table.7"
+      },
+      "owner": "object.new_teaming_table.7",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__new_teaming_table__7__approach__01"
+    },
+    "point.object.procedural_Snack Counter.30.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.procedural_Snack Counter.30"
+      },
+      "owner": "object.procedural_Snack Counter.30",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__procedural_Snack Counter__30__approach__01"
+    },
+    "point.object.procedural_Snack Storage Cabinet.31.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.procedural_Snack Storage Cabinet.31"
+      },
+      "owner": "object.procedural_Snack Storage Cabinet.31",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__object__procedural_Snack Storage Cabinet__31__approach__01"
+    },
+    "point.spawn.anchor.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__01"
+    },
+    "point.spawn.anchor.02": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__02"
+    },
+    "point.spawn.anchor.03": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__03"
+    },
+    "point.spawn.anchor.04": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__04"
+    },
+    "point.spawn.anchor.05": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__05"
+    },
+    "point.spawn.anchor.06": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__06"
+    },
+    "point.spawn.anchor.07": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__07"
+    },
+    "point.spawn.anchor.08": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__08"
+    },
+    "point.spawn.anchor.09": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__09"
+    },
+    "point.spawn.anchor.10": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__spawn__anchor__10"
+    },
+    "point.zone.lounge.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.lounge"
+      },
+      "owner": "zone.lounge",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__zone__lounge__approach__01"
+    },
+    "point.zone.meeting.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.meeting"
+      },
+      "owner": "zone.meeting",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__zone__meeting__approach__01"
+    },
+    "point.zone.snack.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.snack"
+      },
+      "owner": "zone.snack",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__zone__snack__approach__01"
+    },
+    "point.zone.work.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.work"
+      },
+      "owner": "zone.work",
+      "role": "human_stand_site",
+      "site": "npc__office_08_dual_island__point__zone__work__approach__01"
+    }
+  },
+  "objects": {
+    "object.e94ede305ff3f873dd34f8e95274bb54679df6b4.18": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_018_e94ede30"
+      },
+      "type": "Chair"
+    },
+    "object.e94ede305ff3f873dd34f8e95274bb54679df6b4.19": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_019_e94ede30"
+      },
+      "type": "Chair"
+    },
+    "object.new_cb_desk_2400.0": {
+      "attributes": {
+        "semantic_class": "furniture.workstation"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_000_new_cb_d"
+      },
+      "type": "Workstation"
+    },
+    "object.new_cb_desk_2400.1": {
+      "attributes": {
+        "semantic_class": "furniture.workstation"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_001_new_cb_d"
+      },
+      "type": "Workstation"
+    },
+    "object.new_dining_chair.10": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_010_new_dini"
+      },
+      "type": "Chair"
+    },
+    "object.new_dining_chair.11": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_011_new_dini"
+      },
+      "type": "Chair"
+    },
+    "object.new_dining_chair.12": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_012_new_dini"
+      },
+      "type": "Chair"
+    },
+    "object.new_dining_chair.13": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_013_new_dini"
+      },
+      "type": "Chair"
+    },
+    "object.new_dining_chair.14": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_014_new_dini"
+      },
+      "type": "Chair"
+    },
+    "object.new_dining_chair.9": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_009_new_dini"
+      },
+      "type": "Chair"
+    },
+    "object.new_teaming_table.7": {
+      "attributes": {
+        "semantic_class": "furniture.counter"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "asset_007_new_team"
+      },
+      "type": "Counter"
+    },
+    "object.procedural_Snack Counter.30": {
+      "attributes": {
+        "semantic_class": "furniture.counter"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "snack_counter"
+      },
+      "type": "Counter"
+    },
+    "object.procedural_Snack Storage Cabinet.31": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "snack_cabinet_031"
+      },
+      "type": "StorageCabinet"
+    },
+    "zone.lounge": {
+      "attributes": {
+        "semantic_class": "region.lounge"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "zone_lounge_center"
+      },
+      "type": "Counter"
+    },
+    "zone.meeting": {
+      "attributes": {
+        "semantic_class": "region.meeting"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "zone_meeting_center"
+      },
+      "type": "MeetingTable"
+    },
+    "zone.snack": {
+      "attributes": {
+        "semantic_class": "region.snack"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "zone_snack_center"
+      },
+      "type": "Counter"
+    },
+    "zone.work": {
+      "attributes": {
+        "semantic_class": "region.work"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "zone_work_center"
+      },
+      "type": "Workstation"
+    }
+  },
+  "relations": [],
+  "scene": "office_08_dual_island.xml",
+  "schema_version": 1
+}

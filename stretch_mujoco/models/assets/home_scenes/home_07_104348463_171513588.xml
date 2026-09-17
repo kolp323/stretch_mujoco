@@ -1325,6 +1325,21 @@
       </body>
       <geom name="green_apple_home_10_collision" type="box" pos="-4.63968701e-07 -6.92336826e-06 0.0397420699" size="0.037268961 0.0373573802 0.0404621014" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
     </body>
+    <body name="primitive_workstation_table" pos="-1.388419 13.748418 0">
+      <geom name="primitive_workstation_table_geom" type="box" size="0.6 0.35 0.36" pos="0 0 0.36" rgba="0.45 0.45 0.48 1" />
+      <site name="primitive_workstation_work_site" pos="0 -0.58 0.73" size="0.02" rgba="0 0 0 0" />
+    </body>
+    <body name="primitive_workstation_computer" pos="-1.388419 13.748418 0.78">
+      <geom name="primitive_workstation_computer_geom" type="box" size="0.22 0.06 0.16" rgba="0.12 0.14 0.16 1" />
+    </body>
+    <body name="primitive_workstation_chair" pos="-1.388419 12.848417999999999 0">
+      <geom name="primitive_workstation_chair_geom" type="box" size="0.28 0.28 0.22" pos="0 0 0.22" rgba="0.25 0.35 0.45 1" />
+    </body>
+    <body name="primitive_handover_cup" pos="-1.0384190000000002 13.748418 0.82">
+      <freejoint />
+      <geom name="primitive_handover_cup_geom" type="cylinder" size="0.04 0.07" mass="0.12" rgba="0.2 0.55 0.8 1" />
+      <site name="primitive_handover_cup_grasp_site" pos="0 0 0" size="0.015" />
+    </body>
   </worldbody>
   <statistic center="-7.13887471 7.50277394 1.39249133" extent="12.9087" />
 </mujoco>

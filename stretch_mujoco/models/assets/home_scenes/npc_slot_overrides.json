@@ -1,0 +1,56 @@
+{
+  "schema_version": 2,
+  "description": "Authoritative named NPC sites and roster bindings for generated HSSD homes. XML, population, and semantic artifacts are generated projections.",
+  "scenes": {
+    "home_01_102344115": {
+      "sites": {"alex_spawn": {"position": [-2.836673093, 0.060077202], "tags": ["spawn"]}, "jordan_spawn": {"position": [-3.71353309, 3.494294986], "tags": ["spawn"]}, "morgan_spawn": {"position": [-3.71353309, 0.060077202], "tags": ["spawn"]}, "activity_area": {"position": [-2.544386428, 0.918631648], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_02_103997919_171031233": {
+      "sites": {"alex_spawn": {"position": [-2.984722487, 4.518388953], "tags": ["spawn"]}, "jordan_spawn": {"position": [-3.427111423, 2.198611173], "tags": ["spawn"]}, "morgan_spawn": {"position": [-2.984722487, 5.678277844], "tags": ["spawn"]}, "activity_area": {"position": [-0.330388869, 5.678277844], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_03_107734119_175999932": {
+      "sites": {"alex_spawn": {"position": [-5.59166722, 6.023333589], "tags": ["spawn"]}, "jordan_spawn": {"position": [-2.688333601, 5.40500021], "tags": ["spawn"]}, "morgan_spawn": {"position": [-3.172222537, 6.023333589], "tags": ["spawn"]}, "activity_area": {"position": [-1.720555728, 4.78666683], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_04_103997970_171031287": {
+      "sites": {"alex_spawn": {"position": [-10.376824193, -0.015011579], "tags": ["spawn"]}, "jordan_spawn": {"position": [-9.022203699, 2.498654325], "tags": ["spawn"]}, "morgan_spawn": {"position": [-7.667583205, -0.015011579], "tags": ["spawn"]}, "activity_area": {"position": [-10.376824193, 1.241821373], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_05_102344094": {
+      "sites": {"alex_spawn": {"position": [-7.14, 1.48], "tags": ["spawn"]}, "jordan_spawn": {"position": [-7.89, 0.98], "tags": ["spawn"]}, "morgan_spawn": {"position": [-6.14, 1.23], "tags": ["spawn"]}, "activity_area": {"position": [-6.6, 2.3], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_06_104348082_171512994": {
+      "sites": {"alex_spawn": {"position": [-4.0, 7.15], "tags": ["spawn"]}, "jordan_spawn": {"position": [-4.6, 6.75], "tags": ["spawn"]}, "morgan_spawn": {"position": [-5.2, 6.35], "tags": ["spawn"]}, "activity_area": {"position": [-5.2, 6.95], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_07_104348463_171513588": {
+      "sites": {"alex_spawn": {"position": [-9.62, 7.0], "tags": ["spawn"]}, "jordan_spawn": {"position": [-8.62, 6.75], "tags": ["spawn"]}, "morgan_spawn": {"position": [-10.37, 6.25], "tags": ["spawn"]}, "activity_area": {"position": [-10.37, 7.75], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_08_102344193": {
+      "sites": {"alex_spawn": {"position": [-5.27, 4.67], "tags": ["spawn"]}, "jordan_spawn": {"position": [-3.27, 5.17], "tags": ["spawn"]}, "morgan_spawn": {"position": [-4.77, 5.42], "tags": ["spawn"]}, "activity_area": {"position": [-4.77, 4.42], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_09_107734110_175999914": {
+      "sites": {"alex_spawn": {"position": [-7.359556061, 7.913920907], "tags": ["spawn"]}, "jordan_spawn": {"position": [0.487122606, 7.194532017], "tags": ["spawn"]}, "morgan_spawn": {"position": [-6.646221637, 8.633309796], "tags": ["spawn"]}, "activity_area": {"position": [-10.926228183, 3.597587568], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    },
+    "home_10_104862513_172226580": {
+      "sites": {"alex_spawn": {"position": [0.0, -1.0], "tags": ["spawn"]}, "jordan_spawn": {"position": [1.0, -0.2], "tags": ["spawn"]}, "morgan_spawn": {"position": [0.2, 0.8], "tags": ["spawn"]}, "activity_area": {"position": [1.7, 0.5], "tags": ["activity"]}},
+      "roster": [{"npc_id": "npc_alex_chen", "site": "alex_spawn"}, {"npc_id": "npc_jordan_patell", "site": "jordan_spawn"}, {"npc_id": "npc_morgan_lee", "site": "morgan_spawn"}],
+      "demo": {"activity_site": "activity_area", "walker_npc_id": "npc_alex_chen", "conversation_partner_npc_id": "npc_jordan_patell"}
+    }
+  }
+}

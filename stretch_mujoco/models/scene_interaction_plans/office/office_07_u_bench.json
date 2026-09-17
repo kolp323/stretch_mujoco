@@ -1,0 +1,393 @@
+{
+  "conversation_stations": [
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_07_u_bench.01",
+      "region": "zone.snack",
+      "roles": {
+        "listener": {
+          "position": [
+            9.26,
+            4.94,
+            0.025
+          ],
+          "yaw": 0.5070985043923399
+        },
+        "speaker": {
+          "position": [
+            9.66,
+            5.66,
+            0.025
+          ],
+          "yaw": -2.634494149197453
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_07_u_bench.02",
+      "region": "zone.work",
+      "roles": {
+        "listener": {
+          "position": [
+            -8.98,
+            -5.46,
+            0.025
+          ],
+          "yaw": -1.0636978224025606
+        },
+        "speaker": {
+          "position": [
+            -9.7,
+            -5.06,
+            0.025
+          ],
+          "yaw": 2.0778948311872325
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_07_u_bench.03",
+      "region": "zone.work",
+      "roles": {
+        "listener": {
+          "position": [
+            -2.74,
+            4.94,
+            0.025
+          ],
+          "yaw": -0.5070985043923371
+        },
+        "speaker": {
+          "position": [
+            -3.14,
+            5.66,
+            0.025
+          ],
+          "yaw": 2.6344941491974563
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "handover_stations": [
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_07_u_bench.01",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "snack_soda_can_001"
+      ],
+      "region": "zone.meeting",
+      "roles": {
+        "giver": {
+          "position": [
+            2.22,
+            -5.7,
+            0.025
+          ],
+          "yaw": -0.5070985043923375
+        },
+        "receiver": {
+          "position": [
+            1.82,
+            -4.98,
+            0.025
+          ],
+          "yaw": 2.634494149197456
+        },
+        "robot": {
+          "position": [
+            2.22,
+            -5.7,
+            0.025
+          ],
+          "yaw": -0.5070985043923375
+        }
+      },
+      "transfer_position": [
+        2.02,
+        -5.34,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_07_u_bench.02",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "snack_soda_can_001"
+      ],
+      "region": "zone.meeting",
+      "roles": {
+        "giver": {
+          "position": [
+            9.66,
+            -2.82,
+            0.025
+          ],
+          "yaw": -2.634494149197454
+        },
+        "receiver": {
+          "position": [
+            9.26,
+            -3.54,
+            0.025
+          ],
+          "yaw": 0.5070985043923394
+        },
+        "robot": {
+          "position": [
+            9.66,
+            -2.82,
+            0.025
+          ],
+          "yaw": -2.634494149197454
+        }
+      },
+      "transfer_position": [
+        9.46,
+        -3.18,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_07_u_bench.03",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "snack_soda_can_001"
+      ],
+      "region": "zone.work",
+      "roles": {
+        "giver": {
+          "position": [
+            -9.7,
+            2.22,
+            0.025
+          ],
+          "yaw": 2.634494149197456
+        },
+        "receiver": {
+          "position": [
+            -9.3,
+            1.5,
+            0.025
+          ],
+          "yaw": -0.5070985043923375
+        },
+        "robot": {
+          "position": [
+            -9.7,
+            2.22,
+            0.025
+          ],
+          "yaw": 2.634494149197456
+        }
+      },
+      "transfer_position": [
+        -9.5,
+        1.86,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "scene_id": "office_07_u_bench",
+  "schema": "interaction_site_plan/v1",
+  "seat_exemptions": [],
+  "seat_slots": [
+    {
+      "clearance_radius_m": 0.213281,
+      "id": "seat.asset_008_new_stan.01",
+      "ingress": {
+        "position": [
+          6.78,
+          -2.34,
+          0.025
+        ],
+        "yaw": -3.072736164288749
+      },
+      "owner_entity": "asset_008_new_stan",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          6.7,
+          -3.5,
+          0.45
+        ],
+        "yaw": -3.072736164288749
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.213281,
+      "id": "seat.asset_009_new_stan.01",
+      "ingress": {
+        "position": [
+          6.78,
+          -2.26,
+          0.025
+        ],
+        "yaw": -1.5941517696766305
+      },
+      "owner_entity": "asset_009_new_stan",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          5.6,
+          -2.287564,
+          0.45
+        ],
+        "yaw": -1.5941517696766305
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.213281,
+      "id": "seat.asset_010_new_stan.01",
+      "ingress": {
+        "position": [
+          2.22,
+          -2.26,
+          0.025
+        ],
+        "yaw": 1.59415176967663
+      },
+      "owner_entity": "asset_010_new_stan",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          3.4,
+          -2.287564,
+          0.45
+        ],
+        "yaw": 1.59415176967663
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.213281,
+      "id": "seat.asset_011_new_stan.01",
+      "ingress": {
+        "position": [
+          2.22,
+          -2.34,
+          0.025
+        ],
+        "yaw": 3.072736164288749
+      },
+      "owner_entity": "asset_011_new_stan",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          2.3,
+          -3.5,
+          0.45
+        ],
+        "yaw": 3.072736164288749
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.213281,
+      "id": "seat.asset_012_new_stan.01",
+      "ingress": {
+        "position": [
+          2.22,
+          -4.74,
+          0.025
+        ],
+        "yaw": 1.5474408839131624
+      },
+      "owner_entity": "asset_012_new_stan",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          3.4,
+          -4.712436,
+          0.45
+        ],
+        "yaw": 1.5474408839131624
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.213281,
+      "id": "seat.asset_013_new_stan.01",
+      "ingress": {
+        "position": [
+          6.78,
+          -4.74,
+          0.025
+        ],
+        "yaw": -1.5474408839131624
+      },
+      "owner_entity": "asset_013_new_stan",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          5.6,
+          -4.712436,
+          0.45
+        ],
+        "yaw": -1.5474408839131624
+      },
+      "slot_index": 1
+    }
+  ],
+  "workstations": [
+    {
+      "computer_entity": "asset_007_new_imac",
+      "id": "workstation.office_07_u_bench.01",
+      "seat_slot": "seat.asset_009_new_stan.01",
+      "work_site": {
+        "position": [
+          5.6,
+          -2.287564,
+          0.72
+        ],
+        "yaw": -1.5941517696766305
+      },
+      "workstation_entity": "asset_006_new_team"
+    }
+  ]
+}

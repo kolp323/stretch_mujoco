@@ -56,6 +56,34 @@ def test_safe_marker_defers_interrupt_and_seeded_phase_is_reproducible() -> None
     assert first.resolved_clip == "wave"
 
 
+def test_force_request_clears_a_stale_deferred_clip() -> None:
+    graph = AnimationGraph(
+        "force",
+        "idle",
+        "idle",
+        {
+            "idle": ClipDefinition(),
+            "walk": ClipDefinition(
+                fps=1.0,
+                markers=(("right_foot", 0.5),),
+                safe_marker="right_foot",
+                interrupt_policy=InterruptPolicy.SAFE_MARKER,
+            ),
+            "wave": ClipDefinition(),
+        },
+    )
+    controller = AnimationController(Backend(), graph)
+    controller.request("walk")
+    controller.step(0.0)
+    controller.request("wave")
+    assert controller.pending_clip == "wave"
+
+    controller.request("idle", force=True)
+    assert controller.pending_clip is None
+    controller.step(0.1)
+    assert controller.resolved_clip == "idle"
+
+
 def test_speed_metadata_controls_phase_progression() -> None:
     graph = AnimationGraph(
         "speed",

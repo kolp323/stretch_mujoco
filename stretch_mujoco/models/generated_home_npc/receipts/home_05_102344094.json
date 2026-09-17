@@ -1,0 +1,102 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -8.893281813555586,
+        3.1788484193594178
+      ],
+      "bounds_z": [
+        -0.001476866212357115,
+        1.7185247872736096
+      ],
+      "object_id": "hssd_object_034",
+      "semantic_name": "Envy Bed",
+      "sit": [
+        -9.343281813555587,
+        3.1788484193594178
+      ],
+      "yaw": 1.5707963267948966
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_05_102344094_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "1464af81fdbd07ae7878c03fb57db1e864a5d06770d4e9cf9d49513b05248afc",
+    "population": "d4b943ef9e917623973a17f767da71f7c19e2114c848e652f898899288e70076",
+    "semantic": "114c86f1da83c97fb13f1512ff88ad53b264d02d1dab846dcb6fe9aa9bb76720",
+    "source_scene": "7317e4fed1d7de49937531bc6a4c1cc3696d2029c42a40b63fc66cfc3a2eff46"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -6.6,
+        2.3,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -7.14,
+        1.48,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -7.89,
+        0.98,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -6.14,
+        1.23,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_05_102344094.xml"
+}

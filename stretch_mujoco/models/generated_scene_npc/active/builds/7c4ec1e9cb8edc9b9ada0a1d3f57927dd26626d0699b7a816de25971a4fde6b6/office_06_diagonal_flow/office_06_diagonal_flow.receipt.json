@@ -1,0 +1,18 @@
+{
+  "generator": "stretch_mujoco.npc.scene_compiler",
+  "scene_id": "office_06_diagonal_flow",
+  "schema_version": 1,
+  "sha256": {
+    "coverage": "46bb32e6cd441ad38b82b64cd5ff8d026ab90d7749292cbe630f41d0330395c1",
+    "generated_scene": "b0659fadf0faefc9d2e44b28831750f15c07eb048626ce3fc7a74c44d5480edd",
+    "npc_catalog": "0fcb40363a246edc17c8526f085ad07e98cf0342ce12d86d2e86b5dd7c982284",
+    "population": "e7dfc9a61148dd6dc05e76757cb9e00cb848c0201559bf792c02e39f1e89b082",
+    "scene_config": "39862aac111ea32bea5c0655fc8990ec26f8fa43479191c29cfa23f563e45b53",
+    "semantic_policy": "560475e4e4947c25c480e123fecc06b72c84a8733bbabd776e2a8e20fe6677e8",
+    "semantic_v1": "52098147c5b0b1319fe6f4ace262cddd976e5dca52d5d188d09aca7226ebb82d",
+    "semantic_v2": "afea6ccc09886d66073c36034a9d4ca4b719580733a1d450a01c9cb86bd4474d",
+    "source_manifest": "4bad2cd19902332d83d7efa4faabf5b19657b1e18ec92ab7e2ca1c4dbaa8ef67",
+    "source_mjcf": "fcc834821c17c22acd8099ea328bb1fc3741d350925489f12c2cc5ce133fb1b9",
+    "trajectory_profile": "5086cc8840a3d6da5103cb2e25dbd1a5694310c1a41eda87a267104f7641ba82"
+  }
+}

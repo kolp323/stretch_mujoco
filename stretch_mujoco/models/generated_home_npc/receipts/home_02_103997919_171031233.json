@@ -1,0 +1,102 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -4.357001855197687,
+        -0.6390000915271689
+      ],
+      "bounds_z": [
+        -1.202980313913119e-07,
+        2.1999998748898477
+      ],
+      "object_id": "hssd_object_003",
+      "semantic_name": "Alfred Bed Queen",
+      "sit": [
+        -4.807001855197687,
+        -0.6390000915271689
+      ],
+      "yaw": 1.5707963267948966
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_02_103997919_171031233_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "d4b3b2c529b3eaa023dc3c5afd36b84c0c44d82429e1059807142330c459e6b7",
+    "population": "ddc4438bc093d256940f9fa2da71c3b1ff01ae4733cedbabaa2228e239d389d5",
+    "semantic": "25319464220932a4708fe34f025bc5ec5f11988021052d817ded1d833e2f218a",
+    "source_scene": "76e95117ad607076a9cbd28515a12d68a734bb427d3eb9d907c447e8c2bb75d4"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -0.330388869,
+        5.678277844,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -2.984722487,
+        4.518388953,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -3.427111423,
+        2.198611173,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -2.984722487,
+        5.678277844,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_02_103997919_171031233.xml"
+}

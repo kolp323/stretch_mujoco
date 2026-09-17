@@ -1,0 +1,57 @@
+{
+  "anchors": {
+    "point.object.chair_01.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__minimal_scene__point__object__chair_01__approach__01"
+    },
+    "point.object.cup_01.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__minimal_scene__point__object__cup_01__approach__01"
+    },
+    "point.object.table_01.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__minimal_scene__point__object__table_01__approach__01"
+    },
+    "point.zone.work.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__minimal_scene__point__zone__work__approach__01"
+    }
+  },
+  "navigation": {
+    "agent_radius": 0.2,
+    "clearance": 0.05,
+    "exclude_body_roots": [],
+    "resolution": 0.08,
+    "surface": "office_floor"
+  },
+  "profile_id": "minimal_scene_coverage",
+  "routes": [
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0000",
+      "to": "point.object.chair_01.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0001",
+      "to": "point.object.cup_01.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.zone.work.approach.01",
+      "route_id": "coverage_00_0002",
+      "to": "point.object.table_01.approach.01"
+    }
+  ],
+  "scene": "minimal_scene_npc.xml",
+  "scene_sha256": "87d4edf6b146cdedd0709aff70c09f62b19c95cdc7c7da33c2436f161fe19c5e",
+  "schema_version": 1
+}

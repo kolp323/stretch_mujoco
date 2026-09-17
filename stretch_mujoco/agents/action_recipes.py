@@ -158,7 +158,7 @@ ACTION_RECIPES = {
         yaw_source="site",
         approach_required=True,
         completion_marker="handover_ready",
-        timeout_seconds=45.0,
+        timeout_seconds=600.0,
     ),
     ActionType.REQUEST_ROBOT: ActionRecipe(
         "talk",
@@ -167,7 +167,7 @@ ACTION_RECIPES = {
         "robot_request",
         approach_required=True,
         completion_marker="talk_cycle",
-        timeout_seconds=45.0,
+        timeout_seconds=600.0,
     ),
     ActionType.ATTEND_MEETING: ActionRecipe(
         "sit_down", "interaction_session", timeout_seconds=900.0

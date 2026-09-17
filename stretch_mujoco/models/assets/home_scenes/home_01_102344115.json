@@ -1,70 +1,22 @@
 {
-  "scene_id": "home_01_102344115",
-  "title": "Simplified Home 01",
-  "source_dataset": "HSSD",
-  "hssd_scene_id": "102344115",
-  "hssd_scene_split": "scenes-uncluttered",
-  "layout": "imported_hssd_home",
-  "simplification": {
-    "uncluttered": true,
-    "stage_alpha": 1.0
-  },
-  "object_count": 44,
-  "unique_template_count": 38,
-  "category_counts": {
-    "lighting": 1,
-    "default": 17,
-    "seating_furniture": 5,
-    "storage_furniture": 5,
-    "plant": 7,
-    "floor_covering": 2,
-    "decor": 5,
-    "support_furniture": 2
-  },
-  "bounds_mujoco": [
-    [
-      -6.636399745941162,
-      -0.3692000210285187,
-      -3.4399997623953498
-    ],
-    [
-      -1.3752397651727235,
-      7.357789993286133,
-      2.8101749760279655
-    ]
-  ],
-  "zones": [
-    {
-      "type": "home",
-      "bounds": [
-        -6.636399745941162,
-        -1.3752397651727235,
-        -0.3692000210285187,
-        7.357789993286133
-      ]
-    }
-  ],
   "assets": [
     {
-      "object_id": "hssd_object_000",
       "asset_id": "20b73dd1f91dd128fb928fb7a032af2a47e79882",
-      "template_name": "20b73dd1f91dd128fb928fb7a032af2a47e79882",
-      "name": "20b73dd1f91dd128fb928fb7a032af2a47e79882",
+      "bounds_mujoco": [
+        [
+          -1.8478432869434855,
+          2.529404265603191,
+          0.7600000485581992
+        ],
+        [
+          -1.6764005486218758,
+          2.7830310839150028,
+          1.4417782521247864
+        ]
+      ],
       "category": "lighting",
-      "semantic_name": "Desk Lamp",
       "found_in": "",
-      "support_surface": false,
-      "position": [
-        -1.7621099,
-        2.6562297,
-        0.76
-      ],
-      "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        -0.707106668813455
-      ],
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.12680135667324066,
@@ -77,40 +29,40 @@
           0.6817782521247864
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.8478432869434855,
-          2.529404265603191,
-          0.7600000485581992
-        ],
-        [
-          -1.6764005486218758,
-          2.7830310839150028,
-          1.4417782521247864
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_001",
-      "asset_id": "3bd3f3a882da9283719fe1d238ad49d88760d0c3",
-      "template_name": "3bd3f3a882da9283719fe1d238ad49d88760d0c3",
-      "name": "3bd3f3a882da9283719fe1d238ad49d88760d0c3",
-      "category": "default",
-      "semantic_name": "Close Coupled Toilet",
-      "found_in": "bathroom",
-      "support_surface": false,
+      "name": "20b73dd1f91dd128fb928fb7a032af2a47e79882",
+      "object_id": "hssd_object_000",
       "position": [
-        -4.8354701,
-        0.1134299,
-        0.0
+        -1.7621099,
+        2.6562297,
+        0.76
       ],
       "rotation": [
+        0.7071068935596222,
         0.0,
         0.0,
-        0.0,
-        1.0
+        -0.707106668813455
       ],
+      "semantic_name": "Desk Lamp",
+      "support_surface": false,
+      "template_name": "20b73dd1f91dd128fb928fb7a032af2a47e79882"
+    },
+    {
+      "asset_id": "3bd3f3a882da9283719fe1d238ad49d88760d0c3",
+      "bounds_mujoco": [
+        [
+          -5.010455285265541,
+          -0.2192046682144165,
+          5.152588073542574e-06
+        ],
+        [
+          -4.660484884932137,
+          0.42936434943428037,
+          0.8389766216278076
+        ]
+      ],
+      "category": "default",
+      "found_in": "bathroom",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.17498521506786346,
@@ -123,40 +75,40 @@
           0.8389766216278076
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.010455285265541,
-          -0.2192046682144165,
-          5.152588073542574e-06
-        ],
-        [
-          -4.660484884932137,
-          0.42936434943428037,
-          0.8389766216278076
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_002",
-      "asset_id": "ced51760e36e33d31c5a793d326597c322213c53",
-      "template_name": "ced51760e36e33d31c5a793d326597c322213c53",
-      "name": "ced51760e36e33d31c5a793d326597c322213c53",
-      "category": "seating_furniture",
-      "semantic_name": "Hallway Bench - Bench With Rattan Baskets",
-      "found_in": "living room,dining room",
-      "support_surface": false,
+      "name": "3bd3f3a882da9283719fe1d238ad49d88760d0c3",
+      "object_id": "hssd_object_001",
       "position": [
-        -2.3034598,
-        5.1704888,
-        2.980232238769531e-07
-      ],
-      "rotation": [
-        1.0,
-        0.0,
-        0.0,
+        -4.8354701,
+        0.1134299,
         0.0
       ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "semantic_name": "Close Coupled Toilet",
+      "support_surface": false,
+      "template_name": "3bd3f3a882da9283719fe1d238ad49d88760d0c3"
+    },
+    {
+      "asset_id": "ced51760e36e33d31c5a793d326597c322213c53",
+      "bounds_mujoco": [
+        [
+          -2.9830997752270583,
+          5.050299330986786,
+          5.663253862164481e-07
+        ],
+        [
+          -1.623819824772942,
+          5.2906788179340305,
+          0.5400008075272202
+        ]
+      ],
+      "category": "seating_furniture",
+      "found_in": "living room,dining room",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.679639975227058,
@@ -169,40 +121,40 @@
           0.5400005095039964
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -2.9830997752270583,
-          5.050299330986786,
-          5.663253862164481e-07
-        ],
-        [
-          -1.623819824772942,
-          5.2906788179340305,
-          0.5400008075272202
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_003",
-      "asset_id": "bdafc134880c09c2f9415807dbf2a680683a6d06",
-      "template_name": "bdafc134880c09c2f9415807dbf2a680683a6d06",
-      "name": "bdafc134880c09c2f9415807dbf2a680683a6d06",
-      "category": "storage_furniture",
-      "semantic_name": "Kitchen tall cabinet with oven",
-      "found_in": "kitchen",
-      "support_surface": false,
+      "name": "ced51760e36e33d31c5a793d326597c322213c53",
+      "object_id": "hssd_object_002",
       "position": [
-        -6.2364001,
-        1.8401499,
-        1.1920928955078125e-07
+        -2.3034598,
+        5.1704888,
+        2.980232238769531e-07
       ],
       "rotation": [
+        1.0,
         0.0,
         0.0,
-        0.0,
-        1.0
+        0.0
       ],
+      "semantic_name": "Hallway Bench - Bench With Rattan Baskets",
+      "support_surface": false,
+      "template_name": "ced51760e36e33d31c5a793d326597c322213c53"
+    },
+    {
+      "asset_id": "bdafc134880c09c2f9415807dbf2a680683a6d06",
+      "bounds_mujoco": [
+        [
+          -6.4864001,
+          1.5405160096096038,
+          0.0017248773947358131
+        ],
+        [
+          -5.9864001,
+          2.137994518558884,
+          2.1999839544296265
+        ]
+      ],
+      "category": "storage_furniture",
+      "found_in": "kitchen",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.25,
@@ -215,53 +167,25 @@
           2.199983835220337
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.4864001,
-          1.5405160096096038,
-          0.0017248773947358131
-        ],
-        [
-          -5.9864001,
-          2.137994518558884,
-          2.1999839544296265
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_004",
-      "asset_id": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
-      "template_name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
-      "name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
-      "category": "plant",
-      "semantic_name": "plant",
-      "found_in": "outdoor,garden",
-      "support_surface": false,
+      "name": "bdafc134880c09c2f9415807dbf2a680683a6d06",
+      "object_id": "hssd_object_003",
       "position": [
-        -3.6916697,
-        5.2322793,
-        0.8341102
+        -6.2364001,
+        1.8401499,
+        1.1920928955078125e-07
       ],
       "rotation": [
-        0.7071068935596222,
         0.0,
         0.0,
-        0.707106668813455
+        0.0,
+        1.0
       ],
-      "local_bounds": [
-        [
-          -0.1628311276435852,
-          -0.15670399367809296,
-          2.4690874754842396e-17
-        ],
-        [
-          0.17200647294521332,
-          0.16022498905658722,
-          0.5035487413406372
-        ]
-      ],
-      "grasp_site": null,
+      "semantic_name": "Kitchen tall cabinet with oven",
+      "support_surface": false,
+      "template_name": "bdafc134880c09c2f9415807dbf2a680683a6d06"
+    },
+    {
+      "asset_id": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
       "bounds_mujoco": [
         [
           -3.8518947408106743,
@@ -273,28 +197,10 @@
           5.404285823870968,
           1.3376589413406372
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_005",
-      "asset_id": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
-      "template_name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
-      "name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
+      ],
       "category": "plant",
-      "semantic_name": "plant",
       "found_in": "outdoor,garden",
-      "support_surface": false,
-      "position": [
-        -3.6607201,
-        6.8168597,
-        0.8341104
-      ],
-      "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        -0.707106668813455
-      ],
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.1628311276435852,
@@ -307,7 +213,25 @@
           0.5035487413406372
         ]
       ],
-      "grasp_site": null,
+      "name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
+      "object_id": "hssd_object_004",
+      "position": [
+        -3.6916697,
+        5.2322793,
+        0.8341102
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "semantic_name": "plant",
+      "support_surface": false,
+      "template_name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499"
+    },
+    {
+      "asset_id": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
       "bounds_mujoco": [
         [
           -3.8174241454321804,
@@ -319,28 +243,56 @@
           6.97969087856934,
           1.3376591413406373
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_006",
-      "asset_id": "65cd781989f935391fc07009226cb99f7198b486",
-      "template_name": "65cd781989f935391fc07009226cb99f7198b486",
-      "name": "65cd781989f935391fc07009226cb99f7198b486",
-      "category": "seating_furniture",
-      "semantic_name": "Patara Office Chair Desk Chair - Soho Concept Patara Office Chair",
-      "found_in": "",
-      "support_surface": false,
+      ],
+      "category": "plant",
+      "found_in": "outdoor,garden",
+      "grasp_site": null,
+      "local_bounds": [
+        [
+          -0.1628311276435852,
+          -0.15670399367809296,
+          2.4690874754842396e-17
+        ],
+        [
+          0.17200647294521332,
+          0.16022498905658722,
+          0.5035487413406372
+        ]
+      ],
+      "name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499",
+      "object_id": "hssd_object_005",
       "position": [
-        -2.3510611,
-        3.12256,
-        1.7881393432617188e-07
+        -3.6607201,
+        6.8168597,
+        0.8341104
       ],
       "rotation": [
-        0.5360846406899421,
+        0.7071068935596222,
         0.0,
         0.0,
-        0.844164236399728
+        -0.707106668813455
       ],
+      "semantic_name": "plant",
+      "support_surface": false,
+      "template_name": "2daa2e61b2f334ba0eb85bb6a94fd5213ad16499"
+    },
+    {
+      "asset_id": "65cd781989f935391fc07009226cb99f7198b486",
+      "bounds_mujoco": [
+        [
+          -2.7150048180203967,
+          2.7535626795752526,
+          1.2557752882003115e-07
+        ],
+        [
+          -1.9874501226484216,
+          3.491472182159015,
+          0.8172983527183533
+        ]
+      ],
+      "category": "seating_furniture",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.2807607650756836,
@@ -353,40 +305,40 @@
           0.817298173904419
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -2.7150048180203967,
-          2.7535626795752526,
-          1.2557752882003115e-07
-        ],
-        [
-          -1.9874501226484216,
-          3.491472182159015,
-          0.8172983527183533
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_007",
-      "asset_id": "34170a3abede075d1e15942197394d95ee063bf7",
-      "template_name": "34170a3abede075d1e15942197394d95ee063bf7",
-      "name": "34170a3abede075d1e15942197394d95ee063bf7",
-      "category": "plant",
-      "semantic_name": "plant",
-      "found_in": "outdoor,garden",
-      "support_surface": false,
+      "name": "65cd781989f935391fc07009226cb99f7198b486",
+      "object_id": "hssd_object_006",
       "position": [
-        -6.1581001,
-        4.7659988,
-        2.384185791015625e-07
+        -2.3510611,
+        3.12256,
+        1.7881393432617188e-07
       ],
       "rotation": [
-        1.0,
+        0.5360846406899421,
         0.0,
         0.0,
-        0.0
+        0.844164236399728
       ],
+      "semantic_name": "Patara Office Chair Desk Chair - Soho Concept Patara Office Chair",
+      "support_surface": false,
+      "template_name": "65cd781989f935391fc07009226cb99f7198b486"
+    },
+    {
+      "asset_id": "34170a3abede075d1e15942197394d95ee063bf7",
+      "bounds_mujoco": [
+        [
+          -6.4864234344554905,
+          4.516604353388596,
+          -0.00042484578443691134
+        ],
+        [
+          -5.829775573451615,
+          5.014708031615067,
+          2.1249845027923584
+        ]
+      ],
+      "category": "plant",
+      "found_in": "outdoor,garden",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.3283233344554901,
@@ -399,40 +351,40 @@
           2.1249842643737793
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.4864234344554905,
-          4.516604353388596,
-          -0.00042484578443691134
-        ],
-        [
-          -5.829775573451615,
-          5.014708031615067,
-          2.1249845027923584
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_008",
-      "asset_id": "3a08b42318c54a51a0ea28547a12d919ea4f46ca",
-      "template_name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_2",
-      "name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_2",
-      "category": "default",
-      "semantic_name": "Book shelf",
-      "found_in": "",
-      "support_surface": false,
+      "name": "34170a3abede075d1e15942197394d95ee063bf7",
+      "object_id": "hssd_object_007",
       "position": [
-        -1.565568,
-        3.0852496,
-        2.2960095
+        -6.1581001,
+        4.7659988,
+        2.384185791015625e-07
       ],
       "rotation": [
-        0.5000001749999645,
-        0.4999999749999944,
-        -0.49999987499999937,
-        -0.4999999749999944
+        1.0,
+        0.0,
+        0.0,
+        0.0
       ],
+      "semantic_name": "plant",
+      "support_surface": false,
+      "template_name": "34170a3abede075d1e15942197394d95ee063bf7"
+    },
+    {
+      "asset_id": "3a08b42318c54a51a0ea28547a12d919ea4f46ca",
+      "bounds_mujoco": [
+        [
+          -1.8655682851121145,
+          2.0852495090022183,
+          2.2860308821100936
+        ],
+        [
+          -1.5655676970064651,
+          4.085249600997802,
+          2.3059882078898943
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -1.0,
@@ -445,33 +397,12 @@
           0.29999998211860657
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.8655682851121145,
-          2.0852495090022183,
-          2.2860308821100936
-        ],
-        [
-          -1.5655676970064651,
-          4.085249600997802,
-          2.3059882078898943
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_009",
-      "asset_id": "3a08b42318c54a51a0ea28547a12d919ea4f46ca",
-      "template_name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_3",
-      "name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_3",
-      "category": "default",
-      "semantic_name": "Book shelf",
-      "found_in": "",
-      "support_surface": false,
+      "name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_2",
+      "object_id": "hssd_object_008",
       "position": [
-        -1.8067702,
-        3.2247447,
-        2.3869502
+        -1.565568,
+        3.0852496,
+        2.2960095
       ],
       "rotation": [
         0.5000001749999645,
@@ -479,6 +410,27 @@
         -0.49999987499999937,
         -0.4999999749999944
       ],
+      "semantic_name": "Book shelf",
+      "support_surface": false,
+      "template_name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_2"
+    },
+    {
+      "asset_id": "3a08b42318c54a51a0ea28547a12d919ea4f46ca",
+      "bounds_mujoco": [
+        [
+          -1.8572106783663966,
+          3.1410122801227804,
+          2.3031413603176007
+        ],
+        [
+          -1.7230381776739345,
+          3.2751847619378225,
+          2.4720343638061104
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.05044002830982208,
@@ -491,40 +443,40 @@
           0.05044043809175491
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.8572106783663966,
-          3.1410122801227804,
-          2.3031413603176007
-        ],
-        [
-          -1.7230381776739345,
-          3.2751847619378225,
-          2.4720343638061104
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_010",
-      "asset_id": "4a054dac8f02a8bdde034b12248b4fe4ebb5689d",
-      "template_name": "4a054dac8f02a8bdde034b12248b4fe4ebb5689d",
-      "name": "4a054dac8f02a8bdde034b12248b4fe4ebb5689d",
-      "category": "floor_covering",
-      "semantic_name": "Rug",
-      "found_in": "",
-      "support_surface": false,
+      "name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_3",
+      "object_id": "hssd_object_009",
       "position": [
-        -4.8408398,
-        5.8585195,
-        3.4924596548080444e-07
+        -1.8067702,
+        3.2247447,
+        2.3869502
       ],
       "rotation": [
-        1.0,
-        0.0,
-        0.0,
-        0.0
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
       ],
+      "semantic_name": "Book shelf",
+      "support_surface": false,
+      "template_name": "3a08b42318c54a51a0ea28547a12d919ea4f46ca_part_3"
+    },
+    {
+      "asset_id": "4a054dac8f02a8bdde034b12248b4fe4ebb5689d",
+      "bounds_mujoco": [
+        [
+          -5.829804750668943,
+          4.621199662759947,
+          5.034923470237481e-05
+        ],
+        [
+          -3.8518748493310575,
+          7.095839337240053,
+          0.010050346927511505
+        ]
+      ],
+      "category": "floor_covering",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.988964950668943,
@@ -537,33 +489,12 @@
           0.010049997681546024
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.829804750668943,
-          4.621199662759947,
-          5.034923470237481e-05
-        ],
-        [
-          -3.8518748493310575,
-          7.095839337240053,
-          0.010050346927511505
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_011",
-      "asset_id": "dd7020ee1b0faeca3b3295e6abc9f3fa4a1a1d13",
-      "template_name": "dd7020ee1b0faeca3b3295e6abc9f3fa4a1a1d13",
-      "name": "dd7020ee1b0faeca3b3295e6abc9f3fa4a1a1d13",
-      "category": "plant",
-      "semantic_name": "plant",
-      "found_in": "outdoor,garden",
-      "support_surface": false,
+      "name": "4a054dac8f02a8bdde034b12248b4fe4ebb5689d",
+      "object_id": "hssd_object_010",
       "position": [
-        -4.2659502,
-        1.2905499,
-        -3.4399998
+        -4.8408398,
+        5.8585195,
+        3.4924596548080444e-07
       ],
       "rotation": [
         1.0,
@@ -571,6 +502,27 @@
         0.0,
         0.0
       ],
+      "semantic_name": "Rug",
+      "support_surface": false,
+      "template_name": "4a054dac8f02a8bdde034b12248b4fe4ebb5689d"
+    },
+    {
+      "asset_id": "dd7020ee1b0faeca3b3295e6abc9f3fa4a1a1d13",
+      "bounds_mujoco": [
+        [
+          -4.380950678923321,
+          1.1905498836087227,
+          -3.4399997623953498
+        ],
+        [
+          -4.150949721076679,
+          1.390549923841858,
+          -3.2299998065565108
+        ]
+      ],
+      "category": "plant",
+      "found_in": "outdoor,garden",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.11500047892332077,
@@ -583,33 +535,12 @@
           0.20999999344348907
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -4.380950678923321,
-          1.1905498836087227,
-          -3.4399997623953498
-        ],
-        [
-          -4.150949721076679,
-          1.390549923841858,
-          -3.2299998065565108
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_012",
-      "asset_id": "58b7f3eee922fe43fe9f6156c0942be5f8e72e96",
-      "template_name": "58b7f3eee922fe43fe9f6156c0942be5f8e72e96",
-      "name": "58b7f3eee922fe43fe9f6156c0942be5f8e72e96",
-      "category": "default",
-      "semantic_name": "Rubens Painted",
-      "found_in": "bedroom",
-      "support_surface": false,
+      "name": "dd7020ee1b0faeca3b3295e6abc9f3fa4a1a1d13",
+      "object_id": "hssd_object_011",
       "position": [
-        -2.2995946,
-        6.2492294,
-        3.5762786865234375e-07
+        -4.2659502,
+        1.2905499,
+        -3.4399998
       ],
       "rotation": [
         1.0,
@@ -617,6 +548,27 @@
         0.0,
         0.0
       ],
+      "semantic_name": "plant",
+      "support_surface": false,
+      "template_name": "dd7020ee1b0faeca3b3295e6abc9f3fa4a1a1d13"
+    },
+    {
+      "asset_id": "58b7f3eee922fe43fe9f6156c0942be5f8e72e96",
+      "bounds_mujoco": [
+        [
+          -2.9831050612139998,
+          5.290674413604295,
+          5.6139160777166806e-08
+        ],
+        [
+          -1.6152364562173485,
+          7.207784165586745,
+          0.9300000595711588
+        ]
+      ],
+      "category": "default",
+      "found_in": "bedroom",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.6835104612139999,
@@ -629,40 +581,40 @@
           0.9299997019432902
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -2.9831050612139998,
-          5.290674413604295,
-          5.6139160777166806e-08
-        ],
-        [
-          -1.6152364562173485,
-          7.207784165586745,
-          0.9300000595711588
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_013",
-      "asset_id": "78de8224260ece5c3d60024a9c4c0b80ec7502ce",
-      "template_name": "78de8224260ece5c3d60024a9c4c0b80ec7502ce",
-      "name": "78de8224260ece5c3d60024a9c4c0b80ec7502ce",
-      "category": "default",
-      "semantic_name": "48'' Flat Screen TV",
-      "found_in": "",
-      "support_surface": false,
+      "name": "58b7f3eee922fe43fe9f6156c0942be5f8e72e96",
+      "object_id": "hssd_object_012",
       "position": [
-        -3.6606998,
-        6.0418696,
-        1.2834001
+        -2.2995946,
+        6.2492294,
+        3.5762786865234375e-07
       ],
       "rotation": [
-        0.5000001749999645,
-        0.4999999749999944,
-        -0.49999987499999937,
-        -0.4999999749999944
+        1.0,
+        0.0,
+        0.0,
+        0.0
       ],
+      "semantic_name": "Rubens Painted",
+      "support_surface": false,
+      "template_name": "58b7f3eee922fe43fe9f6156c0942be5f8e72e96"
+    },
+    {
+      "asset_id": "78de8224260ece5c3d60024a9c4c0b80ec7502ce",
+      "bounds_mujoco": [
+        [
+          -3.6981408818923738,
+          5.456029982302767,
+          0.9144362041265508
+        ],
+        [
+          -3.6618129758989397,
+          6.627709146577898,
+          1.65287985583794
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.5858395099639893,
@@ -675,40 +627,40 @@
           0.037440795451402664
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.6981408818923738,
-          5.456029982302767,
-          0.9144362041265508
-        ],
-        [
-          -3.6618129758989397,
-          6.627709146577898,
-          1.65287985583794
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_014",
-      "asset_id": "a93cadff07a074a9bd121bf6ef22e74572d08fd6",
-      "template_name": "a93cadff07a074a9bd121bf6ef22e74572d08fd6",
-      "name": "a93cadff07a074a9bd121bf6ef22e74572d08fd6",
-      "category": "storage_furniture",
-      "semantic_name": "Kitchen",
-      "found_in": "kitchen",
-      "support_surface": false,
+      "name": "78de8224260ece5c3d60024a9c4c0b80ec7502ce",
+      "object_id": "hssd_object_013",
       "position": [
-        -4.9095201,
-        1.8380898,
-        1.1920928955078125e-07
+        -3.6606998,
+        6.0418696,
+        1.2834001
       ],
       "rotation": [
-        0.0,
-        0.0,
-        0.0,
-        1.0
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
       ],
+      "semantic_name": "48'' Flat Screen TV",
+      "support_surface": false,
+      "template_name": "78de8224260ece5c3d60024a9c4c0b80ec7502ce"
+    },
+    {
+      "asset_id": "a93cadff07a074a9bd121bf6ef22e74572d08fd6",
+      "bounds_mujoco": [
+        [
+          -5.949171759944344,
+          1.5405510820658774,
+          4.538306282693247e-06
+        ],
+        [
+          -3.869868355181408,
+          2.1356282046292483,
+          2.8101749760279655
+        ]
+      ],
+      "category": "storage_furniture",
+      "found_in": "kitchen",
+      "grasp_site": null,
       "local_bounds": [
         [
           -1.039651744818592,
@@ -721,40 +673,40 @@
           2.810174856818676
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.949171759944344,
-          1.5405510820658774,
-          4.538306282693247e-06
-        ],
-        [
-          -3.869868355181408,
-          2.1356282046292483,
-          2.8101749760279655
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_015",
-      "asset_id": "c59a5e54e8082f4a2e4ace78e0940d290b55df65",
-      "template_name": "c59a5e54e8082f4a2e4ace78e0940d290b55df65",
-      "name": "c59a5e54e8082f4a2e4ace78e0940d290b55df65",
-      "category": "decor",
-      "semantic_name": "Azure Canvas Painting - 80x3x80",
-      "found_in": "",
-      "support_surface": false,
+      "name": "a93cadff07a074a9bd121bf6ef22e74572d08fd6",
+      "object_id": "hssd_object_014",
       "position": [
-        -3.42785,
-        6.4390597,
-        -0.7499995
+        -4.9095201,
+        1.8380898,
+        1.1920928955078125e-07
       ],
       "rotation": [
-        0.5000001749999645,
-        0.4999999749999944,
-        -0.49999987499999937,
-        -0.4999999749999944
+        0.0,
+        0.0,
+        0.0,
+        1.0
       ],
+      "semantic_name": "Kitchen",
+      "support_surface": false,
+      "template_name": "a93cadff07a074a9bd121bf6ef22e74572d08fd6"
+    },
+    {
+      "asset_id": "c59a5e54e8082f4a2e4ace78e0940d290b55df65",
+      "bounds_mujoco": [
+        [
+          -3.4578502393294204,
+          6.039059645039548,
+          -1.149999545960417
+        ],
+        [
+          -3.427849760000024,
+          6.839059745960453,
+          -0.3499994450395837
+        ]
+      ],
+      "category": "decor",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.4000000059604645,
@@ -767,40 +719,40 @@
           0.029999999329447746
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.4578502393294204,
-          6.039059645039548,
-          -1.149999545960417
-        ],
-        [
-          -3.427849760000024,
-          6.839059745960453,
-          -0.3499994450395837
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_016",
-      "asset_id": "8eb4855fb62b8bb0a91b8189786c795945925808",
-      "template_name": "8eb4855fb62b8bb0a91b8189786c795945925808",
-      "name": "8eb4855fb62b8bb0a91b8189786c795945925808",
-      "category": "decor",
-      "semantic_name": "Artwork",
-      "found_in": "",
-      "support_surface": false,
+      "name": "c59a5e54e8082f4a2e4ace78e0940d290b55df65",
+      "object_id": "hssd_object_015",
       "position": [
-        -1.59024,
-        5.5650196,
-        3.5762786865234375e-07
+        -3.42785,
+        6.4390597,
+        -0.7499995
       ],
       "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        -0.707106668813455
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
       ],
+      "semantic_name": "Azure Canvas Painting - 80x3x80",
+      "support_surface": false,
+      "template_name": "c59a5e54e8082f4a2e4ace78e0940d290b55df65"
+    },
+    {
+      "asset_id": "8eb4855fb62b8bb0a91b8189786c795945925808",
+      "bounds_mujoco": [
+        [
+          -1.6152403960836552,
+          4.314154609449107,
+          1.235870361328125
+        ],
+        [
+          -1.5652395480369905,
+          6.815884590550912,
+          2.4358702898025513
+        ]
+      ],
+      "category": "decor",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -1.2508649826049805,
@@ -813,40 +765,40 @@
           2.4358699321746826
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.6152403960836552,
-          4.314154609449107,
-          1.235870361328125
-        ],
-        [
-          -1.5652395480369905,
-          6.815884590550912,
-          2.4358702898025513
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_017",
-      "asset_id": "d844cf11bdaa1246053d5e83170fdea4dd750f0d",
-      "template_name": "d844cf11bdaa1246053d5e83170fdea4dd750f0d",
-      "name": "d844cf11bdaa1246053d5e83170fdea4dd750f0d",
-      "category": "default",
-      "semantic_name": "Samsung RSJ1JEMH Side by Side Fridge Freezer, Silver",
-      "found_in": "kitchen",
-      "support_surface": false,
+      "name": "8eb4855fb62b8bb0a91b8189786c795945925808",
+      "object_id": "hssd_object_016",
       "position": [
-        -3.4138703,
-        1.8765498,
-        1.1920928955078125e-07
+        -1.59024,
+        5.5650196,
+        3.5762786865234375e-07
       ],
       "rotation": [
+        0.7071068935596222,
         0.0,
         0.0,
-        0.0,
-        1.0
+        -0.707106668813455
       ],
+      "semantic_name": "Artwork",
+      "support_surface": false,
+      "template_name": "8eb4855fb62b8bb0a91b8189786c795945925808"
+    },
+    {
+      "asset_id": "d844cf11bdaa1246053d5e83170fdea4dd750f0d",
+      "bounds_mujoco": [
+        [
+          -3.869870628063965,
+          1.5405489700649262,
+          1.1866098892365784e-07
+        ],
+        [
+          -2.9578705977848054,
+          2.2125506001327517,
+          1.7749998569488525
+        ]
+      ],
+      "category": "default",
+      "found_in": "kitchen",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.4559997022151947,
@@ -859,40 +811,40 @@
           1.774999737739563
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.869870628063965,
-          1.5405489700649262,
-          1.1866098892365784e-07
-        ],
-        [
-          -2.9578705977848054,
-          2.2125506001327517,
-          1.7749998569488525
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_018",
-      "asset_id": "8b3a10cec2eef1180527f9624327577ffed83eb7",
-      "template_name": "8b3a10cec2eef1180527f9624327577ffed83eb7",
-      "name": "8b3a10cec2eef1180527f9624327577ffed83eb7",
-      "category": "default",
-      "semantic_name": "Wire Basket with Zinc Planters",
-      "found_in": "",
-      "support_surface": false,
+      "name": "d844cf11bdaa1246053d5e83170fdea4dd750f0d",
+      "object_id": "hssd_object_017",
       "position": [
-        -5.8513002,
-        1.7670898,
-        0.8999999
+        -3.4138703,
+        1.8765498,
+        1.1920928955078125e-07
       ],
       "rotation": [
-        1.0,
         0.0,
         0.0,
-        0.0
+        0.0,
+        1.0
       ],
+      "semantic_name": "Samsung RSJ1JEMH Side by Side Fridge Freezer, Silver",
+      "support_surface": false,
+      "template_name": "d844cf11bdaa1246053d5e83170fdea4dd750f0d"
+    },
+    {
+      "asset_id": "8b3a10cec2eef1180527f9624327577ffed83eb7",
+      "bounds_mujoco": [
+        [
+          -5.9863868854190825,
+          1.680879027604866,
+          0.9002549478093326
+        ],
+        [
+          -5.726623137965393,
+          1.8508694106934547,
+          1.135277359025383
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.13508668541908264,
@@ -905,53 +857,25 @@
           0.235277459025383
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.9863868854190825,
-          1.680879027604866,
-          0.9002549478093326
-        ],
-        [
-          -5.726623137965393,
-          1.8508694106934547,
-          1.135277359025383
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_019",
-      "asset_id": "55f369744b554a2f808d81f34c39a7e713ff6fed",
-      "template_name": "55f369744b554a2f808d81f34c39a7e713ff6fed",
-      "name": "55f369744b554a2f808d81f34c39a7e713ff6fed",
-      "category": "seating_furniture",
-      "semantic_name": "contact stool - Stool",
-      "found_in": "",
-      "support_surface": false,
+      "name": "8b3a10cec2eef1180527f9624327577ffed83eb7",
+      "object_id": "hssd_object_018",
       "position": [
-        -5.8590726,
-        3.8645694,
-        2.086162567138672e-07
+        -5.8513002,
+        1.7670898,
+        0.8999999
       ],
       "rotation": [
+        1.0,
         0.0,
         0.0,
-        0.0,
-        1.0
+        0.0
       ],
-      "local_bounds": [
-        [
-          -0.1576865017414093,
-          -0.1484755575656891,
-          2.5486599497526186e-07
-        ],
-        [
-          0.1576865166425705,
-          0.1484755575656891,
-          0.48768600821495056
-        ]
-      ],
-      "grasp_site": null,
+      "semantic_name": "Wire Basket with Zinc Planters",
+      "support_surface": false,
+      "template_name": "8b3a10cec2eef1180527f9624327577ffed83eb7"
+    },
+    {
+      "asset_id": "55f369744b554a2f808d81f34c39a7e713ff6fed",
       "bounds_mujoco": [
         [
           -6.016759116642571,
@@ -963,28 +887,10 @@
           4.01304495756569,
           0.4876862168312073
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_020",
-      "asset_id": "55f369744b554a2f808d81f34c39a7e713ff6fed",
-      "template_name": "55f369744b554a2f808d81f34c39a7e713ff6fed",
-      "name": "55f369744b554a2f808d81f34c39a7e713ff6fed",
+      ],
       "category": "seating_furniture",
-      "semantic_name": "contact stool - Stool",
       "found_in": "",
-      "support_surface": false,
-      "position": [
-        -5.1825118,
-        3.8492398,
-        2.086162567138672e-07
-      ],
-      "rotation": [
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.1576865017414093,
@@ -997,7 +903,25 @@
           0.48768600821495056
         ]
       ],
-      "grasp_site": null,
+      "name": "55f369744b554a2f808d81f34c39a7e713ff6fed",
+      "object_id": "hssd_object_019",
+      "position": [
+        -5.8590726,
+        3.8645694,
+        2.086162567138672e-07
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "semantic_name": "contact stool - Stool",
+      "support_surface": false,
+      "template_name": "55f369744b554a2f808d81f34c39a7e713ff6fed"
+    },
+    {
+      "asset_id": "55f369744b554a2f808d81f34c39a7e713ff6fed",
       "bounds_mujoco": [
         [
           -5.340198316642571,
@@ -1009,28 +933,56 @@
           3.997715357565689,
           0.4876862168312073
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_021",
-      "asset_id": "c8b2ce24a04db74b9827a2914351dbe2f909b87d",
-      "template_name": "c8b2ce24a04db74b9827a2914351dbe2f909b87d",
-      "name": "c8b2ce24a04db74b9827a2914351dbe2f909b87d",
+      ],
       "category": "seating_furniture",
-      "semantic_name": "\"montana\" sofa and sofa",
-      "found_in": "living room",
-      "support_surface": false,
+      "found_in": "",
+      "grasp_site": null,
+      "local_bounds": [
+        [
+          -0.1576865017414093,
+          -0.1484755575656891,
+          2.5486599497526186e-07
+        ],
+        [
+          0.1576865166425705,
+          0.1484755575656891,
+          0.48768600821495056
+        ]
+      ],
+      "name": "55f369744b554a2f808d81f34c39a7e713ff6fed",
+      "object_id": "hssd_object_020",
       "position": [
-        -5.76724,
-        6.0555195,
-        3.5762786865234375e-07
+        -5.1825118,
+        3.8492398,
+        2.086162567138672e-07
       ],
       "rotation": [
-        0.7071068935596222,
         0.0,
         0.0,
-        0.707106668813455
+        0.0,
+        1.0
       ],
+      "semantic_name": "contact stool - Stool",
+      "support_surface": false,
+      "template_name": "55f369744b554a2f808d81f34c39a7e713ff6fed"
+    },
+    {
+      "asset_id": "c8b2ce24a04db74b9827a2914351dbe2f909b87d",
+      "bounds_mujoco": [
+        [
+          -6.486400291402303,
+          5.0151954179302525,
+          3.350555424219692e-07
+        ],
+        [
+          -5.048079947016352,
+          7.095843343651244,
+          0.8799266815185547
+        ]
+      ],
+      "category": "seating_furniture",
+      "found_in": "living room",
+      "grasp_site": null,
       "local_bounds": [
         [
           -1.0403238534927368,
@@ -1043,40 +995,40 @@
           0.879926323890686
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.486400291402303,
-          5.0151954179302525,
-          3.350555424219692e-07
-        ],
-        [
-          -5.048079947016352,
-          7.095843343651244,
-          0.8799266815185547
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_022",
-      "asset_id": "873cb9cbd593430260383250bec8743ca059bccd",
-      "template_name": "873cb9cbd593430260383250bec8743ca059bccd",
-      "name": "873cb9cbd593430260383250bec8743ca059bccd",
-      "category": "decor",
-      "semantic_name": "Chocolate Saphire Artwork",
-      "found_in": "",
-      "support_surface": false,
+      "name": "c8b2ce24a04db74b9827a2914351dbe2f909b87d",
+      "object_id": "hssd_object_021",
       "position": [
-        -3.5867497,
-        1.3905498,
-        1.5366998
+        -5.76724,
+        6.0555195,
+        3.5762786865234375e-07
       ],
       "rotation": [
         0.7071068935596222,
-        0.707106668813455,
         0.0,
-        0.0
+        0.0,
+        0.707106668813455
       ],
+      "semantic_name": "\"montana\" sofa and sofa",
+      "support_surface": false,
+      "template_name": "c8b2ce24a04db74b9827a2914351dbe2f909b87d"
+    },
+    {
+      "asset_id": "873cb9cbd593430260383250bec8743ca059bccd",
+      "bounds_mujoco": [
+        [
+          -3.8915496589274765,
+          1.3805496569075342,
+          1.0794999338664764
+        ],
+        [
+          -3.2819497410725234,
+          1.390549945315984,
+          1.9938996693119138
+        ]
+      ],
+      "category": "decor",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.3047999589274764,
@@ -1089,40 +1041,40 @@
           0.009999997776482627
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.8915496589274765,
-          1.3805496569075342,
-          1.0794999338664764
-        ],
-        [
-          -3.2819497410725234,
-          1.390549945315984,
-          1.9938996693119138
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_023",
-      "asset_id": "a7a0d68a04ca83618e899c167b20d007ab00cb11",
-      "template_name": "a7a0d68a04ca83618e899c167b20d007ab00cb11",
-      "name": "a7a0d68a04ca83618e899c167b20d007ab00cb11",
-      "category": "plant",
-      "semantic_name": "Hanging plant",
-      "found_in": "outdoor,garden",
-      "support_surface": false,
+      "name": "873cb9cbd593430260383250bec8743ca059bccd",
+      "object_id": "hssd_object_022",
       "position": [
-        -1.59302,
-        1.9118597,
-        1.7129199
+        -3.5867497,
+        1.3905498,
+        1.5366998
       ],
       "rotation": [
-        0.5000001749999645,
-        0.4999999749999944,
-        -0.49999987499999937,
-        -0.4999999749999944
+        0.7071068935596222,
+        0.707106668813455,
+        0.0,
+        0.0
       ],
+      "semantic_name": "Chocolate Saphire Artwork",
+      "support_surface": false,
+      "template_name": "873cb9cbd593430260383250bec8743ca059bccd"
+    },
+    {
+      "asset_id": "a7a0d68a04ca83618e899c167b20d007ab00cb11",
+      "bounds_mujoco": [
+        [
+          -1.9418236720175488,
+          1.7477783856843143,
+          1.17871139807027
+        ],
+        [
+          -1.565239841597125,
+          2.082383345960401,
+          2.250294100276556
+        ]
+      ],
+      "category": "plant",
+      "found_in": "outdoor,garden",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.17052358388900757,
@@ -1135,40 +1087,40 @@
           0.34880346059799194
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.9418236720175488,
-          1.7477783856843143,
-          1.17871139807027
-        ],
-        [
-          -1.565239841597125,
-          2.082383345960401,
-          2.250294100276556
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_024",
-      "asset_id": "dc4b6a1b56faf0b0ac679141c9c53f1449bf984a",
-      "template_name": "dc4b6a1b56faf0b0ac679141c9c53f1449bf984a",
-      "name": "dc4b6a1b56faf0b0ac679141c9c53f1449bf984a",
-      "category": "support_furniture",
-      "semantic_name": "Wakefield 2 Piece Wall Entertainment Center",
-      "found_in": "living room",
-      "support_surface": false,
+      "name": "a7a0d68a04ca83618e899c167b20d007ab00cb11",
+      "object_id": "hssd_object_023",
       "position": [
-        -3.749185,
-        5.9800395,
-        3.5762786865234375e-07
+        -1.59302,
+        1.9118597,
+        1.7129199
       ],
       "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        -0.707106668813455
+        0.5000001749999645,
+        0.4999999749999944,
+        -0.49999987499999937,
+        -0.4999999749999944
       ],
+      "semantic_name": "Hanging plant",
+      "support_surface": false,
+      "template_name": "a7a0d68a04ca83618e899c167b20d007ab00cb11"
+    },
+    {
+      "asset_id": "dc4b6a1b56faf0b0ac679141c9c53f1449bf984a",
+      "bounds_mujoco": [
+        [
+          -3.9945626029886316,
+          4.752293292973645,
+          -0.0007945996476337314
+        ],
+        [
+          -3.500513078097069,
+          7.207786065701287,
+          2.209347367286682
+        ]
+      ],
+      "category": "support_furniture",
+      "found_in": "living room",
+      "grasp_site": null,
       "local_bounds": [
         [
           -1.2277464866638184,
@@ -1181,53 +1133,25 @@
           2.2093470096588135
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.9945626029886316,
-          4.752293292973645,
-          -0.0007945996476337314
-        ],
-        [
-          -3.500513078097069,
-          7.207786065701287,
-          2.209347367286682
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_025",
-      "asset_id": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
-      "template_name": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
-      "name": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
-      "category": "storage_furniture",
-      "semantic_name": "Oceanic Tall Cupboard",
-      "found_in": "bathroom",
-      "support_surface": false,
+      "name": "dc4b6a1b56faf0b0ac679141c9c53f1449bf984a",
+      "object_id": "hssd_object_024",
       "position": [
-        -4.1809501,
-        1.2397499,
-        5.960464477539063e-08
+        -3.749185,
+        5.9800395,
+        3.5762786865234375e-07
       ],
       "rotation": [
-        1.0,
+        0.7071068935596222,
         0.0,
         0.0,
-        0.0
+        -0.707106668813455
       ],
-      "local_bounds": [
-        [
-          -0.20000000298023224,
-          -0.15080158412456512,
-          -4.895239554968296e-14
-        ],
-        [
-          0.20000000298023224,
-          0.15080176293849945,
-          1.7000000476837158
-        ]
-      ],
-      "grasp_site": null,
+      "semantic_name": "Wakefield 2 Piece Wall Entertainment Center",
+      "support_surface": false,
+      "template_name": "dc4b6a1b56faf0b0ac679141c9c53f1449bf984a"
+    },
+    {
+      "asset_id": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
       "bounds_mujoco": [
         [
           -4.380950102980232,
@@ -1239,28 +1163,10 @@
           1.3905516629384995,
           1.7000001072883606
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_026",
-      "asset_id": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
-      "template_name": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
-      "name": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
+      ],
       "category": "storage_furniture",
-      "semantic_name": "Oceanic Tall Cupboard",
       "found_in": "bathroom",
-      "support_surface": false,
-      "position": [
-        -5.3809494,
-        1.2302198,
-        5.960464477539063e-08
-      ],
-      "rotation": [
-        1.0,
-        0.0,
-        0.0,
-        0.0
-      ],
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.20000000298023224,
@@ -1273,7 +1179,25 @@
           1.7000000476837158
         ]
       ],
-      "grasp_site": null,
+      "name": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
+      "object_id": "hssd_object_025",
+      "position": [
+        -4.1809501,
+        1.2397499,
+        5.960464477539063e-08
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "semantic_name": "Oceanic Tall Cupboard",
+      "support_surface": false,
+      "template_name": "d3b1439bf4a338a6df4e4421c2186835667fac5d"
+    },
+    {
+      "asset_id": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
       "bounds_mujoco": [
         [
           -5.580949402980233,
@@ -1285,28 +1209,56 @@
           1.3810215629384994,
           1.7000001072883606
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_027",
-      "asset_id": "c26b16c8dfdba6600221a57542782292c15e983b",
-      "template_name": "c26b16c8dfdba6600221a57542782292c15e983b",
-      "name": "c26b16c8dfdba6600221a57542782292c15e983b",
-      "category": "default",
-      "semantic_name": "Dusche/douche New Classic ",
+      ],
+      "category": "storage_furniture",
       "found_in": "bathroom",
-      "support_surface": false,
+      "grasp_site": null,
+      "local_bounds": [
+        [
+          -0.20000000298023224,
+          -0.15080158412456512,
+          -4.895239554968296e-14
+        ],
+        [
+          0.20000000298023224,
+          0.15080176293849945,
+          1.7000000476837158
+        ]
+      ],
+      "name": "d3b1439bf4a338a6df4e4421c2186835667fac5d",
+      "object_id": "hssd_object_026",
       "position": [
-        -6.0327301,
-        0.5809099,
-        0.0
+        -5.3809494,
+        1.2302198,
+        5.960464477539063e-08
       ],
       "rotation": [
-        0.7071068935596222,
+        1.0,
         0.0,
         0.0,
-        0.707106668813455
+        0.0
       ],
+      "semantic_name": "Oceanic Tall Cupboard",
+      "support_surface": false,
+      "template_name": "d3b1439bf4a338a6df4e4421c2186835667fac5d"
+    },
+    {
+      "asset_id": "c26b16c8dfdba6600221a57542782292c15e983b",
+      "bounds_mujoco": [
+        [
+          -6.4864014520622915,
+          -0.21920231284769698,
+          -9.992006956928613e-17
+        ],
+        [
+          -5.579058032681972,
+          1.3810221128474696,
+          2.1243200302124023
+        ]
+      ],
+      "category": "default",
+      "found_in": "bathroom",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.8001120686531067,
@@ -1319,40 +1271,40 @@
           2.1243200302124023
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.4864014520622915,
-          -0.21920231284769698,
-          -9.992006956928613e-17
-        ],
-        [
-          -5.579058032681972,
-          1.3810221128474696,
-          2.1243200302124023
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_028",
-      "asset_id": "2c258993b4fef7bae65d3122970add5054124b0d",
-      "template_name": "2c258993b4fef7bae65d3122970add5054124b0d",
-      "name": "2c258993b4fef7bae65d3122970add5054124b0d",
-      "category": "default",
-      "semantic_name": "Blow up basket Basket - Acier",
-      "found_in": "living room",
-      "support_surface": false,
+      "name": "c26b16c8dfdba6600221a57542782292c15e983b",
+      "object_id": "hssd_object_027",
       "position": [
-        -3.4402,
-        1.8701997,
-        1.7749999
+        -6.0327301,
+        0.5809099,
+        0.0
       ],
       "rotation": [
+        0.7071068935596222,
         0.0,
         0.0,
-        0.0,
-        1.0
+        0.707106668813455
       ],
+      "semantic_name": "Dusche/douche New Classic ",
+      "support_surface": false,
+      "template_name": "c26b16c8dfdba6600221a57542782292c15e983b"
+    },
+    {
+      "asset_id": "2c258993b4fef7bae65d3122970add5054124b0d",
+      "bounds_mujoco": [
+        [
+          -3.605197786283493,
+          1.7102001506111144,
+          1.774990575449226
+        ],
+        [
+          -3.275202213716507,
+          2.0301992642900464,
+          1.8799931464957238
+        ]
+      ],
+      "category": "default",
+      "found_in": "living room",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.16499778628349304,
@@ -1365,33 +1317,12 @@
           0.10499324649572372
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.605197786283493,
-          1.7102001506111144,
-          1.774990575449226
-        ],
-        [
-          -3.275202213716507,
-          2.0301992642900464,
-          1.8799931464957238
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_029",
-      "asset_id": "2dee90ce997af772b43c91a8849a7c8126a44ca6",
-      "template_name": "2dee90ce997af772b43c91a8849a7c8126a44ca6",
-      "name": "2dee90ce997af772b43c91a8849a7c8126a44ca6",
-      "category": "floor_covering",
-      "semantic_name": "HEMMET rug",
-      "found_in": "",
-      "support_surface": false,
+      "name": "2c258993b4fef7bae65d3122970add5054124b0d",
+      "object_id": "hssd_object_028",
       "position": [
-        -5.3800106,
-        0.6068099,
-        3.632158041000366e-08
+        -3.4402,
+        1.8701997,
+        1.7749999
       ],
       "rotation": [
         0.0,
@@ -1399,6 +1330,27 @@
         0.0,
         1.0
       ],
+      "semantic_name": "Blow up basket Basket - Acier",
+      "support_surface": false,
+      "template_name": "2c258993b4fef7bae65d3122970add5054124b0d"
+    },
+    {
+      "asset_id": "2dee90ce997af772b43c91a8849a7c8126a44ca6",
+      "bounds_mujoco": [
+        [
+          -5.579065625293053,
+          0.2935693318485737,
+          3.9973873702316085e-08
+        ],
+        [
+          -5.180955574706948,
+          0.920050437033844,
+          0.015000037642916292
+        ]
+      ],
+      "category": "floor_covering",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.19905502529305222,
@@ -1411,40 +1363,40 @@
           0.015000001321335882
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.579065625293053,
-          0.2935693318485737,
-          3.9973873702316085e-08
-        ],
-        [
-          -5.180955574706948,
-          0.920050437033844,
-          0.015000037642916292
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_030",
-      "asset_id": "9adb92678a5b8be3709220751c77dfecc7b5aa02",
-      "template_name": "9adb92678a5b8be3709220751c77dfecc7b5aa02",
-      "name": "9adb92678a5b8be3709220751c77dfecc7b5aa02",
-      "category": "decor",
-      "semantic_name": "Paint Can Wall Art Square",
-      "found_in": "",
-      "support_surface": false,
+      "name": "2dee90ce997af772b43c91a8849a7c8126a44ca6",
+      "object_id": "hssd_object_029",
       "position": [
-        -6.4864001,
-        6.0624294,
-        1.7145001
+        -5.3800106,
+        0.6068099,
+        3.632158041000366e-08
       ],
       "rotation": [
-        0.5000002499999826,
-        0.4999998499999825,
-        0.4999999499999725,
-        0.4999999499999725
+        0.0,
+        0.0,
+        0.0,
+        1.0
       ],
+      "semantic_name": "HEMMET rug",
+      "support_surface": false,
+      "template_name": "2dee90ce997af772b43c91a8849a7c8126a44ca6"
+    },
+    {
+      "asset_id": "9adb92678a5b8be3709220751c77dfecc7b5aa02",
+      "bounds_mujoco": [
+        [
+          -6.486400408105844,
+          5.554429155187559,
+          1.2064998805876304
+        ],
+        [
+          -6.359399746443373,
+          6.57042961941244,
+          2.222500370212393
+        ]
+      ],
+      "category": "decor",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.5080000162124634,
@@ -1457,40 +1409,40 @@
           0.12700004875659943
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.486400408105844,
-          5.554429155187559,
-          1.2064998805876304
-        ],
-        [
-          -6.359399746443373,
-          6.57042961941244,
-          2.222500370212393
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_031",
-      "asset_id": "43ae5bbfa16a74dbc82d29041846e0b92ccafabc",
-      "template_name": "43ae5bbfa16a74dbc82d29041846e0b92ccafabc",
-      "name": "43ae5bbfa16a74dbc82d29041846e0b92ccafabc",
-      "category": "support_furniture",
-      "semantic_name": "Megan Desk",
-      "found_in": "office",
-      "support_surface": true,
+      "name": "9adb92678a5b8be3709220751c77dfecc7b5aa02",
+      "object_id": "hssd_object_030",
       "position": [
-        -1.8957501,
-        3.1119999,
-        1.7881393432617188e-07
+        -6.4864001,
+        6.0624294,
+        1.7145001
       ],
       "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        -0.707106668813455
+        0.5000002499999826,
+        0.4999998499999825,
+        0.4999999499999725,
+        0.4999999499999725
       ],
+      "semantic_name": "Paint Can Wall Art Square",
+      "support_surface": false,
+      "template_name": "9adb92678a5b8be3709220751c77dfecc7b5aa02"
+    },
+    {
+      "asset_id": "43ae5bbfa16a74dbc82d29041846e0b92ccafabc",
+      "bounds_mujoco": [
+        [
+          -2.2262591804528604,
+          2.411999687663044,
+          1.0074285228256485e-07
+        ],
+        [
+          -1.5652409003378693,
+          3.812000171941638,
+          0.7600001692771912
+        ]
+      ],
+      "category": "support_furniture",
+      "found_in": "office",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.7000001668930054,
@@ -1503,40 +1455,40 @@
           0.7599999904632568
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -2.2262591804528604,
-          2.411999687663044,
-          1.0074285228256485e-07
-        ],
-        [
-          -1.5652409003378693,
-          3.812000171941638,
-          0.7600001692771912
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_032",
-      "asset_id": "b96c6f86f7bedaa223209216b6d0900ceeceea66",
-      "template_name": "b96c6f86f7bedaa223209216b6d0900ceeceea66",
-      "name": "b96c6f86f7bedaa223209216b6d0900ceeceea66",
-      "category": "decor",
-      "semantic_name": "wall art",
-      "found_in": "",
-      "support_surface": false,
+      "name": "43ae5bbfa16a74dbc82d29041846e0b92ccafabc",
+      "object_id": "hssd_object_031",
       "position": [
-        -3.4895899,
-        5.9865093,
-        1.3716001
+        -1.8957501,
+        3.1119999,
+        1.7881393432617188e-07
       ],
       "rotation": [
-        0.4999999249999894,
-        0.4999999249999894,
-        0.5000000249999944,
-        0.5000001249999994
+        0.7071068935596222,
+        0.0,
+        0.0,
+        -0.707106668813455
       ],
+      "semantic_name": "Megan Desk",
+      "support_surface": true,
+      "template_name": "43ae5bbfa16a74dbc82d29041846e0b92ccafabc"
+    },
+    {
+      "asset_id": "b96c6f86f7bedaa223209216b6d0900ceeceea66",
+      "bounds_mujoco": [
+        [
+          -3.4895902047975,
+          5.224516781224056,
+          0.6096026494110123
+        ],
+        [
+          -3.469589599649558,
+          6.748501899171903,
+          2.133597552588995
+        ]
+      ],
+      "category": "decor",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.7619924425762296,
@@ -1549,53 +1501,25 @@
           0.019999995552965253
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.4895902047975,
-          5.224516781224056,
-          0.6096026494110123
-        ],
-        [
-          -3.469589599649558,
-          6.748501899171903,
-          2.133597552588995
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_033",
-      "asset_id": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
-      "template_name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
-      "name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
-      "category": "plant",
-      "semantic_name": "plant",
-      "found_in": "outdoor,garden",
-      "support_surface": false,
+      "name": "b96c6f86f7bedaa223209216b6d0900ceeceea66",
+      "object_id": "hssd_object_032",
       "position": [
-        -1.8089699,
-        3.4324901,
-        0.7600001
+        -3.4895899,
+        5.9865093,
+        1.3716001
       ],
       "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        0.707106668813455
+        0.4999999249999894,
+        0.4999999249999894,
+        0.5000000249999944,
+        0.5000001249999994
       ],
-      "local_bounds": [
-        [
-          -0.09749696403741837,
-          -0.09586295485496521,
-          -1.0437012143427182e-08
-        ],
-        [
-          0.0974968895316124,
-          0.09586288034915924,
-          0.4303279519081116
-        ]
-      ],
-      "grasp_site": null,
+      "semantic_name": "wall art",
+      "support_surface": false,
+      "template_name": "b96c6f86f7bedaa223209216b6d0900ceeceea66"
+    },
+    {
+      "asset_id": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
       "bounds_mujoco": [
         [
           -1.9048328113374995,
@@ -1607,28 +1531,10 @@
           3.529987020000577,
           1.1903280519081116
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_034",
-      "asset_id": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
-      "template_name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
-      "name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
+      ],
       "category": "plant",
-      "semantic_name": "plant",
       "found_in": "outdoor,garden",
-      "support_surface": false,
-      "position": [
-        -4.2468099,
-        1.1864498,
-        0.85
-      ],
-      "rotation": [
-        0.7071068935596222,
-        0.0,
-        0.0,
-        0.707106668813455
-      ],
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.09749696403741837,
@@ -1641,7 +1547,25 @@
           0.4303279519081116
         ]
       ],
-      "grasp_site": null,
+      "name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
+      "object_id": "hssd_object_033",
+      "position": [
+        -1.8089699,
+        3.4324901,
+        0.7600001
+      ],
+      "rotation": [
+        0.7071068935596222,
+        0.0,
+        0.0,
+        0.707106668813455
+      ],
+      "semantic_name": "plant",
+      "support_surface": false,
+      "template_name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c"
+    },
+    {
+      "asset_id": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
       "bounds_mujoco": [
         [
           -4.342672811337499,
@@ -1653,28 +1577,56 @@
           1.283946720000577,
           1.2803279519081117
         ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_035",
-      "asset_id": "ef25a47c50541dda6a93126ebc1f46a2ab48228b",
-      "template_name": "ef25a47c50541dda6a93126ebc1f46a2ab48228b",
-      "name": "ef25a47c50541dda6a93126ebc1f46a2ab48228b",
-      "category": "default",
-      "semantic_name": "Waschplatz/zone lavabo  New Classic weiss/blanche",
-      "found_in": "bathroom",
-      "support_surface": false,
+      ],
+      "category": "plant",
+      "found_in": "outdoor,garden",
+      "grasp_site": null,
+      "local_bounds": [
+        [
+          -0.09749696403741837,
+          -0.09586295485496521,
+          -1.0437012143427182e-08
+        ],
+        [
+          0.0974968895316124,
+          0.09586288034915924,
+          0.4303279519081116
+        ]
+      ],
+      "name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c",
+      "object_id": "hssd_object_034",
       "position": [
-        -4.78095,
-        1.1552999,
-        5.960464477539063e-08
+        -4.2468099,
+        1.1864498,
+        0.85
       ],
       "rotation": [
-        1.0,
+        0.7071068935596222,
         0.0,
         0.0,
-        0.0
+        0.707106668813455
       ],
+      "semantic_name": "plant",
+      "support_surface": false,
+      "template_name": "e982d3a9cfef8a5bc3e2202e1ba69b8b93c0c67c"
+    },
+    {
+      "asset_id": "ef25a47c50541dda6a93126ebc1f46a2ab48228b",
+      "bounds_mujoco": [
+        [
+          -5.180950005960464,
+          0.9200512598203658,
+          -0.000179764669155702
+        ],
+        [
+          -4.380950023841858,
+          1.3905489127086639,
+          1.996160089969635
+        ]
+      ],
+      "category": "default",
+      "found_in": "bathroom",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.4000000059604645,
@@ -1687,33 +1639,12 @@
           1.9961600303649902
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.180950005960464,
-          0.9200512598203658,
-          -0.000179764669155702
-        ],
-        [
-          -4.380950023841858,
-          1.3905489127086639,
-          1.996160089969635
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_036",
-      "asset_id": "27e2fe8d91a9d2cc02ce98e94f5f498548b88a5f",
-      "template_name": "27e2fe8d91a9d2cc02ce98e94f5f498548b88a5f",
-      "name": "27e2fe8d91a9d2cc02ce98e94f5f498548b88a5f",
-      "category": "storage_furniture",
-      "semantic_name": "Kitchen island, 90x150x90",
-      "found_in": "kitchen",
-      "support_surface": true,
+      "name": "ef25a47c50541dda6a93126ebc1f46a2ab48228b",
+      "object_id": "hssd_object_035",
       "position": [
-        -5.5194911,
-        3.4360795,
-        1.7881393432617188e-07
+        -4.78095,
+        1.1552999,
+        5.960464477539063e-08
       ],
       "rotation": [
         1.0,
@@ -1721,6 +1652,27 @@
         0.0,
         0.0
       ],
+      "semantic_name": "Waschplatz/zone lavabo  New Classic weiss/blanche",
+      "support_surface": false,
+      "template_name": "ef25a47c50541dda6a93126ebc1f46a2ab48228b"
+    },
+    {
+      "asset_id": "27e2fe8d91a9d2cc02ce98e94f5f498548b88a5f",
+      "bounds_mujoco": [
+        [
+          -6.267380737947082,
+          2.9875434914035797,
+          0.0017052912153303623
+        ],
+        [
+          -4.771601342843628,
+          3.884615568201065,
+          0.8984274864196777
+        ]
+      ],
+      "category": "storage_furniture",
+      "found_in": "kitchen",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.7478896379470825,
@@ -1733,33 +1685,12 @@
           0.8984273076057434
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.267380737947082,
-          2.9875434914035797,
-          0.0017052912153303623
-        ],
-        [
-          -4.771601342843628,
-          3.884615568201065,
-          0.8984274864196777
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_037",
-      "asset_id": "xxxxa6855f05x0437x41eexb33bx95d0973cfe35",
-      "template_name": "xxxxa6855f05x0437x41eexb33bx95d0973cfe35",
-      "name": "xxxxa6855f05x0437x41eexb33bx95d0973cfe35",
-      "category": "default",
-      "semantic_name": "Fold Basket",
-      "found_in": "",
-      "support_surface": false,
+      "name": "27e2fe8d91a9d2cc02ce98e94f5f498548b88a5f",
+      "object_id": "hssd_object_036",
       "position": [
-        -5.39295,
-        -0.0330899,
-        0.0
+        -5.5194911,
+        3.4360795,
+        1.7881393432617188e-07
       ],
       "rotation": [
         1.0,
@@ -1767,6 +1698,27 @@
         0.0,
         0.0
       ],
+      "semantic_name": "Kitchen island, 90x150x90",
+      "support_surface": true,
+      "template_name": "27e2fe8d91a9d2cc02ce98e94f5f498548b88a5f"
+    },
+    {
+      "asset_id": "xxxxa6855f05x0437x41eexb33bx95d0973cfe35",
+      "bounds_mujoco": [
+        [
+          -5.579055400323868,
+          -0.21919541953315735,
+          0.0
+        ],
+        [
+          -5.206844599676132,
+          0.15301561953315734,
+          0.3926699161529541
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           -0.1861054003238678,
@@ -1779,40 +1731,40 @@
           0.3926699161529541
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.579055400323868,
-          -0.21919541953315735,
-          0.0
-        ],
-        [
-          -5.206844599676132,
-          0.15301561953315734,
-          0.3926699161529541
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_038",
-      "asset_id": "219-6",
-      "template_name": "219-6",
-      "name": "219-6",
-      "category": "default",
-      "semantic_name": "",
-      "found_in": "",
-      "support_surface": false,
+      "name": "xxxxa6855f05x0437x41eexb33bx95d0973cfe35",
+      "object_id": "hssd_object_037",
       "position": [
-        -5.0585699,
-        -0.2942,
-        1.4499999
+        -5.39295,
+        -0.0330899,
+        0.0
       ],
       "rotation": [
+        1.0,
         0.0,
         0.0,
-        0.0,
-        1.0
+        0.0
       ],
+      "semantic_name": "Fold Basket",
+      "support_surface": false,
+      "template_name": "xxxxa6855f05x0437x41eexb33bx95d0973cfe35"
+    },
+    {
+      "asset_id": "219-6",
+      "bounds_mujoco": [
+        [
+          -5.3788549818634035,
+          -0.3341999911059305,
+          0.7000000499999999
+        ],
+        [
+          -4.738284847938919,
+          -0.2542000014434904,
+          2.19999975
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           0.3202850818634033,
@@ -1825,40 +1777,40 @@
           0.74999985
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -5.3788549818634035,
-          -0.3341999911059305,
-          0.7000000499999999
-        ],
-        [
-          -4.738284847938919,
-          -0.2542000014434904,
-          2.19999975
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_039",
-      "asset_id": "219-7",
-      "template_name": "219-7",
-      "name": "219-7",
-      "category": "default",
-      "semantic_name": "",
-      "found_in": "",
-      "support_surface": false,
+      "name": "219-6",
+      "object_id": "hssd_object_038",
       "position": [
-        -6.5613999,
-        3.0419399,
-        1.4500001
+        -5.0585699,
+        -0.2942,
+        1.4499999
       ],
       "rotation": [
-        0.7071069435596147,
         0.0,
         0.0,
-        0.7071066188134429
+        0.0,
+        1.0
       ],
+      "semantic_name": "",
+      "support_surface": false,
+      "template_name": "219-6"
+    },
+    {
+      "asset_id": "219-7",
+      "bounds_mujoco": [
+        [
+          -6.601400281713745,
+          2.191425043759957,
+          0.70000025
+        ],
+        [
+          -6.521399510835647,
+          3.892454815844672,
+          2.19999995
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           0.8505148974743485,
@@ -1871,40 +1823,40 @@
           0.74999985
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.601400281713745,
-          2.191425043759957,
-          0.70000025
-        ],
-        [
-          -6.521399510835647,
-          3.892454815844672,
-          2.19999995
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_040",
-      "asset_id": "200-3",
-      "template_name": "200-3",
-      "name": "200-3",
-      "category": "default",
-      "semantic_name": "",
-      "found_in": "",
-      "support_surface": false,
+      "name": "219-7",
+      "object_id": "hssd_object_039",
       "position": [
-        -1.4902399,
-        1.1419799,
-        1.12
+        -6.5613999,
+        3.0419399,
+        1.4500001
       ],
       "rotation": [
-        0.7071068935596222,
+        0.7071069435596147,
         0.0,
         0.0,
-        -0.707106668813455
+        0.7071066188134429
       ],
+      "semantic_name": "",
+      "support_surface": false,
+      "template_name": "219-7"
+    },
+    {
+      "asset_id": "200-3",
+      "bounds_mujoco": [
+        [
+          -1.6052400348272764,
+          0.6519799519117961,
+          0.020000315367412647
+        ],
+        [
+          -1.3752397651727235,
+          1.6319798480882037,
+          2.219999803841853
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           0.4899999115367413,
@@ -1917,33 +1869,12 @@
           1.099999803841853
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.6052400348272764,
-          0.6519799519117961,
-          0.020000315367412647
-        ],
-        [
-          -1.3752397651727235,
-          1.6319798480882037,
-          2.219999803841853
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_041",
-      "asset_id": "219-7",
-      "template_name": "219-7",
-      "name": "219-7",
-      "category": "default",
-      "semantic_name": "",
-      "found_in": "",
-      "support_surface": false,
+      "name": "200-3",
+      "object_id": "hssd_object_040",
       "position": [
         -1.4902399,
-        3.0674901,
-        1.4500001
+        1.1419799,
+        1.12
       ],
       "rotation": [
         0.7071068935596222,
@@ -1951,6 +1882,27 @@
         0.0,
         -0.707106668813455
       ],
+      "semantic_name": "",
+      "support_surface": false,
+      "template_name": "200-3"
+    },
+    {
+      "asset_id": "219-7",
+      "bounds_mujoco": [
+        [
+          -1.5302401688833593,
+          2.216975189812132,
+          0.70000025
+        ],
+        [
+          -1.4502396385672007,
+          3.9180049505832333,
+          2.19999995
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           0.8505148974743485,
@@ -1963,40 +1915,40 @@
           0.74999985
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -1.5302401688833593,
-          2.216975189812132,
-          0.70000025
-        ],
-        [
-          -1.4502396385672007,
-          3.9180049505832333,
-          2.19999995
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_042",
-      "asset_id": "219-7",
-      "template_name": "219-7",
       "name": "219-7",
-      "category": "default",
-      "semantic_name": "",
-      "found_in": "",
-      "support_surface": false,
+      "object_id": "hssd_object_041",
       "position": [
-        -5.4367399,
-        7.2827892,
-        1.4500004
+        -1.4902399,
+        3.0674901,
+        1.4500001
       ],
       "rotation": [
-        1.0,
+        0.7071068935596222,
         0.0,
         0.0,
-        0.0
+        -0.707106668813455
       ],
+      "semantic_name": "",
+      "support_surface": false,
+      "template_name": "219-7"
+    },
+    {
+      "asset_id": "219-7",
+      "bounds_mujoco": [
+        [
+          -6.287254907972717,
+          7.2427892014434905,
+          0.7000005499999999
+        ],
+        [
+          -4.586224832422638,
+          7.32278919110593,
+          2.20000025
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           0.8505150675773621,
@@ -2009,31 +1961,10 @@
           0.74999985
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -6.287254907972717,
-          7.2427892014434905,
-          0.7000005499999999
-        ],
-        [
-          -4.586224832422638,
-          7.32278919110593,
-          2.20000025
-        ]
-      ]
-    },
-    {
-      "object_id": "hssd_object_043",
-      "asset_id": "219-5",
-      "template_name": "219-5",
-      "name": "219-5",
-      "category": "default",
-      "semantic_name": "",
-      "found_in": "",
-      "support_surface": false,
+      "name": "219-7",
+      "object_id": "hssd_object_042",
       "position": [
-        -2.5990197,
+        -5.4367399,
         7.2827892,
         1.4500004
       ],
@@ -2043,6 +1974,27 @@
         0.0,
         0.0
       ],
+      "semantic_name": "",
+      "support_surface": false,
+      "template_name": "219-7"
+    },
+    {
+      "asset_id": "219-5",
+      "bounds_mujoco": [
+        [
+          -3.4497097072097778,
+          7.2427892014434905,
+          0.7000005499999999
+        ],
+        [
+          -1.7483296331855773,
+          7.32278919110593,
+          2.20000025
+        ]
+      ],
+      "category": "default",
+      "found_in": "",
+      "grasp_site": null,
       "local_bounds": [
         [
           0.8506900668144226,
@@ -2055,30 +2007,25 @@
           0.74999985
         ]
       ],
-      "grasp_site": null,
-      "bounds_mujoco": [
-        [
-          -3.4497097072097778,
-          7.2427892014434905,
-          0.7000005499999999
-        ],
-        [
-          -1.7483296331855773,
-          7.32278919110593,
-          2.20000025
-        ]
-      ]
+      "name": "219-5",
+      "object_id": "hssd_object_043",
+      "position": [
+        -2.5990197,
+        7.2827892,
+        1.4500004
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "semantic_name": "",
+      "support_surface": false,
+      "template_name": "219-5"
     },
     {
-      "object_id": "017_calculator_home_00",
       "asset_id": "017_calculator",
-      "name": "017_calculator",
-      "category": "interactive_objects",
-      "position": [
-        -2.012183882740447,
-        3.663418717132333,
-        0.7633744517669346
-      ],
       "bounds_mujoco": [
         [
           -2.05726554649432,
@@ -2091,22 +2038,22 @@
           0.8218290977797231
         ]
       ],
-      "mass_kg": 0.1535,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "017_calculator_home_00_grasp_site",
       "graspable": true,
-      "support": "hssd_object_031",
-      "grasp_site": "017_calculator_home_00_grasp_site"
+      "mass_kg": 0.1535,
+      "name": "017_calculator",
+      "object_id": "017_calculator_home_00",
+      "position": [
+        -2.012183882740447,
+        3.663418717132333,
+        0.7633744517669346
+      ],
+      "support": "hssd_object_031"
     },
     {
-      "object_id": "043_book_home_01",
       "asset_id": "043_book",
-      "name": "043_book",
-      "category": "interactive_objects",
-      "position": [
-        -1.8272091457773687,
-        3.060388363616708,
-        0.7635650476148113
-      ],
       "bounds_mujoco": [
         [
           -1.9176878039553555,
@@ -2119,22 +2066,22 @@
           0.8219674532331769
         ]
       ],
-      "mass_kg": 1.06,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "043_book_home_01_grasp_site",
       "graspable": true,
-      "support": "hssd_object_031",
-      "grasp_site": "043_book_home_01_grasp_site"
+      "mass_kg": 1.06,
+      "name": "043_book",
+      "object_id": "043_book_home_01",
+      "position": [
+        -1.8272091457773687,
+        3.060388363616708,
+        0.7635650476148113
+      ],
+      "support": "hssd_object_031"
     },
     {
-      "object_id": "101_milk-tea_home_03",
       "asset_id": "101_milk-tea",
-      "name": "101_milk-tea",
-      "category": "interactive_objects",
-      "position": [
-        -5.649963128929862,
-        3.1238452739498044,
-        0.902339202338167
-      ],
       "bounds_mujoco": [
         [
           -5.705553133400697,
@@ -2147,22 +2094,22 @@
           1.0835850948425305
         ]
       ],
-      "mass_kg": 0.4837,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "101_milk-tea_home_03_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "101_milk-tea_home_03_grasp_site"
+      "mass_kg": 0.4837,
+      "name": "101_milk-tea",
+      "object_id": "101_milk-tea_home_03",
+      "position": [
+        -5.649963128929862,
+        3.1238452739498044,
+        0.902339202338167
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "snack_soda_can_home_04",
       "asset_id": "snack_soda_can",
-      "name": "Soda Can",
-      "category": "interactive_objects",
-      "position": [
-        -5.509662971598205,
-        3.3420395253744184,
-        0.9568432922283108
-      ],
       "bounds_mujoco": [
         [
           -5.544640572616727,
@@ -2175,22 +2122,22 @@
           1.012427493495362
         ]
       ],
-      "mass_kg": 0.157,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "snack_soda_can_home_04_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "snack_soda_can_home_04_grasp_site"
+      "mass_kg": 0.157,
+      "name": "Soda Can",
+      "object_id": "snack_soda_can_home_04",
+      "position": [
+        -5.509662971598205,
+        3.3420395253744184,
+        0.9568432922283108
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "001_bottle_home_05",
       "asset_id": "001_bottle",
-      "name": "001_bottle",
-      "category": "interactive_objects",
-      "position": [
-        -5.92470037178656,
-        3.102293608656549,
-        0.9004895284535775
-      ],
       "bounds_mujoco": [
         [
           -5.963672573008293,
@@ -2203,22 +2150,22 @@
           1.1548370562245613
         ]
       ],
-      "mass_kg": 0.487,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "001_bottle_home_05_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "001_bottle_home_05_grasp_site"
+      "mass_kg": 0.487,
+      "name": "001_bottle",
+      "object_id": "001_bottle_home_05",
+      "position": [
+        -5.92470037178656,
+        3.102293608656549,
+        0.9004895284535775
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "025_chips-tub_home_06",
       "asset_id": "025_chips-tub",
-      "name": "025_chips-tub",
-      "category": "interactive_objects",
-      "position": [
-        -5.923947771887644,
-        3.7686895136060388,
-        0.9020722383079575
-      ],
       "bounds_mujoco": [
         [
           -5.965314883444597,
@@ -2231,22 +2178,22 @@
           1.0835076696508723
         ]
       ],
-      "mass_kg": 0.3835,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "025_chips-tub_home_06_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "025_chips-tub_home_06_grasp_site"
+      "mass_kg": 0.3835,
+      "name": "025_chips-tub",
+      "object_id": "025_chips-tub_home_06",
+      "position": [
+        -5.923947771887644,
+        3.7686895136060388,
+        0.9020722383079575
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "035_apple_home_07",
       "asset_id": "035_apple",
-      "name": "035_apple",
-      "category": "interactive_objects",
-      "position": [
-        -5.384971014270741,
-        3.104870566496181,
-        0.9392253567469045
-      ],
       "bounds_mujoco": [
         [
           -5.425651452561869,
@@ -2259,22 +2206,22 @@
           0.9780232279447348
         ]
       ],
-      "mass_kg": 0.147,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "035_apple_home_07_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "035_apple_home_07_grasp_site"
+      "mass_kg": 0.147,
+      "name": "035_apple",
+      "object_id": "035_apple_home_07",
+      "position": [
+        -5.384971014270741,
+        3.104870566496181,
+        0.9392253567469045
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "038_milk-box_home_08",
       "asset_id": "038_milk-box",
-      "name": "038_milk-box",
-      "category": "interactive_objects",
-      "position": [
-        -4.910513475992116,
-        3.634238829162485,
-        0.9023965388839612
-      ],
       "bounds_mujoco": [
         [
           -4.965264766401703,
@@ -2287,22 +2234,22 @@
           1.103039508263547
         ]
       ],
-      "mass_kg": 0.8473,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "038_milk-box_home_08_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "038_milk-box_home_08_grasp_site"
+      "mass_kg": 0.8473,
+      "name": "038_milk-box",
+      "object_id": "038_milk-box_home_08",
+      "position": [
+        -4.910513475992116,
+        3.634238829162485,
+        0.9023965388839612
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "071_can_home_09",
       "asset_id": "071_can",
-      "name": "071_can",
-      "category": "interactive_objects",
-      "position": [
-        -5.1083540609756195,
-        3.0930316586119697,
-        0.9013499303196248
-      ],
       "bounds_mujoco": [
         [
           -5.141956225006312,
@@ -2315,22 +2262,22 @@
           1.0219315419327086
         ]
       ],
-      "mass_kg": 0.1571,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "071_can_home_09_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "071_can_home_09_grasp_site"
+      "mass_kg": 0.1571,
+      "name": "071_can",
+      "object_id": "071_can_home_09",
+      "position": [
+        -5.1083540609756195,
+        3.0930316586119697,
+        0.9013499303196248
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "green_apple_home_10",
       "asset_id": "green_apple",
-      "name": "green_apple",
-      "category": "interactive_objects",
-      "position": [
-        -5.45112418089176,
-        3.2524556108207716,
-        0.9011475179584512
-      ],
       "bounds_mujoco": [
         [
           -5.48839360588052,
@@ -2343,22 +2290,22 @@
           0.9813516892455887
         ]
       ],
-      "mass_kg": 0.1014,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "green_apple_home_10_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "green_apple_home_10_grasp_site"
+      "mass_kg": 0.1014,
+      "name": "green_apple",
+      "object_id": "green_apple_home_10",
+      "position": [
+        -5.45112418089176,
+        3.2524556108207716,
+        0.9011475179584512
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "075_bread_home_11",
       "asset_id": "075_bread",
-      "name": "075_bread",
-      "category": "interactive_objects",
-      "position": [
-        -5.635698363471326,
-        3.6814476975679478,
-        0.9022603491661539
-      ],
       "bounds_mujoco": [
         [
           -5.7364501881028716,
@@ -2371,22 +2318,22 @@
           0.9881546290465568
         ]
       ],
-      "mass_kg": 0.9058,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "075_bread_home_11_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "075_bread_home_11_grasp_site"
+      "mass_kg": 0.9058,
+      "name": "075_bread",
+      "object_id": "075_bread_home_11",
+      "position": [
+        -5.635698363471326,
+        3.6814476975679478,
+        0.9022603491661539
+      ],
+      "support": "hssd_object_036"
     },
     {
-      "object_id": "069_vagetable_home_12",
       "asset_id": "069_vagetable",
-      "name": "069_vagetable",
-      "category": "interactive_objects",
-      "position": [
-        -6.116303788693239,
-        3.372621590784744,
-        0.9541379536187746
-      ],
       "bounds_mujoco": [
         [
           -6.192575168909613,
@@ -2399,29 +2346,143 @@
           1.0077547981048265
         ]
       ],
-      "mass_kg": 0.3619,
+      "category": "interactive_objects",
       "dynamic": true,
+      "grasp_site": "069_vagetable_home_12_grasp_site",
       "graspable": true,
-      "support": "hssd_object_036",
-      "grasp_site": "069_vagetable_home_12_grasp_site"
+      "mass_kg": 0.3619,
+      "name": "069_vagetable",
+      "object_id": "069_vagetable_home_12",
+      "position": [
+        -6.116303788693239,
+        3.372621590784744,
+        0.9541379536187746
+      ],
+      "support": "hssd_object_036"
+    },
+    {
+      "body": "primitive_workstation_table",
+      "category": "desks",
+      "collision_radius": 0.7,
+      "license": "CC0-1.0",
+      "name": "Primitive workstation desk",
+      "object_id": "primitive_workstation_table",
+      "position": [
+        -1.5564,
+        2.2508,
+        0.0
+      ],
+      "provenance": "primitive_workstation_kit/v1"
+    },
+    {
+      "body": "primitive_workstation_computer",
+      "category": "computers",
+      "collision_radius": 0.0,
+      "license": "CC0-1.0",
+      "name": "Primitive computer",
+      "object_id": "primitive_workstation_computer",
+      "position": [
+        -1.5564,
+        2.2508,
+        0.78
+      ],
+      "provenance": "primitive_workstation_kit/v1",
+      "support": "primitive_workstation_table"
+    },
+    {
+      "body": "primitive_workstation_chair",
+      "category": "chairs",
+      "collision_radius": 0.4,
+      "license": "CC0-1.0",
+      "name": "Primitive workstation chair",
+      "object_id": "primitive_workstation_chair",
+      "position": [
+        -1.5564,
+        1.3508,
+        0.0
+      ],
+      "provenance": "primitive_workstation_kit/v1"
+    },
+    {
+      "body": "primitive_handover_cup",
+      "category": "interactive_objects",
+      "collision_radius": 0.05,
+      "dynamic": true,
+      "grasp_site": "primitive_handover_cup_grasp_site",
+      "graspable": true,
+      "license": "CC0-1.0",
+      "name": "Primitive handover cup",
+      "object_id": "primitive_handover_cup",
+      "position": [
+        -1.2064,
+        2.2508,
+        0.82
+      ],
+      "provenance": "primitive_workstation_kit/v1",
+      "support": "primitive_workstation_table"
     }
   ],
+  "bounds_mujoco": [
+    [
+      -6.636399745941162,
+      -0.3692000210285187,
+      -3.4399997623953498
+    ],
+    [
+      -1.3752397651727235,
+      7.357789993286133,
+      2.8101749760279655
+    ]
+  ],
+  "category_counts": {
+    "decor": 5,
+    "default": 17,
+    "floor_covering": 2,
+    "lighting": 1,
+    "plant": 7,
+    "seating_furniture": 5,
+    "storage_furniture": 5,
+    "support_furniture": 2
+  },
+  "hssd_scene_id": "102344115",
+  "hssd_scene_split": "scenes-uncluttered",
+  "layout": "imported_hssd_home",
+  "mjcf": "home_01_102344115.xml",
+  "model": {
+    "geoms": 432,
+    "materials": 204,
+    "meshes": 277,
+    "textures": 93
+  },
+  "object_count": 44,
+  "preview": "home_01_102344115.png",
   "robot": {
-    "model": "Hello Robot Stretch",
+    "body": "base_link",
     "initial_pose": [
       -3.772879756930626,
       3.494294986128807,
       0.0
     ],
-    "body": "base_link"
+    "model": "Hello Robot Stretch"
   },
-  "mjcf": "home_01_102344115.xml",
   "robot_include": "home_01_102344115_robot.xml",
-  "preview": "home_01_102344115.png",
-  "model": {
-    "textures": 93,
-    "materials": 204,
-    "meshes": 277,
-    "geoms": 432
-  }
+  "scene_id": "home_01_102344115",
+  "simplification": {
+    "stage_alpha": 1.0,
+    "uncluttered": true
+  },
+  "source_dataset": "HSSD",
+  "title": "Simplified Home 01",
+  "unique_template_count": 38,
+  "zones": [
+    {
+      "bounds": [
+        -6.636399745941162,
+        -1.3752397651727235,
+        -0.3692000210285187,
+        7.357789993286133
+      ],
+      "type": "home"
+    }
+  ]
 }

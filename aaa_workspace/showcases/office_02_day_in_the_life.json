@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scenario_id": "office_02_day_in_the_life",
+  "scene_id": "office_02_cross_axis",
+  "description": "Bounded multi-NPC office day: route, registered actions, conversation contract, and robot boundary.",
+  "phases": [
+    {"kind": "move", "npc": "npc_jordan_patell", "route": "coverage_03_0000", "action": "relocate"},
+    {"kind": "move", "npc": "npc_priya_narayanan", "route": "coverage_01_0036", "action": "take_break"},
+    {"kind": "move", "npc": "npc_alex_chen", "route": "business_work_to_meeting", "action": "attend_meeting"},
+    {"kind": "move", "npc": "npc_morgan_lee", "route": "coverage_02_0037", "action": "relocate"},
+    {"kind": "environment", "npc": "npc_jordan_patell", "clip": "sit", "duration": 2.0},
+    {"kind": "conversation", "participants": ["npc_alex_chen", "npc_jordan_patell"], "transcript": ["Alex: The morning review is ready.", "Jordan: I will check the numbers."]},
+    {"kind": "robot_handover", "participants": ["npc_alex_chen", "npc_morgan_lee"], "executor": "simulator_robot", "object": "075_bread_022"}
+  ],
+  "scheduling": {"policy": "sequential_route_reservation", "dynamic_obstacles": true, "on_block": "retry_then_fail"}
+}

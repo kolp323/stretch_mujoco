@@ -9,21 +9,21 @@
     "conversation": {
       "listener": {
         "site": "npc_conversation_listener_site",
-        "yaw": -2.761086276477428
+        "yaw": -1.1902899496825317
       },
       "speaker": {
         "site": "npc_conversation_speaker_site",
-        "yaw": 0.3805063771123649
+        "yaw": 1.9513027039072615
       }
     },
     "handover": {
       "giver": {
         "site": "npc_handover_giver_site",
-        "yaw": 0.3805063771123649
+        "yaw": 1.9513027039072615
       },
       "receiver": {
         "site": "npc_handover_receiver_site",
-        "yaw": -2.761086276477428
+        "yaw": -1.1902899496825317
       }
     }
   },
@@ -75,7 +75,7 @@
       "spawn": {
         "location": "workstation",
         "site": "npc_spawn_01_site",
-        "yaw": 0.0
+        "yaw": -2.1197129068260994
       }
     },
     "npc_jordan_patell": {
@@ -126,7 +126,7 @@
       "spawn": {
         "location": "snack_counter",
         "site": "npc_spawn_03_site",
-        "yaw": 0.0
+        "yaw": -0.06241880999595714
       }
     },
     "npc_morgan_lee": {
@@ -175,7 +175,7 @@
       "spawn": {
         "location": "lounge",
         "site": "npc_spawn_02_site",
-        "yaw": 0.0
+        "yaw": 2.577023259921693
       }
     }
   },

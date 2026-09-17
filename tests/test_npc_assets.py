@@ -84,6 +84,11 @@ def test_approved_interaction_registration_closes_production_clip_contract() -> 
     assert bundle.clips["gesture_wave"].markers == (
         {"name": "gesture_wave_complete", "phase": 0.932},
     )
+    assert bundle.clips["gesture_point"].loop is False
+    assert bundle.clips["gesture_point"].markers == (
+        {"name": "gesture_point_complete", "phase": 0.9},
+    )
+    assert len(bundle.clips["gesture_point"].frames) == 22
 
 
 def test_registered_stand_up_frames_are_the_reversed_sit_sequence() -> None:

@@ -255,6 +255,11 @@ def prepare_motions(
             surface_model_type = _scalar_string(data, "surface_model_type")
             gender = _scalar_string(data, "gender")
             poses = np.asarray(data["pose_body"], dtype=np.float32)
+            hand_poses = (
+                np.asarray(data["pose_hand"], dtype=np.float32)
+                if "pose_hand" in data
+                else None
+            )
             transl = np.asarray(
                 data["trans"] if "trans" in data else np.zeros((poses.shape[0], 3)),
                 dtype=np.float32,
@@ -267,6 +272,15 @@ def prepare_motions(
             )
         if poses.ndim != 2 or poses.shape[1] != 63 or not np.isfinite(poses).all():
             raise AmassIntakeError(f"Selection source '{source_id}' has invalid pose_body")
+        if hand_poses is not None and (
+            hand_poses.ndim != 2
+            or hand_poses.shape != (poses.shape[0], 90)
+            or not np.isfinite(hand_poses).all()
+        ):
+            raise AmassIntakeError(
+                f"Selection source '{source_id}' has invalid pose_hand; expected "
+                f"({poses.shape[0]}, 90)"
+            )
         try:
             canonical_transl = canonicalize_vertical_translation(transl)
         except AmassIntakeError as error:
@@ -277,15 +291,24 @@ def prepare_motions(
             raise AmassIntakeError(f"Selection source '{source_id}' end_frame exceeds frame count")
         indexes = _sample_indices(start_frame, end_frame, source_fps, target_fps)
         selected = poses[indexes]
+        selected_hands = hand_poses[indexes] if hand_poses is not None else None
         selected_transl = canonical_transl[indexes]
         if reverse:
             selected = selected[::-1].copy()
+            if selected_hands is not None:
+                selected_hands = selected_hands[::-1].copy()
             selected_transl = canonicalize_vertical_translation(selected_transl[::-1].copy())
         output_path = output_dir / f"{target_clip}.npz"
         receipt_path = receipt_dir / f"{target_clip}.receipt.json"
         if output_path.exists() or receipt_path.exists():
             raise AmassIntakeError(f"Refusing to overwrite existing output for '{target_clip}'")
-        np.savez(output_path, body_pose=selected, transl=selected_transl)
+        prepared_fields: dict[str, np.ndarray] = {
+            "body_pose": selected,
+            "transl": selected_transl,
+        }
+        if selected_hands is not None:
+            prepared_fields["pose_hand"] = selected_hands
+        np.savez(output_path, **prepared_fields)
         receipt = {
             "schema_version": 1,
             "license": license_info,
@@ -298,6 +321,7 @@ def prepare_motions(
             "source_frame_range": [start_frame, end_frame],
             "target_fps": target_fps,
             "target_frame_count": int(selected.shape[0]),
+            "retained_pose_fields": sorted(prepared_fields),
             "root_translation_policy": "relative_smpl_y_only_runtime_anchor",
             "reverse": reverse,
             "output_sha256": hashlib.sha256(output_path.read_bytes()).hexdigest(),

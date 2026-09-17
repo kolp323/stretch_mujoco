@@ -16,6 +16,7 @@ from stretch_mujoco.agents.models import (
 )
 
 POPULATION_SCHEMA_VERSION = 2
+POPULATION_SCHEMA_V3 = 3
 KNOWN_CAPABILITIES = frozenset(
     {
         "locomotion",
@@ -229,6 +230,180 @@ class NpcInteractionTemplate:
 
 
 @dataclass(frozen=True)
+class NpcInteractionCatalogEntry:
+    station_id: str
+    kind: str
+    roles: dict[str, NpcInteractionStation]
+    attributes: dict[str, Any]
+
+
+def _interaction_station_catalog(
+    payload: object,
+    *,
+    sites: set[str] | frozenset[str] | None,
+) -> dict[str, dict[str, NpcInteractionCatalogEntry]]:
+    catalog = _require_mapping(payload, "Population interaction_stations")
+    expected_kinds = {"conversation", "handover", "seat", "workstation"}
+    if set(catalog) != expected_kinds:
+        raise ValueError("Population interaction_stations kinds are not exact")
+    role_contracts = {
+        "conversation": (
+            {"speaker", "listener"},
+            {"roles", "allowed_actor_pairs", "distance_m", "yaw_tolerance_rad"},
+        ),
+        "handover": (
+            {"giver", "receiver", "robot"},
+            {
+                "roles",
+                "modes",
+                "object_ids",
+                "distance_m",
+                "yaw_tolerance_rad",
+                "transfer_site",
+            },
+        ),
+        "seat": (
+            {"ingress", "sit"},
+            {"roles", "owner_entity", "seat_type", "slot_index", "clearance_radius_m"},
+        ),
+        "workstation": (
+            {"work"},
+            {"roles", "workstation_entity", "computer_entity", "seat_slot"},
+        ),
+    }
+    result: dict[str, dict[str, NpcInteractionCatalogEntry]] = {}
+    seen_ids: set[str] = set()
+    for kind in sorted(expected_kinds):
+        entries = _require_mapping(catalog[kind], f"Population {kind} stations")
+        result[kind] = {}
+        expected_roles, expected_fields = role_contracts[kind]
+        for raw_station_id, raw_entry in entries.items():
+            station_id = str(raw_station_id)
+            if not station_id or station_id in seen_ids:
+                raise ValueError(f"Duplicate or empty interaction station ID '{station_id}'")
+            entry = _require_mapping(raw_entry, f"Interaction station '{station_id}'")
+            if set(entry) != expected_fields:
+                raise ValueError(f"Interaction station '{station_id}' fields are not exact")
+            roles_payload = _require_mapping(
+                entry["roles"], f"Interaction station '{station_id}' roles"
+            )
+            if set(roles_payload) != expected_roles:
+                raise ValueError(f"Interaction station '{station_id}' roles are not exact")
+            roles = {
+                role: NpcInteractionStation.from_dict(
+                    _require_mapping(value, f"Interaction station '{station_id}' role '{role}'"),
+                    context=f"Interaction station '{station_id}' role '{role}'",
+                )
+                for role, value in roles_payload.items()
+            }
+            if sites is not None:
+                for role in roles.values():
+                    if role.site not in sites:
+                        raise ValueError(
+                            f"Interaction station '{station_id}' has unknown site '{role.site}'"
+                        )
+            attributes = {key: value for key, value in entry.items() if key != "roles"}
+            list_field = {
+                "conversation": "allowed_actor_pairs",
+                "handover": "modes",
+            }.get(kind)
+            if list_field is not None:
+                values = attributes[list_field]
+                allowed = (
+                    {"npc_npc", "robot_npc"}
+                    if kind == "conversation"
+                    else {"npc_to_npc", "robot_to_npc", "npc_to_robot"}
+                )
+                if (
+                    not isinstance(values, list)
+                    or not values
+                    or not all(isinstance(value, str) and value for value in values)
+                    or len(set(values)) != len(values)
+                    or set(values) - allowed
+                ):
+                    raise ValueError(f"Interaction station '{station_id}' {list_field} invalid")
+            if kind == "handover":
+                object_ids = attributes["object_ids"]
+                if (
+                    not isinstance(object_ids, list)
+                    or not object_ids
+                    or not all(isinstance(value, str) and value for value in object_ids)
+                    or len(set(object_ids)) != len(object_ids)
+                ):
+                    raise ValueError(f"Interaction station '{station_id}' object_ids invalid")
+                transfer_site = attributes["transfer_site"]
+                if not isinstance(transfer_site, str) or not transfer_site.strip():
+                    raise ValueError(
+                        f"Interaction station '{station_id}' transfer_site invalid"
+                    )
+                if sites is not None and transfer_site not in sites:
+                    raise ValueError(
+                        f"Interaction station '{station_id}' has unknown transfer_site "
+                        f"'{transfer_site}'"
+                    )
+            if kind in {"conversation", "handover"}:
+                distance = _require_mapping(
+                    attributes["distance_m"],
+                    f"Interaction station '{station_id}' distance_m",
+                )
+                if set(distance) != {"min", "max"}:
+                    raise ValueError(
+                        f"Interaction station '{station_id}' distance_m fields are not exact"
+                    )
+                minimum, maximum = distance["min"], distance["max"]
+                if (
+                    isinstance(minimum, bool)
+                    or not isinstance(minimum, (int, float))
+                    or not math.isfinite(minimum)
+                    or minimum <= 0
+                    or isinstance(maximum, bool)
+                    or not isinstance(maximum, (int, float))
+                    or not math.isfinite(maximum)
+                    or maximum < minimum
+                ):
+                    raise ValueError(
+                        f"Interaction station '{station_id}' distance_m invalid"
+                    )
+                yaw_tolerance = attributes["yaw_tolerance_rad"]
+                if (
+                    isinstance(yaw_tolerance, bool)
+                    or not isinstance(yaw_tolerance, (int, float))
+                    or not math.isfinite(yaw_tolerance)
+                    or not 0 < yaw_tolerance <= math.pi
+                ):
+                    raise ValueError(
+                        f"Interaction station '{station_id}' yaw_tolerance_rad invalid"
+                    )
+            if kind == "seat":
+                slot_index = attributes["slot_index"]
+                clearance = attributes["clearance_radius_m"]
+                if isinstance(slot_index, bool) or not isinstance(slot_index, int) or slot_index < 1:
+                    raise ValueError(f"Interaction station '{station_id}' slot_index invalid")
+                if (
+                    isinstance(clearance, bool)
+                    or not isinstance(clearance, (int, float))
+                    or not math.isfinite(clearance)
+                    or clearance <= 0
+                ):
+                    raise ValueError(
+                        f"Interaction station '{station_id}' clearance_radius_m invalid"
+                    )
+            result[kind][station_id] = NpcInteractionCatalogEntry(
+                station_id, kind, roles, attributes
+            )
+            seen_ids.add(station_id)
+    seat_ids = set(result["seat"])
+    for station_id, workstation in result["workstation"].items():
+        seat_slot = workstation.attributes["seat_slot"]
+        if not isinstance(seat_slot, str) or seat_slot not in seat_ids:
+            raise ValueError(
+                f"Interaction station '{station_id}' seat_slot "
+                f"'{seat_slot}' is unbound or not a seat station"
+            )
+    return result
+
+
+@dataclass(frozen=True)
 class NpcDefinition:
     npc_id: str
     agent_id: str
@@ -361,6 +536,10 @@ class NpcPopulation:
     trajectory_profile: str | None = None
     dialogue_policy: dict[str, Any] | None = None
     interaction_templates: dict[str, NpcInteractionTemplate] | None = None
+    interaction_stations: dict[str, dict[str, NpcInteractionCatalogEntry]] | None = None
+    legacy_single_station: bool = False
+    spawn_policy: dict[str, Any] | None = None
+    schema_version: int = POPULATION_SCHEMA_VERSION
     source_path: Path | None = None
 
     @classmethod
@@ -373,11 +552,40 @@ class NpcPopulation:
         sites: set[str] | frozenset[str] | None = None,
     ) -> "NpcPopulation":
         version = payload.get("schema_version")
-        if version != POPULATION_SCHEMA_VERSION:
+        if version not in {POPULATION_SCHEMA_VERSION, POPULATION_SCHEMA_V3}:
             raise ValueError(
                 f"Unsupported NPC population schema_version {version!r}; "
-                f"expected {POPULATION_SCHEMA_VERSION}"
+                f"expected 2 or 3"
             )
+        if version == POPULATION_SCHEMA_V3:
+            required_v3_fields = {
+                "schema_version",
+                "scene",
+                "asset_manifest",
+                "clock",
+                "npcs",
+                "interaction_stations",
+            }
+            optional_v3_fields = {
+                "appearance_catalog",
+                "trajectory_profile",
+                "dialogue_policy",
+                "traffic_policy",
+                "interaction_capabilities",
+                "spawn_policy",
+            }
+            if "interaction_templates" in payload:
+                raise ValueError("Population v3 rejects legacy interaction_templates")
+            missing = required_v3_fields - set(payload)
+            unknown = set(payload) - required_v3_fields - optional_v3_fields
+            if missing:
+                raise ValueError(
+                    "Population v3 missing fields: " + ", ".join(sorted(missing))
+                )
+            if unknown:
+                raise ValueError(
+                    "Population v3 has unknown fields: " + ", ".join(sorted(unknown))
+                )
         _require_fields(payload, {"scene", "asset_manifest", "clock", "npcs"}, "Population")
         npc_payloads = _require_mapping(payload["npcs"], "Population npcs")
         if not npc_payloads:
@@ -424,6 +632,31 @@ class NpcPopulation:
                                 f"Interaction template '{template.kind}' has unknown site "
                                 f"'{station.site}'"
                             )
+        interaction_stations = None
+        legacy_single_station = False
+        if version == POPULATION_SCHEMA_V3:
+            if "interaction_stations" not in payload:
+                raise ValueError("Population v3 requires interaction_stations")
+            interaction_stations = _interaction_station_catalog(
+                payload["interaction_stations"], sites=sites
+            )
+        elif interaction_templates:
+            legacy_single_station = True
+            interaction_stations = {
+                "conversation": {},
+                "handover": {},
+                "seat": {},
+                "workstation": {},
+            }
+            for kind, template in interaction_templates.items():
+                interaction_stations[kind][f"legacy.{kind}.01"] = (
+                    NpcInteractionCatalogEntry(
+                        f"legacy.{kind}.01",
+                        kind,
+                        dict(template.roles),
+                        {"legacy_single_station": True, "production_evidence": False},
+                    )
+                )
         if appearance_catalog is not None:
             if source_path is None:
                 raise ValueError("Population appearance_catalog requires a source path")
@@ -443,6 +676,23 @@ class NpcPopulation:
                     catalog.validate_appearance_slots(
                         identity_id, definition.embodiment.appearance_config
                     )
+        spawn_policy = payload.get("spawn_policy") if version == POPULATION_SCHEMA_V3 else None
+        if version == POPULATION_SCHEMA_V3 and spawn_policy is not None:
+            if not isinstance(spawn_policy, Mapping):
+                raise ValueError("Population spawn_policy must be an object")
+            if set(spawn_policy) != {
+                "capacity",
+                "minimum_separation_m",
+                "allocation",
+                "anchors",
+            }:
+                raise ValueError("Population spawn_policy fields are not exact")
+            anchors = spawn_policy.get("anchors")
+            if not isinstance(anchors, list) or spawn_policy.get("capacity") != len(anchors):
+                raise ValueError("Population spawn_policy capacity mismatch")
+            if spawn_policy.get("allocation") != "exclusive":
+                raise ValueError("Population spawn_policy allocation must be exclusive")
+            spawn_policy = dict(spawn_policy)
         return cls(
             scene=str(payload["scene"]),
             asset_manifest=str(payload["asset_manifest"]),
@@ -452,6 +702,10 @@ class NpcPopulation:
             trajectory_profile=trajectory_profile,
             dialogue_policy=dialogue_policy,
             interaction_templates=interaction_templates,
+            interaction_stations=interaction_stations,
+            legacy_single_station=legacy_single_station,
+            spawn_policy=spawn_policy,
+            schema_version=int(version),
             source_path=source_path,
         )
 

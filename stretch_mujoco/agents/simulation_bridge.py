@@ -23,9 +23,12 @@ from stretch_mujoco.npc.schema import NpcInteractionTemplate
 from stretch_mujoco.npc.naming import interaction_site_name
 from stretch_mujoco.npc.trajectory_profile import NpcTrajectoryProfile
 from stretch_mujoco.semantics import InteractionRole, ObjectType, SemanticWorld
+from .interaction_stations import InteractionStationAllocator, SeatSlotAllocator
 
 
-def _desk_work_bindings(world: SemanticWorld) -> tuple[dict[str, str], dict[str, float]]:
+def _desk_work_bindings(
+    world: SemanticWorld,
+) -> tuple[dict[str, str], dict[str, float], dict[str, str]]:
     """Read portable desk affordances from semantic interaction points.
 
     A scene migration must make its chair/desk contract explicit.  Retaining a
@@ -34,6 +37,7 @@ def _desk_work_bindings(world: SemanticWorld) -> tuple[dict[str, str], dict[str,
     """
     location_sites: dict[str, str] = {}
     seat_yaws: dict[str, float] = {}
+    seat_ingress_sites: dict[str, str] = {}
     for semantic_object in world.objects_of_type(ObjectType.WORKSTATION):
         points = world.interaction_points_for(
             role=InteractionRole.DESK_WORK, owner=semantic_object.object_id
@@ -43,22 +47,35 @@ def _desk_work_bindings(world: SemanticWorld) -> tuple[dict[str, str], dict[str,
                 f"Workstation '{semantic_object.object_id}' requires exactly one desk_work_site"
             )
         location_sites[semantic_object.object_id] = points[0].site
-    for semantic_object in world.objects_of_type(ObjectType.CHAIR):
+    for semantic_object in (
+        *world.objects_of_type(ObjectType.CHAIR),
+        *world.objects_of_type(ObjectType.BED),
+        *world.objects_of_type(ObjectType.SEAT_SLOT),
+    ):
         points = world.interaction_points_for(
             role=InteractionRole.CHAIR_SIT, owner=semantic_object.object_id
         )
         if len(points) != 1:
             raise ValueError(
-                f"Chair '{semantic_object.object_id}' requires exactly one chair_sit_site"
+                f"Seatable '{semantic_object.object_id}' requires exactly one chair_sit_site"
             )
         yaw = points[0].attributes.get("yaw")
         if not isinstance(yaw, (int, float)) or isinstance(yaw, bool) or not math.isfinite(yaw):
             raise ValueError(
-                f"Chair '{semantic_object.object_id}' chair_sit_site requires a finite yaw"
+                f"Seatable '{semantic_object.object_id}' chair_sit_site requires a finite yaw"
             )
         location_sites[semantic_object.object_id] = points[0].site
         seat_yaws[semantic_object.object_id] = float(yaw)
-    return location_sites, seat_yaws
+        if semantic_object.object_type == ObjectType.SEAT_SLOT:
+            ingress = world.interaction_points_for(
+                role=InteractionRole.SEAT_INGRESS, owner=semantic_object.object_id
+            )
+            if len(ingress) != 1:
+                raise ValueError(
+                    f"SeatSlot '{semantic_object.object_id}' requires exactly one seat_ingress_site"
+                )
+            seat_ingress_sites[semantic_object.object_id] = ingress[0].site
+    return location_sites, seat_yaws, seat_ingress_sites
 
 
 def _semantic_action_bindings(world: SemanticWorld) -> dict[str, dict]:
@@ -71,9 +88,18 @@ def _semantic_action_bindings(world: SemanticWorld) -> dict[str, dict]:
     result = {
         name: {}
         for name in (
-            "location", "seat_navigation", "placement", "object_approach", "robot_request",
-            "handover", "handover_roles", "handover_role_yaws", "conversation_roles",
-            "conversation_yaws", "yaws",
+            "location",
+            "seat_navigation",
+            "placement",
+            "object_approach",
+            "robot_request",
+            "handover",
+            "handover_roles",
+            "handover_role_yaws",
+            "conversation_roles",
+            "conversation_yaws",
+            "location_slots",
+            "yaws",
         )
     }
     for point in world.interaction_points.values():
@@ -90,13 +116,19 @@ def _semantic_action_bindings(world: SemanticWorld) -> dict[str, dict]:
                     f"Interaction point '{point.point_id}' role binding requires two participants"
                 )
             if participant not in participants:
-                raise ValueError(f"Interaction point '{point.point_id}' role binding requires participant")
+                raise ValueError(
+                    f"Interaction point '{point.point_id}' role binding requires participant"
+                )
             pair = tuple(participants)
             role_key = "handover_roles" if binding == "handover_role" else "conversation_roles"
             result[role_key].setdefault(pair, {})[participant] = point.site
             yaw = point.attributes.get("yaw")
             if yaw is not None:
-                if isinstance(yaw, bool) or not isinstance(yaw, (int, float)) or not math.isfinite(yaw):
+                if (
+                    isinstance(yaw, bool)
+                    or not isinstance(yaw, (int, float))
+                    or not math.isfinite(yaw)
+                ):
                     raise ValueError(f"Interaction point '{point.point_id}' has invalid yaw")
                 if binding == "conversation_role":
                     result["conversation_yaws"][point.site] = float(yaw)
@@ -108,7 +140,29 @@ def _semantic_action_bindings(world: SemanticWorld) -> dict[str, dict]:
         target = point.attributes.get("target", point.owner)
         if not isinstance(target, str) or not target:
             raise ValueError(f"Interaction point '{point.point_id}' binding requires string target")
-        result[binding][target] = point.site
+        if binding == "location":
+            slot_id = point.attributes.get("slot_id")
+            if slot_id is None:
+                if target in result["location_slots"]:
+                    raise ValueError(
+                        f"Location '{target}' mixes legacy location binding with slot bindings"
+                    )
+                result["location"][target] = point.site
+            else:
+                if not isinstance(slot_id, str) or not slot_id:
+                    raise ValueError(
+                        f"Interaction point '{point.point_id}' location slot_id must be a non-empty string"
+                    )
+                if target in result["location"]:
+                    raise ValueError(
+                        f"Location '{target}' mixes legacy location binding with slot bindings"
+                    )
+                slots = result["location_slots"].setdefault(target, {})
+                if slot_id in slots:
+                    raise ValueError(f"Location '{target}' declares duplicate slot_id '{slot_id}'")
+                slots[slot_id] = point.site
+        else:
+            result[binding][target] = point.site
         yaw = point.attributes.get("yaw")
         if yaw is not None:
             if isinstance(yaw, bool) or not isinstance(yaw, (int, float)) or not math.isfinite(yaw):
@@ -125,6 +179,7 @@ def create_mujoco_action_driver(
     agent_locations: dict[str, str] | None = None,
     world: SemanticWorld | None = None,
     interaction_templates: dict[str, NpcInteractionTemplate] | None = None,
+    interaction_station_allocator: InteractionStationAllocator | None = None,
 ) -> MujocoNpcActionDriver:
     roster_ids = None if npc_ids is None else tuple(sorted(set(npc_ids)))
     handover_sites = OFFICE_HANDOVER_SITES
@@ -196,7 +251,9 @@ def create_mujoco_action_driver(
                         interaction_yaws.setdefault(first, giver.yaw)
                     if receiver.yaw is not None:
                         interaction_yaws.setdefault(second, receiver.yaw)
-                    giver_yaw = giver.yaw if giver.yaw is not None else interaction_yaws.get(first, 0.0)
+                    giver_yaw = (
+                        giver.yaw if giver.yaw is not None else interaction_yaws.get(first, 0.0)
+                    )
                     receiver_yaw = (
                         receiver.yaw
                         if receiver.yaw is not None
@@ -205,9 +262,11 @@ def create_mujoco_action_driver(
                     handover_role_yaws[(first, second)] = (giver_yaw, receiver_yaw)
     cue_sites = (
         {
-            npc_id: (interaction_templates or {}).get("handover", None).roles["giver"].site
-            if (interaction_templates or {}).get("handover") is not None
-            else "npc_handover_giver_stand_site"
+            npc_id: (
+                (interaction_templates or {}).get("handover", None).roles["giver"].site
+                if (interaction_templates or {}).get("handover") is not None
+                else "npc_handover_giver_stand_site"
+            )
             for npc_id in roster_ids
         }
         if roster_ids is not None
@@ -216,7 +275,7 @@ def create_mujoco_action_driver(
     location_sites = dict(OFFICE_LOCATION_SITES)
     seat_yaws = dict(OFFICE_SEAT_YAWS)
     if world is not None:
-        scene_sites, scene_seat_yaws = _desk_work_bindings(world)
+        scene_sites, scene_seat_yaws, scene_seat_ingress = _desk_work_bindings(world)
         location_sites.update(scene_sites)
         seat_yaws.update(scene_seat_yaws)
         bindings = _semantic_action_bindings(world)
@@ -235,8 +294,10 @@ def create_mujoco_action_driver(
                 "handover_role_yaws",
                 "conversation_roles",
                 "conversation_yaws",
+                "location_slots",
             )
         }
+        scene_seat_ingress = {}
     for pair, participant_sites in bindings["handover_roles"].items():
         if set(pair) == set(participant_sites):
             handover_role_sites[pair] = (participant_sites[pair[0]], participant_sites[pair[1]])
@@ -267,11 +328,23 @@ def create_mujoco_action_driver(
         handover_role_yaws=handover_role_yaws,
         conversation_role_sites=conversation_role_sites,
         conversation_site_yaws=conversation_site_yaws,
+        interaction_station_allocator=interaction_station_allocator,
+        seat_slot_allocator=(
+            SeatSlotAllocator(interaction_station_allocator.catalog)
+            if interaction_station_allocator is not None
+            else None
+        ),
+        seat_verifier=getattr(simulator, "verify_seat_contact", None),
         cue_sites=cue_sites,
         seat_yaws=seat_yaws,
-        seat_navigation_sites={**OFFICE_SEAT_NAVIGATION_SITES, **bindings["seat_navigation"]},
+        seat_navigation_sites={
+            **OFFICE_SEAT_NAVIGATION_SITES,
+            **scene_seat_ingress,
+            **bindings["seat_navigation"],
+        },
         interaction_yaws=interaction_yaws,
         robot_request_sites={**OFFICE_ROBOT_REQUEST_SITES, **bindings["robot_request"]},
+        location_slot_sites=bindings["location_slots"],
         available_clips=set(OFFICE_CLIPS),
         trajectory_profile=trajectory_profile,
         agent_locations=agent_locations,

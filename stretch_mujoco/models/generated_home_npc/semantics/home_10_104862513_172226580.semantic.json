@@ -1,0 +1,169 @@
+{
+  "interaction_points": {
+    "bed_01_approach": {
+      "attributes": {
+        "binding": "seat_navigation",
+        "target": "bed_01"
+      },
+      "owner": "bed_01",
+      "role": "human_stand_site",
+      "site": "npc_home_bed_01_approach_site"
+    },
+    "bed_01_sit": {
+      "attributes": {
+        "binding": "location",
+        "seat_type": "bed",
+        "target": "bed_01",
+        "yaw": 3.141592653589793
+      },
+      "owner": "bed_01",
+      "role": "chair_sit_site",
+      "site": "npc_home_bed_01_sit_site"
+    },
+    "bed_02_approach": {
+      "attributes": {
+        "binding": "seat_navigation",
+        "target": "bed_02"
+      },
+      "owner": "bed_02",
+      "role": "human_stand_site",
+      "site": "npc_home_bed_02_approach_site"
+    },
+    "bed_02_sit": {
+      "attributes": {
+        "binding": "location",
+        "seat_type": "bed",
+        "target": "bed_02",
+        "yaw": 3.141592653589793
+      },
+      "owner": "bed_02",
+      "role": "chair_sit_site",
+      "site": "npc_home_bed_02_sit_site"
+    },
+    "bed_03_approach": {
+      "attributes": {
+        "binding": "seat_navigation",
+        "target": "bed_03"
+      },
+      "owner": "bed_03",
+      "role": "human_stand_site",
+      "site": "npc_home_bed_03_approach_site"
+    },
+    "bed_03_sit": {
+      "attributes": {
+        "binding": "location",
+        "seat_type": "bed",
+        "target": "bed_03",
+        "yaw": 1.5707963267948966
+      },
+      "owner": "bed_03",
+      "role": "chair_sit_site",
+      "site": "npc_home_bed_03_sit_site"
+    },
+    "home_activity": {
+      "attributes": {
+        "binding": "location",
+        "target": "home",
+        "usage": "activity",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "activity_area"
+    },
+    "home_spawn_npc_alex_chen": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_alex_chen",
+        "slot_id": "alex_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "alex_spawn"
+    },
+    "home_spawn_npc_jordan_patell": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_jordan_patell",
+        "slot_id": "jordan_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "jordan_spawn"
+    },
+    "home_spawn_npc_morgan_lee": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_morgan_lee",
+        "slot_id": "morgan_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "morgan_spawn"
+    }
+  },
+  "objects": {
+    "bed_01": {
+      "attributes": {
+        "capacity": 1,
+        "furniture_kind": "bed",
+        "region": "home",
+        "semantic_name": "Pearson Upholstered 57'' Queen Gallery Storage Bed, Ebony"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_010"
+      },
+      "type": "Bed"
+    },
+    "bed_02": {
+      "attributes": {
+        "capacity": 1,
+        "furniture_kind": "bed",
+        "region": "home",
+        "semantic_name": "Martin Cabin Bed with Comfort Mattress"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_013"
+      },
+      "type": "Bed"
+    },
+    "bed_03": {
+      "attributes": {
+        "capacity": 1,
+        "furniture_kind": "bed",
+        "region": "home",
+        "semantic_name": "Jessica Single Cabin Bed - Frame Only."
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_041"
+      },
+      "type": "Bed"
+    },
+    "home": {
+      "attributes": {
+        "capacity": 3,
+        "region": "home"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "activity_area"
+      },
+      "type": "Counter"
+    }
+  },
+  "relations": [],
+  "scene": "home_10_104862513_172226580_npc.xml",
+  "schema_version": 1
+}

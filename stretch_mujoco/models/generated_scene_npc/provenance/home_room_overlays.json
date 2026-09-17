@@ -1,0 +1,734 @@
+{
+  "agent_radius": 0.16,
+  "clearance": 0.0,
+  "method": "single_room_hint_medoid_projected_to_primary_component",
+  "resolution": 0.06,
+  "scenes": {
+    "home_01_102344115": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_035",
+        "anchor_position": [
+          -4.78095,
+          1.1552999
+        ],
+        "candidate_object_count": 5,
+        "component_id": 0,
+        "registered_seed": [
+          -4.79639975,
+          0.75079998,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_012",
+        "anchor_position": [
+          -2.2995946,
+          6.2492294
+        ],
+        "candidate_object_count": 1,
+        "component_id": 0,
+        "registered_seed": [
+          -3.17639975,
+          6.27079998,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_014",
+        "anchor_position": [
+          -4.9095201,
+          1.8380898
+        ],
+        "candidate_object_count": 4,
+        "component_id": 0,
+        "registered_seed": [
+          -4.91639975,
+          2.31079998,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_024",
+        "anchor_position": [
+          -3.749185,
+          5.9800395
+        ],
+        "candidate_object_count": 3,
+        "component_id": 0,
+        "registered_seed": [
+          -4.19639975,
+          5.97079998,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_031",
+        "anchor_position": [
+          -1.8957501,
+          3.1119999
+        ],
+        "candidate_object_count": 1,
+        "component_id": 0,
+        "registered_seed": [
+          -2.39639975,
+          2.55079998,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    },
+    "home_02_103997919_171031233": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_049",
+        "anchor_position": [
+          -2.0312299728393555,
+          1.0174199928390948
+        ],
+        "candidate_object_count": 6,
+        "component_id": 0,
+        "registered_seed": [
+          -2.05100079,
+          0.99900005,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_043",
+        "anchor_position": [
+          -4.775000095367432,
+          -1.4679999668598143
+        ],
+        "candidate_object_count": 5,
+        "component_id": 0,
+        "registered_seed": [
+          -4.39100079,
+          -1.46099995,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_013",
+        "anchor_position": [
+          -0.8100000023841858,
+          8.171999382078653
+        ],
+        "candidate_object_count": 3,
+        "component_id": 0,
+        "registered_seed": [
+          -0.79100079,
+          7.77900005,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_002",
+        "anchor_position": [
+          -6.203000068664551,
+          6.8579993928671
+        ],
+        "candidate_object_count": 6,
+        "component_id": 0,
+        "registered_seed": [
+          -6.19100079,
+          6.33900005,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_025",
+        "anchor_position": [
+          -7.335650444030762,
+          3.7099998170137383
+        ],
+        "candidate_object_count": 2,
+        "component_id": 0,
+        "registered_seed": [
+          -6.91100079,
+          3.21900005,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    },
+    "home_03_107734119_175999932": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_030",
+        "anchor_position": [
+          -0.8490000367164612,
+          7.454999479353432
+        ],
+        "candidate_object_count": 5,
+        "component_id": 0,
+        "registered_seed": [
+          -0.83500084,
+          7.13499994,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_046",
+        "anchor_position": [
+          -2.049999952316284,
+          2.366000034451474
+        ],
+        "candidate_object_count": 1,
+        "component_id": 0,
+        "registered_seed": [
+          -2.45500084,
+          2.39499994,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_048",
+        "anchor_position": [
+          -5.505000114440918,
+          4.122999422371407
+        ],
+        "candidate_object_count": 5,
+        "component_id": 0,
+        "registered_seed": [
+          -5.99500084,
+          4.13499994,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_006",
+        "anchor_position": [
+          -2.2170000076293945,
+          9.15199988174436
+        ],
+        "candidate_object_count": 5,
+        "component_id": 0,
+        "registered_seed": [
+          -2.39500084,
+          9.17499994,
+          0.025
+        ],
+        "source_hint": "living room"
+      }
+    },
+    "home_04_103997970_171031287": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_053",
+        "anchor_position": [
+          -9.579230308532715,
+          -3.894529825775024
+        ],
+        "candidate_object_count": 6,
+        "component_id": 0,
+        "registered_seed": [
+          -9.22836436,
+          -3.89392691,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_043",
+        "anchor_position": [
+          -4.577340126037598,
+          -0.48848995634973136
+        ],
+        "candidate_object_count": 3,
+        "component_id": 0,
+        "registered_seed": [
+          -5.74836436,
+          -0.47392691,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_001",
+        "anchor_position": [
+          -5.235159873962402,
+          6.449459645184277
+        ],
+        "candidate_object_count": 2,
+        "component_id": 0,
+        "registered_seed": [
+          -5.20836436,
+          5.94607309,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_008",
+        "anchor_position": [
+          -9.060185432434082,
+          0.7144098738187559
+        ],
+        "candidate_object_count": 16,
+        "component_id": 0,
+        "registered_seed": [
+          -8.62836436,
+          0.72607309,
+          0.025
+        ],
+        "source_hint": "living room"
+      }
+    },
+    "home_05_102344094": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_027",
+        "anchor_position": [
+          -8.8236598,
+          -0.75725
+        ],
+        "candidate_object_count": 10,
+        "component_id": 1,
+        "registered_seed": [
+          -8.81057999,
+          -0.74921992,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_029",
+        "anchor_position": [
+          -11.5697202,
+          1.7449798
+        ],
+        "candidate_object_count": 6,
+        "component_id": 1,
+        "registered_seed": [
+          -11.21057999,
+          2.01078008,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_084",
+        "anchor_position": [
+          -6.6941151,
+          -2.0192196
+        ],
+        "candidate_object_count": 19,
+        "component_id": 1,
+        "registered_seed": [
+          -6.71057999,
+          -1.52921992,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_001",
+        "anchor_position": [
+          -6.5417604,
+          2.8694796
+        ],
+        "candidate_object_count": 13,
+        "component_id": 1,
+        "registered_seed": [
+          -6.05057999,
+          2.85078008,
+          0.025
+        ],
+        "source_hint": "living room"
+      }
+    },
+    "home_06_104348082_171512994": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_107",
+        "anchor_position": [
+          -3.3639545,
+          6.7032575
+        ],
+        "candidate_object_count": 17,
+        "component_id": 0,
+        "registered_seed": [
+          -3.39072994,
+          7.21841997,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_079",
+        "anchor_position": [
+          -1.30227,
+          3.7996559
+        ],
+        "candidate_object_count": 10,
+        "component_id": 0,
+        "registered_seed": [
+          -1.29072994,
+          3.31841997,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_067",
+        "anchor_position": [
+          -3.9328,
+          2.5211896
+        ],
+        "candidate_object_count": 6,
+        "component_id": 0,
+        "registered_seed": [
+          -3.69072994,
+          3.19841997,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_086",
+        "anchor_position": [
+          -8.7310009,
+          4.5415706
+        ],
+        "candidate_object_count": 3,
+        "component_id": 0,
+        "registered_seed": [
+          -8.43072994,
+          6.37841997,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_073",
+        "anchor_position": [
+          -8.5006303,
+          1.102212
+        ],
+        "candidate_object_count": 6,
+        "component_id": 0,
+        "registered_seed": [
+          -8.49072994,
+          0.55841997,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    },
+    "home_07_104348463_171513588": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_002",
+        "anchor_position": [
+          -4.9330501,
+          7.2975392
+        ],
+        "candidate_object_count": 4,
+        "component_id": 0,
+        "registered_seed": [
+          -5.64841946,
+          7.3284184,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_027",
+        "anchor_position": [
+          -6.1633396,
+          11.3382196
+        ],
+        "candidate_object_count": 3,
+        "component_id": 0,
+        "registered_seed": [
+          -7.32841946,
+          11.3484184,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_031",
+        "anchor_position": [
+          -2.7361402,
+          2.3512098
+        ],
+        "candidate_object_count": 9,
+        "component_id": 0,
+        "registered_seed": [
+          -3.72841946,
+          2.3484184,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_045",
+        "anchor_position": [
+          -7.9842309,
+          1.5294386
+        ],
+        "candidate_object_count": 15,
+        "component_id": 0,
+        "registered_seed": [
+          -7.98841946,
+          2.0484184,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_048",
+        "anchor_position": [
+          -11.4398097,
+          10.2842283
+        ],
+        "candidate_object_count": 4,
+        "component_id": 0,
+        "registered_seed": [
+          -11.94841946,
+          10.3884184,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    },
+    "home_08_102344193": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_005",
+        "anchor_position": [
+          2.0702099,
+          7.8977594
+        ],
+        "candidate_object_count": 8,
+        "component_id": 0,
+        "registered_seed": [
+          2.07999973,
+          7.88889996,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_028",
+        "anchor_position": [
+          0.3286899,
+          1.7441798
+        ],
+        "candidate_object_count": 4,
+        "component_id": 0,
+        "registered_seed": [
+          1.47999973,
+          1.76889996,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_015",
+        "anchor_position": [
+          -2.9401597,
+          1.33885
+        ],
+        "candidate_object_count": 7,
+        "component_id": 0,
+        "registered_seed": [
+          -2.96000027,
+          1.82889996,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_019",
+        "anchor_position": [
+          -6.9617052,
+          3.9309346
+        ],
+        "candidate_object_count": 12,
+        "component_id": 0,
+        "registered_seed": [
+          -6.38000027,
+          3.92889996,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_031",
+        "anchor_position": [
+          3.12419,
+          2.4333996
+        ],
+        "candidate_object_count": 3,
+        "component_id": 0,
+        "registered_seed": [
+          2.67999973,
+          2.00889996,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    },
+    "home_09_107734110_175999914": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_046",
+        "anchor_position": [
+          -8.250563621520996,
+          5.746642723879631
+        ],
+        "candidate_object_count": 3,
+        "component_id": 1,
+        "registered_seed": [
+          -8.23956261,
+          5.56064312,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_034",
+        "anchor_position": [
+          -9.097563743591309,
+          1.4186431516025522
+        ],
+        "candidate_object_count": 2,
+        "component_id": 1,
+        "registered_seed": [
+          -10.09956261,
+          1.42064312,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_036",
+        "anchor_position": [
+          -11.33906364440918,
+          10.743642062327694
+        ],
+        "candidate_object_count": 10,
+        "component_id": 1,
+        "registered_seed": [
+          -10.57956261,
+          10.72064312,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_029",
+        "anchor_position": [
+          -4.327249050140381,
+          9.61866035350198
+        ],
+        "candidate_object_count": 8,
+        "component_id": 1,
+        "registered_seed": [
+          -5.23956261,
+          9.64064312,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_041",
+        "anchor_position": [
+          -1.5975631475448608,
+          1.2506430595729867
+        ],
+        "candidate_object_count": 5,
+        "component_id": 1,
+        "registered_seed": [
+          -1.57956261,
+          2.38064312,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    },
+    "home_10_104862513_172226580": {
+      "room.bathroom": {
+        "anchor_object": "hssd_object_051",
+        "anchor_position": [
+          -5.800560474395752,
+          -3.743029848156567
+        ],
+        "candidate_object_count": 16,
+        "component_id": 0,
+        "registered_seed": [
+          -5.38999962,
+          -3.731529942,
+          0.025
+        ],
+        "source_hint": "bathroom"
+      },
+      "room.bedroom": {
+        "anchor_object": "hssd_object_083",
+        "anchor_position": [
+          -0.7486400008201599,
+          -2.9045298752468796
+        ],
+        "candidate_object_count": 10,
+        "component_id": 0,
+        "registered_seed": [
+          -1.12999962,
+          -2.891529942,
+          0.025
+        ],
+        "source_hint": "bedroom"
+      },
+      "room.kitchen": {
+        "anchor_object": "hssd_object_022",
+        "anchor_position": [
+          4.4492998123168945,
+          3.5130796722722124
+        ],
+        "candidate_object_count": 4,
+        "component_id": 0,
+        "registered_seed": [
+          4.45000038,
+          4.188470058,
+          0.025
+        ],
+        "source_hint": "kitchen"
+      },
+      "room.living_room": {
+        "anchor_object": "hssd_object_072",
+        "anchor_position": [
+          -2.712849782775885,
+          2.8225516610795034
+        ],
+        "candidate_object_count": 40,
+        "component_id": 0,
+        "registered_seed": [
+          -2.14999962,
+          2.868470058,
+          0.025
+        ],
+        "source_hint": "living room"
+      },
+      "room.office": {
+        "anchor_object": "hssd_object_094",
+        "anchor_position": [
+          -2.957210352791553,
+          1.5927012794276014
+        ],
+        "candidate_object_count": 11,
+        "component_id": 0,
+        "registered_seed": [
+          -3.52999962,
+          1.908470058,
+          0.025
+        ],
+        "source_hint": "office"
+      }
+    }
+  },
+  "schema_version": 1
+}

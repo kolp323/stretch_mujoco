@@ -1,0 +1,25 @@
+{
+  "configs": [
+    "office/office_01_linear_bench.json",
+    "office/office_02_cross_axis.json",
+    "office/office_03_long_gallery.json",
+    "office/office_04_central_meeting.json",
+    "office/office_05_team_clusters.json",
+    "office/office_06_diagonal_flow.json",
+    "office/office_07_u_bench.json",
+    "office/office_08_dual_island.json",
+    "office/office_09_staggered_rows.json",
+    "office/office_10_social_core.json",
+    "home/home_01_102344115.json",
+    "home/home_02_103997919_171031233.json",
+    "home/home_03_107734119_175999932.json",
+    "home/home_04_103997970_171031287.json",
+    "home/home_05_102344094.json",
+    "home/home_06_104348082_171512994.json",
+    "home/home_07_104348463_171513588.json",
+    "home/home_08_102344193.json",
+    "home/home_09_107734110_175999914.json",
+    "home/home_10_104862513_172226580.json"
+  ],
+  "schema_version": 1
+}

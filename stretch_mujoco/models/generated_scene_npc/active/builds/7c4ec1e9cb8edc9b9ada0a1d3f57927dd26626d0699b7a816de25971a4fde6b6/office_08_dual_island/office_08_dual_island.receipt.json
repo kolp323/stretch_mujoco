@@ -1,0 +1,18 @@
+{
+  "generator": "stretch_mujoco.npc.scene_compiler",
+  "scene_id": "office_08_dual_island",
+  "schema_version": 1,
+  "sha256": {
+    "coverage": "3f9017f7333a305f0d286aad44ffb2d3273753073b01c3f2c2b78b513f4e7e11",
+    "generated_scene": "ce6d41c96bcb95b859b0f477facf294f80bed9e721ef49e221ed04d7133aecbe",
+    "npc_catalog": "0fcb40363a246edc17c8526f085ad07e98cf0342ce12d86d2e86b5dd7c982284",
+    "population": "54dc4d97defc78d17a175aee8657fc30decc2c121b907d7cd1e26662895bf67d",
+    "scene_config": "40139b759a20d98160a991afecb7a1a24542e92a8b1934145036563acd3a107d",
+    "semantic_policy": "560475e4e4947c25c480e123fecc06b72c84a8733bbabd776e2a8e20fe6677e8",
+    "semantic_v1": "2b7c91081a6b78021df561de64bfc728433dece18edd1089123d14ad6453d96e",
+    "semantic_v2": "d989104d098aa4d71abba9c1005ee802471616675694fed1dea50a0da464b87a",
+    "source_manifest": "cef21f2078f9fcabaeeece409d3a4e7ccc07466a751347648ff7f1f7db2aa6ce",
+    "source_mjcf": "a89107ff700ccff69e04214775d6f73b1a4b7217a9e6a7b86e0fda345896bfbc",
+    "trajectory_profile": "3231361755a09aa75ec79e6d9929f4d032cafd4742df0e430768d81315feaa1b"
+  }
+}

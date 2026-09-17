@@ -1,0 +1,11 @@
+{
+  "schema": "scene_npc_config/v1",
+  "scene": {"id": "minimal_scene", "kind": "office", "source_mjcf": "minimal_scene.xml", "source_manifest": "minimal_scene.manifest.json", "semantic_policy": "../../semantic_policies/fixture.json", "npc_catalog": "../../office_population.production.example.json", "navigation": {"surface": "office_floor", "planner": "collision_geometry_v1", "agent_radius": 0.2, "clearance": 0.05}},
+  "semantic_registration": {"strict_coverage": true, "discover": {"manifest_assets": true, "manifest_zones": true, "xml_semantic_sites": true}, "region_overrides": {}, "entity_overrides": {}, "custom_targets": {}},
+  "population": {"members": [{"npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01", "initial_region": "zone.work"}]},
+  "route_coverage": {"origins": "all_population_spawns", "targets": "all_required_navigation_points", "connectivity": "strongly_connected", "preflight": "required"},
+  "routes": [],
+  "traffic": {"policy": "sequential_route_reservation", "dynamic_obstacles": true, "on_block": "wait_then_replan", "max_wait_s": 12.0, "reservation_horizon_s": 30.0, "no_direct_fallback": true},
+  "interactions": {"conversation": {"status": "unsupported", "reason": "fixture_has_no_conversation_sites"}, "robot_handover": {"status": "unsupported", "reason": "fixture_has_no_handover_object_or_robot_approach"}},
+  "runtime": {"max_replans": 3, "route_failure": "fail"}
+}

@@ -1,0 +1,382 @@
+{
+  "interaction_points": {
+    "point.home.activity_area": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__home__activity_area"
+    },
+    "point.home.alex_spawn": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__home__alex_spawn"
+    },
+    "point.home.jordan_spawn": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__home__jordan_spawn"
+    },
+    "point.home.morgan_spawn": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__home__morgan_spawn"
+    },
+    "point.object.hssd_object_002.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_002"
+      },
+      "owner": "object.hssd_object_002",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_002__approach__01"
+    },
+    "point.object.hssd_object_003.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_003"
+      },
+      "owner": "object.hssd_object_003",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_003__approach__01"
+    },
+    "point.object.hssd_object_006.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_006"
+      },
+      "owner": "object.hssd_object_006",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_006__approach__01"
+    },
+    "point.object.hssd_object_008.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_008"
+      },
+      "owner": "object.hssd_object_008",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_008__approach__01"
+    },
+    "point.object.hssd_object_009.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_009"
+      },
+      "owner": "object.hssd_object_009",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_009__approach__01"
+    },
+    "point.object.hssd_object_014.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_014"
+      },
+      "owner": "object.hssd_object_014",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_014__approach__01"
+    },
+    "point.object.hssd_object_019.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_019"
+      },
+      "owner": "object.hssd_object_019",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_019__approach__01"
+    },
+    "point.object.hssd_object_020.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_020"
+      },
+      "owner": "object.hssd_object_020",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_020__approach__01"
+    },
+    "point.object.hssd_object_021.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_021"
+      },
+      "owner": "object.hssd_object_021",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_021__approach__01"
+    },
+    "point.object.hssd_object_025.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_025"
+      },
+      "owner": "object.hssd_object_025",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_025__approach__01"
+    },
+    "point.object.hssd_object_026.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_026"
+      },
+      "owner": "object.hssd_object_026",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_026__approach__01"
+    },
+    "point.object.hssd_object_036.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.hssd_object_036"
+      },
+      "owner": "object.hssd_object_036",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__object__hssd_object_036__approach__01"
+    },
+    "point.spawn.anchor.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__01"
+    },
+    "point.spawn.anchor.02": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__02"
+    },
+    "point.spawn.anchor.03": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__03"
+    },
+    "point.spawn.anchor.04": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__04"
+    },
+    "point.spawn.anchor.05": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__05"
+    },
+    "point.spawn.anchor.06": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__06"
+    },
+    "point.spawn.anchor.07": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__07"
+    },
+    "point.spawn.anchor.08": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__08"
+    },
+    "point.spawn.anchor.09": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__09"
+    },
+    "point.spawn.anchor.10": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__spawn__anchor__10"
+    },
+    "point.zone.home.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "zone.home"
+      },
+      "owner": "zone.home",
+      "role": "human_stand_site",
+      "site": "npc__home_01_102344115__point__zone__home__approach__01"
+    }
+  },
+  "objects": {
+    "object.hssd_object_002": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_002"
+      },
+      "type": "Chair"
+    },
+    "object.hssd_object_003": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_003"
+      },
+      "type": "StorageCabinet"
+    },
+    "object.hssd_object_006": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_006"
+      },
+      "type": "Chair"
+    },
+    "object.hssd_object_008": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_008"
+      },
+      "type": "StorageCabinet"
+    },
+    "object.hssd_object_009": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_009"
+      },
+      "type": "StorageCabinet"
+    },
+    "object.hssd_object_014": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_014"
+      },
+      "type": "StorageCabinet"
+    },
+    "object.hssd_object_019": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_019"
+      },
+      "type": "Chair"
+    },
+    "object.hssd_object_020": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_020"
+      },
+      "type": "Chair"
+    },
+    "object.hssd_object_021": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_021"
+      },
+      "type": "Chair"
+    },
+    "object.hssd_object_025": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_025"
+      },
+      "type": "StorageCabinet"
+    },
+    "object.hssd_object_026": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_026"
+      },
+      "type": "StorageCabinet"
+    },
+    "object.hssd_object_036": {
+      "attributes": {
+        "semantic_class": "furniture.storage"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "hssd_object_036"
+      },
+      "type": "StorageCabinet"
+    },
+    "zone.home": {
+      "attributes": {
+        "semantic_class": "region.home"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "zone_home_center"
+      },
+      "type": "Counter"
+    }
+  },
+  "relations": [],
+  "scene": "home_01_102344115.xml",
+  "schema_version": 1
+}

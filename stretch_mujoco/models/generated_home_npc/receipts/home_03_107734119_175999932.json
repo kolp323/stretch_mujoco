@@ -1,0 +1,102 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -4.489994366652876,
+        5.295006573651836
+      ],
+      "bounds_z": [
+        8.761537414771458e-08,
+        1.3499961348625014
+      ],
+      "object_id": "hssd_object_003",
+      "semantic_name": "Ivy League Integrated Cabin Bed System",
+      "sit": [
+        -4.489994366652876,
+        4.845006573651837
+      ],
+      "yaw": 3.141592653589793
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_03_107734119_175999932_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "9dcae7850f7b127059e674487a052b93d5508c7fd4480b03c15410e43ea1a154",
+    "population": "9897e9bd5d729a535d4353d99fb5bbc53d89584d107e4ca648b540c18eab9661",
+    "semantic": "98ad162a900806a5c0a6fc92891667cf6a555a2eba2cc98cf3988ef40be2c23d",
+    "source_scene": "37e82695df6f1e9548ceb24351f44366fe69f60b3bd8d155e7e4db8c12c4fba8"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -1.720555728,
+        4.78666683,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -5.59166722,
+        6.023333589,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -2.688333601,
+        5.40500021,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -3.172222537,
+        6.023333589,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_03_107734119_175999932.xml"
+}

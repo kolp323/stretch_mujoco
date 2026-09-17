@@ -138,6 +138,12 @@ OFFICE_CLIPS: dict[str, ClipDefinition] = {
         loop=False,
         markers=(("gesture_wave_complete", 0.932),),
     ),
+    # CMU/BABEL sequence 3182 is a complete right-point gesture.  It is a
+    # foot-locked full-body mesh sequence, not a runtime upper-body overlay.
+    "gesture_point": ClipDefinition(
+        loop=False,
+        markers=(("gesture_point_complete", 0.9),),
+    ),
 }
 
 # ``NpcSystem.from_model`` remains a fixture/legacy-scene entry point. These

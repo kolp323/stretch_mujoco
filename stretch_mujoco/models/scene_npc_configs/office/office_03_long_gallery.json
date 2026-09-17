@@ -1,0 +1,255 @@
+{
+  "interaction_plan": {
+    "path": "../../scene_interaction_plans/office/office_03_long_gallery.json",
+    "required_capabilities": [
+      "conversation",
+      "handover",
+      "sit",
+      "work"
+    ]
+  },
+  "population": {
+    "members": [
+      {
+        "initial_region": "zone.work",
+        "npc": "npc_alex_chen",
+        "spawn": "point.zone.work.approach.01"
+      },
+      {
+        "initial_region": "zone.lounge",
+        "npc": "npc_morgan_lee",
+        "spawn": "point.zone.lounge.approach.01"
+      }
+    ]
+  },
+  "robot_navigation": {
+    "clearance": 0.08,
+    "footprint_radius": 0.32,
+    "resolution": 0.08
+  },
+  "route_coverage": {
+    "connectivity": "strongly_connected",
+    "origins": "all_population_spawns",
+    "preflight": "required",
+    "targets": "all_required_navigation_points"
+  },
+  "routes": [
+    {
+      "actions": [
+        "move_to",
+        "attend_meeting"
+      ],
+      "from": "zone.work",
+      "id": "work_to_meeting",
+      "mode": "fixed_contract",
+      "to": "zone.meeting"
+    },
+    {
+      "actions": [
+        "move_to",
+        "take_break"
+      ],
+      "from": "zone.meeting",
+      "id": "meeting_to_snack",
+      "mode": "audited_dynamic",
+      "to": "zone.snack"
+    }
+  ],
+  "runtime": {
+    "max_replans": 3,
+    "route_failure": "fail"
+  },
+  "scene": {
+    "id": "office_03_long_gallery",
+    "kind": "office",
+    "navigation": {
+      "agent_radius": 0.16,
+      "clearance": 0.06,
+      "planner": "collision_geometry_v1",
+      "resolution": 0.08,
+      "surface": "office_floor"
+    },
+    "npc_catalog": "../../office_population.production.example.json",
+    "semantic_policy": "../../semantic_policies/office.json",
+    "source_manifest": "../../assets/office_scenes/office_03_long_gallery.json",
+    "source_mjcf": "../../assets/office_scenes/office_03_long_gallery.xml"
+  },
+  "schema": "scene_npc_config/v2",
+  "semantic_registration": {
+    "custom_targets": {
+      "point.spawn.anchor.01": {
+        "owner": "zone.work",
+        "position": [
+          10.2,
+          4.66,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.02": {
+        "owner": "zone.work",
+        "position": [
+          -10.2,
+          -4.06,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.03": {
+        "owner": "zone.work",
+        "position": [
+          -1.88,
+          4.66,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.04": {
+        "owner": "zone.work",
+        "position": [
+          5.88,
+          -4.7,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.05": {
+        "owner": "zone.work",
+        "position": [
+          -10.2,
+          4.34,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.06": {
+        "owner": "zone.work",
+        "position": [
+          -2.12,
+          -3.5,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.07": {
+        "owner": "zone.work",
+        "position": [
+          4.2,
+          1.78,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.08": {
+        "owner": "zone.work",
+        "position": [
+          10.2,
+          -1.02,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.09": {
+        "owner": "zone.work",
+        "position": [
+          -4.52,
+          0.66,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.10": {
+        "owner": "zone.work",
+        "position": [
+          -0.04,
+          0.42,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      }
+    },
+    "discover": {
+      "manifest_assets": true,
+      "manifest_zones": true,
+      "xml_semantic_sites": true
+    },
+    "entity_overrides": {},
+    "region_overrides": {},
+    "strict_coverage": true
+  },
+  "spawn_policy": {
+    "allocation": "exclusive",
+    "anchors": [
+      "point.spawn.anchor.01",
+      "point.spawn.anchor.02",
+      "point.spawn.anchor.03",
+      "point.spawn.anchor.04",
+      "point.spawn.anchor.05",
+      "point.spawn.anchor.06",
+      "point.spawn.anchor.07",
+      "point.spawn.anchor.08",
+      "point.spawn.anchor.09",
+      "point.spawn.anchor.10"
+    ],
+    "capacity": 10,
+    "minimum_separation_m": 0.7
+  },
+  "traffic": {
+    "dynamic_obstacles": true,
+    "max_wait_s": 12.0,
+    "no_direct_fallback": true,
+    "on_block": "wait_then_replan",
+    "policy": "sequential_route_reservation",
+    "reservation_horizon_s": 30.0
+  }
+}

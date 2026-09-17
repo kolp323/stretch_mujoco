@@ -3,8 +3,8 @@
   "scene_id": "office_05_team_clusters",
   "schema_version": 1,
   "sha256": {
-    "generated_scene": "c838c0d24b6618a7252189e3fbf1893c4ac18609e26d3ca4957ed384d7fa5475",
-    "generator": "fc1998d841db670d38051ff18fb9a2c197d87860582d7e074f148dc2a9f48248",
+    "generated_scene": "8f146b37f3c6345311ec25b02aabdf5233b1629d0fb8882a5710d19e044ae4c5",
+    "generator": "79fe0715644ae5db1394e944ff4bef050bac1271063b70d281258b2cb4d12a37",
     "manifest": "8d052d270a03083cec93f1d76bfe2c48b073437179bfcf50a832c2dd217e1880",
     "source_scene": "3d195bc10dd0dd7e6491d2e9c62b070d57a8248c4c3e8106c97a424486b778e5"
   },
@@ -12,72 +12,102 @@
     "npc_conversation_listener_site": [
       5.85,
       -5.15,
-      2.7611
+      -1.9513
     ],
     "npc_conversation_speaker_site": [
       4.85,
       -4.75,
-      -0.3805
+      1.1903
     ],
     "npc_handover_giver_site": [
       4.85,
       -4.75,
-      -0.3805
+      1.1903
     ],
     "npc_handover_receiver_site": [
       5.85,
       -5.15,
-      2.7611
+      -1.9513
     ],
     "npc_lounge_site": [
       -2.95,
       3.45,
-      0.0
+      -3.1138
+    ],
+    "npc_lounge_slot_02_site": [
+      -3.55,
+      3.85,
+      2.7673
+    ],
+    "npc_lounge_slot_03_site": [
+      -2.35,
+      3.85,
+      -2.7069
     ],
     "npc_meeting_site": [
       4.85,
       -4.75,
-      0.0
+      2.6691
+    ],
+    "npc_meeting_slot_02_site": [
+      7.25,
+      -4.75,
+      -2.6345
+    ],
+    "npc_meeting_slot_03_site": [
+      4.85,
+      -0.15,
+      0.4551
     ],
     "npc_snack_site": [
       7.05,
       4.25,
-      0.0
+      -0.0666
+    ],
+    "npc_snack_slot_02_site": [
+      7.05,
+      2.65,
+      -3.0828
+    ],
+    "npc_snack_slot_03_site": [
+      6.25,
+      4.25,
+      0.7854
     ],
     "npc_spawn_01_site": [
       -3.95,
       -4.35,
-      0.0
+      -3.1146
     ],
     "npc_spawn_02_site": [
       -3.95,
       3.45,
-      0.0
+      2.656
     ],
     "npc_spawn_03_site": [
       7.05,
       2.65,
-      0.0
+      -3.0828
     ],
     "npc_stretch_delivery_site": [
       -4.75,
       -0.75,
-      0.0
+      0.4049
     ],
     "npc_stretch_rendezvous_site": [
       4.85,
       -4.75,
-      0.0
+      2.6691
     ],
     "npc_stretch_request_site": [
       -3.35,
       -0.75,
-      0.0
+      -0.3556
     ],
     "npc_work_site": [
       -3.95,
       -0.75,
-      0.0
+      -0.0286
     ]
   }
 }

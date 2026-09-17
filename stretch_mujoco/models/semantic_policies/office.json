@@ -1,0 +1,164 @@
+{
+  "fallback": "unresolved",
+  "kind": "office",
+  "rules": [
+    {
+      "affordances": [
+        "navigate"
+      ],
+      "id": "regions",
+      "match": {
+        "kind": "region"
+      },
+      "navigation_requirement": "region",
+      "point_bundle": "region_samples",
+      "semantic_class": "region.office"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_interactive_objects",
+      "match": {
+        "category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "graspable_on_support",
+      "semantic_class": "object.graspable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_meeting_chairs",
+      "match": {
+        "category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.seat"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_props_plants",
+      "match": {
+        "category": "props/plants"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_props_trash_bins",
+      "match": {
+        "category": "props/trash_bins"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_decoration_rugs",
+      "match": {
+        "category": "decoration/rugs"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_legacy_sofas",
+      "match": {
+        "category": "legacy_sofas"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.seat"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_workstation_pods",
+      "match": {
+        "category": "workstation_pods"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.workstation"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_meeting_tables",
+      "match": {
+        "category": "meeting_tables"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.counter"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_displays",
+      "match": {
+        "category": "displays"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_whiteboards",
+      "match": {
+        "category": "whiteboards"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_furniture_snack_counter",
+      "match": {
+        "category": "furniture/snack_counter"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.counter"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_furniture_storage",
+      "match": {
+        "category": "furniture/storage"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.storage"
+    }
+  ],
+  "schema": "semantic_policy/v1",
+  "semantic_name_taxonomy": {}
+}

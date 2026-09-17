@@ -2,7 +2,7 @@
   "interaction_points": {
     "conversation_listener": {
       "attributes": {
-        "yaw": 1.5707963267948966
+        "yaw": 3.141592653589793
       },
       "owner": "meeting_table",
       "role": "conversation_site",
@@ -10,7 +10,7 @@
     },
     "conversation_speaker": {
       "attributes": {
-        "yaw": -1.5707963267948966
+        "yaw": 0.0
       },
       "owner": "meeting_table",
       "role": "conversation_site",
@@ -18,7 +18,7 @@
     },
     "handover_giver": {
       "attributes": {
-        "yaw": -1.5707963267948966
+        "yaw": 0.0
       },
       "owner": "npc_alex_chen",
       "role": "handover_site",
@@ -26,34 +26,120 @@
     },
     "handover_receiver": {
       "attributes": {
-        "yaw": 1.5707963267948966
+        "yaw": 3.141592653589793
       },
       "owner": "npc_morgan_lee",
       "role": "handover_site",
       "site": "npc_handover_receiver_site"
     },
-    "lounge": {
+    "lounge_slot_01": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "lounge_01",
+        "target": "lounge",
+        "yaw": -3.123737408450241
+      },
       "owner": "lounge",
       "role": "human_stand_site",
       "site": "npc_lounge_site"
     },
-    "meeting": {
+    "lounge_slot_02": {
       "attributes": {
-        "yaw": 0.0
+        "binding": "location",
+        "slot_id": "lounge_02",
+        "target": "lounge",
+        "yaw": 2.916315874375738
+      },
+      "owner": "lounge",
+      "role": "human_stand_site",
+      "site": "npc_lounge_slot_02_site"
+    },
+    "lounge_slot_03": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "lounge_03",
+        "target": "lounge",
+        "yaw": 2.971380728304319
+      },
+      "owner": "lounge",
+      "role": "human_stand_site",
+      "site": "npc_lounge_slot_03_site"
+    },
+    "meeting_slot_01": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "meeting_01",
+        "target": "meeting_table",
+        "yaw": 3.1016139664665032
       },
       "owner": "meeting_table",
       "role": "meeting_place_site",
       "site": "npc_meeting_site"
     },
+    "meeting_slot_02": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "meeting_02",
+        "target": "meeting_table",
+        "yaw": -2.9546133836708823
+      },
+      "owner": "meeting_table",
+      "role": "meeting_place_site",
+      "site": "npc_meeting_slot_02_site"
+    },
+    "meeting_slot_03": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "meeting_03",
+        "target": "meeting_table",
+        "yaw": 2.9255076812930065
+      },
+      "owner": "meeting_table",
+      "role": "meeting_place_site",
+      "site": "npc_meeting_slot_03_site"
+    },
     "object_grasp": {
+      "attributes": {
+        "binding": "object_approach",
+        "target": "shared_object",
+        "yaw": 0.0
+      },
       "owner": "shared_object",
       "role": "document_grasp_site",
       "site": "116_keyboard_001_grasp_site"
     },
-    "snack": {
+    "snack_slot_01": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "snack_01",
+        "target": "snack_counter",
+        "yaw": -1.63736449057072
+      },
       "owner": "snack_counter",
       "role": "human_stand_site",
       "site": "npc_snack_site"
+    },
+    "snack_slot_02": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "snack_02",
+        "target": "snack_counter",
+        "yaw": 1.629552149510619
+      },
+      "owner": "snack_counter",
+      "role": "human_stand_site",
+      "site": "npc_snack_slot_02_site"
+    },
+    "snack_slot_03": {
+      "attributes": {
+        "binding": "location",
+        "slot_id": "snack_03",
+        "target": "snack_counter",
+        "yaw": -0.7853981633974483
+      },
+      "owner": "snack_counter",
+      "role": "human_stand_site",
+      "site": "npc_snack_slot_03_site"
     },
     "spawn_1": {
       "owner": "workstation",
@@ -81,13 +167,19 @@
       "site": "npc_stretch_rendezvous_site"
     },
     "stretch_request": {
+      "attributes": {
+        "binding": "robot_request",
+        "target": "stretch_3"
+      },
       "owner": "stretch_3",
       "role": "robot_request_site",
       "site": "npc_stretch_request_site"
     },
     "work": {
       "attributes": {
-        "yaw": 0.0
+        "binding": "location",
+        "target": "workstation",
+        "yaw": -1.5422326689561365
       },
       "owner": "workstation",
       "role": "desk_work_site",

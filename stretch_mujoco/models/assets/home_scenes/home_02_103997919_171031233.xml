@@ -1233,6 +1233,21 @@
       </body>
       <geom name="038_milk-box_home_08_collision" type="box" pos="-0.000339759061 3.78531715e-05 0.0993369585" size="0.0544115313 0.0571533902 0.101306011" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
     </body>
+    <body name="primitive_workstation_table" pos="-0.071001 3.519 0">
+      <geom name="primitive_workstation_table_geom" type="box" size="0.6 0.35 0.36" pos="0 0 0.36" rgba="0.45 0.45 0.48 1" />
+      <site name="primitive_workstation_work_site" pos="0 -0.58 0.73" size="0.02" rgba="0 0 0 0" />
+    </body>
+    <body name="primitive_workstation_computer" pos="-0.071001 3.519 0.78">
+      <geom name="primitive_workstation_computer_geom" type="box" size="0.22 0.06 0.16" rgba="0.12 0.14 0.16 1" />
+    </body>
+    <body name="primitive_workstation_chair" pos="-0.071001 2.619 0">
+      <geom name="primitive_workstation_chair_geom" type="box" size="0.28 0.28 0.22" pos="0 0 0.22" rgba="0.25 0.35 0.45 1" />
+    </body>
+    <body name="primitive_handover_cup" pos="0.278999 3.519 0.82">
+      <freejoint />
+      <geom name="primitive_handover_cup_geom" type="cylinder" size="0.04 0.07" mass="0.12" rgba="0.2 0.55 0.8 1" />
+      <site name="primitive_handover_cup_grasp_site" pos="0 0 0" size="0.015" />
+    </body>
   </worldbody>
   <statistic center="-3.86950036 3.35850006 1.52122148" extent="10.439" />
 </mujoco>

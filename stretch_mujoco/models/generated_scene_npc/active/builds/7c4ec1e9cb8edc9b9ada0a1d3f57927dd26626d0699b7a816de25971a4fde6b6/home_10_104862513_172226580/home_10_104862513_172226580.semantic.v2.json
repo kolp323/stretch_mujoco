@@ -1,0 +1,5631 @@
+{
+  "entities": {
+    "object.001_bottle_home_05": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "001_bottle",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.001_bottle_home_05.action"
+        ],
+        "navigation": [
+          "point.object.001_bottle_home_05.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "001_bottle_home_05",
+        "xml_binding": {
+          "kind": "body",
+          "name": "001_bottle_home_05"
+        }
+      }
+    },
+    "object.017_calculator_home_00": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "017_calculator",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.017_calculator_home_00.action"
+        ],
+        "navigation": [
+          "point.object.017_calculator_home_00.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "017_calculator_home_00",
+        "xml_binding": {
+          "kind": "body",
+          "name": "017_calculator_home_00"
+        }
+      }
+    },
+    "object.025_chips-tub_home_06": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "025_chips-tub",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.025_chips-tub_home_06.action"
+        ],
+        "navigation": [
+          "point.object.025_chips-tub_home_06.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "025_chips-tub_home_06",
+        "xml_binding": {
+          "kind": "body",
+          "name": "025_chips-tub_home_06"
+        }
+      }
+    },
+    "object.035_apple_home_07": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "035_apple",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.035_apple_home_07.action"
+        ],
+        "navigation": [
+          "point.object.035_apple_home_07.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "035_apple_home_07",
+        "xml_binding": {
+          "kind": "body",
+          "name": "035_apple_home_07"
+        }
+      }
+    },
+    "object.038_milk-box_home_08": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "038_milk-box",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.038_milk-box_home_08.action"
+        ],
+        "navigation": [
+          "point.object.038_milk-box_home_08.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "038_milk-box_home_08",
+        "xml_binding": {
+          "kind": "body",
+          "name": "038_milk-box_home_08"
+        }
+      }
+    },
+    "object.043_book_home_01": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "043_book",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.043_book_home_01.action"
+        ],
+        "navigation": [
+          "point.object.043_book_home_01.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "043_book_home_01",
+        "xml_binding": {
+          "kind": "body",
+          "name": "043_book_home_01"
+        }
+      }
+    },
+    "object.069_vagetable_home_12": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "069_vagetable",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.069_vagetable_home_12.action"
+        ],
+        "navigation": [
+          "point.object.069_vagetable_home_12.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "069_vagetable_home_12",
+        "xml_binding": {
+          "kind": "body",
+          "name": "069_vagetable_home_12"
+        }
+      }
+    },
+    "object.071_can_home_09": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "071_can",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.071_can_home_09.action"
+        ],
+        "navigation": [
+          "point.object.071_can_home_09.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "071_can_home_09",
+        "xml_binding": {
+          "kind": "body",
+          "name": "071_can_home_09"
+        }
+      }
+    },
+    "object.075_bread_home_11": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "075_bread",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.075_bread_home_11.action"
+        ],
+        "navigation": [
+          "point.object.075_bread_home_11.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "075_bread_home_11",
+        "xml_binding": {
+          "kind": "body",
+          "name": "075_bread_home_11"
+        }
+      }
+    },
+    "object.101_milk-tea_home_03": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "101_milk-tea",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.101_milk-tea_home_03.action"
+        ],
+        "navigation": [
+          "point.object.101_milk-tea_home_03.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "101_milk-tea_home_03",
+        "xml_binding": {
+          "kind": "body",
+          "name": "101_milk-tea_home_03"
+        }
+      }
+    },
+    "object.116_keyboard_home_02": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "116_keyboard",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.116_keyboard_home_02.action"
+        ],
+        "navigation": [
+          "point.object.116_keyboard_home_02.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "116_keyboard_home_02",
+        "xml_binding": {
+          "kind": "body",
+          "name": "116_keyboard_home_02"
+        }
+      }
+    },
+    "object.green_apple_home_10": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "green_apple",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.green_apple_home_10.action"
+        ],
+        "navigation": [
+          "point.object.green_apple_home_10.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "green_apple_home_10",
+        "xml_binding": {
+          "kind": "body",
+          "name": "green_apple_home_10"
+        }
+      }
+    },
+    "object.hssd_object_000": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Water Hyacinth Fishbone Weave Wastepaper Bin",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_000.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_000",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_000"
+        }
+      }
+    },
+    "object.hssd_object_001": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Large bean bag",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_001.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_001.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_001",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_001"
+        }
+      }
+    },
+    "object.hssd_object_002": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Chatham Bathroom Tallboy",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_002.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.fixture",
+      "source": {
+        "id": "hssd_object_002",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_002"
+        }
+      }
+    },
+    "object.hssd_object_003": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Chatham Bathroom Tallboy",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_003.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.fixture",
+      "source": {
+        "id": "hssd_object_003",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_003"
+        }
+      }
+    },
+    "object.hssd_object_004": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "LaserJet P2015, Mono A4 Duplex 26ppm 1200x1200 dpi",
+        "source_category": "electronics"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_004.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_004",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_004"
+        }
+      }
+    },
+    "object.hssd_object_005": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Traditional Storer Trunk, Red",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_005.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_005",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_005"
+        }
+      }
+    },
+    "object.hssd_object_006": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Dead Fred Pen Holder Red",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_006.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_006",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_006"
+        }
+      }
+    },
+    "object.hssd_object_007": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "The Collection spiegelkast Shallow 100cm, zwart ",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_007.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_007",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_007"
+        }
+      }
+    },
+    "object.hssd_object_008": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "The Collection spiegelkast Shallow 100cm, zwart ",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_008.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_008",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_008"
+        }
+      }
+    },
+    "object.hssd_object_009": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Pippa 3 Piece Sectional With Armless Recliner, Left Arm Facing Chaise & Power Headrest, Grey",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_009.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_009.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_009",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_009"
+        }
+      }
+    },
+    "object.hssd_object_010": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Pearson Upholstered 57'' Queen Gallery Storage Bed, Ebony",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_010.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_010.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.bed",
+      "source": {
+        "id": "hssd_object_010",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_010"
+        }
+      }
+    },
+    "object.hssd_object_011": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Toilette/toilette kreativ",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_011.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.fixture",
+      "source": {
+        "id": "hssd_object_011",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_011"
+        }
+      }
+    },
+    "object.hssd_object_012": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "STUVA Chest of 2 drawers, green",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_012.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_012",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_012"
+        }
+      }
+    },
+    "object.hssd_object_013": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Martin Cabin Bed with Comfort Mattress",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_013.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_013.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.bed",
+      "source": {
+        "id": "hssd_object_013",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_013"
+        }
+      }
+    },
+    "object.hssd_object_014": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Alexa Combination Wardrobe - ADD: set of 3 light fixtures",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_014.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_014",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_014"
+        }
+      }
+    },
+    "object.hssd_object_015": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Bookcase 6 x 3 Painted",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_015.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_015",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_015"
+        }
+      }
+    },
+    "object.hssd_object_016": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Bookcase 6 x 3 Painted",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_016.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_016",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_016"
+        }
+      }
+    },
+    "object.hssd_object_017": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Bookcase 6 x 3 Painted",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_017.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_017",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_017"
+        }
+      }
+    },
+    "object.hssd_object_018": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Bookcase 6 x 3 Painted",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_018.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_018",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_018"
+        }
+      }
+    },
+    "object.hssd_object_019": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Space Small White Wardrobe",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_019.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_019",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_019"
+        }
+      }
+    },
+    "object.hssd_object_020": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Space Small White Wardrobe",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_020.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_020",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_020"
+        }
+      }
+    },
+    "object.hssd_object_021": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Green",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_021.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_021",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_021"
+        }
+      }
+    },
+    "object.hssd_object_022": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Island, Nature",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_022.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_022",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_022"
+        }
+      }
+    },
+    "object.hssd_object_023": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Perch II Fabric Medium Rectangle Storage Ottoman",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_023.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_023.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_023",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_023"
+        }
+      }
+    },
+    "object.hssd_object_024": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "STUVA Chest of 2 drawers, orange",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_024.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_024",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_024"
+        }
+      }
+    },
+    "object.hssd_object_025": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Bonaldo - Mario Mazzer - Tree Gloss Lacquered Clothes Stand (Bonaldo)",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_025.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_025",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_025"
+        }
+      }
+    },
+    "object.hssd_object_026": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Bonaldo - Mario Mazzer - Tree Gloss Lacquered Clothes Stand (Bonaldo)",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_026.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_026",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_026"
+        }
+      }
+    },
+    "object.hssd_object_027": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "38L Rectangular Pedal Bin",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_027.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_027",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_027"
+        }
+      }
+    },
+    "object.hssd_object_028": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "The Collection spiegelkast Shallow 100cm, antraciet ",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_028.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_028",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_028"
+        }
+      }
+    },
+    "object.hssd_object_029": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "5 Tier Book Shelve Inspired By Marcel Breuer",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_029.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_029",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_029"
+        }
+      }
+    },
+    "object.hssd_object_030": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "5 Tier Book Shelve Inspired By Marcel Breuer",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_030.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_030",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_030"
+        }
+      }
+    },
+    "object.hssd_object_031": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "5 Tier Book Shelve Inspired By Marcel Breuer",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_031.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_031",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_031"
+        }
+      }
+    },
+    "object.hssd_object_032": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "5 Tier Book Shelve Inspired By Marcel Breuer",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_032.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_032",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_032"
+        }
+      }
+    },
+    "object.hssd_object_033": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "5 Tier Book Shelve Inspired By Marcel Breuer",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_033.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_033",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_033"
+        }
+      }
+    },
+    "object.hssd_object_034": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_034.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_034",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_034"
+        }
+      }
+    },
+    "object.hssd_object_035": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_035.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_035",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_035"
+        }
+      }
+    },
+    "object.hssd_object_036": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_036.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_036",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_036"
+        }
+      }
+    },
+    "object.hssd_object_037": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_037.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_037",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_037"
+        }
+      }
+    },
+    "object.hssd_object_038": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Kitchen Low Element, Nature",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_038.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_038",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_038"
+        }
+      }
+    },
+    "object.hssd_object_039": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Toilette/toilette Casual",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_039.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.fixture",
+      "source": {
+        "id": "hssd_object_039",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_039"
+        }
+      }
+    },
+    "object.hssd_object_040": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Wellington 4 shelf bookcase, Beech effect",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_040.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_040",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_040"
+        }
+      }
+    },
+    "object.hssd_object_041": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Jessica Single Cabin Bed - Frame Only.",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_041.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_041.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.bed",
+      "source": {
+        "id": "hssd_object_041",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_041"
+        }
+      }
+    },
+    "object.hssd_object_042": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "PAHL desk, green",
+        "source_category": "support_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_042.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.support",
+      "source": {
+        "id": "hssd_object_042",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_042"
+        }
+      }
+    },
+    "object.hssd_object_043": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "PAHL desk, white",
+        "source_category": "support_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_043.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.support",
+      "source": {
+        "id": "hssd_object_043",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_043"
+        }
+      }
+    },
+    "object.hssd_object_044": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "4 Tier Book Shelve Inspired By Marcel Breuer",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_044.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_044",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_044"
+        }
+      }
+    },
+    "object.hssd_object_045": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "- Arbete Bookshelf Black",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_045.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_045",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_045"
+        }
+      }
+    },
+    "object.hssd_object_046": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "- Arbete Bookshelf Black",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_046.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_046",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_046"
+        }
+      }
+    },
+    "object.hssd_object_047": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "- Arbete Bookshelf Black",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_047.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_047",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_047"
+        }
+      }
+    },
+    "object.hssd_object_048": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "ProCasa Cinque Waschbecken/Lave-main/Lavamano",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_048.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_048",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_048"
+        }
+      }
+    },
+    "object.hssd_object_049": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "ProCasa Cinque Waschbecken/Lave-main/Lavamano",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_049.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_049",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_049"
+        }
+      }
+    },
+    "object.hssd_object_050": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "ProCasa Cinque Waschbecken/Lave-main/Lavamano",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_050.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_050",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_050"
+        }
+      }
+    },
+    "object.hssd_object_051": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "ProCasa Cinque Waschbecken/Lave-main/Lavamano",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_051.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_051",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_051"
+        }
+      }
+    },
+    "object.hssd_object_052": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "ProCasa Cinque Waschbecken/Lave-main/Lavamano",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_052.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_052",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_052"
+        }
+      }
+    },
+    "object.hssd_object_053": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Orange",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_053.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_053",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_053"
+        }
+      }
+    },
+    "object.hssd_object_054": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "- Arbete Bookshelf White",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_054.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_054",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_054"
+        }
+      }
+    },
+    "object.hssd_object_055": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "- Arbete Bookshelf White",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_055.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_055",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_055"
+        }
+      }
+    },
+    "object.hssd_object_056": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "- Arbete Bookshelf White",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_056.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_056",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_056"
+        }
+      }
+    },
+    "object.hssd_object_057": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "ProCasa Uno Waschtisch+Armatur/Lavabo+robin./Lavabo+rubin.",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_057.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_057",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_057"
+        }
+      }
+    },
+    "object.hssd_object_058": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Marie Large off white bookcase with ladder in solid wood",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_058.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_058",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_058"
+        }
+      }
+    },
+    "object.hssd_object_059": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Marie Large off white bookcase with ladder in solid wood",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_059.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_059",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_059"
+        }
+      }
+    },
+    "object.hssd_object_060": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Marie Large off white bookcase with ladder in solid wood",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_060.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_060",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_060"
+        }
+      }
+    },
+    "object.hssd_object_061": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Marie Large off white bookcase with ladder in solid wood",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_061.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_061",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_061"
+        }
+      }
+    },
+    "object.hssd_object_062": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_062.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_062",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_062"
+        }
+      }
+    },
+    "object.hssd_object_063": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_063.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_063",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_063"
+        }
+      }
+    },
+    "object.hssd_object_064": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_064.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_064",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_064"
+        }
+      }
+    },
+    "object.hssd_object_065": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_065.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_065",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_065"
+        }
+      }
+    },
+    "object.hssd_object_066": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_066.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_066",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_066"
+        }
+      }
+    },
+    "object.hssd_object_067": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_067.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_067",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_067"
+        }
+      }
+    },
+    "object.hssd_object_068": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_068.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_068",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_068"
+        }
+      }
+    },
+    "object.hssd_object_069": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_069.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_069",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_069"
+        }
+      }
+    },
+    "object.hssd_object_070": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_070.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_070",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_070"
+        }
+      }
+    },
+    "object.hssd_object_071": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_071.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_071",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_071"
+        }
+      }
+    },
+    "object.hssd_object_072": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_072.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_072",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_072"
+        }
+      }
+    },
+    "object.hssd_object_073": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_073.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_073",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_073"
+        }
+      }
+    },
+    "object.hssd_object_074": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Coletta Bookcase",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_074.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_074",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_074"
+        }
+      }
+    },
+    "object.hssd_object_075": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_075.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_075.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_075",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_075"
+        }
+      }
+    },
+    "object.hssd_object_076": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_076.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_076.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_076",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_076"
+        }
+      }
+    },
+    "object.hssd_object_077": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_077.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_077.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_077",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_077"
+        }
+      }
+    },
+    "object.hssd_object_078": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_078.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_078.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_078",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_078"
+        }
+      }
+    },
+    "object.hssd_object_079": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_079.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_079.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_079",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_079"
+        }
+      }
+    },
+    "object.hssd_object_080": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_080.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_080.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_080",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_080"
+        }
+      }
+    },
+    "object.hssd_object_081": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "labels": {
+        "canonical": "Gabe 7 Piece Dining Set With Kylie Grey Chairs",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_081.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_081.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_081",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_081"
+        }
+      }
+    },
+    "object.hssd_object_082": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Badewanne/baignoire Duscholux Step-in Pure 170 x 75 cm",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_082.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_082",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_082"
+        }
+      }
+    },
+    "object.hssd_object_083": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Palmer Nightstand, Natural Oak",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_083.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_083",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_083"
+        }
+      }
+    },
+    "object.hssd_object_084": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Palmer Nightstand, Natural Oak",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_084.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_084",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_084"
+        }
+      }
+    },
+    "object.hssd_object_085": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "ORFJALL children desk chair, white/vissle bright green",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_085.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_085.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_085",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_085"
+        }
+      }
+    },
+    "object.hssd_object_086": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Joe Polar Bear Book Case IBJOE",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_086.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_086",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_086"
+        }
+      }
+    },
+    "object.hssd_object_087": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Large bean bag",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_087.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_087.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_087",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_087"
+        }
+      }
+    },
+    "object.hssd_object_088": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "4620 Clarence",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_088.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_088",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_088"
+        }
+      }
+    },
+    "object.hssd_object_089": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "4620 Clarence",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_089.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_089",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_089"
+        }
+      }
+    },
+    "object.hssd_object_090": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "4620 Clarence",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_090.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_090",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_090"
+        }
+      }
+    },
+    "object.hssd_object_091": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Traditional Steamer Trunk, Green",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_091.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_091",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_091"
+        }
+      }
+    },
+    "object.hssd_object_092": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_092.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_092",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_092"
+        }
+      }
+    },
+    "object.hssd_object_093": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_093.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_093",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_093"
+        }
+      }
+    },
+    "object.hssd_object_094": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_094.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_094",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_094"
+        }
+      }
+    },
+    "object.hssd_object_095": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "james desk",
+        "source_category": "default"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_095.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "hssd_object_095",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_095"
+        }
+      }
+    },
+    "object.hssd_object_096": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Caversham 640mm Mirror, Oyster",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_096.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_096",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_096"
+        }
+      }
+    },
+    "object.hssd_object_097": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Held Mobel Unterschrank",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_097.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_097",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_097"
+        }
+      }
+    },
+    "object.hssd_object_098": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Kitchen High Element, Nature",
+        "source_category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_098.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "hssd_object_098",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_098"
+        }
+      }
+    },
+    "object.hssd_object_099": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "ORFJALL children desk chair, white/vissle light grey",
+        "source_category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.hssd_object_099.action.sit"
+        ],
+        "navigation": [
+          "point.object.hssd_object_099.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "hssd_object_099",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_099"
+        }
+      }
+    },
+    "object.hssd_object_100": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "220-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_100.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_100",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_100"
+        }
+      }
+    },
+    "object.hssd_object_101": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "219-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_101.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_101",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_101"
+        }
+      }
+    },
+    "object.hssd_object_102": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "219-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_102.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_102",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_102"
+        }
+      }
+    },
+    "object.hssd_object_103": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "219-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_103.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_103",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_103"
+        }
+      }
+    },
+    "object.hssd_object_104": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "219-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_104.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_104",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_104"
+        }
+      }
+    },
+    "object.hssd_object_105": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "220-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_105.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_105",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_105"
+        }
+      }
+    },
+    "object.hssd_object_106": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "220-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_106.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_106",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_106"
+        }
+      }
+    },
+    "object.hssd_object_107": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "219-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_107.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_107",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_107"
+        }
+      }
+    },
+    "object.hssd_object_108": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "220-4",
+        "source_category": "default"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.hssd_object_108.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "hssd_object_108",
+        "xml_binding": {
+          "kind": "body",
+          "name": "hssd_object_108"
+        }
+      }
+    },
+    "object.snack_soda_can_home_04": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Soda Can",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.snack_soda_can_home_04.action"
+        ],
+        "navigation": [
+          "point.object.snack_soda_can_home_04.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "snack_soda_can_home_04",
+        "xml_binding": {
+          "kind": "body",
+          "name": "snack_soda_can_home_04"
+        }
+      }
+    },
+    "room.bathroom": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.bathroom",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.bathroom.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.bathroom",
+      "source": {
+        "id": "room.bathroom",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.bedroom": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.bedroom",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.bedroom.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.bedroom",
+      "source": {
+        "id": "room.bedroom",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.kitchen": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.kitchen",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.kitchen.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.kitchen",
+      "source": {
+        "id": "room.kitchen",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.living_room": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.living_room",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.living_room.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.living_room",
+      "source": {
+        "id": "room.living_room",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "room.office": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "room.office",
+        "source_category": "override"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.room.office.approach.01"
+        ]
+      },
+      "semantic_class": "region.room.office",
+      "source": {
+        "id": "room.office",
+        "xml_binding": {
+          "kind": "site",
+          "name": null
+        }
+      }
+    },
+    "zone.home": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "home",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [
+          "point.zone.home.action"
+        ],
+        "navigation": [
+          "point.zone.home.approach.01",
+          "point.home.activity_area",
+          "point.home.alex_spawn",
+          "point.home.jordan_spawn",
+          "point.home.morgan_spawn",
+          "point.spawn.anchor.01",
+          "point.spawn.anchor.02",
+          "point.spawn.anchor.03",
+          "point.spawn.anchor.04",
+          "point.spawn.anchor.05",
+          "point.spawn.anchor.06",
+          "point.spawn.anchor.07",
+          "point.spawn.anchor.08",
+          "point.spawn.anchor.09",
+          "point.spawn.anchor.10"
+        ]
+      },
+      "semantic_class": "region.home",
+      "source": {
+        "id": "home",
+        "xml_binding": {
+          "kind": "site",
+          "name": "zone_home_center"
+        }
+      }
+    }
+  },
+  "points": {
+    "point.home.activity_area": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        1.69000038,
+        0.528470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__home__activity_area",
+      "usages": [
+        "navigation",
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "point.home.alex_spawn": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        0.01000038,
+        -0.971529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__home__alex_spawn",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.home.jordan_spawn": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        0.97000038,
+        -0.191529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__home__jordan_spawn",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.home.morgan_spawn": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        0.19000038,
+        0.648470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__home__morgan_spawn",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.object.001_bottle_home_05.action": {
+      "kind": "action",
+      "navigation_site": "point.object.001_bottle_home_05.approach.01",
+      "owner": "object.001_bottle_home_05",
+      "required": false,
+      "site": "001_bottle_home_05_grasp_site"
+    },
+    "point.object.001_bottle_home_05.approach.01": {
+      "kind": "navigation",
+      "owner": "object.001_bottle_home_05",
+      "position": [
+        4.150000379999999,
+        -2.5315299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__001_bottle_home_05__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.047841482506664
+    },
+    "point.object.017_calculator_home_00.action": {
+      "kind": "action",
+      "navigation_site": "point.object.017_calculator_home_00.approach.01",
+      "owner": "object.017_calculator_home_00",
+      "required": false,
+      "site": "017_calculator_home_00_grasp_site"
+    },
+    "point.object.017_calculator_home_00.approach.01": {
+      "kind": "navigation",
+      "owner": "object.017_calculator_home_00",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__017_calculator_home_00__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5371585926002673
+    },
+    "point.object.025_chips-tub_home_06.action": {
+      "kind": "action",
+      "navigation_site": "point.object.025_chips-tub_home_06.approach.01",
+      "owner": "object.025_chips-tub_home_06",
+      "required": false,
+      "site": "025_chips-tub_home_06_grasp_site"
+    },
+    "point.object.025_chips-tub_home_06.approach.01": {
+      "kind": "navigation",
+      "owner": "object.025_chips-tub_home_06",
+      "position": [
+        4.150000379999999,
+        -2.5315299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__025_chips-tub_home_06__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.2379793381673114
+    },
+    "point.object.035_apple_home_07.action": {
+      "kind": "action",
+      "navigation_site": "point.object.035_apple_home_07.approach.01",
+      "owner": "object.035_apple_home_07",
+      "required": false,
+      "site": "035_apple_home_07_grasp_site"
+    },
+    "point.object.035_apple_home_07.approach.01": {
+      "kind": "navigation",
+      "owner": "object.035_apple_home_07",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__035_apple_home_07__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4749301316698082
+    },
+    "point.object.038_milk-box_home_08.action": {
+      "kind": "action",
+      "navigation_site": "point.object.038_milk-box_home_08.approach.01",
+      "owner": "object.038_milk-box_home_08",
+      "required": false,
+      "site": "038_milk-box_home_08_grasp_site"
+    },
+    "point.object.038_milk-box_home_08.approach.01": {
+      "kind": "navigation",
+      "owner": "object.038_milk-box_home_08",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__038_milk-box_home_08__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3399482006997967
+    },
+    "point.object.043_book_home_01.action": {
+      "kind": "action",
+      "navigation_site": "point.object.043_book_home_01.approach.01",
+      "owner": "object.043_book_home_01",
+      "required": false,
+      "site": "043_book_home_01_grasp_site"
+    },
+    "point.object.043_book_home_01.approach.01": {
+      "kind": "navigation",
+      "owner": "object.043_book_home_01",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__043_book_home_01__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8126084781447005
+    },
+    "point.object.069_vagetable_home_12.action": {
+      "kind": "action",
+      "navigation_site": "point.object.069_vagetable_home_12.approach.01",
+      "owner": "object.069_vagetable_home_12",
+      "required": false,
+      "site": "069_vagetable_home_12_grasp_site"
+    },
+    "point.object.069_vagetable_home_12.approach.01": {
+      "kind": "navigation",
+      "owner": "object.069_vagetable_home_12",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__069_vagetable_home_12__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.7759467063144272
+    },
+    "point.object.071_can_home_09.action": {
+      "kind": "action",
+      "navigation_site": "point.object.071_can_home_09.approach.01",
+      "owner": "object.071_can_home_09",
+      "required": false,
+      "site": "071_can_home_09_grasp_site"
+    },
+    "point.object.071_can_home_09.approach.01": {
+      "kind": "navigation",
+      "owner": "object.071_can_home_09",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__071_can_home_09__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4069256722871024
+    },
+    "point.object.075_bread_home_11.action": {
+      "kind": "action",
+      "navigation_site": "point.object.075_bread_home_11.approach.01",
+      "owner": "object.075_bread_home_11",
+      "required": false,
+      "site": "075_bread_home_11_grasp_site"
+    },
+    "point.object.075_bread_home_11.approach.01": {
+      "kind": "navigation",
+      "owner": "object.075_bread_home_11",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__075_bread_home_11__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3219590069518359
+    },
+    "point.object.101_milk-tea_home_03.action": {
+      "kind": "action",
+      "navigation_site": "point.object.101_milk-tea_home_03.approach.01",
+      "owner": "object.101_milk-tea_home_03",
+      "required": false,
+      "site": "101_milk-tea_home_03_grasp_site"
+    },
+    "point.object.101_milk-tea_home_03.approach.01": {
+      "kind": "navigation",
+      "owner": "object.101_milk-tea_home_03",
+      "position": [
+        3.85000038,
+        -2.9515299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__101_milk-tea_home_03__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.65610340736937
+    },
+    "point.object.116_keyboard_home_02.action": {
+      "kind": "action",
+      "navigation_site": "point.object.116_keyboard_home_02.approach.01",
+      "owner": "object.116_keyboard_home_02",
+      "required": false,
+      "site": "116_keyboard_home_02_grasp_site"
+    },
+    "point.object.116_keyboard_home_02.approach.01": {
+      "kind": "navigation",
+      "owner": "object.116_keyboard_home_02",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__116_keyboard_home_02__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6796597884478384
+    },
+    "point.object.green_apple_home_10.action": {
+      "kind": "action",
+      "navigation_site": "point.object.green_apple_home_10.approach.01",
+      "owner": "object.green_apple_home_10",
+      "required": false,
+      "site": "green_apple_home_10_grasp_site"
+    },
+    "point.object.green_apple_home_10.approach.01": {
+      "kind": "navigation",
+      "owner": "object.green_apple_home_10",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__green_apple_home_10__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6072365763157046
+    },
+    "point.object.hssd_object_000.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_000",
+      "position": [
+        -4.969999619999999,
+        1.1884700584999992,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_000__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5312935828106329
+    },
+    "point.object.hssd_object_001.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_001.approach.01",
+      "owner": "object.hssd_object_001",
+      "position": [
+        0.2474998086188015,
+        -5.290029717035651,
+        0.5293425699261828
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_001__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_001.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_001",
+      "position": [
+        1.0213575673965631,
+        -5.290029717035651,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_001__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948972
+    },
+    "point.object.hssd_object_002.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_002",
+      "position": [
+        -5.269999980032444,
+        -5.616529640294312,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_002__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948974
+    },
+    "point.object.hssd_object_003.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_003",
+      "position": [
+        -5.269999980032444,
+        -5.166529857851254,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_003__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948974
+    },
+    "point.object.hssd_object_004.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_004",
+      "position": [
+        -2.08999962,
+        2.3884700584999985,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_004__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.600910378550379
+    },
+    "point.object.hssd_object_005.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_005",
+      "position": [
+        6.85000038,
+        -5.4115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_005__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.554029165073325
+    },
+    "point.object.hssd_object_006.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_006",
+      "position": [
+        4.06277778878808,
+        2.6563697811144618,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_006__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_007.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_007",
+      "position": [
+        -5.38999962,
+        -3.3715299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_007__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5794677278905784
+    },
+    "point.object.hssd_object_008.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_008",
+      "position": [
+        -5.38999962,
+        -4.3315299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_008__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6230177888216952
+    },
+    "point.object.hssd_object_009.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_009.approach.01",
+      "owner": "object.hssd_object_009",
+      "position": [
+        -4.591680526733398,
+        5.264119817901243,
+        1.0606996573835583
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_009__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_009.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_009",
+      "position": [
+        -2.8733670139312744,
+        5.264119817901243,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_009__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_010.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_010.approach.01",
+      "owner": "object.hssd_object_010",
+      "position": [
+        -1.6233906916853063,
+        -4.071459570035076,
+        1.4264084236241987
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_010__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_010.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_010",
+      "position": [
+        0.07000037999999975,
+        -4.3915299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_010__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.757604033536389
+    },
+    "point.object.hssd_object_011.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_011",
+      "position": [
+        -3.04999962,
+        -3.4315299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_011__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5683633333317786
+    },
+    "point.object.hssd_object_012.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_012",
+      "position": [
+        2.7100003799999994,
+        -3.9715299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_012__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -3.0242298854791962
+    },
+    "point.object.hssd_object_013.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_013.approach.01",
+      "owner": "object.hssd_object_013",
+      "position": [
+        1.926427593355572,
+        -4.201813498072796,
+        0.6927754171300642
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_013__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_013.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_013",
+      "position": [
+        2.7100003799999994,
+        -4.3915299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_013__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8083422277280976
+    },
+    "point.object.hssd_object_014.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_014",
+      "position": [
+        -2.91237075698958,
+        -3.948729589604377,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_014__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_015.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_015",
+      "position": [
+        -3.6699997744073625,
+        2.317799787652504,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_015__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_016.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_016",
+      "position": [
+        -4.72999962,
+        1.908470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_016__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -3.136219166839058
+    },
+    "point.object.hssd_object_017.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_017",
+      "position": [
+        -4.6699996200000005,
+        1.908470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_017__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -3.060968068415035
+    },
+    "point.object.hssd_object_018.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_018",
+      "position": [
+        -3.76999962,
+        2.3284700584999998,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_018__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.55358977753773
+    },
+    "point.object.hssd_object_019.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_019",
+      "position": [
+        6.85000038,
+        -2.5315299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_019__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.582747777725716
+    },
+    "point.object.hssd_object_020.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_020",
+      "position": [
+        0.5717099869251269,
+        -2.5235599646830433,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_020__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.570796326794897
+    },
+    "point.object.hssd_object_021.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_021",
+      "position": [
+        0.1696401177277898,
+        -4.629929791072353,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_021__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_022.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_022",
+      "position": [
+        5.791480117776342,
+        3.513079374249024,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_022__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_023.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_023.approach.01",
+      "owner": "object.hssd_object_023",
+      "position": [
+        -4.087989717721939,
+        4.594880158014252,
+        0.406942175686136
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_023__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_023.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_023",
+      "position": [
+        -2.8733670139312744,
+        5.264119817901243,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_023__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.0671967064670824
+    },
+    "point.object.hssd_object_024.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_024",
+      "position": [
+        3.860972926643735,
+        -3.476719668107039,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_024__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.570796326794897
+    },
+    "point.object.hssd_object_025.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_025",
+      "position": [
+        -5.44999962,
+        0.6484700584999992,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_025__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.698915410907246
+    },
+    "point.object.hssd_object_026.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_026",
+      "position": [
+        -5.44999962,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_026__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3685258612292572
+    },
+    "point.object.hssd_object_027.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_027",
+      "position": [
+        2.230000379999999,
+        5.448470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_027__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.860144794949355
+    },
+    "point.object.hssd_object_028.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_028",
+      "position": [
+        -5.38999962,
+        -2.4115299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_028__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6034322004713306
+    },
+    "point.object.hssd_object_029.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_029",
+      "position": [
+        -2.68999962,
+        0.22847005849999924,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_029__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 3.1311844850356594
+    },
+    "point.object.hssd_object_030.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_030",
+      "position": [
+        -2.38999962,
+        0.22847005849999924,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_030__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 3.120619715551904
+    },
+    "point.object.hssd_object_031.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_031",
+      "position": [
+        -2.20999962,
+        0.22847005849999924,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_031__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -3.121034535797409
+    },
+    "point.object.hssd_object_032.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_032",
+      "position": [
+        -2.38999962,
+        0.22847005849999924,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_032__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 3.1306739074661842
+    },
+    "point.object.hssd_object_033.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_033",
+      "position": [
+        -1.249324894500813,
+        0.6343001715379758,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_033__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_034.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_034",
+      "position": [
+        -4.969999619999999,
+        1.6684700584999996,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_034__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.068991723024855
+    },
+    "point.object.hssd_object_035.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_035",
+      "position": [
+        -4.78999962,
+        1.908470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_035__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8378665686684665
+    },
+    "point.object.hssd_object_036.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_036",
+      "position": [
+        -4.847664127999376,
+        1.614078604077125,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_036__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_037.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_037",
+      "position": [
+        -4.78999962,
+        1.908470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_037__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.9395098872979644
+    },
+    "point.object.hssd_object_038.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_038",
+      "position": [
+        6.85000038,
+        5.688470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_038__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5728801089420725
+    },
+    "point.object.hssd_object_039.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_039",
+      "position": [
+        6.85000038,
+        0.5284700584999991,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_039__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.601120547158304
+    },
+    "point.object.hssd_object_040.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_040",
+      "position": [
+        -3.04999962,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_040__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5116444014821502
+    },
+    "point.object.hssd_object_041.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_041.approach.01",
+      "owner": "object.hssd_object_041",
+      "position": [
+        4.026430075277672,
+        -4.25171969332995,
+        0.8363404392170469
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_041__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_041.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_041",
+      "position": [
+        5.311430006325227,
+        -4.25171969332995,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_041__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948968
+    },
+    "point.object.hssd_object_042.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_042",
+      "position": [
+        3.85000038,
+        -2.9515299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_042__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8945692058125179
+    },
+    "point.object.hssd_object_043.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_043",
+      "position": [
+        4.150000379999999,
+        -2.5315299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_043__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5663193864172167
+    },
+    "point.object.hssd_object_044.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_044",
+      "position": [
+        5.0571147372936265,
+        0.6343001715764586,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_044__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_045.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_045",
+      "position": [
+        3.19000038,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_045__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4769353670453036
+    },
+    "point.object.hssd_object_046.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_046",
+      "position": [
+        3.2500003800000004,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_046__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4991142380261606
+    },
+    "point.object.hssd_object_047.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_047",
+      "position": [
+        3.19000038,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_047__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.493842759897225
+    },
+    "point.object.hssd_object_048.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_048",
+      "position": [
+        -5.38999962,
+        -2.4115299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_048__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.9461599802499243
+    },
+    "point.object.hssd_object_049.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_049",
+      "position": [
+        -5.38999962,
+        -2.4115299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_049__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.8849699182706279
+    },
+    "point.object.hssd_object_050.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_050",
+      "position": [
+        -5.38999962,
+        -3.3715299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_050__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.869147631447143
+    },
+    "point.object.hssd_object_051.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_051",
+      "position": [
+        -5.38999962,
+        -3.3715299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_051__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.8353028871282238
+    },
+    "point.object.hssd_object_052.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_052",
+      "position": [
+        -5.38999962,
+        -4.3315299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_052__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.7883149192446226
+    },
+    "point.object.hssd_object_053.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_053",
+      "position": [
+        6.85000038,
+        -4.6315299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_053__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5352611345810747
+    },
+    "point.object.hssd_object_054.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_054",
+      "position": [
+        0.13000038000000025,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_054__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5100752171284753
+    },
+    "point.object.hssd_object_055.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_055",
+      "position": [
+        0.13000038000000025,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_055__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4933033189696858
+    },
+    "point.object.hssd_object_056.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_056",
+      "position": [
+        0.19000037999999986,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_056__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4986462954886082
+    },
+    "point.object.hssd_object_057.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_057",
+      "position": [
+        6.85000038,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_057__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5799114411032251
+    },
+    "point.object.hssd_object_058.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_058",
+      "position": [
+        -1.4280408655941694,
+        5.324292274197464,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_058__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_059.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_059",
+      "position": [
+        -0.8299996199999997,
+        5.3884700584999985,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_059__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.906975682561755
+    },
+    "point.object.hssd_object_060.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_060",
+      "position": [
+        1.031958993738869,
+        5.324292274197464,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_060__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_061.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_061",
+      "position": [
+        1.93000038,
+        5.448470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_061__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8003181832900539
+    },
+    "point.object.hssd_object_062.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_062",
+      "position": [
+        -2.14999962,
+        2.868470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_062__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.478028839238399
+    },
+    "point.object.hssd_object_063.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_063",
+      "position": [
+        -2.14999962,
+        2.9884700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_063__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.604939375377612
+    },
+    "point.object.hssd_object_064.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_064",
+      "position": [
+        -2.14999962,
+        3.0484700584999986,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_064__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5778654876742646
+    },
+    "point.object.hssd_object_065.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_065",
+      "position": [
+        -2.14999962,
+        2.9884700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_065__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5838211022583546
+    },
+    "point.object.hssd_object_066.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_066",
+      "position": [
+        -2.14999962,
+        2.9284700584999994,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_066__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.563566056063898
+    },
+    "point.object.hssd_object_067.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_067",
+      "position": [
+        -2.14999962,
+        2.9284700584999994,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_067__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5939095579927092
+    },
+    "point.object.hssd_object_068.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_068",
+      "position": [
+        -2.14999962,
+        2.9284700584999994,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_068__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5763076211335043
+    },
+    "point.object.hssd_object_069.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_069",
+      "position": [
+        -5.02999962,
+        3.4684700584999986,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_069__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.017215402499160502
+    },
+    "point.object.hssd_object_070.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_070",
+      "position": [
+        -5.56999962,
+        3.4684700584999986,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_070__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.256055681153925
+    },
+    "point.object.hssd_object_071.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_071",
+      "position": [
+        -2.14999962,
+        2.868470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_071__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5287081643127016
+    },
+    "point.object.hssd_object_072.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_072",
+      "position": [
+        -2.14999962,
+        2.868470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_072__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4893946527889597
+    },
+    "point.object.hssd_object_073.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_073",
+      "position": [
+        -5.02999962,
+        3.4684700584999986,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_073__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.010017025256087426
+    },
+    "point.object.hssd_object_074.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_074",
+      "position": [
+        -2.0170239579621985,
+        2.9729985652611077,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_074__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948968
+    },
+    "point.object.hssd_object_075.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_075.approach.01",
+      "owner": "object.hssd_object_075",
+      "position": [
+        -0.0954650416970253,
+        3.845440892190195,
+        0.9130035325975202
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_075__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_075.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_075",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_075__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.9599980157828378
+    },
+    "point.object.hssd_object_076.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_076.approach.01",
+      "owner": "object.hssd_object_076",
+      "position": [
+        -0.704034898430109,
+        3.8454409070913544,
+        0.9130040737080607
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_076__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_076.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_076",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_076__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8261274809671217
+    },
+    "point.object.hssd_object_077.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_077.approach.01",
+      "owner": "object.hssd_object_077",
+      "position": [
+        -0.7040348909795058,
+        2.963338388664309,
+        0.9130041789077993
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_077__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_077.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_077",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_077__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3109066639682705
+    },
+    "point.object.hssd_object_078.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_078.approach.01",
+      "owner": "object.hssd_object_078",
+      "position": [
+        -0.09546510130167007,
+        2.963339282733854,
+        0.9130041340260546
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_078__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_078.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_078",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_078__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.175056458108371
+    },
+    "point.object.hssd_object_079.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_079.approach.01",
+      "owner": "object.hssd_object_079",
+      "position": [
+        0.49017432332048927,
+        3.4070795977253607,
+        0.9130042693551091
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_079__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_079.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_079",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_079__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.56789849149985
+    },
+    "point.object.hssd_object_080.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_080.approach.01",
+      "owner": "object.hssd_object_080",
+      "position": [
+        -1.2896741628646837,
+        3.4070795232194904,
+        0.9130039008167579
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_080__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_080.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_080",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_080__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5701809571570973
+    },
+    "point.object.hssd_object_081.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_081.approach.01",
+      "owner": "object.hssd_object_081",
+      "position": [
+        -0.39994508028030396,
+        3.4101691892177506,
+        0.7620001141482678
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_081__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_081.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_081",
+      "position": [
+        0.9700003800000001,
+        3.4084700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_081__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5720366169347204
+    },
+    "point.object.hssd_object_082.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_082",
+      "position": [
+        -3.64999962,
+        -5.651529941500001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_082__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.2782649975421543
+    },
+    "point.object.hssd_object_083.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_083",
+      "position": [
+        0.25000038000000036,
+        -3.3715299415000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_083__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.008218822899272
+    },
+    "point.object.hssd_object_084.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_084",
+      "position": [
+        -0.7699996200000001,
+        -5.651529941500001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_084__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 3.089937522351752
+    },
+    "point.object.hssd_object_085.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_085.approach.01",
+      "owner": "object.hssd_object_085",
+      "position": [
+        2.3039132855337354,
+        -2.4469764808528263,
+        0.8260953717640491
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_085__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_085.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_085",
+      "position": [
+        3.85000038,
+        -2.9515299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_085__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.8862417186631095
+    },
+    "point.object.hssd_object_086.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_086",
+      "position": [
+        2.9500003799999996,
+        4.0684700585,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_086__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.8772289319988972
+    },
+    "point.object.hssd_object_087.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_087.approach.01",
+      "owner": "object.hssd_object_087",
+      "position": [
+        4.541609779000282,
+        -5.190579790438395,
+        0.5293425207984475
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_087__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_087.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_087",
+      "position": [
+        5.311428723335266,
+        -5.190579790438395,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_087__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_088.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_088",
+      "position": [
+        0.3717100644111558,
+        -3.6835597316288937,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_088__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_089.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_089",
+      "position": [
+        6.85000038,
+        -3.6715299415000002,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_089__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5495765918304854
+    },
+    "point.object.hssd_object_090.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_090",
+      "position": [
+        9.130000379999998,
+        4.308470058499998,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_090__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.4166063801510456
+    },
+    "point.object.hssd_object_091.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_091",
+      "position": [
+        2.6500003800000007,
+        -4.7515299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_091__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.005622573902742743
+    },
+    "point.object.hssd_object_092.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_092",
+      "position": [
+        -2.08999962,
+        1.908470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_092__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5823520872011478
+    },
+    "point.object.hssd_object_093.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_093",
+      "position": [
+        -2.08999962,
+        1.368470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_093__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5923123051325325
+    },
+    "point.object.hssd_object_094.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_094",
+      "position": [
+        -2.08999962,
+        1.4284700584999994,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_094__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5725987531211247
+    },
+    "point.object.hssd_object_095.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_095",
+      "position": [
+        -2.08999962,
+        1.368470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_095__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5499732648443372
+    },
+    "point.object.hssd_object_096.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_096",
+      "position": [
+        6.85000038,
+        -1.5115299415,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_096__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.311718210414914
+    },
+    "point.object.hssd_object_097.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_097",
+      "position": [
+        -3.64999962,
+        -2.2915299415000003,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_097__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3795463676488728
+    },
+    "point.object.hssd_object_098.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_098",
+      "position": [
+        6.83407577556969,
+        1.3104201979198746,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_098__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.hssd_object_099.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.hssd_object_099.approach.01",
+      "owner": "object.hssd_object_099",
+      "position": [
+        3.663946697908496,
+        -2.4731733167185874,
+        0.8260953702025959
+      ],
+      "required": false,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_099__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.hssd_object_099.approach.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_099",
+      "position": [
+        4.150000379999999,
+        -2.5315299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_099__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6902864687830053
+    },
+    "point.object.hssd_object_100.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_100",
+      "position": [
+        5.650000379999999,
+        -5.651529941500001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_100__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.333235646870201
+    },
+    "point.object.hssd_object_101.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_101",
+      "position": [
+        -2.8733670139312744,
+        5.264119817901243,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_101__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.0928336545814714
+    },
+    "point.object.hssd_object_102.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_102",
+      "position": [
+        6.85000038,
+        5.688470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_102__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.7798814573989639
+    },
+    "point.object.hssd_object_103.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_103",
+      "position": [
+        6.85000038,
+        5.688470058499999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_103__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6792214767352456
+    },
+    "point.object.hssd_object_104.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_104",
+      "position": [
+        -2.8733670139312744,
+        5.264119817901243,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_104__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.336513286360605
+    },
+    "point.object.hssd_object_105.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_105",
+      "position": [
+        2.230000379999999,
+        -5.651529941500001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_105__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3253998053429372
+    },
+    "point.object.hssd_object_106.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_106",
+      "position": [
+        -1.18999962,
+        -5.651529941500001,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_106__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3385500205855478
+    },
+    "point.object.hssd_object_107.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_107",
+      "position": [
+        -4.969999619999999,
+        1.6684700584999996,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_107__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.6003983043941814
+    },
+    "point.object.hssd_object_108.observation.01": {
+      "kind": "navigation",
+      "owner": "object.hssd_object_108",
+      "position": [
+        6.933170129083317,
+        3.352419805382483,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__hssd_object_108__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.snack_soda_can_home_04.action": {
+      "kind": "action",
+      "navigation_site": "point.object.snack_soda_can_home_04.approach.01",
+      "owner": "object.snack_soda_can_home_04",
+      "required": false,
+      "site": "snack_soda_can_home_04_grasp_site"
+    },
+    "point.object.snack_soda_can_home_04.approach.01": {
+      "kind": "navigation",
+      "owner": "object.snack_soda_can_home_04",
+      "position": [
+        3.85000038,
+        -2.9515299415000005,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__object__snack_soda_can_home_04__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.1917015015630135
+    },
+    "point.room.bathroom.approach.01": {
+      "kind": "navigation",
+      "owner": "room.bathroom",
+      "position": [
+        -5.38999962,
+        -3.731529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__room__bathroom__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.bedroom.approach.01": {
+      "kind": "navigation",
+      "owner": "room.bedroom",
+      "position": [
+        -1.12999962,
+        -2.891529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__room__bedroom__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.kitchen.approach.01": {
+      "kind": "navigation",
+      "owner": "room.kitchen",
+      "position": [
+        4.45000038,
+        4.188470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__room__kitchen__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.living_room.approach.01": {
+      "kind": "navigation",
+      "owner": "room.living_room",
+      "position": [
+        -2.14999962,
+        2.868470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__room__living_room__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.room.office.approach.01": {
+      "kind": "navigation",
+      "owner": "room.office",
+      "position": [
+        -3.52999962,
+        1.908470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__room__office__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.01": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        9.13000038,
+        -5.831529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__01",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.02": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        9.13000038,
+        5.988470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__02",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.03": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -5.98999962,
+        4.308470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__03",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.04": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -5.38999962,
+        -5.651529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__04",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.05": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        7.75000038,
+        0.108470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__05",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.06": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        2.05000038,
+        -5.831529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__06",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.07": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        3.97000038,
+        5.208470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__07",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.08": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -5.02999962,
+        -0.611529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__08",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.09": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        -1.12999962,
+        5.388470058,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__09",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.10": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        5.59000038,
+        -3.551529942,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__spawn__anchor__10",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.zone.home.action": {
+      "kind": "action",
+      "navigation_site": "point.zone.home.approach.01",
+      "owner": "zone.home",
+      "required": false,
+      "site": "zone_home_center"
+    },
+    "point.zone.home.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.home",
+      "position": [
+        1.5736552476882935,
+        0.07923483848571777,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__home_10_104862513_172226580__point__zone__home__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "scene": "home_10_104862513_172226580.xml",
+  "scene_id": "home_10_104862513_172226580",
+  "schema_version": 2
+}

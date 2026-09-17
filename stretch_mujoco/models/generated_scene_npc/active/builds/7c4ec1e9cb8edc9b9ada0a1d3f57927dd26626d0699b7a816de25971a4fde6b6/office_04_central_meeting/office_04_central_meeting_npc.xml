@@ -1,0 +1,1246 @@
+<mujoco model="Central Meeting Office">
+  <include file="../../../../../assets/office_scenes/office_04_central_meeting_robot.xml" />
+  <compiler angle="radian" balanceinertia="true" assetdir="../../../../../assets" />
+  <statistic center="0 0 1" extent="16" />
+  <visual>
+    <headlight ambient="0.31 0.31 0.31" diffuse="0.66 0.66 0.66" specular="0.08 0.08 0.08" />
+  </visual>
+  <asset>
+    <texture name="scene_floor_texture" type="2d" builtin="checker" rgb1="0.24 0.27 0.29" rgb2="0.19 0.21 0.23" width="512" height="512" />
+    <material name="scene_floor" texture="scene_floor_texture" texrepeat="8 5" reflectance="0.04" />
+    <material name="scene_wall" rgba="0.84 0.86 0.85 1" specular="0.03" />
+    <material name="snack_counter_wood" rgba="0.55 0.36 0.20 1" />
+    <material name="snack_counter_metal" rgba="0.14 0.16 0.17 1" />
+    <material name="snack_cabinet" rgba="0.70 0.68 0.61 1" />
+    <material name="lounge_rug" rgba="0.45 0.39 0.31 1" />
+    <material name="plant_pot" rgba="0.26 0.19 0.13 1" />
+    <material name="plant_leaf" rgba="0.12 0.38 0.18 1" />
+    <mesh name="snack_can_mesh" file="office_snacks/can.msh" scale="1.4 1.4 1.4" />
+    <mesh name="snack_cereal_mesh" file="office_snacks/cereal.msh" scale="0.85 0.85 0.85" />
+    <mesh name="snack_bread_mesh" file="office_snacks/bread.msh" scale="0.9 0.9 0.9" />
+    <mesh name="snack_lemon_mesh" file="office_snacks/lemon.msh" scale="1.5 1 1" />
+    <texture name="snack_soda_tex" type="2d" file="office_snacks/soda.png" />
+    <material name="snack_soda" texture="snack_soda_tex" specular="0.1" shininess="0.08" />
+    <texture name="snack_cereal_tex" type="2d" file="office_snacks/cereal.png" />
+    <material name="snack_cereal" texture="snack_cereal_tex" specular="0.1" shininess="0.08" />
+    <texture name="snack_bread_tex" type="2d" file="office_snacks/bread.png" />
+    <material name="snack_bread" texture="snack_bread_tex" specular="0.1" shininess="0.08" />
+    <texture name="snack_lemon_tex" type="2d" file="office_snacks/lemon.png" />
+    <material name="snack_lemon" texture="snack_lemon_tex" specular="0.1" shininess="0.08" />
+    <texture name="interactive_001_bottle_texture_000" type="2d" file="grasp_objects/001_bottle/001_bottle.png" />
+    <material name="interactive_001_bottle_material_000" texture="interactive_001_bottle_texture_000" />
+    <mesh name="interactive_001_bottle_mesh_000" file="grasp_objects/001_bottle/001_bottle_visual.obj" />
+    <mesh name="interactive_001_bottle_mesh_001" file="grasp_objects/001_bottle/001_bottle_collision.stl" />
+    <texture name="interactive_017_calculator_texture_000" type="2d" file="grasp_objects/017_calculator/017_calculator.png" />
+    <material name="interactive_017_calculator_material_000" texture="interactive_017_calculator_texture_000" />
+    <mesh name="interactive_017_calculator_mesh_000" file="grasp_objects/017_calculator/017_calculator_visual.obj" />
+    <mesh name="interactive_017_calculator_mesh_001" file="grasp_objects/017_calculator/017_calculator_collision.stl" />
+    <texture name="interactive_025_chips_tub_texture_000" type="2d" file="grasp_objects/025_chips-tub/025_chips-tub.png" />
+    <material name="interactive_025_chips_tub_material_000" texture="interactive_025_chips_tub_texture_000" />
+    <mesh name="interactive_025_chips_tub_mesh_000" file="grasp_objects/025_chips-tub/025_chips-tub_visual.obj" />
+    <mesh name="interactive_025_chips_tub_mesh_001" file="grasp_objects/025_chips-tub/025_chips-tub_collision.stl" />
+    <material name="interactive_035_apple_material_000" rgba="0.8 0.03529 0.0549 1" />
+    <mesh name="interactive_035_apple_mesh_000" file="grasp_objects/035_apple/035_apple_visual.obj" />
+    <mesh name="interactive_035_apple_mesh_001" file="grasp_objects/035_apple/035_apple_collision.stl" />
+    <texture name="interactive_038_milk_box_texture_000" type="2d" file="grasp_objects/038_milk-box/038_milk-box.png" />
+    <material name="interactive_038_milk_box_material_000" texture="interactive_038_milk_box_texture_000" />
+    <mesh name="interactive_038_milk_box_mesh_000" file="grasp_objects/038_milk-box/038_milk-box_visual.obj" />
+    <mesh name="interactive_038_milk_box_mesh_001" file="grasp_objects/038_milk-box/038_milk-box_collision.stl" />
+    <texture name="interactive_043_book_texture_000" type="2d" file="grasp_objects/043_book/043_book.png" />
+    <material name="interactive_043_book_material_000" texture="interactive_043_book_texture_000" />
+    <mesh name="interactive_043_book_mesh_000" file="grasp_objects/043_book/043_book_visual.obj" />
+    <mesh name="interactive_043_book_mesh_001" file="grasp_objects/043_book/043_book_collision.stl" />
+    <texture name="interactive_069_vagetable_texture_000" type="2d" file="grasp_objects/069_vagetable/069_vagetable.png" />
+    <material name="interactive_069_vagetable_material_000" texture="interactive_069_vagetable_texture_000" />
+    <mesh name="interactive_069_vagetable_mesh_000" file="grasp_objects/069_vagetable/069_vagetable_visual.obj" />
+    <mesh name="interactive_069_vagetable_mesh_001" file="grasp_objects/069_vagetable/069_vagetable_collision.stl" />
+    <texture name="interactive_071_can_texture_000" type="2d" file="grasp_objects/071_can/071_can.png" />
+    <material name="interactive_071_can_material_000" texture="interactive_071_can_texture_000" />
+    <mesh name="interactive_071_can_mesh_000" file="grasp_objects/071_can/071_can_visual.obj" />
+    <mesh name="interactive_071_can_mesh_001" file="grasp_objects/071_can/071_can_collision.stl" />
+    <texture name="interactive_075_bread_texture_000" type="2d" file="grasp_objects/075_bread/075_bread.png" />
+    <material name="interactive_075_bread_material_000" texture="interactive_075_bread_texture_000" />
+    <mesh name="interactive_075_bread_mesh_000" file="grasp_objects/075_bread/075_bread_visual.obj" />
+    <mesh name="interactive_075_bread_mesh_001" file="grasp_objects/075_bread/075_bread_collision.stl" />
+    <texture name="interactive_092_notebook_texture_000" type="2d" file="grasp_objects/092_notebook/092_notebook.png" />
+    <material name="interactive_092_notebook_material_000" texture="interactive_092_notebook_texture_000" />
+    <mesh name="interactive_092_notebook_mesh_000" file="grasp_objects/092_notebook/092_notebook_visual.obj" />
+    <mesh name="interactive_092_notebook_mesh_001" file="grasp_objects/092_notebook/092_notebook_collision.stl" />
+    <texture name="interactive_101_milk_tea_texture_000" type="2d" file="grasp_objects/101_milk-tea/101_milk-tea.png" />
+    <material name="interactive_101_milk_tea_material_000" texture="interactive_101_milk_tea_texture_000" />
+    <mesh name="interactive_101_milk_tea_mesh_000" file="grasp_objects/101_milk-tea/101_milk-tea_visual.obj" />
+    <mesh name="interactive_101_milk_tea_mesh_001" file="grasp_objects/101_milk-tea/101_milk-tea_collision.stl" />
+    <texture name="interactive_116_keyboard_texture_000" type="2d" file="grasp_objects/116_keyboard/116_keyboard.png" />
+    <material name="interactive_116_keyboard_material_000" texture="interactive_116_keyboard_texture_000" />
+    <mesh name="interactive_116_keyboard_mesh_000" file="grasp_objects/116_keyboard/116_keyboard_visual.obj" />
+    <mesh name="interactive_116_keyboard_mesh_001" file="grasp_objects/116_keyboard/116_keyboard_collision.stl" />
+    <texture name="interactive_green_apple_texture_000" type="2d" file="grasp_objects/green_apple/green_apple.png" />
+    <material name="interactive_green_apple_material_000" texture="interactive_green_apple_texture_000" />
+    <mesh name="interactive_green_apple_mesh_000" file="grasp_objects/green_apple/green_apple_visual.obj" />
+    <mesh name="interactive_green_apple_mesh_001" file="grasp_objects/green_apple/green_apple_collision.stl" />
+    <mesh name="interactive_snack_soda_can_mesh" file="office_snacks/can.msh" scale="1.4 1.4 1.4" />
+    <texture name="interactive_snack_soda_can_texture" type="2d" file="office_snacks/soda.png" />
+    <material name="interactive_snack_soda_can_material" texture="interactive_snack_soda_can_texture" specular="0.1" shininess="0.08" />
+    <mesh name="interactive_snack_cereal_box_mesh" file="office_snacks/cereal.msh" scale="0.85 0.85 0.85" />
+    <texture name="interactive_snack_cereal_box_texture" type="2d" file="office_snacks/cereal.png" />
+    <material name="interactive_snack_cereal_box_material" texture="interactive_snack_cereal_box_texture" specular="0.1" shininess="0.08" />
+    <mesh name="interactive_snack_bread_snack_mesh" file="office_snacks/bread.msh" scale="0.9 0.9 0.9" />
+    <texture name="interactive_snack_bread_snack_texture" type="2d" file="office_snacks/bread.png" />
+    <material name="interactive_snack_bread_snack_material" texture="interactive_snack_bread_snack_texture" specular="0.1" shininess="0.08" />
+    <mesh name="interactive_snack_lemon_mesh" file="office_snacks/lemon.msh" scale="1.5 1 1" />
+    <texture name="interactive_snack_lemon_texture" type="2d" file="office_snacks/lemon.png" />
+    <material name="interactive_snack_lemon_material" texture="interactive_snack_lemon_texture" specular="0.1" shininess="0.08" />
+  </asset>
+  <asset>
+    <texture name="new_adjustable_desk_texture_000" type="2d" file="office_assets/desks/textures/image_001.png" />
+    <texture name="new_adjustable_desk_texture_001" type="2d" file="office_assets/desks/textures/image_002.png" />
+    <material name="new_adjustable_desk_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_adjustable_desk_texture_000" />
+    <material name="new_adjustable_desk_material_001" rgba="0.00143 0.00143 0.00143 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_adjustable_desk_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_adjustable_desk_texture_001" />
+    <mesh name="new_adjustable_desk_mesh_000" file="office_assets/desks/meshes/part_000_Material__24.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_adjustable_desk_mesh_001" file="office_assets/desks/meshes/part_002_Material__3.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_adjustable_desk_mesh_002" file="office_assets/desks/meshes/part_001_Material___02.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_oak_square_table_texture_000" type="2d" file="office_assets/desks/textures/image_002.png" />
+    <texture name="new_oak_square_table_texture_001" type="2d" file="office_assets/desks/textures/image_004.png" />
+    <material name="new_oak_square_table_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_oak_square_table_texture_001" />
+    <material name="new_oak_square_table_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_oak_square_table_texture_000" />
+    <mesh name="new_oak_square_table_mesh_000" file="office_assets/desks/meshes/part_000_FINISH_461.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_oak_square_table_mesh_001" file="office_assets/desks/meshes/part_001_FINISH_621.obj" scale="1 0.999999881 0.999999881" />
+    <texture name="new_cb_desk_2400_texture_000" type="2d" file="office_assets/desks/textures/image_001.png" />
+    <texture name="new_cb_desk_2400_texture_001" type="2d" file="office_assets/desks/textures/image_003.png" />
+    <texture name="new_cb_desk_2400_texture_002" type="2d" file="office_assets/desks/textures/image_000.png" />
+    <material name="new_cb_desk_2400_material_000" rgba="0.411117 0.411117 0.411117 1" specular="0.693134" shininess="0.949234" reflectance="0.334495" />
+    <material name="new_cb_desk_2400_material_001" rgba="0.874524 0.874524 0.874524 1" specular="0.632896" shininess="1" reflectance="0.296161" />
+    <material name="new_cb_desk_2400_material_002" rgba="0.7519 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_003" rgba="0.20 0.20 0.22 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_004" rgba="0.18 0.18 0.20 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_005" rgba="0.20 0.20 0.22 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_006" rgba="0.03026 0.03026 0.03026 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_007" rgba="0.20 0.20 0.22 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_008" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_cb_desk_2400_texture_002" />
+    <material name="new_cb_desk_2400_material_009" rgba="0.411117 0.411117 0.411117 1" specular="0.693134" shininess="0.949234" reflectance="0.334495" />
+    <material name="new_cb_desk_2400_material_010" rgba="0.92399 0.92399 0.92399 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_011" rgba="0.05459 0.05459 0.05459 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_012" rgba="0.18 0.18 0.20 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_013" rgba="0.20 0.20 0.22 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_014" rgba="0.72 0.76 0.78 1" specular="0.1675" shininess="0" reflectance="0" texture="new_cb_desk_2400_texture_000" />
+    <material name="new_cb_desk_2400_material_015" rgba="0.7519 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_016" rgba="0.874524 0.874524 0.874524 1" specular="0.632896" shininess="1" reflectance="0.296161" />
+    <material name="new_cb_desk_2400_material_017" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_018" rgba="0.874524 0.874524 0.874524 1" specular="0.632896" shininess="1" reflectance="0.296161" />
+    <material name="new_cb_desk_2400_material_019" rgba="0.874524 0.874524 0.874524 1" specular="0.632896" shininess="1" reflectance="0.296161" />
+    <material name="new_cb_desk_2400_material_020" rgba="0.25 0.22 0.19 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_021" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_022" rgba="0.7519 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_023" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_024" rgba="0.411117 0.411117 0.411117 1" specular="0.693134" shininess="0.949234" reflectance="0.334495" />
+    <material name="new_cb_desk_2400_material_025" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="new_cb_desk_2400_texture_001" />
+    <material name="new_cb_desk_2400_material_026" rgba="0.00293 0.00293 0.00293 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_027" rgba="0.25 0.22 0.19 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_028" rgba="0.18 0.18 0.20 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_029" rgba="0.18 0.18 0.20 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_030" rgba="0.25 0.22 0.19 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_031" rgba="0.7519 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_032" rgba="0.25 0.22 0.19 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_033" rgba="0.10616 0.10616 0.11926 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_034" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_cb_desk_2400_material_035" rgba="0.411117 0.411117 0.411117 1" specular="0.693134" shininess="0.949234" reflectance="0.334495" />
+    <mesh name="new_cb_desk_2400_mesh_000" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_001" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_002" file="office_assets/desks/meshes/part_002_FINISH_FFFFFF.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_003" file="office_assets/desks/meshes/part_003_Material__2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_004" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_005" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_006" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_007" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_008" file="office_assets/desks/meshes/part_000_Fabric_Seethrough2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_009" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_010" file="office_assets/desks/meshes/part_001_Material__1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_011" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_012" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_013" file="office_assets/desks/meshes/part_000_Standard_2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_014" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_015" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_016" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_017" file="office_assets/desks/meshes/part_001_Material__0.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_018" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_019" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_020" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_021" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_022" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_023" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_024" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_025" file="office_assets/desks/meshes/part_003_Standard_5.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_026" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_027" file="office_assets/desks/meshes/part_000_Material__0_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_028" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_029" file="office_assets/desks/meshes/part_002_Metal___Chrome.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_030" file="office_assets/desks/meshes/part_006_stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_031" file="office_assets/desks/meshes/part_003_Metal___Stainless_steel_RADIAL.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_032" file="office_assets/desks/meshes/part_005_Standard_11.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_033" file="office_assets/desks/meshes/part_002_Material__3.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_034" file="office_assets/desks/meshes/part_001_Standard_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_cb_desk_2400_mesh_035" file="office_assets/desks/meshes/part_004_Glossy___White.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_reception_desk_texture_000" type="2d" file="office_assets/desks/textures/image_003.png" />
+    <texture name="new_reception_desk_texture_001" type="2d" file="office_assets/desks/textures/image_001.png" />
+    <material name="new_reception_desk_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_reception_desk_texture_000" />
+    <material name="new_reception_desk_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_reception_desk_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="new_reception_desk_texture_001" />
+    <mesh name="new_reception_desk_mesh_000" file="office_assets/desks/meshes/part_001_AAA___STEEL.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_reception_desk_mesh_001" file="office_assets/desks/meshes/part_002_mig_07___Default.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_reception_desk_mesh_002" file="office_assets/desks/meshes/part_000_FINISH_CB_DARK_OAK.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_office_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_005.png" />
+    <texture name="new_office_chair_texture_001" type="2d" file="office_assets/chairs/textures/image_002.png" />
+    <material name="new_office_chair_material_000" rgba="0.778745 0.778745 0.778745 1" specular="0.690136" shininess="1" reflectance="0.332586" />
+    <material name="new_office_chair_material_001" rgba="1 1 1 1" specular="0.155" shininess="0.96017" reflectance="0" texture="new_office_chair_texture_001" />
+    <material name="new_office_chair_material_002" rgba="0.127225 0.127225 0.127225 1" specular="0.113382" shininess="0.949234" reflectance="0.00545891" />
+    <material name="new_office_chair_material_003" rgba="1 1 1 1" specular="0.163039" shininess="0.894888" reflectance="0" texture="new_office_chair_texture_000" />
+    <mesh name="new_office_chair_mesh_000" file="office_assets/chairs/meshes/part_000_Shader4.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_001" file="office_assets/chairs/meshes/part_002_Shader2.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_002" file="office_assets/chairs/meshes/part_003_Shader1.obj" scale="1 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_003" file="office_assets/chairs/meshes/part_002_Shader2.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_004" file="office_assets/chairs/meshes/part_003_Shader1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_005" file="office_assets/chairs/meshes/part_000_Shader4.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_006" file="office_assets/chairs/meshes/part_001_Shader3.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_office_chair_mesh_007" file="office_assets/chairs/meshes/part_001_Shader3.obj" scale="1 0.999999881 0.999999881" />
+    <texture name="new_home_office_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_004.png" />
+    <texture name="new_home_office_chair_texture_001" type="2d" file="office_assets/chairs/textures/image_007.png" />
+    <texture name="new_home_office_chair_texture_002" type="2d" file="office_assets/chairs/textures/image_001.png" />
+    <material name="new_home_office_chair_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_home_office_chair_texture_001" />
+    <material name="new_home_office_chair_material_001" rgba="0.00169 0.00169 0.00169 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_home_office_chair_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_home_office_chair_texture_002" />
+    <material name="new_home_office_chair_material_003" rgba="1 1 1 1" specular="0.1675" shininess="0.97023" reflectance="0" texture="new_home_office_chair_texture_000" />
+    <material name="new_home_office_chair_material_004" rgba="0.03561 0.03561 0.03561 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_home_office_chair_material_005" rgba="0.00169 0.00169 0.00169 1" specular="0.1675" shininess="0" reflectance="0" />
+    <mesh name="new_home_office_chair_mesh_000" file="office_assets/chairs/meshes/part_001_Fabric_blue.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_001" file="office_assets/chairs/meshes/part_005_Walnut_wood.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_002" file="office_assets/chairs/meshes/part_004_unicolor_black2.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_003" file="office_assets/chairs/meshes/part_003_Metal_Brushed_leg.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_004" file="office_assets/chairs/meshes/part_002_unicolor_black.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <mesh name="new_home_office_chair_mesh_005" file="office_assets/chairs/meshes/part_000_x.obj" scale="0.999999881 0.999999762 0.999999881" />
+    <texture name="new_dining_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_000.png" />
+    <material name="new_dining_chair_material_000" rgba="0.00169 0.00169 0.00169 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_dining_chair_material_001" rgba="0.552002 0.320131 0.156443 1" specular="0.735064" shininess="0.904609" reflectance="0.311305" />
+    <material name="new_dining_chair_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_dining_chair_texture_000" />
+    <mesh name="new_dining_chair_mesh_000" file="office_assets/chairs/meshes/part_002_Fabric_Velvet_Black.obj" scale="0.999999881 0.99999994 0.999999881" />
+    <mesh name="new_dining_chair_mesh_001" file="office_assets/chairs/meshes/part_001_Metal___Gold_Brushed_Marina.obj" scale="0.999999881 0.99999994 0.999999881" />
+    <mesh name="new_dining_chair_mesh_002" file="office_assets/chairs/meshes/part_000_unicolor_black.obj" scale="0.999999881 0.99999994 0.999999881" />
+    <texture name="new_stance_chair_texture_000" type="2d" file="office_assets/chairs/textures/image_001.png" />
+    <texture name="new_stance_chair_texture_001" type="2d" file="office_assets/chairs/textures/image_000.png" />
+    <material name="new_stance_chair_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_stance_chair_texture_001" />
+    <material name="new_stance_chair_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_stance_chair_texture_000" />
+    <material name="new_stance_chair_material_002" rgba="0.00412 0.00412 0.00412 1" specular="0.1675" shininess="0" reflectance="0" />
+    <mesh name="new_stance_chair_mesh_000" file="office_assets/chairs/meshes/part_000_Crown_Ebony.obj" scale="0.99999994 0.999999762 0.999999762" />
+    <mesh name="new_stance_chair_mesh_001" file="office_assets/chairs/meshes/part_002_Standard_18.obj" scale="0.99999994 0.999999762 0.999999762" />
+    <mesh name="new_stance_chair_mesh_002" file="office_assets/chairs/meshes/part_001_Standard_6.obj" scale="0.99999994 0.999999762 0.999999762" />
+    <texture name="new_imac_24_texture_000" type="2d" file="office_assets/displays/textures/image_000.png" />
+    <texture name="new_imac_24_texture_001" type="2d" file="office_assets/displays/textures/image_001.png" />
+    <material name="new_imac_24_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_24_texture_000" />
+    <material name="new_imac_24_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_24_texture_001" />
+    <mesh name="new_imac_24_mesh_000" file="office_assets/displays/meshes/part_001_unicolor_creme_t.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_24_mesh_001" file="office_assets/displays/meshes/part_000_unicolor_creme.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_imac_27_texture_000" type="2d" file="office_assets/displays/textures/image_002.png" />
+    <texture name="new_imac_27_texture_001" type="2d" file="office_assets/displays/textures/image_003.png" />
+    <texture name="new_imac_27_texture_002" type="2d" file="office_assets/displays/textures/image_009.png" />
+    <texture name="new_imac_27_texture_003" type="2d" file="office_assets/displays/textures/image_007.png" />
+    <material name="new_imac_27_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_27_texture_002" />
+    <material name="new_imac_27_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_27_texture_003" />
+    <material name="new_imac_27_material_002" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="new_imac_27_texture_000" />
+    <material name="new_imac_27_material_003" rgba="0 0 0 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_imac_27_material_004" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_imac_27_texture_001" />
+    <mesh name="new_imac_27_mesh_000" file="office_assets/displays/meshes/part_000_unicolor_creme_t.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_001" file="office_assets/displays/meshes/part_003_Standard_1_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_002" file="office_assets/displays/meshes/part_001_Metal___Stainless_steel_1.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_003" file="office_assets/displays/meshes/part_002_Material__69.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <mesh name="new_imac_27_mesh_004" file="office_assets/displays/meshes/part_004_Metal___Stainless_steel.obj" scale="0.999999881 0.999999881 0.999999881" />
+    <texture name="new_teaming_table_texture_000" type="2d" file="office_assets/meeting_table/textures/image_004.png" />
+    <texture name="new_teaming_table_texture_001" type="2d" file="office_assets/meeting_table/textures/image_001.png" />
+    <material name="new_teaming_table_material_000" rgba="0.01113 0.01113 0.01113 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_teaming_table_material_001" rgba="1 1 1 1" specular="0.1675" shininess="0.917531" reflectance="0" texture="new_teaming_table_texture_001" />
+    <material name="new_teaming_table_material_002" rgba="0.00018 0.00018 0.00018 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_teaming_table_material_003" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="new_teaming_table_texture_000" />
+    <mesh name="new_teaming_table_mesh_000" file="office_assets/meeting_table/meshes/part_003_Material__4.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_001" file="office_assets/meeting_table/meshes/part_000_Material__24.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_002" file="office_assets/meeting_table/meshes/part_001_Material__3.obj" scale="1 0.999999881 0.75672355" />
+    <mesh name="new_teaming_table_mesh_003" file="office_assets/meeting_table/meshes/part_002_Metal___Stainless_steel_2017.obj" scale="1 0.999999881 0.75672355" />
+    <material name="new_dry_wipe_module_material_000" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" />
+    <material name="new_dry_wipe_module_material_001" rgba="0.21764 0.21764 0.21764 1" specular="0.1675" shininess="0" reflectance="0" />
+    <mesh name="new_dry_wipe_module_mesh_000" file="office_assets/whiteboard/meshes/part_000_Arch___Design__mi__2.obj" scale="0.999999881 0.999999821 0.999999881" />
+    <mesh name="new_dry_wipe_module_mesh_001" file="office_assets/whiteboard/meshes/part_001_Arch___Design__mi__1.obj" scale="0.999999881 0.999999821 0.999999881" />
+    <texture name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_texture" type="2d" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/textures/image_003.png" />
+    <material name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_texture" />
+    <mesh name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_000_mesh" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/meshes/part_000_Fabric.obj" />
+    <texture name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_texture" type="2d" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/textures/image_001.png" />
+    <material name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_texture" />
+    <mesh name="office_5274751529e50c02430fb9b3ee3019ea9c091520_part_001_mesh" file="office_assets/furniture/sofas/5274751529e50c02430fb9b3ee3019ea9c091520/meshes/part_001_mig_00wood.obj" />
+    <texture name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_texture" type="2d" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/textures/image_003.png" />
+    <material name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_texture" />
+    <mesh name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/meshes/part_000_mig_00wood.obj" />
+    <texture name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_texture" type="2d" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/textures/image_000.png" />
+    <material name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_texture" />
+    <mesh name="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" file="office_assets/furniture/sofas/9a0e617b83c901d346ce9fb020b49bf91442273c/meshes/part_001_Velvet_Emerald.obj" />
+    <material name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_000_material" rgba="0.00064 0.00064 0.00064 1" specular="0.1675" shininess="0" reflectance="0" />
+    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_000_mesh" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_000_Black.obj" />
+    <texture name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_texture" type="2d" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/textures/image_002.png" />
+    <material name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_material" rgba="1 1 1 1" specular="0.1675" shininess="0.904609" reflectance="0" texture="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_texture" />
+    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_001_mesh" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_001_Metal___Stainless_steel.obj" />
+    <texture name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_texture" type="2d" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/textures/image_000.png" />
+    <material name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_material" rgba="1 1 1 1" specular="0.1675" shininess="0" reflectance="0" texture="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_texture" />
+    <mesh name="office_e94ede305ff3f873dd34f8e95274bb54679df6b4_part_002_mesh" file="office_assets/furniture/sofas/e94ede305ff3f873dd34f8e95274bb54679df6b4/meshes/part_002_Fabric.obj" />
+  </asset>
+  <worldbody>
+    <geom name="office_floor" type="box" pos="0 0 -0.04" size="10.5 5.2 0.04" material="scene_floor" friction="1 0.01 0.001" />
+    <geom name="front_wall_0" type="box" pos="-5.7 -5.2 1.4" size="4.8 0.07 1.4" material="scene_wall" />
+    <geom name="front_wall_1" type="box" pos="5.7 -5.2 1.4" size="4.8 0.07 1.4" material="scene_wall" />
+    <geom name="back_wall_0" type="box" pos="0 5.2 1.4" size="10.5 0.07 1.4" material="scene_wall" />
+    <geom name="left_wall_0" type="box" pos="-10.5 0 1.4" size="0.07 5.2 1.4" material="scene_wall" />
+    <geom name="right_wall_0" type="box" pos="10.5 0 1.4" size="0.07 5.2 1.4" material="scene_wall" />
+    <site name="zone_work_center" pos="0 2.85 0.025" size="0.015" rgba="0 0 0 0" />
+    <light name="light_work" pos="0 2.85 2.7" dir="0 0 -1" diffuse="0.52 0.51 0.48" attenuation="0.15 0.05 0.02" castshadow="false" />
+    <site name="zone_meeting_center" pos="-6.25 -2.35 0.025" size="0.015" rgba="0 0 0 0" />
+    <light name="light_meeting" pos="-6.25 -2.35 2.7" dir="0 0 -1" diffuse="0.52 0.51 0.48" attenuation="0.15 0.05 0.02" castshadow="false" />
+    <site name="zone_lounge_center" pos="1.25 -2.35 0.025" size="0.015" rgba="0 0 0 0" />
+    <light name="light_lounge" pos="1.25 -2.35 2.7" dir="0 0 -1" diffuse="0.52 0.51 0.48" attenuation="0.15 0.05 0.02" castshadow="false" />
+    <site name="zone_snack_center" pos="7.5 -2.35 0.025" size="0.015" rgba="0 0 0 0" />
+    <light name="light_snack" pos="7.5 -2.35 2.7" dir="0 0 -1" diffuse="0.52 0.51 0.48" attenuation="0.15 0.05 0.02" castshadow="false" />
+    <body name="asset_000_new_cb_d" pos="-2.99302535 2.85 0" euler="0 0 0">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_000_00" pos="0.630855746 -0.58182916 0.355177544" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_000" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_001" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_002" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_003" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_01" pos="2.48421742 0.57168522 0.355177494" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_004" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_005" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_006" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_007" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_02" pos="2.48421746 -0.57725861 0.355177426" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_008" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_009" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_010" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_011" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_03" pos="0.630861356 0.56259235 0.355177614" quat="0.707146118 3.79738378e-08 -6.94208234e-09 -0.707067442">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_012" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_013" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_014" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_015" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_04" pos="0.92743363 0.59371027 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_016" type="mesh" mesh="new_cb_desk_2400_mesh_007" material="new_cb_desk_2400_material_004" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_017" type="mesh" mesh="new_cb_desk_2400_mesh_000" material="new_cb_desk_2400_material_027" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_018" type="mesh" mesh="new_cb_desk_2400_mesh_012" material="new_cb_desk_2400_material_016" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_019" type="mesh" mesh="new_cb_desk_2400_mesh_020" material="new_cb_desk_2400_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_020" type="mesh" mesh="new_cb_desk_2400_mesh_016" material="new_cb_desk_2400_material_023" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_021" type="mesh" mesh="new_cb_desk_2400_mesh_019" material="new_cb_desk_2400_material_005" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_022" type="mesh" mesh="new_cb_desk_2400_mesh_015" material="new_cb_desk_2400_material_009" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_05" pos="0.92743363 -0.59377867 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_023" type="mesh" mesh="new_cb_desk_2400_mesh_023" material="new_cb_desk_2400_material_012" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_024" type="mesh" mesh="new_cb_desk_2400_mesh_017" material="new_cb_desk_2400_material_020" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_025" type="mesh" mesh="new_cb_desk_2400_mesh_001" material="new_cb_desk_2400_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_026" type="mesh" mesh="new_cb_desk_2400_mesh_004" material="new_cb_desk_2400_material_022" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_027" type="mesh" mesh="new_cb_desk_2400_mesh_035" material="new_cb_desk_2400_material_017" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_028" type="mesh" mesh="new_cb_desk_2400_mesh_018" material="new_cb_desk_2400_material_003" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_029" type="mesh" mesh="new_cb_desk_2400_mesh_030" material="new_cb_desk_2400_material_024" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_06" pos="2.20002166 -0.61950865 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_030" type="mesh" mesh="new_cb_desk_2400_mesh_027" material="new_cb_desk_2400_material_028" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_031" type="mesh" mesh="new_cb_desk_2400_mesh_014" material="new_cb_desk_2400_material_030" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_032" type="mesh" mesh="new_cb_desk_2400_mesh_028" material="new_cb_desk_2400_material_019" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_033" type="mesh" mesh="new_cb_desk_2400_mesh_025" material="new_cb_desk_2400_material_015" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_034" type="mesh" mesh="new_cb_desk_2400_mesh_022" material="new_cb_desk_2400_material_021" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_035" type="mesh" mesh="new_cb_desk_2400_mesh_006" material="new_cb_desk_2400_material_007" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_036" type="mesh" mesh="new_cb_desk_2400_mesh_021" material="new_cb_desk_2400_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_07" pos="2.20002166 0.56751103 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_037" type="mesh" mesh="new_cb_desk_2400_mesh_024" material="new_cb_desk_2400_material_029" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_038" type="mesh" mesh="new_cb_desk_2400_mesh_005" material="new_cb_desk_2400_material_032" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_039" type="mesh" mesh="new_cb_desk_2400_mesh_029" material="new_cb_desk_2400_material_018" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_040" type="mesh" mesh="new_cb_desk_2400_mesh_011" material="new_cb_desk_2400_material_031" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_041" type="mesh" mesh="new_cb_desk_2400_mesh_026" material="new_cb_desk_2400_material_034" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_042" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_043" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_08" pos="1.5634517 -3.53394647e-10 0.355608789" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_044" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_045" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_046" type="mesh" mesh="new_cb_desk_2400_mesh_002" material="new_cb_desk_2400_material_014" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_047" type="mesh" mesh="new_cb_desk_2400_mesh_031" material="new_cb_desk_2400_material_025" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_09" pos="-0.630855644 0.58182905 0.355177614" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_048" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_049" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_050" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_051" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_10" pos="-2.48421744 -0.57168511 0.355177426" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_052" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_053" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_054" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_055" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_11" pos="-2.48421735 0.57725871 0.355177495" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_056" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_057" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_058" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_059" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_12" pos="-0.630861384 -0.56259246 0.355177547" quat="0.707067484 4.90865908e-08 -4.17535829e-09 0.707146076">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_060" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_061" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_062" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_063" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_13" pos="-0.927433601 -0.59371045 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_064" type="mesh" mesh="new_cb_desk_2400_mesh_007" material="new_cb_desk_2400_material_004" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_065" type="mesh" mesh="new_cb_desk_2400_mesh_000" material="new_cb_desk_2400_material_027" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_066" type="mesh" mesh="new_cb_desk_2400_mesh_012" material="new_cb_desk_2400_material_016" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_067" type="mesh" mesh="new_cb_desk_2400_mesh_020" material="new_cb_desk_2400_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_068" type="mesh" mesh="new_cb_desk_2400_mesh_016" material="new_cb_desk_2400_material_023" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_069" type="mesh" mesh="new_cb_desk_2400_mesh_019" material="new_cb_desk_2400_material_005" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_070" type="mesh" mesh="new_cb_desk_2400_mesh_015" material="new_cb_desk_2400_material_009" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_14" pos="-0.927433601 0.59377849 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_071" type="mesh" mesh="new_cb_desk_2400_mesh_023" material="new_cb_desk_2400_material_012" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_072" type="mesh" mesh="new_cb_desk_2400_mesh_017" material="new_cb_desk_2400_material_020" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_073" type="mesh" mesh="new_cb_desk_2400_mesh_001" material="new_cb_desk_2400_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_074" type="mesh" mesh="new_cb_desk_2400_mesh_004" material="new_cb_desk_2400_material_022" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_075" type="mesh" mesh="new_cb_desk_2400_mesh_035" material="new_cb_desk_2400_material_017" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_076" type="mesh" mesh="new_cb_desk_2400_mesh_018" material="new_cb_desk_2400_material_003" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_077" type="mesh" mesh="new_cb_desk_2400_mesh_030" material="new_cb_desk_2400_material_024" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_15" pos="-2.20002149 0.61950865 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_078" type="mesh" mesh="new_cb_desk_2400_mesh_027" material="new_cb_desk_2400_material_028" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_079" type="mesh" mesh="new_cb_desk_2400_mesh_014" material="new_cb_desk_2400_material_030" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_080" type="mesh" mesh="new_cb_desk_2400_mesh_028" material="new_cb_desk_2400_material_019" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_081" type="mesh" mesh="new_cb_desk_2400_mesh_025" material="new_cb_desk_2400_material_015" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_082" type="mesh" mesh="new_cb_desk_2400_mesh_022" material="new_cb_desk_2400_material_021" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_083" type="mesh" mesh="new_cb_desk_2400_mesh_006" material="new_cb_desk_2400_material_007" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_084" type="mesh" mesh="new_cb_desk_2400_mesh_021" material="new_cb_desk_2400_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_16" pos="-2.20002149 -0.56751103 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_085" type="mesh" mesh="new_cb_desk_2400_mesh_024" material="new_cb_desk_2400_material_029" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_086" type="mesh" mesh="new_cb_desk_2400_mesh_005" material="new_cb_desk_2400_material_032" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_087" type="mesh" mesh="new_cb_desk_2400_mesh_029" material="new_cb_desk_2400_material_018" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_088" type="mesh" mesh="new_cb_desk_2400_mesh_011" material="new_cb_desk_2400_material_031" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_089" type="mesh" mesh="new_cb_desk_2400_mesh_026" material="new_cb_desk_2400_material_034" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_090" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_091" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_000_17" pos="-1.56345166 -3.53394647e-10 0.355608789" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_000_092" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_093" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_094" type="mesh" mesh="new_cb_desk_2400_mesh_002" material="new_cb_desk_2400_material_014" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_000_095" type="mesh" mesh="new_cb_desk_2400_mesh_031" material="new_cb_desk_2400_material_025" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_000_00" pos="0.630855746 -0.58182916 0.355177544" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_000" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_001" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_002" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_003" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_01" pos="2.48421742 0.57168522 0.355177494" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_004" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_005" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_006" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_007" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_02" pos="2.48421746 -0.57725861 0.355177426" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_008" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_009" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_010" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_011" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_03" pos="0.630861356 0.56259235 0.355177614" quat="0.707146118 3.79738378e-08 -6.94208234e-09 -0.707067442">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_012" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_013" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_014" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_015" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_04" pos="0.92743363 0.59371027 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_016" type="mesh" mesh="new_cb_desk_2400_mesh_007" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_017" type="mesh" mesh="new_cb_desk_2400_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_018" type="mesh" mesh="new_cb_desk_2400_mesh_012" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_019" type="mesh" mesh="new_cb_desk_2400_mesh_020" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_020" type="mesh" mesh="new_cb_desk_2400_mesh_016" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_021" type="mesh" mesh="new_cb_desk_2400_mesh_019" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_022" type="mesh" mesh="new_cb_desk_2400_mesh_015" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_05" pos="0.92743363 -0.59377867 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_023" type="mesh" mesh="new_cb_desk_2400_mesh_023" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_024" type="mesh" mesh="new_cb_desk_2400_mesh_017" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_025" type="mesh" mesh="new_cb_desk_2400_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_026" type="mesh" mesh="new_cb_desk_2400_mesh_004" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_027" type="mesh" mesh="new_cb_desk_2400_mesh_035" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_028" type="mesh" mesh="new_cb_desk_2400_mesh_018" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_029" type="mesh" mesh="new_cb_desk_2400_mesh_030" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_06" pos="2.20002166 -0.61950865 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_030" type="mesh" mesh="new_cb_desk_2400_mesh_027" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_031" type="mesh" mesh="new_cb_desk_2400_mesh_014" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_032" type="mesh" mesh="new_cb_desk_2400_mesh_028" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_033" type="mesh" mesh="new_cb_desk_2400_mesh_025" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_034" type="mesh" mesh="new_cb_desk_2400_mesh_022" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_035" type="mesh" mesh="new_cb_desk_2400_mesh_006" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_036" type="mesh" mesh="new_cb_desk_2400_mesh_021" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_07" pos="2.20002166 0.56751103 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_037" type="mesh" mesh="new_cb_desk_2400_mesh_024" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_038" type="mesh" mesh="new_cb_desk_2400_mesh_005" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_039" type="mesh" mesh="new_cb_desk_2400_mesh_029" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_040" type="mesh" mesh="new_cb_desk_2400_mesh_011" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_041" type="mesh" mesh="new_cb_desk_2400_mesh_026" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_042" type="mesh" mesh="new_cb_desk_2400_mesh_032" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_043" type="mesh" mesh="new_cb_desk_2400_mesh_009" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_08" pos="1.5634517 -3.53394647e-10 0.355608789" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_044" type="mesh" mesh="new_cb_desk_2400_mesh_013" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_045" type="mesh" mesh="new_cb_desk_2400_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_046" type="mesh" mesh="new_cb_desk_2400_mesh_031" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_09" pos="-0.630855644 0.58182905 0.355177614" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_047" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_048" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_049" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_050" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_10" pos="-2.48421744 -0.57168511 0.355177426" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_051" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_052" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_053" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_054" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_11" pos="-2.48421735 0.57725871 0.355177495" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_055" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_056" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_057" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_058" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_12" pos="-0.630861384 -0.56259246 0.355177547" quat="0.707067484 4.90865908e-08 -4.17535829e-09 0.707146076">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_059" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_060" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_061" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_062" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_13" pos="-0.927433601 -0.59371045 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_063" type="mesh" mesh="new_cb_desk_2400_mesh_007" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_064" type="mesh" mesh="new_cb_desk_2400_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_065" type="mesh" mesh="new_cb_desk_2400_mesh_012" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_066" type="mesh" mesh="new_cb_desk_2400_mesh_020" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_067" type="mesh" mesh="new_cb_desk_2400_mesh_016" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_068" type="mesh" mesh="new_cb_desk_2400_mesh_019" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_069" type="mesh" mesh="new_cb_desk_2400_mesh_015" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_14" pos="-0.927433601 0.59377849 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_070" type="mesh" mesh="new_cb_desk_2400_mesh_023" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_071" type="mesh" mesh="new_cb_desk_2400_mesh_017" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_072" type="mesh" mesh="new_cb_desk_2400_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_073" type="mesh" mesh="new_cb_desk_2400_mesh_004" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_074" type="mesh" mesh="new_cb_desk_2400_mesh_035" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_075" type="mesh" mesh="new_cb_desk_2400_mesh_018" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_076" type="mesh" mesh="new_cb_desk_2400_mesh_030" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_15" pos="-2.20002149 0.61950865 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_077" type="mesh" mesh="new_cb_desk_2400_mesh_027" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_078" type="mesh" mesh="new_cb_desk_2400_mesh_014" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_079" type="mesh" mesh="new_cb_desk_2400_mesh_028" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_080" type="mesh" mesh="new_cb_desk_2400_mesh_025" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_081" type="mesh" mesh="new_cb_desk_2400_mesh_022" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_082" type="mesh" mesh="new_cb_desk_2400_mesh_006" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_083" type="mesh" mesh="new_cb_desk_2400_mesh_021" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_16" pos="-2.20002149 -0.56751103 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_084" type="mesh" mesh="new_cb_desk_2400_mesh_024" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_085" type="mesh" mesh="new_cb_desk_2400_mesh_005" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_086" type="mesh" mesh="new_cb_desk_2400_mesh_029" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_087" type="mesh" mesh="new_cb_desk_2400_mesh_011" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_088" type="mesh" mesh="new_cb_desk_2400_mesh_026" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_089" type="mesh" mesh="new_cb_desk_2400_mesh_032" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_090" type="mesh" mesh="new_cb_desk_2400_mesh_009" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_000_17" pos="-1.56345166 -3.53394647e-10 0.355608789" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_000_091" type="mesh" mesh="new_cb_desk_2400_mesh_013" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_092" type="mesh" mesh="new_cb_desk_2400_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_000_093" type="mesh" mesh="new_cb_desk_2400_mesh_031" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_001_new_cb_d" pos="2.99302535 2.85 0" euler="0 0 0">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_001_00" pos="0.630855746 -0.58182916 0.355177544" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_000" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_001" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_002" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_003" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_01" pos="2.48421742 0.57168522 0.355177494" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_004" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_005" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_006" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_007" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_02" pos="2.48421746 -0.57725861 0.355177426" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_008" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_009" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_010" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_011" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_03" pos="0.630861356 0.56259235 0.355177614" quat="0.707146118 3.79738378e-08 -6.94208234e-09 -0.707067442">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_012" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_013" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_014" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_015" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_04" pos="0.92743363 0.59371027 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_016" type="mesh" mesh="new_cb_desk_2400_mesh_007" material="new_cb_desk_2400_material_004" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_017" type="mesh" mesh="new_cb_desk_2400_mesh_000" material="new_cb_desk_2400_material_027" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_018" type="mesh" mesh="new_cb_desk_2400_mesh_012" material="new_cb_desk_2400_material_016" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_019" type="mesh" mesh="new_cb_desk_2400_mesh_020" material="new_cb_desk_2400_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_020" type="mesh" mesh="new_cb_desk_2400_mesh_016" material="new_cb_desk_2400_material_023" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_021" type="mesh" mesh="new_cb_desk_2400_mesh_019" material="new_cb_desk_2400_material_005" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_022" type="mesh" mesh="new_cb_desk_2400_mesh_015" material="new_cb_desk_2400_material_009" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_05" pos="0.92743363 -0.59377867 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_023" type="mesh" mesh="new_cb_desk_2400_mesh_023" material="new_cb_desk_2400_material_012" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_024" type="mesh" mesh="new_cb_desk_2400_mesh_017" material="new_cb_desk_2400_material_020" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_025" type="mesh" mesh="new_cb_desk_2400_mesh_001" material="new_cb_desk_2400_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_026" type="mesh" mesh="new_cb_desk_2400_mesh_004" material="new_cb_desk_2400_material_022" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_027" type="mesh" mesh="new_cb_desk_2400_mesh_035" material="new_cb_desk_2400_material_017" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_028" type="mesh" mesh="new_cb_desk_2400_mesh_018" material="new_cb_desk_2400_material_003" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_029" type="mesh" mesh="new_cb_desk_2400_mesh_030" material="new_cb_desk_2400_material_024" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_06" pos="2.20002166 -0.61950865 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_030" type="mesh" mesh="new_cb_desk_2400_mesh_027" material="new_cb_desk_2400_material_028" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_031" type="mesh" mesh="new_cb_desk_2400_mesh_014" material="new_cb_desk_2400_material_030" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_032" type="mesh" mesh="new_cb_desk_2400_mesh_028" material="new_cb_desk_2400_material_019" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_033" type="mesh" mesh="new_cb_desk_2400_mesh_025" material="new_cb_desk_2400_material_015" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_034" type="mesh" mesh="new_cb_desk_2400_mesh_022" material="new_cb_desk_2400_material_021" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_035" type="mesh" mesh="new_cb_desk_2400_mesh_006" material="new_cb_desk_2400_material_007" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_036" type="mesh" mesh="new_cb_desk_2400_mesh_021" material="new_cb_desk_2400_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_07" pos="2.20002166 0.56751103 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_037" type="mesh" mesh="new_cb_desk_2400_mesh_024" material="new_cb_desk_2400_material_029" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_038" type="mesh" mesh="new_cb_desk_2400_mesh_005" material="new_cb_desk_2400_material_032" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_039" type="mesh" mesh="new_cb_desk_2400_mesh_029" material="new_cb_desk_2400_material_018" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_040" type="mesh" mesh="new_cb_desk_2400_mesh_011" material="new_cb_desk_2400_material_031" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_041" type="mesh" mesh="new_cb_desk_2400_mesh_026" material="new_cb_desk_2400_material_034" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_042" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_043" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_08" pos="1.5634517 -3.53394647e-10 0.355608789" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_044" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_045" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_046" type="mesh" mesh="new_cb_desk_2400_mesh_002" material="new_cb_desk_2400_material_014" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_047" type="mesh" mesh="new_cb_desk_2400_mesh_031" material="new_cb_desk_2400_material_025" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_09" pos="-0.630855644 0.58182905 0.355177614" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_048" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_049" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_050" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_051" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_10" pos="-2.48421744 -0.57168511 0.355177426" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_052" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_053" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_054" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_055" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_11" pos="-2.48421735 0.57725871 0.355177495" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_056" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_057" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_058" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_059" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_12" pos="-0.630861384 -0.56259246 0.355177547" quat="0.707067484 4.90865908e-08 -4.17535829e-09 0.707146076">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_060" type="mesh" mesh="new_cb_desk_2400_mesh_008" material="new_cb_desk_2400_material_008" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_061" type="mesh" mesh="new_cb_desk_2400_mesh_010" material="new_cb_desk_2400_material_006" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_062" type="mesh" mesh="new_cb_desk_2400_mesh_033" material="new_cb_desk_2400_material_033" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_063" type="mesh" mesh="new_cb_desk_2400_mesh_003" material="new_cb_desk_2400_material_011" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_13" pos="-0.927433601 -0.59371045 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_064" type="mesh" mesh="new_cb_desk_2400_mesh_007" material="new_cb_desk_2400_material_004" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_065" type="mesh" mesh="new_cb_desk_2400_mesh_000" material="new_cb_desk_2400_material_027" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_066" type="mesh" mesh="new_cb_desk_2400_mesh_012" material="new_cb_desk_2400_material_016" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_067" type="mesh" mesh="new_cb_desk_2400_mesh_020" material="new_cb_desk_2400_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_068" type="mesh" mesh="new_cb_desk_2400_mesh_016" material="new_cb_desk_2400_material_023" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_069" type="mesh" mesh="new_cb_desk_2400_mesh_019" material="new_cb_desk_2400_material_005" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_070" type="mesh" mesh="new_cb_desk_2400_mesh_015" material="new_cb_desk_2400_material_009" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_14" pos="-0.927433601 0.59377849 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_071" type="mesh" mesh="new_cb_desk_2400_mesh_023" material="new_cb_desk_2400_material_012" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_072" type="mesh" mesh="new_cb_desk_2400_mesh_017" material="new_cb_desk_2400_material_020" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_073" type="mesh" mesh="new_cb_desk_2400_mesh_001" material="new_cb_desk_2400_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_074" type="mesh" mesh="new_cb_desk_2400_mesh_004" material="new_cb_desk_2400_material_022" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_075" type="mesh" mesh="new_cb_desk_2400_mesh_035" material="new_cb_desk_2400_material_017" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_076" type="mesh" mesh="new_cb_desk_2400_mesh_018" material="new_cb_desk_2400_material_003" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_077" type="mesh" mesh="new_cb_desk_2400_mesh_030" material="new_cb_desk_2400_material_024" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_15" pos="-2.20002149 0.61950865 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_078" type="mesh" mesh="new_cb_desk_2400_mesh_027" material="new_cb_desk_2400_material_028" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_079" type="mesh" mesh="new_cb_desk_2400_mesh_014" material="new_cb_desk_2400_material_030" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_080" type="mesh" mesh="new_cb_desk_2400_mesh_028" material="new_cb_desk_2400_material_019" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_081" type="mesh" mesh="new_cb_desk_2400_mesh_025" material="new_cb_desk_2400_material_015" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_082" type="mesh" mesh="new_cb_desk_2400_mesh_022" material="new_cb_desk_2400_material_021" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_083" type="mesh" mesh="new_cb_desk_2400_mesh_006" material="new_cb_desk_2400_material_007" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_084" type="mesh" mesh="new_cb_desk_2400_mesh_021" material="new_cb_desk_2400_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_16" pos="-2.20002149 -0.56751103 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_085" type="mesh" mesh="new_cb_desk_2400_mesh_024" material="new_cb_desk_2400_material_029" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_086" type="mesh" mesh="new_cb_desk_2400_mesh_005" material="new_cb_desk_2400_material_032" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_087" type="mesh" mesh="new_cb_desk_2400_mesh_029" material="new_cb_desk_2400_material_018" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_088" type="mesh" mesh="new_cb_desk_2400_mesh_011" material="new_cb_desk_2400_material_031" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_089" type="mesh" mesh="new_cb_desk_2400_mesh_026" material="new_cb_desk_2400_material_034" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_090" type="mesh" mesh="new_cb_desk_2400_mesh_032" material="new_cb_desk_2400_material_013" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_091" type="mesh" mesh="new_cb_desk_2400_mesh_009" material="new_cb_desk_2400_material_035" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_001_17" pos="-1.56345166 -3.53394647e-10 0.355608789" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_001_092" type="mesh" mesh="new_cb_desk_2400_mesh_013" material="new_cb_desk_2400_material_026" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_093" type="mesh" mesh="new_cb_desk_2400_mesh_034" material="new_cb_desk_2400_material_010" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_094" type="mesh" mesh="new_cb_desk_2400_mesh_002" material="new_cb_desk_2400_material_014" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_001_095" type="mesh" mesh="new_cb_desk_2400_mesh_031" material="new_cb_desk_2400_material_025" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_001_00" pos="0.630855746 -0.58182916 0.355177544" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_000" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_001" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_002" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_003" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_01" pos="2.48421742 0.57168522 0.355177494" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_004" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_005" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_006" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_007" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_02" pos="2.48421746 -0.57725861 0.355177426" quat="0.707105714 -1.83821958e-07 -1.75725928e-07 0.707107849">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_008" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_009" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_010" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_011" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_03" pos="0.630861356 0.56259235 0.355177614" quat="0.707146118 3.79738378e-08 -6.94208234e-09 -0.707067442">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_012" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_013" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_014" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_015" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_04" pos="0.92743363 0.59371027 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_016" type="mesh" mesh="new_cb_desk_2400_mesh_007" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_017" type="mesh" mesh="new_cb_desk_2400_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_018" type="mesh" mesh="new_cb_desk_2400_mesh_012" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_019" type="mesh" mesh="new_cb_desk_2400_mesh_020" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_020" type="mesh" mesh="new_cb_desk_2400_mesh_016" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_021" type="mesh" mesh="new_cb_desk_2400_mesh_019" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_022" type="mesh" mesh="new_cb_desk_2400_mesh_015" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_05" pos="0.92743363 -0.59377867 0.601793674" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_023" type="mesh" mesh="new_cb_desk_2400_mesh_023" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_024" type="mesh" mesh="new_cb_desk_2400_mesh_017" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_025" type="mesh" mesh="new_cb_desk_2400_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_026" type="mesh" mesh="new_cb_desk_2400_mesh_004" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_027" type="mesh" mesh="new_cb_desk_2400_mesh_035" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_028" type="mesh" mesh="new_cb_desk_2400_mesh_018" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_029" type="mesh" mesh="new_cb_desk_2400_mesh_030" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_06" pos="2.20002166 -0.61950865 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_030" type="mesh" mesh="new_cb_desk_2400_mesh_027" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_031" type="mesh" mesh="new_cb_desk_2400_mesh_014" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_032" type="mesh" mesh="new_cb_desk_2400_mesh_028" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_033" type="mesh" mesh="new_cb_desk_2400_mesh_025" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_034" type="mesh" mesh="new_cb_desk_2400_mesh_022" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_035" type="mesh" mesh="new_cb_desk_2400_mesh_006" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_036" type="mesh" mesh="new_cb_desk_2400_mesh_021" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_07" pos="2.20002166 0.56751103 0.601793674" quat="0.70710676 -4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_037" type="mesh" mesh="new_cb_desk_2400_mesh_024" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_038" type="mesh" mesh="new_cb_desk_2400_mesh_005" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_039" type="mesh" mesh="new_cb_desk_2400_mesh_029" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_040" type="mesh" mesh="new_cb_desk_2400_mesh_011" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_041" type="mesh" mesh="new_cb_desk_2400_mesh_026" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_042" type="mesh" mesh="new_cb_desk_2400_mesh_032" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_043" type="mesh" mesh="new_cb_desk_2400_mesh_009" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_08" pos="1.5634517 -3.53394647e-10 0.355608789" quat="0.707106802 0 4.21468498e-08 -0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_044" type="mesh" mesh="new_cb_desk_2400_mesh_013" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_045" type="mesh" mesh="new_cb_desk_2400_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_046" type="mesh" mesh="new_cb_desk_2400_mesh_031" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_09" pos="-0.630855644 0.58182905 0.355177614" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_047" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_048" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_049" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_050" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_10" pos="-2.48421744 -0.57168511 0.355177426" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_051" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_052" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_053" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_054" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_11" pos="-2.48421735 0.57725871 0.355177495" quat="0.707107807 -1.33579003e-07 2.25968756e-07 -0.707105756">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_055" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_056" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_057" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_058" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_12" pos="-0.630861384 -0.56259246 0.355177547" quat="0.707067484 4.90865908e-08 -4.17535829e-09 0.707146076">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_059" type="mesh" mesh="new_cb_desk_2400_mesh_008" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_060" type="mesh" mesh="new_cb_desk_2400_mesh_010" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_061" type="mesh" mesh="new_cb_desk_2400_mesh_033" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_062" type="mesh" mesh="new_cb_desk_2400_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_13" pos="-0.927433601 -0.59371045 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_063" type="mesh" mesh="new_cb_desk_2400_mesh_007" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_064" type="mesh" mesh="new_cb_desk_2400_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_065" type="mesh" mesh="new_cb_desk_2400_mesh_012" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_066" type="mesh" mesh="new_cb_desk_2400_mesh_020" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_067" type="mesh" mesh="new_cb_desk_2400_mesh_016" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_068" type="mesh" mesh="new_cb_desk_2400_mesh_019" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_069" type="mesh" mesh="new_cb_desk_2400_mesh_015" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_14" pos="-0.927433601 0.59377849 0.601793672" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_070" type="mesh" mesh="new_cb_desk_2400_mesh_023" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_071" type="mesh" mesh="new_cb_desk_2400_mesh_017" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_072" type="mesh" mesh="new_cb_desk_2400_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_073" type="mesh" mesh="new_cb_desk_2400_mesh_004" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_074" type="mesh" mesh="new_cb_desk_2400_mesh_035" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_075" type="mesh" mesh="new_cb_desk_2400_mesh_018" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_076" type="mesh" mesh="new_cb_desk_2400_mesh_030" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_15" pos="-2.20002149 0.61950865 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_077" type="mesh" mesh="new_cb_desk_2400_mesh_027" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_078" type="mesh" mesh="new_cb_desk_2400_mesh_014" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_079" type="mesh" mesh="new_cb_desk_2400_mesh_028" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_080" type="mesh" mesh="new_cb_desk_2400_mesh_025" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_081" type="mesh" mesh="new_cb_desk_2400_mesh_022" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_082" type="mesh" mesh="new_cb_desk_2400_mesh_006" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_083" type="mesh" mesh="new_cb_desk_2400_mesh_021" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_16" pos="-2.20002149 -0.56751103 0.601793672" quat="-0.70710676 4.21468498e-08 0 0.707106802">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_084" type="mesh" mesh="new_cb_desk_2400_mesh_024" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_085" type="mesh" mesh="new_cb_desk_2400_mesh_005" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_086" type="mesh" mesh="new_cb_desk_2400_mesh_029" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_087" type="mesh" mesh="new_cb_desk_2400_mesh_011" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_088" type="mesh" mesh="new_cb_desk_2400_mesh_026" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_089" type="mesh" mesh="new_cb_desk_2400_mesh_032" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_090" type="mesh" mesh="new_cb_desk_2400_mesh_009" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_001_17" pos="-1.56345166 -3.53394647e-10 0.355608789" quat="0.707106802 0 -4.21468498e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_001_091" type="mesh" mesh="new_cb_desk_2400_mesh_013" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_092" type="mesh" mesh="new_cb_desk_2400_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_001_093" type="mesh" mesh="new_cb_desk_2400_mesh_031" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="snack_soda_can_002" pos="-5.21924964 3.94019932 0.607965002" euler="0 0 0">
+      <freejoint name="snack_soda_can_002_freejoint" />
+      <inertial pos="2.23992278e-05 -0.000127401126 -0.000415802271" mass="0.157" diaginertia="0.000228225695 0.000228225688 0.000128216675" />
+      <geom name="snack_soda_can_002_visual" type="mesh" mesh="interactive_snack_soda_can_mesh" mass="0" contype="0" conaffinity="0" group="2" euler="0 0 0" material="interactive_snack_soda_can_material" />
+      <geom name="snack_soda_can_002_collision" type="box" pos="2.23992278e-05 -0.000127401126 -0.000415802271" size="0.0350000002 0.0350000021 0.0560000035" mass="0" contype="1" conaffinity="1" friction="0.7 0.01 0.001" rgba="0 0 0 0" />
+      <site name="snack_soda_can_002_grasp_site" pos="0 0 0.0560000035" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="116_keyboard_003" pos="-1.4292977 3.92002022 0.55482748" euler="0 0 0">
+      <freejoint name="116_keyboard_003_freejoint" />
+      <inertial pos="4.33323133e-06 0.000495441726 0.0232791744" mass="0.9092" diaginertia="0.00206166441 0.0161160952 0.0177502546" />
+      <geom name="116_keyboard_003_visual" type="mesh" mesh="interactive_116_keyboard_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="1.57079633 0 0" material="interactive_116_keyboard_material_000" />
+      <geom name="116_keyboard_003_collision" type="box" pos="4.33323133e-06 0.000495441726 0.0232791744" size="0.229066441 0.0780857072 0.0265574578" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="116_keyboard_003_grasp_site" pos="0 0 0.0744344775" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="procedural_plant_004" pos="10 4.7 0">
+      <geom type="cylinder" pos="0 0 0.2" size="0.18 0.2" material="plant_pot" />
+      <geom type="sphere" pos="0 0 0.7" size="0.38" material="plant_leaf" contype="0" conaffinity="0" />
+    </body>
+    <geom name="procedural_bin_005" type="cylinder" pos="-10 1 0.22" size="0.18 0.22" material="snack_counter_metal" />
+    <geom name="procedural_rug_006" type="box" pos="-6.25 -2.35 0.018" size="2.4 1.8 0.015" material="lounge_rug" contype="0" conaffinity="0" />
+    <body name="asset_007_new_team" pos="-6.25 -2.35 0" euler="0 0 0">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_007_00" pos="0.800100009 0.00517082797 0.297632927" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_007_000" type="mesh" mesh="new_teaming_table_mesh_001" material="new_teaming_table_material_003" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_007_001" type="mesh" mesh="new_teaming_table_mesh_002" material="new_teaming_table_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_007_002" type="mesh" mesh="new_teaming_table_mesh_003" material="new_teaming_table_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_007_003" type="mesh" mesh="new_teaming_table_mesh_000" material="new_teaming_table_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_007_01" pos="-0.800100014 0.00517082797 0.297632927" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_007_004" type="mesh" mesh="new_teaming_table_mesh_001" material="new_teaming_table_material_003" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_007_005" type="mesh" mesh="new_teaming_table_mesh_002" material="new_teaming_table_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_007_006" type="mesh" mesh="new_teaming_table_mesh_003" material="new_teaming_table_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_007_007" type="mesh" mesh="new_teaming_table_mesh_000" material="new_teaming_table_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_007_00" pos="0.800100009 0.00517082797 0.297632927" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_007_000" type="mesh" mesh="new_teaming_table_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_007_001" type="mesh" mesh="new_teaming_table_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_007_002" type="mesh" mesh="new_teaming_table_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_007_003" type="mesh" mesh="new_teaming_table_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_007_01" pos="-0.800100014 0.00517082797 0.297632927" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_007_004" type="mesh" mesh="new_teaming_table_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_007_005" type="mesh" mesh="new_teaming_table_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_007_006" type="mesh" mesh="new_teaming_table_mesh_003" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_007_007" type="mesh" mesh="new_teaming_table_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_008_new_imac" pos="-6.25 -2.35 0.683625888" euler="0 0 0">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_008_00" pos="-0.0464633947 0.0314070459 0.144642562" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_008_000" type="mesh" mesh="new_imac_24_mesh_001" material="new_imac_24_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_008_001" type="mesh" mesh="new_imac_24_mesh_000" material="new_imac_24_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+    </body>
+    <body name="asset_009_new_dini" pos="-4.05 -2.35 0" euler="0 0 -1.57079633">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_009_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_009_000" type="mesh" mesh="new_dining_chair_mesh_002" material="new_dining_chair_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_009_001" type="mesh" mesh="new_dining_chair_mesh_001" material="new_dining_chair_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_009_002" type="mesh" mesh="new_dining_chair_mesh_000" material="new_dining_chair_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_009_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_009_000" type="mesh" mesh="new_dining_chair_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_009_001" type="mesh" mesh="new_dining_chair_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_009_002" type="mesh" mesh="new_dining_chair_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_010_new_dini" pos="-5.15 -1.13756443 0" euler="0 0 -0.523598776">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_010_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_010_000" type="mesh" mesh="new_dining_chair_mesh_002" material="new_dining_chair_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_010_001" type="mesh" mesh="new_dining_chair_mesh_001" material="new_dining_chair_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_010_002" type="mesh" mesh="new_dining_chair_mesh_000" material="new_dining_chair_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_010_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_010_000" type="mesh" mesh="new_dining_chair_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_010_001" type="mesh" mesh="new_dining_chair_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_010_002" type="mesh" mesh="new_dining_chair_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_011_new_dini" pos="-7.35 -1.13756443 0" euler="0 0 0.523598776">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_011_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_011_000" type="mesh" mesh="new_dining_chair_mesh_002" material="new_dining_chair_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_011_001" type="mesh" mesh="new_dining_chair_mesh_001" material="new_dining_chair_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_011_002" type="mesh" mesh="new_dining_chair_mesh_000" material="new_dining_chair_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_011_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_011_000" type="mesh" mesh="new_dining_chair_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_011_001" type="mesh" mesh="new_dining_chair_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_011_002" type="mesh" mesh="new_dining_chair_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_012_new_dini" pos="-8.45 -2.35 0" euler="0 0 1.57079633">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_012_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_012_000" type="mesh" mesh="new_dining_chair_mesh_002" material="new_dining_chair_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_012_001" type="mesh" mesh="new_dining_chair_mesh_001" material="new_dining_chair_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_012_002" type="mesh" mesh="new_dining_chair_mesh_000" material="new_dining_chair_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_012_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_012_000" type="mesh" mesh="new_dining_chair_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_012_001" type="mesh" mesh="new_dining_chair_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_012_002" type="mesh" mesh="new_dining_chair_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_013_new_dini" pos="-7.35 -3.56243557 0" euler="0 0 2.61799388">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_013_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_013_000" type="mesh" mesh="new_dining_chair_mesh_002" material="new_dining_chair_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_013_001" type="mesh" mesh="new_dining_chair_mesh_001" material="new_dining_chair_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_013_002" type="mesh" mesh="new_dining_chair_mesh_000" material="new_dining_chair_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_013_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_013_000" type="mesh" mesh="new_dining_chair_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_013_001" type="mesh" mesh="new_dining_chair_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_013_002" type="mesh" mesh="new_dining_chair_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_014_new_dini" pos="-5.15 -3.56243557 0" euler="0 0 3.66519143">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_014_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_014_000" type="mesh" mesh="new_dining_chair_mesh_002" material="new_dining_chair_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_014_001" type="mesh" mesh="new_dining_chair_mesh_001" material="new_dining_chair_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_014_002" type="mesh" mesh="new_dining_chair_mesh_000" material="new_dining_chair_material_002" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_014_00" pos="-0.000353935878 0.0264151927 0.19407967" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_014_000" type="mesh" mesh="new_dining_chair_mesh_002" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_014_001" type="mesh" mesh="new_dining_chair_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_014_002" type="mesh" mesh="new_dining_chair_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_015_new_dry_" pos="-2.35 -2.35 0" euler="0 0 0">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_015_00" pos="0.00148836941 -0.499752924 1.09470228" quat="0.707106802 -1.25607408e-15 -4.21468485e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_015_000" type="mesh" mesh="new_dry_wipe_module_mesh_000" material="new_dry_wipe_module_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_015_001" type="mesh" mesh="new_dry_wipe_module_mesh_001" material="new_dry_wipe_module_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="asset_component_015_01" pos="0.00148836941 0.500247017 1.09470234" quat="0.707106802 -1.25607408e-15 -4.21468485e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_015_002" type="mesh" mesh="new_dry_wipe_module_mesh_000" material="new_dry_wipe_module_material_001" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_015_003" type="mesh" mesh="new_dry_wipe_module_mesh_001" material="new_dry_wipe_module_material_000" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_015_00" pos="0.00148836941 -0.499752924 1.09470228" quat="0.707106802 -1.25607408e-15 -4.21468485e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_015_000" type="mesh" mesh="new_dry_wipe_module_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_015_001" type="mesh" mesh="new_dry_wipe_module_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+      <body name="collision_component_015_01" pos="0.00148836941 0.500247017 1.09470234" quat="0.707106802 -1.25607408e-15 -4.21468485e-08 0.70710676">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_015_002" type="mesh" mesh="new_dry_wipe_module_mesh_000" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_015_003" type="mesh" mesh="new_dry_wipe_module_mesh_001" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="procedural_plant_016" pos="-10.05 0.05 0">
+      <geom type="cylinder" pos="0 0 0.2" size="0.18 0.2" material="plant_pot" />
+      <geom type="sphere" pos="0 0 0.7" size="0.38" material="plant_leaf" contype="0" conaffinity="0" />
+    </body>
+    <geom name="procedural_rug_017" type="box" pos="1.25 -2.35 0.018" size="2.16666667 1.7 0.015" material="lounge_rug" contype="0" conaffinity="0" />
+    <body name="asset_018_9a0e617b" pos="1.25 -0.25 0" euler="0 0 0">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_018_00" pos="-1.0997057e-05 0.00222408772 0.143320752" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_018_000" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" material="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_material" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_018_001" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" material="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_material" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_018_00" pos="-1.0997057e-05 0.00222408772 0.143320752" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_018_000" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_018_001" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="asset_019_9a0e617b" pos="1.25 -4.45 0" euler="0 0 3.14159265">
+      <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+      <body name="asset_component_019_00" pos="-1.0997057e-05 0.00222408772 0.143320752" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="asset_visual_019_000" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" material="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_material" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+        <geom name="asset_visual_019_001" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" material="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_material" mass="0" shellinertia="true" contype="0" conaffinity="0" group="2" />
+      </body>
+      <body name="collision_component_019_00" pos="-1.0997057e-05 0.00222408772 0.143320752" quat="1 0 0 0">
+        <inertial pos="0 0 0" mass="0.001" diaginertia="0.001 0.001 0.001" />
+        <geom name="nav_collision_019_000" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_000_mesh" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+        <geom name="nav_collision_019_001" type="mesh" mesh="office_9a0e617b83c901d346ce9fb020b49bf91442273c_part_001_mesh" mass="0" shellinertia="true" contype="1" conaffinity="1" group="3" rgba="0 0 0 0" friction="0.9 0.01 0.001" />
+      </body>
+    </body>
+    <body name="procedural_plant_020" pos="4.05 0.05 0">
+      <geom type="cylinder" pos="0 0 0.2" size="0.18 0.2" material="plant_pot" />
+      <geom type="sphere" pos="0 0 0.7" size="0.38" material="plant_leaf" contype="0" conaffinity="0" />
+    </body>
+    <body name="snack_counter" pos="7.5 -2.35 0" euler="0 0 1.57079633">
+      <geom name="snack_counter_top" type="box" pos="0 0 0.74" size="1.1 0.48 0.04" material="snack_counter_wood" friction="0.9 0.02 0.002" />
+      <geom type="box" pos="-0.94 0 0.35" size="0.04 0.44 0.35" material="snack_counter_metal" />
+      <geom type="box" pos="0.94 0 0.35" size="0.04 0.44 0.35" material="snack_counter_metal" />
+      <site name="snack_pickup_site" pos="0 -0.58 0.82" size="0.02" rgba="0 0 0 0" />
+    </body>
+    <body name="075_bread_021" pos="7.67816681 -2.28606703 0.781832863" euler="0 0 1.79629971">
+      <freejoint name="075_bread_021_freejoint" />
+      <inertial pos="-4.90846232e-06 7.36684974e-07 0.0420307086" mass="0.9058" diaginertia="0.00370505743 0.00364552918 0.00618873936" />
+      <geom name="075_bread_021_visual" type="mesh" mesh="interactive_075_bread_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="1.57079633 0 0" material="interactive_075_bread_material_000" />
+      <geom name="075_bread_021_collision" type="box" pos="-4.90846232e-06 7.36684974e-07 0.0420307086" size="0.100746916 0.101720687 0.0438635713" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="075_bread_021_grasp_site" pos="0 0 0.0999999986" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="038_milk-box_022" pos="7.68442521 -1.51715037 0.781969052" euler="0 0 1.89562782">
+      <freejoint name="038_milk-box_022_freejoint" />
+      <inertial pos="-0.000339759061 3.78531715e-05 0.0993369585" mass="0.8473" diaginertia="0.00382115859 0.00373476356 0.0017587476" />
+      <geom name="038_milk-box_022_visual" type="mesh" mesh="interactive_038_milk_box_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="0 0 0" material="interactive_038_milk_box_material_000" />
+      <geom name="038_milk-box_022_collision" type="box" pos="-0.000339759061 3.78531715e-05 0.0993369585" size="0.0544115313 0.0571533902 0.101306011" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="038_milk-box_022_grasp_site" pos="0 0 0.0999999954" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="038_milk-box_023" pos="7.80953874 -1.72435107 0.781969052" euler="0 0 1.29543282">
+      <freejoint name="038_milk-box_023_freejoint" />
+      <inertial pos="-0.000339759061 3.78531715e-05 0.0993369585" mass="0.8473" diaginertia="0.00382115859 0.00373476356 0.0017587476" />
+      <geom name="038_milk-box_023_visual" type="mesh" mesh="interactive_038_milk_box_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="0 0 0" material="interactive_038_milk_box_material_000" />
+      <geom name="038_milk-box_023_collision" type="box" pos="-0.000339759061 3.78531715e-05 0.0993369585" size="0.0544115313 0.0571533902 0.101306011" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="038_milk-box_023_grasp_site" pos="0 0 0.0999999954" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="001_bottle_024" pos="7.66777624 -2.53921445 0.780062042" euler="0 0 1.96450353">
+      <freejoint name="001_bottle_024_freejoint" />
+      <inertial pos="-0.000315846127 -7.34510526e-05 0.127142743" mass="0.487" diaginertia="0.00287075443 0.00286930191 0.000486606397" />
+      <geom name="001_bottle_024_visual" type="mesh" mesh="interactive_001_bottle_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="3.14159265 0 0" material="interactive_001_bottle_material_000" />
+      <geom name="001_bottle_024_collision" type="box" pos="-0.000315846127 -7.34510526e-05 0.127142743" size="0.0386563551 0.038771917 0.127204785" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="001_bottle_024_grasp_site" pos="0 0 0.124999998" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="025_chips-tub_025" pos="7.66576424 -3.24937474 0.781644752" euler="0 0 1.41484543">
+      <freejoint name="025_chips-tub_025_freejoint" />
+      <inertial pos="-0.000925165981 3.25371912e-05 0.0898953397" mass="0.3835" diaginertia="0.00126194011 0.00128026864 0.000399827331" />
+      <geom name="025_chips-tub_025_visual" type="mesh" mesh="interactive_025_chips_tub_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="0 0 0" material="interactive_025_chips_tub_material_000" />
+      <geom name="025_chips-tub_025_collision" type="box" pos="-0.000925165981 3.25371912e-05 0.0898953397" size="0.0404419456 0.0386286503 0.0915400916" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="025_chips-tub_025_grasp_site" pos="0 0 0.0899999984" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="green_apple_026" pos="7.78703351 -2.74909417 0.780720032" euler="0 0 1.75123511">
+      <freejoint name="green_apple_026_freejoint" />
+      <inertial pos="-4.63968701e-07 -6.92336826e-06 0.0397420699" mass="0.1014" diaginertia="0.000102507136 0.00010228411 9.41177667e-05" />
+      <geom name="green_apple_026_visual" type="mesh" mesh="interactive_green_apple_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="1.57079633 0 0" material="interactive_green_apple_material_000" />
+      <geom name="green_apple_026_collision" type="box" pos="-4.63968701e-07 -6.92336826e-06 0.0397420699" size="0.037268961 0.0373573802 0.0404621014" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="green_apple_026_grasp_site" pos="0 0 0.0366607142" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="035_apple_027" pos="7.79152495 -3.1212591 0.81879787" euler="0 0 1.63464517">
+      <freejoint name="035_apple_027_freejoint" />
+      <inertial pos="-1.27737938e-10 0.0403917779 4.35301739e-10" mass="0.147" diaginertia="0.000153701743 0.000154848468 0.000161033283" />
+      <geom name="035_apple_027_visual" type="mesh" mesh="interactive_035_apple_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="0 0 0" material="interactive_035_apple_material_000" />
+      <geom name="035_apple_027_collision" type="box" pos="-1.27737938e-10 0.0403917779 4.35301739e-10" size="0.0406804382 0.040391775 0.0387978708" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="035_apple_027_grasp_site" pos="0 0 0.0381131368" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="071_can_028" pos="7.62356097 -1.68823543 0.780922444" euler="0 0 1.89061625">
+      <freejoint name="071_can_028_freejoint" />
+      <inertial pos="-0.00113695649 4.89799773e-05 0.0598295839" mass="0.1571" diaginertia="0.000246437142 0.000248469285 0.000108355711" />
+      <geom name="071_can_028_visual" type="mesh" mesh="interactive_071_can_mesh_000" mass="0" contype="0" conaffinity="0" group="2" euler="0 0 0" material="interactive_071_can_material_000" />
+      <geom name="071_can_028_collision" type="box" pos="-0.00113695649 4.89799773e-05 0.0598295839" size="0.0324652075 0.0318619468 0.0607520278" mass="0" contype="1" conaffinity="1" friction="0.5 .005 0.01" rgba="0 0 0 0" />
+      <site name="071_can_028_grasp_site" pos="0 0 0.0600000017" size="0.018" rgba="0 0 0 0" />
+    </body>
+    <body name="snack_cabinet_030" pos="5.15 0.05 0">
+      <geom type="box" pos="0 0 0.6" size="0.55 0.28 0.6" material="snack_cabinet" />
+    </body>
+    <geom name="procedural_bin_031" type="cylinder" pos="10.05 -4.75 0.22" size="0.18 0.22" material="snack_counter_metal" />
+    <body name="procedural_plant_032" pos="4.95 -4.75 0">
+      <geom type="cylinder" pos="0 0 0.2" size="0.18 0.2" material="plant_pot" />
+      <geom type="sphere" pos="0 0 0.7" size="0.38" material="plant_leaf" contype="0" conaffinity="0" />
+    </body>
+    <body name="scene_center" pos="0 0 1">
+      <site size="0.01" rgba="0 0 0 0" />
+    </body>
+    <camera name="overview" mode="targetbody" target="scene_center" pos="0 -23.52 19.95" fovy="48" />
+    <camera name="top" mode="targetbody" target="scene_center" pos="0 0 25.2" fovy="45" />
+    <site name="npc__office_04_central_meeting__point__object__001_bottle_024__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.43666766" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__025_chips-tub_025__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.00114783" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__035_apple_027__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.02797963" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__038_milk-box_022__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -2.11201398" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__038_milk-box_023__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -2.03153176" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__071_can_028__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.99988042" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__075_bread_021__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.61669843" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__116_keyboard_003__approach__01" pos="-6.52 2.86 0.025" euler="0 0 1.77608953" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__9a0e617b83c901d346ce9fb020b49bf91442273c__18__approach__01" pos="6.52 2.86 0.025" euler="0 0 -1.03766369" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__9a0e617b83c901d346ce9fb020b49bf91442273c__18__action__sit" pos="1.25 -0.25 0" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__9a0e617b83c901d346ce9fb020b49bf91442273c__19__approach__01" pos="2.52 -4.42 0.025" euler="0 0 -1.54717867" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__9a0e617b83c901d346ce9fb020b49bf91442273c__19__action__sit" pos="1.25 -4.45 0" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__green_apple_026__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.26921349" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_cb_desk_2400__0__approach__01" pos="-6.52 2.86 0.025" euler="0 0 1.56796104" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_cb_desk_2400__1__approach__01" pos="6.52 2.86 0.025" euler="0 0 -1.56796104" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__10__approach__01" pos="-4.28 -3.14 0.025" euler="0 0 -2.73172749" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__10__action__sit" pos="-5.15 -1.13756443 0" euler="0 0 -0.523598776" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__11__approach__01" pos="-4.28 -3.14 0.025" euler="0 0 -2.14875806" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__11__action__sit" pos="-7.35 -1.13756443 0" euler="0 0 0.523598776" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__12__approach__01" pos="-8.44 -3.14 0.025" euler="0 0 -3.1289351" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__12__action__sit" pos="-8.45 -2.35 0" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__13__approach__01" pos="-4.28 -3.14 0.025" euler="0 0 -1.43405388" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__13__action__sit" pos="-7.35 -3.56243557 0" euler="0 0 2.61799388" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__14__approach__01" pos="-4.28 -3.14 0.025" euler="0 0 -1.11876883" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__14__action__sit" pos="-5.15 -3.56243557 0" euler="0 0 3.66519143" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__9__approach__01" pos="-4.04 -3.14 0.025" euler="0 0 -3.1289351" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dining_chair__9__action__sit" pos="-4.05 -2.35 0" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_dry_wipe_module__15__observation__01" pos="-0.68 -2.34 0.025" euler="0 0 -1.56480837" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_imac_24__8__observation__01" pos="-4.28 -3.14 0.025" euler="0 0 -1.95217759" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__new_teaming_table__7__approach__01" pos="-4.28 -3.14 0.025" euler="0 0 -1.95217759" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Area Rug__17__observation__01" pos="1.62 -2.35 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Area Rug__6__observation__01" pos="-4.28 -3.14 0.025" euler="0 0 -1.95217759" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Office Plant__16__observation__01" pos="-9.48 0.05 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Office Plant__20__observation__01" pos="6.52 2.86 0.025" euler="0 0 -0.721093008" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Office Plant__32__observation__01" pos="5.52 -4.75 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Office Plant__4__observation__01" pos="10.2 4.3 0.025" euler="0 0 -2.67794504" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Snack Counter__29__approach__01" pos="9.07 -2.35 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Snack Storage Cabinet__30__approach__01" pos="6.14 0.05 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Waste Bin__31__observation__01" pos="10.2 -4.34 0.025" euler="0 0 -0.350727948" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__procedural_Waste Bin__5__observation__01" pos="-9.45 1 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__object__snack_soda_can_002__approach__01" pos="-6.52 2.86 0.025" euler="0 0 2.26382654" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__zone__lounge__approach__01" pos="1.25 -2.35 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__zone__meeting__approach__01" pos="-6.28 -3.54 0.025" euler="0 0 3.11638791" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__zone__snack__approach__01" pos="6.76 -2.34 0.025" euler="0 0 1.55728364" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__zone__work__approach__01" pos="-0.04 1.18 0.025" euler="0 0 3.11764514" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__01" pos="10.2 4.3 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__02" pos="-10.2 -4.9 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__03" pos="-2.36 4.86 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__04" pos="3.48 -4.9 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__05" pos="-10.2 3.18 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__06" pos="10.2 -2.74 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__07" pos="-3.32 -4.58 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__08" pos="3.96 4.86 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__09" pos="-0.04 -0.18 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc__office_04_central_meeting__point__spawn__anchor__10" pos="-5.56 0.38 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+  </worldbody>
+</mujoco>

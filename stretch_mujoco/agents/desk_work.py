@@ -16,13 +16,15 @@ if TYPE_CHECKING:
 WORK_SESSION_SEAT_PARAMETER = "_desk_work_seat"
 WORK_DURATION_SECONDS_PARAMETER = "_desk_work_duration_seconds"
 WORK_SESSION_ID_PARAMETER = "_desk_work_session_id"
+WORK_SESSION_COMPUTER_PARAMETER = "_desk_work_computer"
+WORK_SESSION_WORKSTATION_PARAMETER = "_desk_work_workstation"
 # Public request parameter.  The underscored duration above remains runtime-owned
 # and is attached only after the session contract has been validated.
 REQUESTED_WORK_DURATION_SECONDS_PARAMETER = "duration_seconds"
 
 
 def chair_for_workstation(world: SemanticWorld, workstation_id: str) -> str:
-    """Return the one chair assigned to a workstation by the scene contract.
+    """Return the one seat slot (or legacy chair) assigned to a workstation.
 
     The relationship is deliberately directional: a portable scene declares
     ``Chair --NEAR--> Workstation``.  Guessing from names or nearest geometry
@@ -31,6 +33,18 @@ def chair_for_workstation(world: SemanticWorld, workstation_id: str) -> str:
     workstation = world.object(workstation_id)
     if workstation.object_type != ObjectType.WORKSTATION:
         raise ValueError(f"Target '{workstation_id}' must be Workstation")
+    slots = sorted(
+        relation.subject
+        for relation in world.find_relations(relation=RelationType.NEAR, object_id=workstation_id)
+        if world.object(relation.subject).object_type == ObjectType.SEAT_SLOT
+    )
+    if slots:
+        if len(slots) != 1:
+            raise ValueError(
+                f"Workstation '{workstation_id}' requires exactly one SeatSlot --NEAR--> "
+                f"Workstation relation; found {len(slots)}"
+            )
+        return slots[0]
     chairs = sorted(
         relation.subject
         for relation in world.find_relations(relation=RelationType.NEAR, object_id=workstation_id)
@@ -38,7 +52,8 @@ def chair_for_workstation(world: SemanticWorld, workstation_id: str) -> str:
     )
     if len(chairs) != 1:
         raise ValueError(
-            f"Workstation '{workstation_id}' requires exactly one Chair --NEAR--> "
+            f"Workstation '{workstation_id}' requires exactly one SeatSlot or legacy Chair "
+            f"--NEAR--> "
             f"Workstation relation; found {len(chairs)}"
         )
     return chairs[0]
@@ -59,6 +74,7 @@ def desk_work_session_actions(
     *,
     duration_seconds: float,
     session_id: str,
+    computer_id: str | None = None,
 ) -> tuple[ActionCommand, ...]:
     """Build the only valid idle-to-desk-work-to-idle transition.
 
@@ -78,10 +94,19 @@ def desk_work_session_actions(
             object_id=agent.agent_id,
         )
     )
-    session_metadata = {WORK_SESSION_ID_PARAMETER: session_id}
+    session_metadata = {
+        WORK_SESSION_ID_PARAMETER: session_id,
+        WORK_SESSION_SEAT_PARAMETER: chair_id,
+        WORK_SESSION_WORKSTATION_PARAMETER: workstation_id,
+    }
+    if computer_id is not None:
+        session_metadata[WORK_SESSION_COMPUTER_PARAMETER] = computer_id
     actions: list[ActionCommand] = []
     if not seated:
-        if agent.state.location != chair_id:
+        if (
+            world.object(chair_id).object_type == ObjectType.CHAIR
+            and agent.state.location != chair_id
+        ):
             actions.append(
                 ActionCommand(agent.agent_id, ActionType.MOVE_TO, chair_id, session_metadata)
             )
@@ -90,7 +115,10 @@ def desk_work_session_actions(
         WORK_SESSION_SEAT_PARAMETER: chair_id,
         WORK_DURATION_SECONDS_PARAMETER: duration_seconds,
         WORK_SESSION_ID_PARAMETER: session_id,
+        WORK_SESSION_WORKSTATION_PARAMETER: workstation_id,
     }
+    if computer_id is not None:
+        session_parameters[WORK_SESSION_COMPUTER_PARAMETER] = computer_id
     actions.extend(
         (
             ActionCommand(agent.agent_id, ActionType.WORK, workstation_id, session_parameters),

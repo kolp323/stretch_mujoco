@@ -1,0 +1,1900 @@
+{
+  "entities": {
+    "object.001_bottle_025": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "001_bottle",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.001_bottle_025.action"
+        ],
+        "navigation": [
+          "point.object.001_bottle_025.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "001_bottle_025",
+        "xml_binding": {
+          "kind": "body",
+          "name": "001_bottle_025"
+        }
+      }
+    },
+    "object.025_chips-tub_027": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "025_chips-tub",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.025_chips-tub_027.action"
+        ],
+        "navigation": [
+          "point.object.025_chips-tub_027.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "025_chips-tub_027",
+        "xml_binding": {
+          "kind": "body",
+          "name": "025_chips-tub_027"
+        }
+      }
+    },
+    "object.035_apple_023": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "035_apple",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.035_apple_023.action"
+        ],
+        "navigation": [
+          "point.object.035_apple_023.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "035_apple_023",
+        "xml_binding": {
+          "kind": "body",
+          "name": "035_apple_023"
+        }
+      }
+    },
+    "object.038_milk-box_022": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "038_milk-box",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.038_milk-box_022.action"
+        ],
+        "navigation": [
+          "point.object.038_milk-box_022.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "038_milk-box_022",
+        "xml_binding": {
+          "kind": "body",
+          "name": "038_milk-box_022"
+        }
+      }
+    },
+    "object.071_can_026": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "071_can",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.071_can_026.action"
+        ],
+        "navigation": [
+          "point.object.071_can_026.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "071_can_026",
+        "xml_binding": {
+          "kind": "body",
+          "name": "071_can_026"
+        }
+      }
+    },
+    "object.071_can_028": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "071_can",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.071_can_028.action"
+        ],
+        "navigation": [
+          "point.object.071_can_028.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "071_can_028",
+        "xml_binding": {
+          "kind": "body",
+          "name": "071_can_028"
+        }
+      }
+    },
+    "object.075_bread_021": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "075_bread",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.075_bread_021.action"
+        ],
+        "navigation": [
+          "point.object.075_bread_021.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "075_bread_021",
+        "xml_binding": {
+          "kind": "body",
+          "name": "075_bread_021"
+        }
+      }
+    },
+    "object.101_milk-tea_001": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "101_milk-tea",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.101_milk-tea_001.action"
+        ],
+        "navigation": [
+          "point.object.101_milk-tea_001.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "101_milk-tea_001",
+        "xml_binding": {
+          "kind": "body",
+          "name": "101_milk-tea_001"
+        }
+      }
+    },
+    "object.116_keyboard_002": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "116_keyboard",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.116_keyboard_002.action"
+        ],
+        "navigation": [
+          "point.object.116_keyboard_002.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "116_keyboard_002",
+        "xml_binding": {
+          "kind": "body",
+          "name": "116_keyboard_002"
+        }
+      }
+    },
+    "object.5274751529e50c02430fb9b3ee3019ea9c091520.18": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Kendrick Stone Settee",
+        "source_category": "legacy_sofas"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.18.action.sit"
+        ],
+        "navigation": [
+          "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.18.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "5274751529e50c02430fb9b3ee3019ea9c091520.18",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_018_52747515"
+        }
+      }
+    },
+    "object.5274751529e50c02430fb9b3ee3019ea9c091520.19": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Kendrick Stone Settee",
+        "source_category": "legacy_sofas"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.19.action.sit"
+        ],
+        "navigation": [
+          "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.19.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "5274751529e50c02430fb9b3ee3019ea9c091520.19",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_019_52747515"
+        }
+      }
+    },
+    "object.green_apple_024": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "green_apple",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.green_apple_024.action"
+        ],
+        "navigation": [
+          "point.object.green_apple_024.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "green_apple_024",
+        "xml_binding": {
+          "kind": "body",
+          "name": "green_apple_024"
+        }
+      }
+    },
+    "object.new_cb_desk_2400.0": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "CB Desk 2400 Workstation Pod",
+        "source_category": "workstation_pods"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.new_cb_desk_2400.0.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.workstation",
+      "source": {
+        "id": "new_cb_desk_2400.0",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_000_new_cb_d"
+        }
+      }
+    },
+    "object.new_dining_chair.10": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Dining Meeting Chair",
+        "source_category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.new_dining_chair.10.action.sit"
+        ],
+        "navigation": [
+          "point.object.new_dining_chair.10.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "new_dining_chair.10",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_010_new_dini"
+        }
+      }
+    },
+    "object.new_dining_chair.11": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Dining Meeting Chair",
+        "source_category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.new_dining_chair.11.action.sit"
+        ],
+        "navigation": [
+          "point.object.new_dining_chair.11.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "new_dining_chair.11",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_011_new_dini"
+        }
+      }
+    },
+    "object.new_dining_chair.12": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Dining Meeting Chair",
+        "source_category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.new_dining_chair.12.action.sit"
+        ],
+        "navigation": [
+          "point.object.new_dining_chair.12.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "new_dining_chair.12",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_012_new_dini"
+        }
+      }
+    },
+    "object.new_dining_chair.13": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Dining Meeting Chair",
+        "source_category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.new_dining_chair.13.action.sit"
+        ],
+        "navigation": [
+          "point.object.new_dining_chair.13.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "new_dining_chair.13",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_013_new_dini"
+        }
+      }
+    },
+    "object.new_dining_chair.14": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Dining Meeting Chair",
+        "source_category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.new_dining_chair.14.action.sit"
+        ],
+        "navigation": [
+          "point.object.new_dining_chair.14.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "new_dining_chair.14",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_014_new_dini"
+        }
+      }
+    },
+    "object.new_dining_chair.9": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Dining Meeting Chair",
+        "source_category": "meeting_chairs"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.new_dining_chair.9.action.sit"
+        ],
+        "navigation": [
+          "point.object.new_dining_chair.9.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.seat",
+      "source": {
+        "id": "new_dining_chair.9",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_009_new_dini"
+        }
+      }
+    },
+    "object.new_dry_wipe_module.15": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Double Dry Wipe Board",
+        "source_category": "whiteboards"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.new_dry_wipe_module.15.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "new_dry_wipe_module.15",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_015_new_dry_"
+        }
+      }
+    },
+    "object.new_imac_24.8": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "iMac 24",
+        "source_category": "displays"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.new_imac_24.8.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "new_imac_24.8",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_008_new_imac"
+        }
+      }
+    },
+    "object.new_teaming_table.7": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Teaming Meeting Table",
+        "source_category": "meeting_tables"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.new_teaming_table.7.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "new_teaming_table.7",
+        "xml_binding": {
+          "kind": "body",
+          "name": "asset_007_new_team"
+        }
+      }
+    },
+    "object.procedural_Area Rug.17": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Area Rug",
+        "source_category": "decoration/rugs"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Area Rug.17.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Area Rug.17",
+        "xml_binding": {
+          "kind": "geom",
+          "name": "procedural_rug_017"
+        }
+      }
+    },
+    "object.procedural_Area Rug.6": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Area Rug",
+        "source_category": "decoration/rugs"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Area Rug.6.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Area Rug.6",
+        "xml_binding": {
+          "kind": "geom",
+          "name": "procedural_rug_006"
+        }
+      }
+    },
+    "object.procedural_Office Plant.16": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Office Plant",
+        "source_category": "props/plants"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Office Plant.16.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Office Plant.16",
+        "xml_binding": {
+          "kind": "body",
+          "name": "procedural_plant_016"
+        }
+      }
+    },
+    "object.procedural_Office Plant.20": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Office Plant",
+        "source_category": "props/plants"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Office Plant.20.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Office Plant.20",
+        "xml_binding": {
+          "kind": "body",
+          "name": "procedural_plant_020"
+        }
+      }
+    },
+    "object.procedural_Office Plant.32": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Office Plant",
+        "source_category": "props/plants"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Office Plant.32.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Office Plant.32",
+        "xml_binding": {
+          "kind": "body",
+          "name": "procedural_plant_032"
+        }
+      }
+    },
+    "object.procedural_Office Plant.4": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Office Plant",
+        "source_category": "props/plants"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Office Plant.4.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Office Plant.4",
+        "xml_binding": {
+          "kind": "body",
+          "name": "procedural_plant_004"
+        }
+      }
+    },
+    "object.procedural_Snack Counter.29": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Snack Counter",
+        "source_category": "furniture/snack_counter"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.procedural_Snack Counter.29.action"
+        ],
+        "navigation": [
+          "point.object.procedural_Snack Counter.29.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.counter",
+      "source": {
+        "id": "procedural_Snack Counter.29",
+        "xml_binding": {
+          "kind": "body",
+          "name": "snack_counter"
+        }
+      }
+    },
+    "object.procedural_Snack Storage Cabinet.30": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Snack Storage Cabinet",
+        "source_category": "furniture/storage"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Snack Storage Cabinet.30.approach.01"
+        ]
+      },
+      "semantic_class": "furniture.storage",
+      "source": {
+        "id": "procedural_Snack Storage Cabinet.30",
+        "xml_binding": {
+          "kind": "body",
+          "name": "snack_cabinet_030"
+        }
+      }
+    },
+    "object.procedural_Waste Bin.31": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Waste Bin",
+        "source_category": "props/trash_bins"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Waste Bin.31.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Waste Bin.31",
+        "xml_binding": {
+          "kind": "geom",
+          "name": "procedural_bin_031"
+        }
+      }
+    },
+    "object.procedural_Waste Bin.5": {
+      "affordances": [
+        "observe"
+      ],
+      "labels": {
+        "canonical": "Waste Bin",
+        "source_category": "props/trash_bins"
+      },
+      "navigation_requirement": "observe",
+      "points": {
+        "action": [],
+        "navigation": [
+          "point.object.procedural_Waste Bin.5.observation.01"
+        ]
+      },
+      "semantic_class": "object.observable",
+      "source": {
+        "id": "procedural_Waste Bin.5",
+        "xml_binding": {
+          "kind": "geom",
+          "name": "procedural_bin_005"
+        }
+      }
+    },
+    "object.snack_soda_can_003": {
+      "affordances": [
+        "approach"
+      ],
+      "labels": {
+        "canonical": "Soda Can",
+        "source_category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "points": {
+        "action": [
+          "point.object.snack_soda_can_003.action"
+        ],
+        "navigation": [
+          "point.object.snack_soda_can_003.approach.01"
+        ]
+      },
+      "semantic_class": "object.graspable",
+      "source": {
+        "id": "snack_soda_can_003",
+        "xml_binding": {
+          "kind": "body",
+          "name": "snack_soda_can_003"
+        }
+      }
+    },
+    "zone.lounge": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "lounge",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [
+          "point.zone.lounge.action"
+        ],
+        "navigation": [
+          "point.zone.lounge.approach.01"
+        ]
+      },
+      "semantic_class": "region.lounge",
+      "source": {
+        "id": "lounge",
+        "xml_binding": {
+          "kind": "site",
+          "name": "zone_lounge_center"
+        }
+      }
+    },
+    "zone.meeting": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "meeting",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [
+          "point.zone.meeting.action"
+        ],
+        "navigation": [
+          "point.zone.meeting.approach.01"
+        ]
+      },
+      "semantic_class": "region.meeting",
+      "source": {
+        "id": "meeting",
+        "xml_binding": {
+          "kind": "site",
+          "name": "zone_meeting_center"
+        }
+      }
+    },
+    "zone.snack": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "snack",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [
+          "point.zone.snack.action"
+        ],
+        "navigation": [
+          "point.zone.snack.approach.01"
+        ]
+      },
+      "semantic_class": "region.snack",
+      "source": {
+        "id": "snack",
+        "xml_binding": {
+          "kind": "site",
+          "name": "zone_snack_center"
+        }
+      }
+    },
+    "zone.work": {
+      "affordances": [
+        "navigate"
+      ],
+      "labels": {
+        "canonical": "work",
+        "source_category": "zone"
+      },
+      "navigation_requirement": "region",
+      "points": {
+        "action": [
+          "point.zone.work.action"
+        ],
+        "navigation": [
+          "point.zone.work.approach.01",
+          "point.spawn.anchor.01",
+          "point.spawn.anchor.02",
+          "point.spawn.anchor.03",
+          "point.spawn.anchor.04",
+          "point.spawn.anchor.05",
+          "point.spawn.anchor.06",
+          "point.spawn.anchor.07",
+          "point.spawn.anchor.08",
+          "point.spawn.anchor.09",
+          "point.spawn.anchor.10"
+        ]
+      },
+      "semantic_class": "region.work",
+      "source": {
+        "id": "work",
+        "xml_binding": {
+          "kind": "site",
+          "name": "zone_work_center"
+        }
+      }
+    }
+  },
+  "points": {
+    "point.object.001_bottle_025.action": {
+      "kind": "action",
+      "navigation_site": "point.object.001_bottle_025.approach.01",
+      "owner": "object.001_bottle_025",
+      "required": false,
+      "site": "001_bottle_025_grasp_site"
+    },
+    "point.object.001_bottle_025.approach.01": {
+      "kind": "navigation",
+      "owner": "object.001_bottle_025",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__001_bottle_025__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3576797035946353
+    },
+    "point.object.025_chips-tub_027.action": {
+      "kind": "action",
+      "navigation_site": "point.object.025_chips-tub_027.approach.01",
+      "owner": "object.025_chips-tub_027",
+      "required": false,
+      "site": "025_chips-tub_027_grasp_site"
+    },
+    "point.object.025_chips-tub_027.approach.01": {
+      "kind": "navigation",
+      "owner": "object.025_chips-tub_027",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__025_chips-tub_027__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4553595010099114
+    },
+    "point.object.035_apple_023.action": {
+      "kind": "action",
+      "navigation_site": "point.object.035_apple_023.approach.01",
+      "owner": "object.035_apple_023",
+      "required": false,
+      "site": "035_apple_023_grasp_site"
+    },
+    "point.object.035_apple_023.approach.01": {
+      "kind": "navigation",
+      "owner": "object.035_apple_023",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__035_apple_023__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3797769800022015
+    },
+    "point.object.038_milk-box_022.action": {
+      "kind": "action",
+      "navigation_site": "point.object.038_milk-box_022.approach.01",
+      "owner": "object.038_milk-box_022",
+      "required": false,
+      "site": "038_milk-box_022_grasp_site"
+    },
+    "point.object.038_milk-box_022.approach.01": {
+      "kind": "navigation",
+      "owner": "object.038_milk-box_022",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__038_milk-box_022__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4330687234280854
+    },
+    "point.object.071_can_026.action": {
+      "kind": "action",
+      "navigation_site": "point.object.071_can_026.approach.01",
+      "owner": "object.071_can_026",
+      "required": false,
+      "site": "071_can_026_grasp_site"
+    },
+    "point.object.071_can_026.approach.01": {
+      "kind": "navigation",
+      "owner": "object.071_can_026",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__071_can_026__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4954015180704892
+    },
+    "point.object.071_can_028.action": {
+      "kind": "action",
+      "navigation_site": "point.object.071_can_028.approach.01",
+      "owner": "object.071_can_028",
+      "required": false,
+      "site": "071_can_028_grasp_site"
+    },
+    "point.object.071_can_028.approach.01": {
+      "kind": "navigation",
+      "owner": "object.071_can_028",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__071_can_028__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.414554772763443
+    },
+    "point.object.075_bread_021.action": {
+      "kind": "action",
+      "navigation_site": "point.object.075_bread_021.approach.01",
+      "owner": "object.075_bread_021",
+      "required": false,
+      "site": "075_bread_021_grasp_site"
+    },
+    "point.object.075_bread_021.approach.01": {
+      "kind": "navigation",
+      "owner": "object.075_bread_021",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__075_bread_021__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.2441443982737068
+    },
+    "point.object.101_milk-tea_001.action": {
+      "kind": "action",
+      "navigation_site": "point.object.101_milk-tea_001.approach.01",
+      "owner": "object.101_milk-tea_001",
+      "required": false,
+      "site": "101_milk-tea_001_grasp_site"
+    },
+    "point.object.101_milk-tea_001.approach.01": {
+      "kind": "navigation",
+      "owner": "object.101_milk-tea_001",
+      "position": [
+        -0.7599999999999998,
+        -2.24,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__101_milk-tea_001__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4050419034885222
+    },
+    "point.object.116_keyboard_002.action": {
+      "kind": "action",
+      "navigation_site": "point.object.116_keyboard_002.approach.01",
+      "owner": "object.116_keyboard_002",
+      "required": false,
+      "site": "116_keyboard_002_grasp_site"
+    },
+    "point.object.116_keyboard_002.approach.01": {
+      "kind": "navigation",
+      "owner": "object.116_keyboard_002",
+      "position": [
+        -0.7599999999999998,
+        -2.24,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__116_keyboard_002__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.00978905946929
+    },
+    "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.18.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.18.approach.01",
+      "owner": "object.5274751529e50c02430fb9b3ee3019ea9c091520.18",
+      "position": [
+        -3.25,
+        4.75,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__5274751529e50c02430fb9b3ee3019ea9c091520__18__action__sit",
+      "yaw": 0.0
+    },
+    "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.18.approach.01": {
+      "kind": "navigation",
+      "owner": "object.5274751529e50c02430fb9b3ee3019ea9c091520.18",
+      "position": [
+        -1.9978578624794516,
+        4.75,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__5274751529e50c02430fb9b3ee3019ea9c091520__18__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.19.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.19.approach.01",
+      "owner": "object.5274751529e50c02430fb9b3ee3019ea9c091520.19",
+      "position": [
+        -3.25,
+        1.75,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__5274751529e50c02430fb9b3ee3019ea9c091520__19__action__sit",
+      "yaw": 3.141592653589793
+    },
+    "point.object.5274751529e50c02430fb9b3ee3019ea9c091520.19.approach.01": {
+      "kind": "navigation",
+      "owner": "object.5274751529e50c02430fb9b3ee3019ea9c091520.19",
+      "position": [
+        -1.9978578624794516,
+        1.75,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__5274751529e50c02430fb9b3ee3019ea9c091520__19__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.green_apple_024.action": {
+      "kind": "action",
+      "navigation_site": "point.object.green_apple_024.approach.01",
+      "owner": "object.green_apple_024",
+      "required": false,
+      "site": "green_apple_024_grasp_site"
+    },
+    "point.object.green_apple_024.approach.01": {
+      "kind": "navigation",
+      "owner": "object.green_apple_024",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__green_apple_024__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.4276064724991613
+    },
+    "point.object.new_cb_desk_2400.0.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_cb_desk_2400.0",
+      "position": [
+        -0.7599999999999998,
+        -2.24,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_cb_desk_2400__0__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.567931005123524
+    },
+    "point.object.new_dining_chair.10.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.new_dining_chair.10.approach.01",
+      "owner": "object.new_dining_chair.10",
+      "position": [
+        7.025,
+        -0.38804538186345705,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__10__action__sit",
+      "yaw": -0.5235987755982989
+    },
+    "point.object.new_dining_chair.10.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_dining_chair.10",
+      "position": [
+        7.785234360893389,
+        -0.38804538186345705,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__10__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.new_dining_chair.11.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.new_dining_chair.11.approach.01",
+      "owner": "object.new_dining_chair.11",
+      "position": [
+        5.4750000000000005,
+        -0.38804538186345683,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__11__action__sit",
+      "yaw": 0.5235987755982987
+    },
+    "point.object.new_dining_chair.11.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_dining_chair.11",
+      "position": [
+        6.279999999999999,
+        -0.2400000000000002,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__11__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.3889213001947163
+    },
+    "point.object.new_dining_chair.12.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.new_dining_chair.12.approach.01",
+      "owner": "object.new_dining_chair.12",
+      "position": [
+        4.7,
+        -2.2499999999999996,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__12__action__sit",
+      "yaw": 1.5707963267948966
+    },
+    "point.object.new_dining_chair.12.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_dining_chair.12",
+      "position": [
+        7.480000000000002,
+        -3.04,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__12__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.847670131252984
+    },
+    "point.object.new_dining_chair.13.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.new_dining_chair.13.approach.01",
+      "owner": "object.new_dining_chair.13",
+      "position": [
+        5.475,
+        -4.111954618136543,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__13__action__sit",
+      "yaw": 2.617993877991494
+    },
+    "point.object.new_dining_chair.13.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_dining_chair.13",
+      "position": [
+        6.279999999999999,
+        -4.24,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__13__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.7285374404996663
+    },
+    "point.object.new_dining_chair.14.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.new_dining_chair.14.approach.01",
+      "owner": "object.new_dining_chair.14",
+      "position": [
+        7.025,
+        -4.111954618136543,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__14__action__sit",
+      "yaw": 3.6651914291880923
+    },
+    "point.object.new_dining_chair.14.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_dining_chair.14",
+      "position": [
+        7.785234360893389,
+        -4.111954618136543,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__14__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.new_dining_chair.9.action.sit": {
+      "kind": "action",
+      "navigation_site": "point.object.new_dining_chair.9.approach.01",
+      "owner": "object.new_dining_chair.9",
+      "position": [
+        7.8,
+        -2.25,
+        0.0
+      ],
+      "required": false,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__9__action__sit",
+      "yaw": -1.5707963267948966
+    },
+    "point.object.new_dining_chair.9.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_dining_chair.9",
+      "position": [
+        7.480000000000002,
+        -3.04,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dining_chair__9__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 2.7567290055781335
+    },
+    "point.object.new_dry_wipe_module.15.observation.01": {
+      "kind": "navigation",
+      "owner": "object.new_dry_wipe_module.15",
+      "position": [
+        10.120000000000003,
+        -0.08000000000000007,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_dry_wipe_module__15__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": 0.013824004122004867
+    },
+    "point.object.new_imac_24.8.observation.01": {
+      "kind": "navigation",
+      "owner": "object.new_imac_24.8",
+      "position": [
+        7.480000000000002,
+        -3.04,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_imac_24__8__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.1417227914441046
+    },
+    "point.object.new_teaming_table.7.approach.01": {
+      "kind": "navigation",
+      "owner": "object.new_teaming_table.7",
+      "position": [
+        7.480000000000002,
+        -3.04,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__new_teaming_table__7__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.1417227914441046
+    },
+    "point.object.procedural_Area Rug.17.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Area Rug.17",
+      "position": [
+        -2.88,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Area Rug__17__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.procedural_Area Rug.6.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Area Rug.6",
+      "position": [
+        7.480000000000002,
+        -3.04,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Area Rug__6__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.1417227914441046
+    },
+    "point.object.procedural_Office Plant.16.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Office Plant.16",
+      "position": [
+        3.0200000000000005,
+        0.55,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Office Plant__16__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.procedural_Office Plant.20.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Office Plant.20",
+      "position": [
+        3.7200000000000006,
+        4.64,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Office Plant__20__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.748534634407859
+    },
+    "point.object.procedural_Office Plant.32.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Office Plant.32",
+      "position": [
+        5.0200000000000005,
+        1.45,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Office Plant__32__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.procedural_Office Plant.4.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Office Plant.4",
+      "position": [
+        2.07,
+        0.5,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Office Plant__4__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.procedural_Snack Counter.29.action": {
+      "kind": "action",
+      "navigation_site": "point.object.procedural_Snack Counter.29.approach.01",
+      "owner": "object.procedural_Snack Counter.29",
+      "required": false,
+      "site": "snack_pickup_site"
+    },
+    "point.object.procedural_Snack Counter.29.approach.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Snack Counter.29",
+      "position": [
+        8.819999999999999,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Snack Counter__29__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.procedural_Snack Storage Cabinet.30.approach.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Snack Storage Cabinet.30",
+      "position": [
+        5.640000000000001,
+        5.05,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Snack Storage Cabinet__30__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.procedural_Waste Bin.31.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Waste Bin.31",
+      "position": [
+        10.200000000000001,
+        1.04,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Waste Bin__31__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -2.7908647053415887
+    },
+    "point.object.procedural_Waste Bin.5.observation.01": {
+      "kind": "navigation",
+      "owner": "object.procedural_Waste Bin.5",
+      "position": [
+        -9.450000000000001,
+        -5.0,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__procedural_Waste Bin__5__observation__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -1.5707963267948966
+    },
+    "point.object.snack_soda_can_003.action": {
+      "kind": "action",
+      "navigation_site": "point.object.snack_soda_can_003.approach.01",
+      "owner": "object.snack_soda_can_003",
+      "required": false,
+      "site": "snack_soda_can_003_grasp_site"
+    },
+    "point.object.snack_soda_can_003.approach.01": {
+      "kind": "navigation",
+      "owner": "object.snack_soda_can_003",
+      "position": [
+        -0.7599999999999998,
+        -2.24,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__object__snack_soda_can_003__approach__01",
+      "usages": [
+        "navigation"
+      ],
+      "yaw": -0.9669693283517603
+    },
+    "point.spawn.anchor.01": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        10.2,
+        5.2,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__01",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.02": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -10.2,
+        -4.56,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__02",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.03": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        2.68,
+        -5.2,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__03",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.04": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -2.04,
+        5.2,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__04",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.05": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -10.2,
+        3.76,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__05",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.06": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        10.2,
+        -4.48,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__06",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.07": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        4.04,
+        1.68,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__07",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.08": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -3.72,
+        -3.92,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__08",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.09": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -5.56,
+        1.12,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__09",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.spawn.anchor.10": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        8.84,
+        0.32,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__spawn__anchor__10",
+      "usages": [
+        "navigation",
+        "spawn",
+        "spawn_anchor"
+      ],
+      "yaw": 0.0
+    },
+    "point.zone.lounge.action": {
+      "kind": "action",
+      "navigation_site": "point.zone.lounge.approach.01",
+      "owner": "zone.lounge",
+      "required": false,
+      "site": "zone_lounge_center"
+    },
+    "point.zone.lounge.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.lounge",
+      "position": [
+        -3.25,
+        3.25,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__zone__lounge__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "point.zone.meeting.action": {
+      "kind": "action",
+      "navigation_site": "point.zone.meeting.approach.01",
+      "owner": "zone.meeting",
+      "required": false,
+      "site": "zone_meeting_center"
+    },
+    "point.zone.meeting.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.meeting",
+      "position": [
+        7.480000000000002,
+        -1.4400000000000004,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__zone__meeting__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": -0.9884433806509145
+    },
+    "point.zone.snack.action": {
+      "kind": "action",
+      "navigation_site": "point.zone.snack.approach.01",
+      "owner": "zone.snack",
+      "required": false,
+      "site": "zone_snack_center"
+    },
+    "point.zone.snack.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.snack",
+      "position": [
+        7.24,
+        3.999999999999999,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__zone__snack__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 0.01333254329414541
+    },
+    "point.zone.work.action": {
+      "kind": "action",
+      "navigation_site": "point.zone.work.approach.01",
+      "owner": "zone.work",
+      "required": false,
+      "site": "zone_work_center"
+    },
+    "point.zone.work.approach.01": {
+      "kind": "navigation",
+      "owner": "zone.work",
+      "position": [
+        -4.279999999999999,
+        -3.92,
+        0.025
+      ],
+      "required": true,
+      "site": "npc__office_06_diagonal_flow__point__zone__work__approach__01",
+      "usages": [
+        "navigation",
+        "spawn"
+      ],
+      "yaw": 3.1236305137419365
+    }
+  },
+  "scene": "office_06_diagonal_flow.xml",
+  "scene_id": "office_06_diagonal_flow",
+  "schema_version": 2
+}

@@ -9,6 +9,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 import mujoco
+import numpy as np
 import pytest
 
 from stretch_mujoco.humanoid.navigation import OfficeNavigationMesh
@@ -104,18 +105,94 @@ def test_generated_office_npc_artifacts_are_portable_and_schema_valid(scene_id: 
     shared_attributes = semantic_payload["objects"]["shared_object"]["attributes"]
     assert shared_attributes["source_category"] == "interactive_objects"
     assert all(shared_attributes[key] for key in ("source_asset_id", "source_name", "grasp_site"))
+    bindings = {
+        point_id: point["attributes"].get("binding")
+        for point_id, point in semantic_payload["interaction_points"].items()
+        if "attributes" in point
+    }
+    assert {
+        "work": "location",
+        "object_grasp": "object_approach",
+        "stretch_request": "robot_request",
+    }.items() <= bindings.items()
+    location_slots = {}
+    for point in semantic_payload["interaction_points"].values():
+        attributes = point.get("attributes", {})
+        if attributes.get("binding") != "location" or "slot_id" not in attributes:
+            continue
+        location_slots.setdefault(attributes["target"], []).append(
+            (attributes["slot_id"], point["site"])
+        )
+    assert {target: len(slots) for target, slots in location_slots.items()} == {
+        "meeting_table": 3,
+        "lounge": 3,
+        "snack_counter": 3,
+    }
+    assert all(
+        len({slot_id for slot_id, _ in slots}) == len(slots)
+        and len({site for _, site in slots}) == len(slots)
+        for slots in location_slots.values()
+    )
 
     model = mujoco.MjModel.from_xml_path(str(scene))
     data = mujoco.MjData(model)
     mujoco.mj_forward(model, data)
+    assert mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_CAMERA, "office_overview") >= 0
+    # Region slots and generated spawns must face their owned furniture using
+    # the runtime convention that NPC forward is local -Y, not an arbitrary
+    # world-axis yaw.  This keeps a completed MOVE_TO visually credible.
+    location_points = [
+        point
+        for point in semantic_payload["interaction_points"].values()
+        if point.get("attributes", {}).get("binding") == "location"
+    ]
+    targets = {
+        target: data.xpos[
+            mujoco.mj_name2id(
+                model,
+                mujoco.mjtObj.mjOBJ_BODY,
+                semantic_payload["objects"][target]["binding"]["name"],
+            )
+        ][:2]
+        for target in {point["attributes"]["target"] for point in location_points}
+    }
+    for point in location_points:
+        attributes = point["attributes"]
+        site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, point["site"])
+        rotation = data.site_xmat[site_id].reshape(3, 3)
+        yaw = math.atan2(float(rotation[1, 0]), float(rotation[0, 0]))
+        assert math.isclose(float(attributes["yaw"]), yaw, abs_tol=1e-6)
+        delta = targets[attributes["target"]] - data.site_xpos[site_id, :2]
+        forward = (math.sin(yaw), -math.cos(yaw))
+        assert float(forward @ (delta / np.linalg.norm(delta))) > 0.999
     profile.preflight(model, data)
     navigation = OfficeNavigationMesh.from_model(model, data)
+    for slots in location_slots.values():
+        slot_positions = [
+            data.site_xpos[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, site)][:2]
+            for _, site in slots
+        ]
+        assert all(navigation.is_world_free(position) for position in slot_positions)
+        assert (
+            min(
+                math.dist(left, right)
+                for index, left in enumerate(slot_positions)
+                for right in slot_positions[index + 1 :]
+            )
+            >= 0.65
+        )
     spawn_positions = []
     for definition in population.npcs.values():
         site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, definition.spawn.site)
         assert site_id >= 0
         point = data.site_xpos[site_id][:2]
         assert navigation.is_world_free(point)
+        rotation = data.site_xmat[site_id].reshape(3, 3)
+        yaw = math.atan2(float(rotation[1, 0]), float(rotation[0, 0]))
+        assert math.isclose(definition.spawn.yaw, yaw, abs_tol=1e-6)
+        delta = targets[definition.spawn.location] - point
+        forward = (math.sin(yaw), -math.cos(yaw))
+        assert float(forward @ (delta / np.linalg.norm(delta))) > 0.999
         spawn_positions.append(point)
     assert (
         min(

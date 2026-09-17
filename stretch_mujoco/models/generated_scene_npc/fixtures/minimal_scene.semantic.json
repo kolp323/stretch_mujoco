@@ -1,0 +1,47 @@
+{
+  "interaction_points": {
+    "point.object.chair_01.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.chair_01"
+      },
+      "owner": "object.chair_01",
+      "role": "human_stand_site",
+      "site": "npc__minimal_scene__point__object__chair_01__approach__01"
+    },
+    "point.object.table_01.approach.01": {
+      "attributes": {
+        "binding": "semantic_navigation",
+        "target": "object.table_01"
+      },
+      "owner": "object.table_01",
+      "role": "human_stand_site",
+      "site": "npc__minimal_scene__point__object__table_01__approach__01"
+    }
+  },
+  "objects": {
+    "object.chair_01": {
+      "attributes": {
+        "semantic_class": "furniture.seat"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "chair_01"
+      },
+      "type": "Chair"
+    },
+    "object.table_01": {
+      "attributes": {
+        "semantic_class": "furniture.counter"
+      },
+      "binding": {
+        "kind": "body",
+        "name": "table_01"
+      },
+      "type": "Counter"
+    }
+  },
+  "relations": [],
+  "scene": "minimal_scene.xml",
+  "schema_version": 1
+}

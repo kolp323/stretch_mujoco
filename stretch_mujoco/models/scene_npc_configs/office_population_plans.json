@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "scenes": {
+    "office_01_linear_bench": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_02_cross_axis": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.meeting", "npc": "npc_priya_narayanan", "spawn": "point.zone.meeting.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_03_long_gallery": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"}
+    ],
+    "office_04_central_meeting": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.meeting", "npc": "npc_priya_narayanan", "spawn": "point.zone.meeting.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_05_team_clusters": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.meeting", "npc": "npc_priya_narayanan", "spawn": "point.zone.meeting.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_06_diagonal_flow": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_07_u_bench": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.meeting", "npc": "npc_priya_narayanan", "spawn": "point.zone.meeting.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"}
+    ],
+    "office_08_dual_island": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.meeting", "npc": "npc_priya_narayanan", "spawn": "point.zone.meeting.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_09_staggered_rows": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ],
+    "office_10_social_core": [
+      {"initial_region": "zone.work", "npc": "npc_alex_chen", "spawn": "point.zone.work.approach.01"},
+      {"initial_region": "zone.meeting", "npc": "npc_priya_narayanan", "spawn": "point.zone.meeting.approach.01"},
+      {"initial_region": "zone.lounge", "npc": "npc_morgan_lee", "spawn": "point.zone.lounge.approach.01"},
+      {"initial_region": "zone.snack", "npc": "npc_jordan_patell", "spawn": "point.zone.snack.approach.01"}
+    ]
+  }
+}

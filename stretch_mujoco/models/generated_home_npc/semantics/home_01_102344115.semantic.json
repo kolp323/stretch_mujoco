@@ -1,0 +1,70 @@
+{
+  "interaction_points": {
+    "home_activity": {
+      "attributes": {
+        "binding": "location",
+        "target": "home",
+        "usage": "activity",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "activity_area"
+    },
+    "home_spawn_npc_alex_chen": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_alex_chen",
+        "slot_id": "alex_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "alex_spawn"
+    },
+    "home_spawn_npc_jordan_patell": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_jordan_patell",
+        "slot_id": "jordan_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "jordan_spawn"
+    },
+    "home_spawn_npc_morgan_lee": {
+      "attributes": {
+        "binding": "location",
+        "npc_id": "npc_morgan_lee",
+        "slot_id": "morgan_spawn",
+        "target": "home",
+        "usage": "spawn",
+        "yaw": 0.0
+      },
+      "owner": "home",
+      "role": "human_stand_site",
+      "site": "morgan_spawn"
+    }
+  },
+  "objects": {
+    "home": {
+      "attributes": {
+        "capacity": 3,
+        "region": "home"
+      },
+      "binding": {
+        "kind": "site",
+        "name": "activity_area"
+      },
+      "type": "Counter"
+    }
+  },
+  "relations": [],
+  "scene": "home_01_102344115_npc.xml",
+  "schema_version": 1
+}

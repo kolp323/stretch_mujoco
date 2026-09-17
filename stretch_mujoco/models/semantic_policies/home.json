@@ -1,0 +1,1733 @@
+{
+  "fallback": "unresolved",
+  "kind": "home",
+  "rules": [
+    {
+      "affordances": [
+        "navigate"
+      ],
+      "id": "regions",
+      "match": {
+        "kind": "region"
+      },
+      "navigation_requirement": "region",
+      "point_bundle": "region_samples",
+      "semantic_class": "region.home"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_storage_furniture",
+      "match": {
+        "category": "storage_furniture"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.storage"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_interactive_objects",
+      "match": {
+        "category": "interactive_objects"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "graspable_on_support",
+      "semantic_class": "object.graspable"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_lighting",
+      "match": {
+        "category": "lighting"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_seating_furniture",
+      "match": {
+        "category": "seating_furniture"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.seat"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_decor",
+      "match": {
+        "category": "decor"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_support_furniture",
+      "match": {
+        "category": "support_furniture"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.support"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_plant",
+      "match": {
+        "category": "plant"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_floor_covering",
+      "match": {
+        "category": "floor_covering"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_electronics",
+      "match": {
+        "category": "electronics"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_desks",
+      "match": {
+        "category": "desks"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.workstation"
+    },
+    {
+      "affordances": [
+        "observe"
+      ],
+      "id": "category_computers",
+      "match": {
+        "category": "computers"
+      },
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    {
+      "affordances": [
+        "approach"
+      ],
+      "id": "category_chairs",
+      "match": {
+        "category": "chairs"
+      },
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.seat"
+    }
+  ],
+  "schema": "semantic_policy/v1",
+  "semantic_name_taxonomy": {
+    "1.2 Ohio Bar Mens Stainless Shaft w/ Chrome Sleeves _ RA0539-SSDC": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "2 PIECE SET CERAMIC CANDLEHOLDERS": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "200-3": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "201-1": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "201-2": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "204-3": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "210-0": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "211-7": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "218-23": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "218-73": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "218-83": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "219-4": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "219-5": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "219-6": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "219-7": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "220-4": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "220-41": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "224-132": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "30 bottle wine rack": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "3754-2": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "3754-3": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "3755-0": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "3760-0": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "3768-1": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "38L Rectangular Pedal Bin": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "4076-2": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "4718-0": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "48'' Flat Screen TV": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "55'' Led TV": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "5775-0": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "60'' Led TV": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "98'' Led TV": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Acacia Wood Floor Mirror": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Aircon - Ceiling mounted": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Alfred Bed Queen": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "American fridge freezer, small": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Atmosphere-bamboo Pet Bed": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "BABORD shoe rack": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Badaccessoire/accessoire Casual 60 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Badacessoire/accessoire": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Badewanne/baignoire Duscholux Step-in Pure 170 x 75 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Beoplay A8 Sound System, black": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Black Rattan Woven Round Basket": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Blenheim Standard Height Pan": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Blow up basket Basket - Acier": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Bonaldo - Mario Mazzer - Tree Gloss Lacquered Clothes Stand (Bonaldo)": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Book shelf": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.storage"
+    },
+    "Brabantia 3litre Pedal Bin Fingerproof Matt Steel": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Brabantia S- Line Kitchen Tool set": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Brigton Large Rattan Lantern": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Brushed Gold Queen Metal Bed": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "CAST RIBBED METAL FRAME, Antique Brass": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Casio CDP100ST Lightweight Digital Piano.": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Catherine fabric shower curtain": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Caversham 640mm Mirror, Oyster": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Central Heating": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Charles Eames Style Lounge Chair &amp; Ottoman": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.seat"
+    },
+    "Chatham Bathroom Tallboy": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Cherry Oven Gloves": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Chilewich Ombre Placemat, Natural": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Chinelle Waves Curtain Pair - 135x300 cms, Cream": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Chinelle Waves Curtain Pair - 135x300 cms, Grey": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Chrysler Waste Bin": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Close Coupled Toilet": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Cooke & Lewis Romeo Modern Close-Coupled Toilet with Soft Close Seat": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Cooke & Lewis Shaftesbury Acrylic Rectangular Straight Bath (L)1600mm (W)700mm": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Corso 5 Blade Ceiling Fan": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Curtain": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Curzon Coat Stand": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "DISHWASHER HOBART": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Dana White Canister, Small": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Dead Fred Pen Holder Red": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Deco Antler Skull, Aluminum": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Delonghi Filter Coffee Maker": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Delta Shower Bath, right": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "DialyzeDirect Kitchen - Counter Top": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.counter"
+    },
+    "Diffuser": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Drapery Rod Floorplanner": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Dryer": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Dusche/douche Bodenschatz Creativa": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Dusche/douche New Classic ": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "ENEL KVAR - Bathroom Mirror": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Electric Water Heater Tank": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Envy Bed": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Erebus Buffet Mirror": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Flat TV": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Fold Basket": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Frosted pen pot": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Fuse box": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Gabe 7 Piece Dining Set With Kylie Grey Chairs": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.seat"
+    },
+    "Gestell/cadre": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Grab Rail, Black": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Graphix 15 Piece Knife Set": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Green": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Hammered Cocktail Shaker": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Handtuchhaken Bodenschatz Creativa 70 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Hanging Clothes": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Hotpoint WDF740A Satin Aluminium Washer Dryer.": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Infinity Black Round Wall Mirror 36'', Black": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "InterDesign York Trash Can - White Ceramic and Bronze by InterDesign, White": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Ivy League Integrated Cabin Bed System": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Jessica Single Cabin Bed - Frame Only.": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "KEW - Fridge": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "KITCHEN AID ARTISAN MIXER RED": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Kaffee-Vollautomat": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Kitchen Roll Holder Made From Polished Stainless Steel With A Natural Sheesham Wood Base": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Lexington Home Brands # La Jolla Woven Round Mirror": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Lg free standing washing machine": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Logan Queen Panel Bed": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Lyra Dresser Mirror": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.storage"
+    },
+    "Malloe Tall Black Basket with Handles": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Martin Cabin Bed with Comfort Mattress": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Memo Pads": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Mirror": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Modus Printer Trolley, Oak": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Molten Disc Wall Art LG, Silver Leaf": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Mondrian Mirror 22'' x 80'', Black": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Nostalgic Music Centre &amp; Record Player": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Orange": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Palos Basket on Stand": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Pearson Upholstered 57'' Queen Gallery Storage Bed, Ebony": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Pen pot - black": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Pharos Ceiling Fan": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Plain Blinds": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Planar 42 Inch True HD (1080P) LCD Home Cinema Television - PD420": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Playboy - Ice Bucket": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Prestige Deco 2 Slice Toaster Red": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "ProCasa Cinque Waschbecken/Lave-main/Lavamano": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "ProCasa Tre Papierhalter/Porte-papier/Portacarta": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "ProCasa UNO Dusche/douche 90 x 90 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Queen Modern Wing Upholstered Bed, Ivory": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Ranier Mirror": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Red Felt Bag": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Refrigerator": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Regina Andrew # Geo Shapes (Set of Three)": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Rolled Up Towel": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Roscoe Large Rectangle Metal Basket": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Royce Morgan Akita Freestanding Bath": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Rubens Painted": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Ruth curtain Blue": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "SET OF 3 LACE PRINT STORAGE JARS": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Samsung Black Touch Microwave.": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Samsung Microwave MW872S": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Samsung RSG5DUMH Fridge Freezer Manhattan Silver": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Samsung RSJ1JEMH Side by Side Fridge Freezer, Silver": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Shaillee Small Matte Black Canister": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Shower": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Simple Curtains": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Small Horse Shoe Sculpture": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Small Seagrass Laundry Basket": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Smeg Fridge FAB30OS6": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Smoked Bamboo Table Runner": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.counter"
+    },
+    "Staircase": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Stairs": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Standspiegel Lines, silver": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Statue": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Stitch curtain Taupe": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Strata Runner": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Swoop Black Marble Bookends Set Of 2": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "TV Media Store": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "The Lodge - Rexel Letter Tray Bamboo": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Tissue Box Cover-BB071": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Toilet": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Toilette/toilette Casual": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Toilette/toilette New Classic": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Toilette/toilette kreativ": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Toilette/toilette puristisch": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.fixture"
+    },
+    "Towel Ladder": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Towel Rail": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Traditional Steamer Trunk, Green": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Traditional Storer Trunk, Red": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Tremont Full Storage Bed, Dry Branch Natural": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Triplets": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Turbo Swirl 6 Blade Ceiling Fan, 76cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Universal Storage": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Urban Lines Queen Metal Bed": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "Waschplatz Boutique Eiche dunkel/zone lavabo chene fonce 90 x 38 x 43 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Waschplatz Boutique Eiche hell/zone lavabo chene chliar 90 x 38 x 43 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Waschplatz/zone lavabo  New Classic weiss/blanche": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Waschplatz/zone lavabo Bodenschatz Creativa": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Waschplatz/zone lavabo Laufen Pro S": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Waschplatz/zone lavabo Vanity Pathos 120 x 35 x 55.5 cm schwarz/noir": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Waschplatz/zone lavabo Villeroy & Boch Venticello 42 x 50 x  115 cm": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Water Hyacinth Fishbone Weave Wastepaper Bin": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Whirlpool Freestanding Side by Side Fridge Freezer Stainless Steel 20SI L4": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "White Sand Hour Glass": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Willow Laundry Bin": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Wire Basket with Zinc Planters": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "Woven Wall Decor": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "YOO OH single panel door, EARTH": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "architecture.door"
+    },
+    "Zara Queen Panel Bed, blue": {
+      "affordances": [
+        "approach",
+        "sit"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "seat",
+      "semantic_class": "furniture.bed"
+    },
+    "baltic pillar candle, set of 2": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "essey designer black waste paper bin": {
+      "affordances": [
+        "observe"
+      ],
+      "navigation_requirement": "observe",
+      "point_bundle": "observation",
+      "semantic_class": "object.observable"
+    },
+    "james desk": {
+      "affordances": [
+        "approach"
+      ],
+      "navigation_requirement": "approach",
+      "point_bundle": "perimeter_approach",
+      "semantic_class": "furniture.counter"
+    }
+  }
+}

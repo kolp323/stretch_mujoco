@@ -515,7 +515,7 @@ def test_move_pick_up_and_drink_update_agent_needs_and_memory() -> None:
     assert agent.memory.entries[-1].event == "action_succeeded"
 
 
-def test_action_success_and_semantic_commit_share_one_event_id() -> None:
+def test_action_success_causes_distinct_semantic_commit_event() -> None:
     runtime = load_runtime()
 
     assert runtime.submit_action(
@@ -527,7 +527,10 @@ def test_action_success_and_semantic_commit_share_one_event_id() -> None:
     committed = [event for event in events if event.event == "semantic_commit"][-1]
     memory = runtime.agents["employee_01"].memory.entries[-1]
     assert succeeded.event_id
-    assert succeeded.event_id == committed.event_id == memory.details["event_id"]
+    assert committed.event_id
+    assert succeeded.event_id != committed.event_id
+    assert committed.causation_id == succeeded.event_id
+    assert memory.details["event_id"] == succeeded.event_id
     assert succeeded.details["execution_id"] == committed.details["execution_id"]
 
 

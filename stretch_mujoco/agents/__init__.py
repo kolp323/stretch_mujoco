@@ -50,6 +50,7 @@ from .llm import EventDrivenLLMGateway, LLMRequest, LLMTrigger
 from .llm_config import LLMConfigError, LLMProviderConfig
 from .llm_provider import LLMProviderError, OpenAICompatibleProvider
 from .mock_robot import MockRobotExecutor
+from .simulated_robot_executor import SimulatedRobotExecutor
 from .models import (
     AgentAvailability,
     AgentMemory,
@@ -113,6 +114,7 @@ __all__ = [
     "LLMProviderConfig",
     "LLMProviderError",
     "MockRobotExecutor",
+    "SimulatedRobotExecutor",
     "RobotTaskReceipt",
     "RobotTaskExecutor",
     "UnsupportedRobotTaskExecutor",

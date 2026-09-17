@@ -573,6 +573,13 @@ class ConversationSession:
     suspended_plan_ids: dict[str, str] = field(default_factory=dict)
     error: str | None = None
     dialogue_turns: dict[str, DialogueTurn] = field(default_factory=dict)
+    preferred_station_id: str | None = None
+    station_id: str | None = None
+    lease_id: str | None = None
+    physical_receipt_ids: list[str] = field(default_factory=list)
+    cleanup_evidence_ids: list[str] = field(default_factory=list)
+    compatibility_mode: str | None = None
+    production_evidence: bool = False
 
     @property
     def deadline(self) -> float:

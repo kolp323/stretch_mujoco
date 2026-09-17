@@ -1,0 +1,102 @@
+{
+  "beds": [
+    {
+      "approach": [
+        -6.302623581993347,
+        -0.4884898970088728
+      ],
+      "bounds_z": [
+        1.7553399667354782e-07,
+        1.2672114959690932
+      ],
+      "object_id": "hssd_object_043",
+      "semantic_name": "Urban Lines Queen Metal Bed",
+      "sit": [
+        -5.852623581993347,
+        -0.4884898970088728
+      ],
+      "yaw": -1.5707963267948966
+    }
+  ],
+  "generator": "tools/preprocess_generated_home_npcs.py",
+  "npc_ids": [
+    "npc_alex_chen",
+    "npc_jordan_patell",
+    "npc_morgan_lee"
+  ],
+  "roster": [
+    {
+      "location": "home",
+      "npc_id": "npc_alex_chen",
+      "site": "alex_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_jordan_patell",
+      "site": "jordan_spawn",
+      "yaw": 0.0
+    },
+    {
+      "location": "home",
+      "npc_id": "npc_morgan_lee",
+      "site": "morgan_spawn",
+      "yaw": 0.0
+    }
+  ],
+  "scene": "home_04_103997970_171031287_npc.xml",
+  "schema_version": 1,
+  "sha256": {
+    "generated_scene": "b137a18fc9996ae325985ae88bceca28b1753495504e3cc3f591d0c14dbdc587",
+    "population": "73ca6265e2ae4b99b5aadb15cb73dcd59cf896e139b0a66b98107f324f217114",
+    "semantic": "7ab7a4590eed1d71fc29b1532bd7b90b89d56489bff7ec594b69f36e30c68b80",
+    "source_scene": "fe19cabcf424f7b62cddef6b128281e145f4497f89df6769f7884235db3aa2ff"
+  },
+  "sites": {
+    "activity_area": {
+      "position": [
+        -10.376824193,
+        1.241821373,
+        0.025
+      ],
+      "tags": [
+        "activity"
+      ],
+      "yaw": 0.0
+    },
+    "alex_spawn": {
+      "position": [
+        -10.376824193,
+        -0.015011579,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "jordan_spawn": {
+      "position": [
+        -9.022203699,
+        2.498654325,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    },
+    "morgan_spawn": {
+      "position": [
+        -7.667583205,
+        -0.015011579,
+        0.025
+      ],
+      "tags": [
+        "spawn"
+      ],
+      "yaw": 0.0
+    }
+  },
+  "source_scene": "home_04_103997970_171031287.xml"
+}

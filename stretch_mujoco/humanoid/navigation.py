@@ -38,6 +38,14 @@ class OfficeNavigationMesh:
         self.resolution = resolution
         self.agent_radius = agent_radius
         self.obstacles = obstacles
+        self.component_labels, self.component_sizes = self._label_components(occupancy)
+        self.primary_component_id = max(
+            self.component_sizes,
+            key=lambda component_id: (
+                self.component_sizes[component_id],
+                -component_id,
+            ),
+        )
 
     @classmethod
     def from_model(
@@ -51,10 +59,11 @@ class OfficeNavigationMesh:
         maximum_obstacle_height: float = 1.80,
         exclude_body_roots: tuple[str, ...] = (),
         include_mocap_obstacles: bool = False,
+        floor_geom_name: str = "office_floor",
     ) -> "OfficeNavigationMesh":
         if resolution <= 0 or agent_radius < 0:
             raise ValueError("Navigation resolution and agent radius must be valid")
-        bounds = cls._walkable_bounds(model, data, agent_radius)
+        bounds = cls._walkable_bounds(model, data, agent_radius, floor_geom_name)
         x_min, x_max, y_min, y_max = bounds
         width = int(math.floor((x_max - x_min) / resolution)) + 1
         height = int(math.floor((y_max - y_min) / resolution)) + 1
@@ -63,7 +72,7 @@ class OfficeNavigationMesh:
 
         for geom_id in range(model.ngeom):
             geom_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, geom_id) or ""
-            if geom_name == "office_floor":
+            if geom_name == floor_geom_name:
                 continue
             body_id = int(model.geom_bodyid[geom_id])
             # Other mocap actors are live collision proxies.  Exclude only the
@@ -135,10 +144,11 @@ class OfficeNavigationMesh:
         model: mujoco.MjModel,
         data: mujoco.MjData,
         margin: float,
+        floor_geom_name: str = "office_floor",
     ) -> tuple[float, float, float, float]:
-        floor_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, "office_floor")
+        floor_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, floor_geom_name)
         if floor_id < 0 or model.geom_type[floor_id] != mujoco.mjtGeom.mjGEOM_BOX:
-            raise NavigationPathError("Office navigation requires a box geom named 'office_floor'")
+            raise NavigationPathError(f"Navigation requires a box geom named '{floor_geom_name}'")
         center = data.geom_xpos[floor_id]
         size = model.geom_size[floor_id]
         return (
@@ -213,8 +223,81 @@ class OfficeNavigationMesh:
             and not self.occupancy[row, col]
         )
 
-    def is_world_free(self, point: np.ndarray) -> bool:
-        return self.is_cell_free(self.world_to_cell(np.asarray(point, dtype=float)))
+    @staticmethod
+    def _label_components(
+        occupancy: np.ndarray,
+    ) -> tuple[np.ndarray, dict[int, int]]:
+        labels = np.full(occupancy.shape, -1, dtype=np.int32)
+        sizes: dict[int, int] = {}
+        next_label = 0
+        for row in range(occupancy.shape[0]):
+            for column in range(occupancy.shape[1]):
+                if occupancy[row, column] or labels[row, column] >= 0:
+                    continue
+                frontier = [(row, column)]
+                labels[row, column] = next_label
+                size = 0
+                for current_row, current_column in frontier:
+                    size += 1
+                    for neighbor_row, neighbor_column in (
+                        (current_row - 1, current_column),
+                        (current_row + 1, current_column),
+                        (current_row, current_column - 1),
+                        (current_row, current_column + 1),
+                    ):
+                        if (
+                            0 <= neighbor_row < occupancy.shape[0]
+                            and 0 <= neighbor_column < occupancy.shape[1]
+                            and not occupancy[neighbor_row, neighbor_column]
+                            and labels[neighbor_row, neighbor_column] < 0
+                        ):
+                            labels[neighbor_row, neighbor_column] = next_label
+                            frontier.append((neighbor_row, neighbor_column))
+                sizes[next_label] = size
+                next_label += 1
+        if not sizes:
+            raise NavigationPathError("Navigation grid contains no free component")
+        return labels, sizes
+
+    def component_id(self, point: np.ndarray) -> int | None:
+        cell = self.world_to_cell(np.asarray(point, dtype=float))
+        if not self.is_cell_free(cell):
+            return None
+        return int(self.component_labels[cell])
+
+    def is_world_free(self, point: np.ndarray, *, component_id: int | None = None) -> bool:
+        cell = self.world_to_cell(np.asarray(point, dtype=float))
+        return self.is_cell_free(cell) and (
+            component_id is None or int(self.component_labels[cell]) == component_id
+        )
+
+    def nearest_free_world(
+        self,
+        point: np.ndarray,
+        *,
+        toward: np.ndarray,
+        max_distance: float,
+        component_id: int | None = None,
+    ) -> np.ndarray:
+        """Project an automatic candidate to a nearby free grid cell.
+
+        Callers retain control over how far projection is allowed to move, so
+        this cannot silently turn an object-local approach into an unrelated
+        point elsewhere in the scene.
+        """
+        source = np.asarray(point, dtype=float)[:2]
+        projected = self.cell_to_world(
+            self._nearest_free(
+                self.world_to_cell(source),
+                np.asarray(toward, dtype=float)[:2],
+                component_id=component_id,
+            )
+        )
+        if float(np.linalg.norm(projected - source)) > max_distance:
+            raise NavigationPathError(
+                f"No free navigation cell within {max_distance:.3f} m of {source.tolist()}"
+            )
+        return projected
 
     def point_inside_obstacle(self, point: np.ndarray) -> bool:
         x, y = (float(value) for value in np.asarray(point)[:2])
@@ -228,8 +311,12 @@ class OfficeNavigationMesh:
         self,
         origin: tuple[int, int],
         toward: np.ndarray,
+        *,
+        component_id: int | None = None,
     ) -> tuple[int, int]:
-        if self.is_cell_free(origin):
+        if self.is_cell_free(origin) and (
+            component_id is None or int(self.component_labels[origin]) == component_id
+        ):
             return origin
         max_radius = max(self.occupancy.shape)
         for radius in range(1, max_radius):
@@ -239,7 +326,9 @@ class OfficeNavigationMesh:
                     if max(abs(row - origin[0]), abs(col - origin[1])) != radius:
                         continue
                     cell = (row, col)
-                    if self.is_cell_free(cell):
+                    if self.is_cell_free(cell) and (
+                        component_id is None or int(self.component_labels[cell]) == component_id
+                    ):
                         candidates.append(cell)
             if candidates:
                 return min(
@@ -318,8 +407,18 @@ class OfficeNavigationMesh:
         start: tuple[int, int],
         end: tuple[int, int],
     ) -> bool:
+        # The obstacle footprints are continuous approximations, while the
+        # raster occupancy is deliberately conservative.  A smoothed segment
+        # must satisfy both representations; checking footprints alone can
+        # skip an occupied cell at a raster boundary.
         start_world = self.cell_to_world(start)
         end_world = self.cell_to_world(end)
+        distance = float(np.linalg.norm(end_world - start_world))
+        samples = max(2, int(math.ceil(distance / (self.resolution / 2.0))) + 1)
+        for ratio in np.linspace(0.0, 1.0, samples):
+            point = start_world + ratio * (end_world - start_world)
+            if not self.is_cell_free(self.world_to_cell(point)):
+                return False
         for obstacle in self.obstacles:
             if self._segment_intersects_box(
                 start_world,

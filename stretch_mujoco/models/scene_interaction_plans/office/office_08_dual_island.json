@@ -1,0 +1,376 @@
+{
+  "conversation_stations": [
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_08_dual_island.01",
+      "region": "zone.snack",
+      "roles": {
+        "listener": {
+          "position": [
+            9.26,
+            4.48,
+            0.025
+          ],
+          "yaw": 0.5070985043923388
+        },
+        "speaker": {
+          "position": [
+            9.66,
+            5.2,
+            0.025
+          ],
+          "yaw": -2.6344941491974545
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_08_dual_island.02",
+      "region": "zone.work",
+      "roles": {
+        "listener": {
+          "position": [
+            -9.3,
+            -3.84,
+            0.025
+          ],
+          "yaw": -2.634494149197456
+        },
+        "speaker": {
+          "position": [
+            -9.7,
+            -4.56,
+            0.025
+          ],
+          "yaw": 0.5070985043923372
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "allowed_actor_pairs": [
+        "npc_npc"
+      ],
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "conversation.office_08_dual_island.03",
+      "region": "zone.work",
+      "roles": {
+        "listener": {
+          "position": [
+            1.9,
+            -4.8,
+            0.025
+          ],
+          "yaw": 2.0778948311872325
+        },
+        "speaker": {
+          "position": [
+            2.62,
+            -5.2,
+            0.025
+          ],
+          "yaw": -1.0636978224025606
+        }
+      },
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "handover_stations": [
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_08_dual_island.01",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "116_keyboard_002"
+      ],
+      "region": "zone.lounge",
+      "roles": {
+        "giver": {
+          "position": [
+            -2.98,
+            5.2,
+            0.025
+          ],
+          "yaw": 2.0778948311872334
+        },
+        "receiver": {
+          "position": [
+            -2.26,
+            4.8,
+            0.025
+          ],
+          "yaw": -1.0636978224025597
+        },
+        "robot": {
+          "position": [
+            -2.98,
+            5.2,
+            0.025
+          ],
+          "yaw": 2.0778948311872334
+        }
+      },
+      "transfer_position": [
+        -2.62,
+        5.0,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_08_dual_island.02",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "116_keyboard_002"
+      ],
+      "region": "zone.work",
+      "roles": {
+        "giver": {
+          "position": [
+            9.66,
+            -2.88,
+            0.025
+          ],
+          "yaw": -2.634494149197454
+        },
+        "receiver": {
+          "position": [
+            9.26,
+            -3.6,
+            0.025
+          ],
+          "yaw": 0.5070985043923391
+        },
+        "robot": {
+          "position": [
+            9.66,
+            -2.88,
+            0.025
+          ],
+          "yaw": -2.634494149197454
+        }
+      },
+      "transfer_position": [
+        9.46,
+        -3.24,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    },
+    {
+      "distance_m": {
+        "max": 1.05,
+        "min": 0.55
+      },
+      "id": "handover.office_08_dual_island.03",
+      "modes": [
+        "npc_to_npc"
+      ],
+      "object_ids": [
+        "116_keyboard_002"
+      ],
+      "region": "zone.meeting",
+      "roles": {
+        "giver": {
+          "position": [
+            -9.7,
+            3.12,
+            0.025
+          ],
+          "yaw": 2.6344941491974563
+        },
+        "receiver": {
+          "position": [
+            -9.3,
+            2.4,
+            0.025
+          ],
+          "yaw": -0.507098504392337
+        },
+        "robot": {
+          "position": [
+            -9.7,
+            3.12,
+            0.025
+          ],
+          "yaw": 2.6344941491974563
+        }
+      },
+      "transfer_position": [
+        -9.5,
+        2.76,
+        0.92
+      ],
+      "yaw_tolerance_rad": 0.3
+    }
+  ],
+  "scene_id": "office_08_dual_island",
+  "schema": "interaction_site_plan/v1",
+  "seat_exemptions": [
+    {
+      "evidence": "navmesh_search_within_1.25m",
+      "owner_entity": "asset_009_new_dini",
+      "reason": "no_local_primary_component_ingress"
+    }
+  ],
+  "seat_slots": [
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_010_new_dini.01",
+      "ingress": {
+        "position": [
+          -5.7,
+          5.04,
+          0.025
+        ],
+        "yaw": -3.1106599833904687
+      },
+      "owner_entity": "asset_010_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -5.725,
+          4.232051,
+          0.45
+        ],
+        "yaw": -3.1106599833904687
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_011_new_dini.01",
+      "ingress": {
+        "position": [
+          -8.02,
+          4.24,
+          0.025
+        ],
+        "yaw": 1.581465978848009
+      },
+      "owner_entity": "asset_011_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -7.275,
+          4.232051,
+          0.45
+        ],
+        "yaw": 1.581465978848009
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_012_new_dini.01",
+      "ingress": {
+        "position": [
+          -8.02,
+          1.76,
+          0.025
+        ],
+        "yaw": -0.04051835247834844
+      },
+      "owner_entity": "asset_012_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -8.05,
+          2.5,
+          0.45
+        ],
+        "yaw": -0.04051835247834844
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_013_new_dini.01",
+      "ingress": {
+        "position": [
+          -7.3,
+          0.0,
+          0.025
+        ],
+        "yaw": 0.032542744196493584
+      },
+      "owner_entity": "asset_013_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -7.275,
+          0.767949,
+          0.45
+        ],
+        "yaw": 0.032542744196493584
+      },
+      "slot_index": 1
+    },
+    {
+      "clearance_radius_m": 0.2,
+      "id": "seat.asset_014_new_dini.01",
+      "ingress": {
+        "position": [
+          -5.7,
+          0.0,
+          0.025
+        ],
+        "yaw": -0.032542744196495915
+      },
+      "owner_entity": "asset_014_new_dini",
+      "seat_type": "chair",
+      "sit": {
+        "position": [
+          -5.725,
+          0.767949,
+          0.45
+        ],
+        "yaw": -0.032542744196495915
+      },
+      "slot_index": 1
+    }
+  ],
+  "workstations": [
+    {
+      "computer_entity": "asset_008_new_imac",
+      "id": "workstation.office_08_dual_island.01",
+      "seat_slot": "seat.asset_012_new_dini.01",
+      "work_site": {
+        "position": [
+          -8.05,
+          2.5,
+          0.72
+        ],
+        "yaw": -0.04051835247834844
+      },
+      "workstation_entity": "asset_007_new_team"
+    }
+  ]
+}

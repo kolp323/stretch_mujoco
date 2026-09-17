@@ -1,0 +1,369 @@
+{
+  "interaction_plan": {
+    "path": "../../scene_interaction_plans/home/home_09_107734110_175999914.json",
+    "required_capabilities": [
+      "conversation",
+      "handover",
+      "sit",
+      "work"
+    ]
+  },
+  "population": {
+    "members": [
+      {
+        "initial_region": "zone.home",
+        "npc": "npc_alex_chen",
+        "spawn": "point.home.alex_spawn"
+      },
+      {
+        "initial_region": "zone.home",
+        "npc": "npc_jordan_patell",
+        "spawn": "point.home.jordan_spawn"
+      },
+      {
+        "initial_region": "zone.home",
+        "npc": "npc_morgan_lee",
+        "spawn": "point.home.morgan_spawn"
+      }
+    ]
+  },
+  "robot_navigation": {
+    "clearance": 0.08,
+    "footprint_radius": 0.32,
+    "resolution": 0.06
+  },
+  "route_coverage": {
+    "connectivity": "strongly_connected",
+    "origins": "all_population_spawns",
+    "preflight": "required",
+    "targets": "all_required_navigation_points"
+  },
+  "routes": [
+    {
+      "actions": [
+        "move_to",
+        "household_activity"
+      ],
+      "from": "room.living_room",
+      "id": "living_to_kitchen",
+      "mode": "audited_dynamic",
+      "to": "room.kitchen"
+    },
+    {
+      "actions": [
+        "move_to",
+        "relax"
+      ],
+      "from": "room.bedroom",
+      "id": "bedroom_to_living",
+      "mode": "fixed_contract",
+      "to": "room.living_room"
+    }
+  ],
+  "runtime": {
+    "max_replans": 3,
+    "route_failure": "fail"
+  },
+  "scene": {
+    "id": "home_09_107734110_175999914",
+    "kind": "home",
+    "navigation": {
+      "agent_radius": 0.16,
+      "clearance": 0.0,
+      "planner": "collision_geometry_v1",
+      "resolution": 0.06,
+      "surface": "hssd_floor_collision"
+    },
+    "npc_catalog": "../../office_population.production.example.json",
+    "semantic_policy": "../../semantic_policies/home.json",
+    "source_manifest": "../../assets/home_scenes/home_09_107734110_175999914.json",
+    "source_mjcf": "../../assets/home_scenes/home_09_107734110_175999914.xml"
+  },
+  "schema": "scene_npc_config/v2",
+  "semantic_registration": {
+    "custom_targets": {
+      "point.home.activity_area": {
+        "owner": "zone.home",
+        "position": [
+          -10.93956261,
+          3.58064312
+        ],
+        "usages": [
+          "navigation",
+          "activity"
+        ],
+        "yaw": 0.0
+      },
+      "point.home.alex_spawn": {
+        "owner": "zone.home",
+        "position": [
+          -7.33956261,
+          7.90064312
+        ],
+        "usages": [
+          "navigation",
+          "spawn"
+        ],
+        "yaw": 0.0
+      },
+      "point.home.jordan_spawn": {
+        "owner": "zone.home",
+        "position": [
+          -0.49956261,
+          7.18064312
+        ],
+        "usages": [
+          "navigation",
+          "spawn"
+        ],
+        "yaw": 0.0
+      },
+      "point.home.morgan_spawn": {
+        "owner": "zone.home",
+        "position": [
+          -6.61956261,
+          8.62064312
+        ],
+        "usages": [
+          "navigation",
+          "spawn"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.01": {
+        "owner": "zone.home",
+        "position": [
+          -3.61956261,
+          0.52064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.02": {
+        "owner": "zone.home",
+        "position": [
+          -2.47956261,
+          12.34064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.03": {
+        "owner": "zone.home",
+        "position": [
+          -10.57956261,
+          12.46064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.04": {
+        "owner": "zone.home",
+        "position": [
+          -4.21956261,
+          4.84064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.05": {
+        "owner": "zone.home",
+        "position": [
+          -7.93956261,
+          0.52064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.06": {
+        "owner": "zone.home",
+        "position": [
+          -0.49956261,
+          3.10064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.07": {
+        "owner": "zone.home",
+        "position": [
+          -6.43956261,
+          12.46064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.08": {
+        "owner": "zone.home",
+        "position": [
+          -11.11956261,
+          8.14064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.09": {
+        "owner": "zone.home",
+        "position": [
+          -7.63956261,
+          4.48064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      },
+      "point.spawn.anchor.10": {
+        "owner": "zone.home",
+        "position": [
+          -3.31956261,
+          9.10064312,
+          0.025
+        ],
+        "usages": [
+          "navigation",
+          "spawn",
+          "spawn_anchor"
+        ],
+        "yaw": 0.0
+      }
+    },
+    "discover": {
+      "manifest_assets": true,
+      "manifest_zones": true,
+      "xml_semantic_sites": true
+    },
+    "entity_overrides": {},
+    "region_overrides": {
+      "room.bathroom": {
+        "geometry": {
+          "mode": "seed_and_component",
+          "seed": [
+            -8.23956261,
+            5.56064312,
+            0.025
+          ]
+        },
+        "required": true,
+        "semantic_class": "region.room.bathroom"
+      },
+      "room.bedroom": {
+        "geometry": {
+          "mode": "seed_and_component",
+          "seed": [
+            -10.09956261,
+            1.42064312,
+            0.025
+          ]
+        },
+        "required": true,
+        "semantic_class": "region.room.bedroom"
+      },
+      "room.kitchen": {
+        "geometry": {
+          "mode": "seed_and_component",
+          "seed": [
+            -10.57956261,
+            10.72064312,
+            0.025
+          ]
+        },
+        "required": true,
+        "semantic_class": "region.room.kitchen"
+      },
+      "room.living_room": {
+        "geometry": {
+          "mode": "seed_and_component",
+          "seed": [
+            -5.23956261,
+            9.64064312,
+            0.025
+          ]
+        },
+        "required": true,
+        "semantic_class": "region.room.living_room"
+      },
+      "room.office": {
+        "geometry": {
+          "mode": "seed_and_component",
+          "seed": [
+            -1.57956261,
+            2.38064312,
+            0.025
+          ]
+        },
+        "required": true,
+        "semantic_class": "region.room.office"
+      }
+    },
+    "strict_coverage": true
+  },
+  "spawn_policy": {
+    "allocation": "exclusive",
+    "anchors": [
+      "point.spawn.anchor.01",
+      "point.spawn.anchor.02",
+      "point.spawn.anchor.03",
+      "point.spawn.anchor.04",
+      "point.spawn.anchor.05",
+      "point.spawn.anchor.06",
+      "point.spawn.anchor.07",
+      "point.spawn.anchor.08",
+      "point.spawn.anchor.09",
+      "point.spawn.anchor.10"
+    ],
+    "capacity": 10,
+    "minimum_separation_m": 0.7
+  },
+  "traffic": {
+    "dynamic_obstacles": true,
+    "max_wait_s": 12.0,
+    "no_direct_fallback": true,
+    "on_block": "wait_then_replan",
+    "policy": "sequential_route_reservation",
+    "reservation_horizon_s": 30.0
+  }
+}

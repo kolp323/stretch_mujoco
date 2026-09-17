@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "classified": 37,
+    "discovered": 37,
+    "explicitly_exempt": 0,
+    "registered": 37,
+    "unbound": 0,
+    "unresolved": 0
+  },
+  "exemptions": [],
+  "navigation_preflight": "passed",
+  "planner": {
+    "agent_radius": 0.16,
+    "clearance": 0.06,
+    "name": "collision_geometry_v1",
+    "primary_component_cells": 17294,
+    "primary_component_id": 0,
+    "resolution": 0.08
+  },
+  "reachability": {
+    "all_reachable": true,
+    "origins": 4,
+    "pair_count": 188,
+    "targets": 47
+  },
+  "reachability_matrix_sha256": "406bfcebb82d4afa7a8ce9f203db9d59a2a072627ac21e9c2ee6203a9581e43b",
+  "reachable_navigation_points": 47,
+  "required_navigation_points": 47,
+  "scene_id": "office_04_central_meeting",
+  "schema_version": 1,
+  "strongly_connected": true,
+  "unreachable": []
+}

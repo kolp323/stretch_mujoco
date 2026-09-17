@@ -1,0 +1,4271 @@
+{
+  "anchors": {
+    "point.home.activity_area": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__home__activity_area"
+    },
+    "point.home.alex_spawn": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__home__alex_spawn"
+    },
+    "point.home.jordan_spawn": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__home__jordan_spawn"
+    },
+    "point.home.morgan_spawn": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__home__morgan_spawn"
+    },
+    "point.object.001_bottle_home_05.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__001_bottle_home_05__approach__01"
+    },
+    "point.object.017_calculator_home_00.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__017_calculator_home_00__approach__01"
+    },
+    "point.object.025_chips-tub_home_06.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__025_chips-tub_home_06__approach__01"
+    },
+    "point.object.035_apple_home_07.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__035_apple_home_07__approach__01"
+    },
+    "point.object.038_milk-box_home_08.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__038_milk-box_home_08__approach__01"
+    },
+    "point.object.043_book_home_01.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__043_book_home_01__approach__01"
+    },
+    "point.object.069_vagetable_home_12.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__069_vagetable_home_12__approach__01"
+    },
+    "point.object.071_can_home_09.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__071_can_home_09__approach__01"
+    },
+    "point.object.075_bread_home_11.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__075_bread_home_11__approach__01"
+    },
+    "point.object.101_milk-tea_home_03.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__101_milk-tea_home_03__approach__01"
+    },
+    "point.object.green_apple_home_10.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__green_apple_home_10__approach__01"
+    },
+    "point.object.hssd_object_000.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_000__observation__01"
+    },
+    "point.object.hssd_object_001.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_001__observation__01"
+    },
+    "point.object.hssd_object_002.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_002__observation__01"
+    },
+    "point.object.hssd_object_003.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_003__observation__01"
+    },
+    "point.object.hssd_object_004.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_004__observation__01"
+    },
+    "point.object.hssd_object_005.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_005__observation__01"
+    },
+    "point.object.hssd_object_006.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_006__observation__01"
+    },
+    "point.object.hssd_object_007.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_007__observation__01"
+    },
+    "point.object.hssd_object_008.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_008__observation__01"
+    },
+    "point.object.hssd_object_009.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_009__observation__01"
+    },
+    "point.object.hssd_object_010.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_010__observation__01"
+    },
+    "point.object.hssd_object_011.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_011__observation__01"
+    },
+    "point.object.hssd_object_012.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_012__approach__01"
+    },
+    "point.object.hssd_object_013.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_013__observation__01"
+    },
+    "point.object.hssd_object_014.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_014__observation__01"
+    },
+    "point.object.hssd_object_015.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_015__observation__01"
+    },
+    "point.object.hssd_object_016.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_016__approach__01"
+    },
+    "point.object.hssd_object_017.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_017__observation__01"
+    },
+    "point.object.hssd_object_018.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_018__observation__01"
+    },
+    "point.object.hssd_object_019.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_019__approach__01"
+    },
+    "point.object.hssd_object_020.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_020__observation__01"
+    },
+    "point.object.hssd_object_021.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_021__approach__01"
+    },
+    "point.object.hssd_object_022.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_022__observation__01"
+    },
+    "point.object.hssd_object_023.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_023__observation__01"
+    },
+    "point.object.hssd_object_024.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_024__observation__01"
+    },
+    "point.object.hssd_object_025.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_025__observation__01"
+    },
+    "point.object.hssd_object_026.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_026__observation__01"
+    },
+    "point.object.hssd_object_027.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_027__observation__01"
+    },
+    "point.object.hssd_object_028.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_028__observation__01"
+    },
+    "point.object.hssd_object_029.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_029__observation__01"
+    },
+    "point.object.hssd_object_030.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_030__observation__01"
+    },
+    "point.object.hssd_object_031.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_031__observation__01"
+    },
+    "point.object.hssd_object_032.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_032__observation__01"
+    },
+    "point.object.hssd_object_033.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_033__observation__01"
+    },
+    "point.object.hssd_object_034.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_034__observation__01"
+    },
+    "point.object.hssd_object_035.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_035__observation__01"
+    },
+    "point.object.hssd_object_036.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_036__observation__01"
+    },
+    "point.object.hssd_object_037.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_037__observation__01"
+    },
+    "point.object.hssd_object_038.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_038__observation__01"
+    },
+    "point.object.hssd_object_039.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_039__observation__01"
+    },
+    "point.object.hssd_object_040.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_040__observation__01"
+    },
+    "point.object.hssd_object_041.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_041__observation__01"
+    },
+    "point.object.hssd_object_042.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_042__observation__01"
+    },
+    "point.object.hssd_object_043.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_043__observation__01"
+    },
+    "point.object.hssd_object_044.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_044__observation__01"
+    },
+    "point.object.hssd_object_045.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_045__observation__01"
+    },
+    "point.object.hssd_object_046.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_046__observation__01"
+    },
+    "point.object.hssd_object_047.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_047__observation__01"
+    },
+    "point.object.hssd_object_048.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_048__observation__01"
+    },
+    "point.object.hssd_object_049.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_049__observation__01"
+    },
+    "point.object.hssd_object_050.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_050__approach__01"
+    },
+    "point.object.hssd_object_051.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_051__observation__01"
+    },
+    "point.object.hssd_object_052.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_052__approach__01"
+    },
+    "point.object.hssd_object_053.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_053__observation__01"
+    },
+    "point.object.hssd_object_054.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_054__observation__01"
+    },
+    "point.object.hssd_object_055.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_055__approach__01"
+    },
+    "point.object.hssd_object_056.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_056__approach__01"
+    },
+    "point.object.hssd_object_057.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_057__approach__01"
+    },
+    "point.object.hssd_object_058.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_058__approach__01"
+    },
+    "point.object.hssd_object_059.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_059__observation__01"
+    },
+    "point.object.hssd_object_060.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_060__observation__01"
+    },
+    "point.object.hssd_object_061.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_061__observation__01"
+    },
+    "point.object.hssd_object_062.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_062__observation__01"
+    },
+    "point.object.hssd_object_063.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_063__observation__01"
+    },
+    "point.object.hssd_object_064.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_064__observation__01"
+    },
+    "point.object.hssd_object_065.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_065__observation__01"
+    },
+    "point.object.hssd_object_066.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_066__observation__01"
+    },
+    "point.object.hssd_object_067.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_067__observation__01"
+    },
+    "point.object.hssd_object_068.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_068__observation__01"
+    },
+    "point.object.hssd_object_069.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_069__observation__01"
+    },
+    "point.object.hssd_object_070.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_070__observation__01"
+    },
+    "point.object.hssd_object_071.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_071__observation__01"
+    },
+    "point.object.hssd_object_072.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_072__observation__01"
+    },
+    "point.object.hssd_object_073.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_073__approach__01"
+    },
+    "point.object.hssd_object_074.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_074__observation__01"
+    },
+    "point.object.hssd_object_075.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_075__observation__01"
+    },
+    "point.object.hssd_object_076.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_076__observation__01"
+    },
+    "point.object.hssd_object_077.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_077__observation__01"
+    },
+    "point.object.hssd_object_078.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_078__observation__01"
+    },
+    "point.object.hssd_object_079.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_079__approach__01"
+    },
+    "point.object.hssd_object_080.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_080__observation__01"
+    },
+    "point.object.hssd_object_081.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_081__observation__01"
+    },
+    "point.object.hssd_object_082.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_082__approach__01"
+    },
+    "point.object.hssd_object_083.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_083__approach__01"
+    },
+    "point.object.hssd_object_084.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_084__observation__01"
+    },
+    "point.object.hssd_object_085.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_085__observation__01"
+    },
+    "point.object.hssd_object_086.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_086__approach__01"
+    },
+    "point.object.hssd_object_087.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_087__approach__01"
+    },
+    "point.object.hssd_object_088.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_088__approach__01"
+    },
+    "point.object.hssd_object_089.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_089__approach__01"
+    },
+    "point.object.hssd_object_090.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_090__approach__01"
+    },
+    "point.object.hssd_object_091.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_091__observation__01"
+    },
+    "point.object.hssd_object_092.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_092__observation__01"
+    },
+    "point.object.hssd_object_093.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_093__observation__01"
+    },
+    "point.object.hssd_object_094.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_094__observation__01"
+    },
+    "point.object.hssd_object_095.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_095__observation__01"
+    },
+    "point.object.hssd_object_096.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_096__observation__01"
+    },
+    "point.object.hssd_object_097.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_097__approach__01"
+    },
+    "point.object.hssd_object_098.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_098__observation__01"
+    },
+    "point.object.hssd_object_099.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_099__observation__01"
+    },
+    "point.object.hssd_object_100.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_100__observation__01"
+    },
+    "point.object.hssd_object_101.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_101__approach__01"
+    },
+    "point.object.hssd_object_102.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_102__observation__01"
+    },
+    "point.object.hssd_object_103.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_103__observation__01"
+    },
+    "point.object.hssd_object_104.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_104__approach__01"
+    },
+    "point.object.hssd_object_105.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_105__approach__01"
+    },
+    "point.object.hssd_object_106.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_106__approach__01"
+    },
+    "point.object.hssd_object_107.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_107__approach__01"
+    },
+    "point.object.hssd_object_108.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_108__approach__01"
+    },
+    "point.object.hssd_object_109.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_109__approach__01"
+    },
+    "point.object.hssd_object_110.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_110__approach__01"
+    },
+    "point.object.hssd_object_111.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_111__approach__01"
+    },
+    "point.object.hssd_object_112.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_112__approach__01"
+    },
+    "point.object.hssd_object_113.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_113__observation__01"
+    },
+    "point.object.hssd_object_114.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_114__observation__01"
+    },
+    "point.object.hssd_object_115.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_115__observation__01"
+    },
+    "point.object.hssd_object_116.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_116__observation__01"
+    },
+    "point.object.hssd_object_117.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_117__observation__01"
+    },
+    "point.object.hssd_object_118.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_118__observation__01"
+    },
+    "point.object.hssd_object_119.observation.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__hssd_object_119__observation__01"
+    },
+    "point.object.snack_soda_can_home_04.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__object__snack_soda_can_home_04__approach__01"
+    },
+    "point.room.bathroom.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__room__bathroom__approach__01"
+    },
+    "point.room.bedroom.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__room__bedroom__approach__01"
+    },
+    "point.room.kitchen.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__room__kitchen__approach__01"
+    },
+    "point.room.living_room.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__room__living_room__approach__01"
+    },
+    "point.room.office.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__room__office__approach__01"
+    },
+    "point.spawn.anchor.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__01"
+    },
+    "point.spawn.anchor.02": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__02"
+    },
+    "point.spawn.anchor.03": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__03"
+    },
+    "point.spawn.anchor.04": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__04"
+    },
+    "point.spawn.anchor.05": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__05"
+    },
+    "point.spawn.anchor.06": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__06"
+    },
+    "point.spawn.anchor.07": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__07"
+    },
+    "point.spawn.anchor.08": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__08"
+    },
+    "point.spawn.anchor.09": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__09"
+    },
+    "point.spawn.anchor.10": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__spawn__anchor__10"
+    },
+    "point.zone.home.approach.01": {
+      "role": "semantic_navigation",
+      "site": "npc__home_06_104348082_171512994__point__zone__home__approach__01"
+    }
+  },
+  "navigation": {
+    "agent_radius": 0.16,
+    "clearance": 0.0,
+    "exclude_body_roots": [
+      "base_link"
+    ],
+    "resolution": 0.06,
+    "surface": "hssd_floor_collision"
+  },
+  "profile_id": "home_06_104348082_171512994_coverage",
+  "routes": [
+    {
+      "actions": [
+        "move_to",
+        "household_activity"
+      ],
+      "from": "point.room.living_room.approach.01",
+      "mode": "audited_dynamic",
+      "route_id": "business_living_to_kitchen",
+      "to": "point.room.kitchen.approach.01"
+    },
+    {
+      "actions": [
+        "move_to",
+        "relax"
+      ],
+      "from": "point.room.bedroom.approach.01",
+      "mode": "fixed_contract",
+      "route_id": "business_bedroom_to_living",
+      "to": "point.room.living_room.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0000",
+      "to": "point.object.001_bottle_home_05.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0001",
+      "to": "point.object.017_calculator_home_00.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0002",
+      "to": "point.object.025_chips-tub_home_06.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0003",
+      "to": "point.object.035_apple_home_07.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0004",
+      "to": "point.object.038_milk-box_home_08.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0005",
+      "to": "point.object.043_book_home_01.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0006",
+      "to": "point.object.069_vagetable_home_12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0007",
+      "to": "point.object.071_can_home_09.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0008",
+      "to": "point.object.075_bread_home_11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0009",
+      "to": "point.object.101_milk-tea_home_03.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0010",
+      "to": "point.object.green_apple_home_10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0011",
+      "to": "point.object.hssd_object_000.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0012",
+      "to": "point.object.hssd_object_001.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0013",
+      "to": "point.object.hssd_object_002.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0014",
+      "to": "point.object.hssd_object_003.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0015",
+      "to": "point.object.hssd_object_004.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0016",
+      "to": "point.object.hssd_object_005.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0017",
+      "to": "point.object.hssd_object_006.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0018",
+      "to": "point.object.hssd_object_007.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0019",
+      "to": "point.object.hssd_object_008.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0020",
+      "to": "point.object.hssd_object_009.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0021",
+      "to": "point.object.hssd_object_010.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0022",
+      "to": "point.object.hssd_object_011.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0023",
+      "to": "point.object.hssd_object_012.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0024",
+      "to": "point.object.hssd_object_013.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0025",
+      "to": "point.object.hssd_object_014.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0026",
+      "to": "point.object.hssd_object_015.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0027",
+      "to": "point.object.hssd_object_016.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0028",
+      "to": "point.object.hssd_object_017.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0029",
+      "to": "point.object.hssd_object_018.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0030",
+      "to": "point.object.hssd_object_019.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0031",
+      "to": "point.object.hssd_object_020.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0032",
+      "to": "point.object.hssd_object_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0033",
+      "to": "point.object.hssd_object_022.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0034",
+      "to": "point.object.hssd_object_023.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0035",
+      "to": "point.object.hssd_object_024.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0036",
+      "to": "point.object.hssd_object_025.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0037",
+      "to": "point.object.hssd_object_026.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0038",
+      "to": "point.object.hssd_object_027.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0039",
+      "to": "point.object.hssd_object_028.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0040",
+      "to": "point.object.hssd_object_029.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0041",
+      "to": "point.object.hssd_object_030.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0042",
+      "to": "point.object.hssd_object_031.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0043",
+      "to": "point.object.hssd_object_032.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0044",
+      "to": "point.object.hssd_object_033.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0045",
+      "to": "point.object.hssd_object_034.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0046",
+      "to": "point.object.hssd_object_035.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0047",
+      "to": "point.object.hssd_object_036.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0048",
+      "to": "point.object.hssd_object_037.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0049",
+      "to": "point.object.hssd_object_038.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0050",
+      "to": "point.object.hssd_object_039.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0051",
+      "to": "point.object.hssd_object_040.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0052",
+      "to": "point.object.hssd_object_041.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0053",
+      "to": "point.object.hssd_object_042.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0054",
+      "to": "point.object.hssd_object_043.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0055",
+      "to": "point.object.hssd_object_044.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0056",
+      "to": "point.object.hssd_object_045.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0057",
+      "to": "point.object.hssd_object_046.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0058",
+      "to": "point.object.hssd_object_047.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0059",
+      "to": "point.object.hssd_object_048.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0060",
+      "to": "point.object.hssd_object_049.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0061",
+      "to": "point.object.hssd_object_050.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0062",
+      "to": "point.object.hssd_object_051.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0063",
+      "to": "point.object.hssd_object_052.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0064",
+      "to": "point.object.hssd_object_053.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0065",
+      "to": "point.object.hssd_object_054.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0066",
+      "to": "point.object.hssd_object_055.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0067",
+      "to": "point.object.hssd_object_056.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0068",
+      "to": "point.object.hssd_object_057.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0069",
+      "to": "point.object.hssd_object_058.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0070",
+      "to": "point.object.hssd_object_059.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0071",
+      "to": "point.object.hssd_object_060.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0072",
+      "to": "point.object.hssd_object_061.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0073",
+      "to": "point.object.hssd_object_062.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0074",
+      "to": "point.object.hssd_object_063.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0075",
+      "to": "point.object.hssd_object_064.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0076",
+      "to": "point.object.hssd_object_065.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0077",
+      "to": "point.object.hssd_object_066.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0078",
+      "to": "point.object.hssd_object_067.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0079",
+      "to": "point.object.hssd_object_068.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0080",
+      "to": "point.object.hssd_object_069.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0081",
+      "to": "point.object.hssd_object_070.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0082",
+      "to": "point.object.hssd_object_071.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0083",
+      "to": "point.object.hssd_object_072.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0084",
+      "to": "point.object.hssd_object_073.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0085",
+      "to": "point.object.hssd_object_074.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0086",
+      "to": "point.object.hssd_object_075.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0087",
+      "to": "point.object.hssd_object_076.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0088",
+      "to": "point.object.hssd_object_077.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0089",
+      "to": "point.object.hssd_object_078.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0090",
+      "to": "point.object.hssd_object_079.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0091",
+      "to": "point.object.hssd_object_080.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0092",
+      "to": "point.object.hssd_object_081.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0093",
+      "to": "point.object.hssd_object_082.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0094",
+      "to": "point.object.hssd_object_083.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0095",
+      "to": "point.object.hssd_object_084.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0096",
+      "to": "point.object.hssd_object_085.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0097",
+      "to": "point.object.hssd_object_086.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0098",
+      "to": "point.object.hssd_object_087.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0099",
+      "to": "point.object.hssd_object_088.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0100",
+      "to": "point.object.hssd_object_089.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0101",
+      "to": "point.object.hssd_object_090.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0102",
+      "to": "point.object.hssd_object_091.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0103",
+      "to": "point.object.hssd_object_092.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0104",
+      "to": "point.object.hssd_object_093.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0105",
+      "to": "point.object.hssd_object_094.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0106",
+      "to": "point.object.hssd_object_095.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0107",
+      "to": "point.object.hssd_object_096.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0108",
+      "to": "point.object.hssd_object_097.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0109",
+      "to": "point.object.hssd_object_098.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0110",
+      "to": "point.object.hssd_object_099.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0111",
+      "to": "point.object.hssd_object_100.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0112",
+      "to": "point.object.hssd_object_101.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0113",
+      "to": "point.object.hssd_object_102.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0114",
+      "to": "point.object.hssd_object_103.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0115",
+      "to": "point.object.hssd_object_104.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0116",
+      "to": "point.object.hssd_object_105.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0117",
+      "to": "point.object.hssd_object_106.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0118",
+      "to": "point.object.hssd_object_107.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0119",
+      "to": "point.object.hssd_object_108.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0120",
+      "to": "point.object.hssd_object_109.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0121",
+      "to": "point.object.hssd_object_110.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0122",
+      "to": "point.object.hssd_object_111.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0123",
+      "to": "point.object.hssd_object_112.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0124",
+      "to": "point.object.hssd_object_113.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0125",
+      "to": "point.object.hssd_object_114.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0126",
+      "to": "point.object.hssd_object_115.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0127",
+      "to": "point.object.hssd_object_116.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0128",
+      "to": "point.object.hssd_object_117.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0129",
+      "to": "point.object.hssd_object_118.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0130",
+      "to": "point.object.hssd_object_119.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0131",
+      "to": "point.object.snack_soda_can_home_04.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0132",
+      "to": "point.room.bathroom.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0133",
+      "to": "point.room.bedroom.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0134",
+      "to": "point.room.kitchen.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0135",
+      "to": "point.room.living_room.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0136",
+      "to": "point.room.office.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0137",
+      "to": "point.zone.home.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0138",
+      "to": "point.home.activity_area"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0140",
+      "to": "point.home.jordan_spawn"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0141",
+      "to": "point.home.morgan_spawn"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0142",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0143",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0144",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0145",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0146",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0147",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0148",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0149",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0150",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.alex_spawn",
+      "route_id": "coverage_00_0151",
+      "to": "point.spawn.anchor.10"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0000",
+      "to": "point.object.001_bottle_home_05.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0001",
+      "to": "point.object.017_calculator_home_00.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0002",
+      "to": "point.object.025_chips-tub_home_06.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0003",
+      "to": "point.object.035_apple_home_07.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0004",
+      "to": "point.object.038_milk-box_home_08.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0005",
+      "to": "point.object.043_book_home_01.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0006",
+      "to": "point.object.069_vagetable_home_12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0007",
+      "to": "point.object.071_can_home_09.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0008",
+      "to": "point.object.075_bread_home_11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0009",
+      "to": "point.object.101_milk-tea_home_03.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0010",
+      "to": "point.object.green_apple_home_10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0011",
+      "to": "point.object.hssd_object_000.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0012",
+      "to": "point.object.hssd_object_001.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0013",
+      "to": "point.object.hssd_object_002.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0014",
+      "to": "point.object.hssd_object_003.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0015",
+      "to": "point.object.hssd_object_004.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0016",
+      "to": "point.object.hssd_object_005.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0017",
+      "to": "point.object.hssd_object_006.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0018",
+      "to": "point.object.hssd_object_007.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0019",
+      "to": "point.object.hssd_object_008.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0020",
+      "to": "point.object.hssd_object_009.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0021",
+      "to": "point.object.hssd_object_010.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0022",
+      "to": "point.object.hssd_object_011.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0023",
+      "to": "point.object.hssd_object_012.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0024",
+      "to": "point.object.hssd_object_013.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0025",
+      "to": "point.object.hssd_object_014.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0026",
+      "to": "point.object.hssd_object_015.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0027",
+      "to": "point.object.hssd_object_016.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0028",
+      "to": "point.object.hssd_object_017.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0029",
+      "to": "point.object.hssd_object_018.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0030",
+      "to": "point.object.hssd_object_019.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0031",
+      "to": "point.object.hssd_object_020.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0032",
+      "to": "point.object.hssd_object_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0033",
+      "to": "point.object.hssd_object_022.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0034",
+      "to": "point.object.hssd_object_023.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0035",
+      "to": "point.object.hssd_object_024.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0036",
+      "to": "point.object.hssd_object_025.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0037",
+      "to": "point.object.hssd_object_026.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0038",
+      "to": "point.object.hssd_object_027.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0039",
+      "to": "point.object.hssd_object_028.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0040",
+      "to": "point.object.hssd_object_029.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0041",
+      "to": "point.object.hssd_object_030.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0042",
+      "to": "point.object.hssd_object_031.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0043",
+      "to": "point.object.hssd_object_032.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0044",
+      "to": "point.object.hssd_object_033.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0045",
+      "to": "point.object.hssd_object_034.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0046",
+      "to": "point.object.hssd_object_035.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0047",
+      "to": "point.object.hssd_object_036.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0048",
+      "to": "point.object.hssd_object_037.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0049",
+      "to": "point.object.hssd_object_038.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0050",
+      "to": "point.object.hssd_object_039.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0051",
+      "to": "point.object.hssd_object_040.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0052",
+      "to": "point.object.hssd_object_041.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0053",
+      "to": "point.object.hssd_object_042.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0054",
+      "to": "point.object.hssd_object_043.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0055",
+      "to": "point.object.hssd_object_044.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0056",
+      "to": "point.object.hssd_object_045.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0057",
+      "to": "point.object.hssd_object_046.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0058",
+      "to": "point.object.hssd_object_047.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0059",
+      "to": "point.object.hssd_object_048.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0060",
+      "to": "point.object.hssd_object_049.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0061",
+      "to": "point.object.hssd_object_050.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0062",
+      "to": "point.object.hssd_object_051.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0063",
+      "to": "point.object.hssd_object_052.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0064",
+      "to": "point.object.hssd_object_053.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0065",
+      "to": "point.object.hssd_object_054.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0066",
+      "to": "point.object.hssd_object_055.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0067",
+      "to": "point.object.hssd_object_056.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0068",
+      "to": "point.object.hssd_object_057.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0069",
+      "to": "point.object.hssd_object_058.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0070",
+      "to": "point.object.hssd_object_059.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0071",
+      "to": "point.object.hssd_object_060.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0072",
+      "to": "point.object.hssd_object_061.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0073",
+      "to": "point.object.hssd_object_062.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0074",
+      "to": "point.object.hssd_object_063.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0075",
+      "to": "point.object.hssd_object_064.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0076",
+      "to": "point.object.hssd_object_065.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0077",
+      "to": "point.object.hssd_object_066.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0078",
+      "to": "point.object.hssd_object_067.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0079",
+      "to": "point.object.hssd_object_068.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0080",
+      "to": "point.object.hssd_object_069.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0081",
+      "to": "point.object.hssd_object_070.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0082",
+      "to": "point.object.hssd_object_071.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0083",
+      "to": "point.object.hssd_object_072.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0084",
+      "to": "point.object.hssd_object_073.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0085",
+      "to": "point.object.hssd_object_074.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0086",
+      "to": "point.object.hssd_object_075.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0087",
+      "to": "point.object.hssd_object_076.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0088",
+      "to": "point.object.hssd_object_077.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0089",
+      "to": "point.object.hssd_object_078.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0090",
+      "to": "point.object.hssd_object_079.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0091",
+      "to": "point.object.hssd_object_080.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0092",
+      "to": "point.object.hssd_object_081.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0093",
+      "to": "point.object.hssd_object_082.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0094",
+      "to": "point.object.hssd_object_083.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0095",
+      "to": "point.object.hssd_object_084.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0096",
+      "to": "point.object.hssd_object_085.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0097",
+      "to": "point.object.hssd_object_086.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0098",
+      "to": "point.object.hssd_object_087.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0099",
+      "to": "point.object.hssd_object_088.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0100",
+      "to": "point.object.hssd_object_089.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0101",
+      "to": "point.object.hssd_object_090.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0102",
+      "to": "point.object.hssd_object_091.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0103",
+      "to": "point.object.hssd_object_092.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0104",
+      "to": "point.object.hssd_object_093.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0105",
+      "to": "point.object.hssd_object_094.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0106",
+      "to": "point.object.hssd_object_095.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0107",
+      "to": "point.object.hssd_object_096.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0108",
+      "to": "point.object.hssd_object_097.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0109",
+      "to": "point.object.hssd_object_098.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0110",
+      "to": "point.object.hssd_object_099.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0111",
+      "to": "point.object.hssd_object_100.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0112",
+      "to": "point.object.hssd_object_101.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0113",
+      "to": "point.object.hssd_object_102.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0114",
+      "to": "point.object.hssd_object_103.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0115",
+      "to": "point.object.hssd_object_104.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0116",
+      "to": "point.object.hssd_object_105.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0117",
+      "to": "point.object.hssd_object_106.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0118",
+      "to": "point.object.hssd_object_107.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0119",
+      "to": "point.object.hssd_object_108.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0120",
+      "to": "point.object.hssd_object_109.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0121",
+      "to": "point.object.hssd_object_110.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0122",
+      "to": "point.object.hssd_object_111.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0123",
+      "to": "point.object.hssd_object_112.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0124",
+      "to": "point.object.hssd_object_113.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0125",
+      "to": "point.object.hssd_object_114.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0126",
+      "to": "point.object.hssd_object_115.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0127",
+      "to": "point.object.hssd_object_116.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0128",
+      "to": "point.object.hssd_object_117.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0129",
+      "to": "point.object.hssd_object_118.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0130",
+      "to": "point.object.hssd_object_119.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0131",
+      "to": "point.object.snack_soda_can_home_04.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0132",
+      "to": "point.room.bathroom.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0133",
+      "to": "point.room.bedroom.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0134",
+      "to": "point.room.kitchen.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0135",
+      "to": "point.room.living_room.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0136",
+      "to": "point.room.office.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0137",
+      "to": "point.zone.home.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0138",
+      "to": "point.home.activity_area"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0139",
+      "to": "point.home.alex_spawn"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0141",
+      "to": "point.home.morgan_spawn"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0142",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0143",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0144",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0145",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0146",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0147",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0148",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0149",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0150",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.jordan_spawn",
+      "route_id": "coverage_01_0151",
+      "to": "point.spawn.anchor.10"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0000",
+      "to": "point.object.001_bottle_home_05.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0001",
+      "to": "point.object.017_calculator_home_00.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0002",
+      "to": "point.object.025_chips-tub_home_06.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0003",
+      "to": "point.object.035_apple_home_07.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0004",
+      "to": "point.object.038_milk-box_home_08.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0005",
+      "to": "point.object.043_book_home_01.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0006",
+      "to": "point.object.069_vagetable_home_12.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0007",
+      "to": "point.object.071_can_home_09.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0008",
+      "to": "point.object.075_bread_home_11.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0009",
+      "to": "point.object.101_milk-tea_home_03.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0010",
+      "to": "point.object.green_apple_home_10.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0011",
+      "to": "point.object.hssd_object_000.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0012",
+      "to": "point.object.hssd_object_001.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0013",
+      "to": "point.object.hssd_object_002.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0014",
+      "to": "point.object.hssd_object_003.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0015",
+      "to": "point.object.hssd_object_004.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0016",
+      "to": "point.object.hssd_object_005.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0017",
+      "to": "point.object.hssd_object_006.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0018",
+      "to": "point.object.hssd_object_007.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0019",
+      "to": "point.object.hssd_object_008.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0020",
+      "to": "point.object.hssd_object_009.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0021",
+      "to": "point.object.hssd_object_010.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0022",
+      "to": "point.object.hssd_object_011.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0023",
+      "to": "point.object.hssd_object_012.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0024",
+      "to": "point.object.hssd_object_013.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0025",
+      "to": "point.object.hssd_object_014.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0026",
+      "to": "point.object.hssd_object_015.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0027",
+      "to": "point.object.hssd_object_016.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0028",
+      "to": "point.object.hssd_object_017.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0029",
+      "to": "point.object.hssd_object_018.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0030",
+      "to": "point.object.hssd_object_019.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0031",
+      "to": "point.object.hssd_object_020.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0032",
+      "to": "point.object.hssd_object_021.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0033",
+      "to": "point.object.hssd_object_022.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0034",
+      "to": "point.object.hssd_object_023.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0035",
+      "to": "point.object.hssd_object_024.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0036",
+      "to": "point.object.hssd_object_025.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0037",
+      "to": "point.object.hssd_object_026.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0038",
+      "to": "point.object.hssd_object_027.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0039",
+      "to": "point.object.hssd_object_028.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0040",
+      "to": "point.object.hssd_object_029.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0041",
+      "to": "point.object.hssd_object_030.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0042",
+      "to": "point.object.hssd_object_031.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0043",
+      "to": "point.object.hssd_object_032.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0044",
+      "to": "point.object.hssd_object_033.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0045",
+      "to": "point.object.hssd_object_034.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0046",
+      "to": "point.object.hssd_object_035.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0047",
+      "to": "point.object.hssd_object_036.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0048",
+      "to": "point.object.hssd_object_037.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0049",
+      "to": "point.object.hssd_object_038.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0050",
+      "to": "point.object.hssd_object_039.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0051",
+      "to": "point.object.hssd_object_040.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0052",
+      "to": "point.object.hssd_object_041.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0053",
+      "to": "point.object.hssd_object_042.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0054",
+      "to": "point.object.hssd_object_043.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0055",
+      "to": "point.object.hssd_object_044.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0056",
+      "to": "point.object.hssd_object_045.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0057",
+      "to": "point.object.hssd_object_046.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0058",
+      "to": "point.object.hssd_object_047.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0059",
+      "to": "point.object.hssd_object_048.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0060",
+      "to": "point.object.hssd_object_049.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0061",
+      "to": "point.object.hssd_object_050.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0062",
+      "to": "point.object.hssd_object_051.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0063",
+      "to": "point.object.hssd_object_052.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0064",
+      "to": "point.object.hssd_object_053.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0065",
+      "to": "point.object.hssd_object_054.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0066",
+      "to": "point.object.hssd_object_055.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0067",
+      "to": "point.object.hssd_object_056.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0068",
+      "to": "point.object.hssd_object_057.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0069",
+      "to": "point.object.hssd_object_058.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0070",
+      "to": "point.object.hssd_object_059.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0071",
+      "to": "point.object.hssd_object_060.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0072",
+      "to": "point.object.hssd_object_061.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0073",
+      "to": "point.object.hssd_object_062.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0074",
+      "to": "point.object.hssd_object_063.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0075",
+      "to": "point.object.hssd_object_064.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0076",
+      "to": "point.object.hssd_object_065.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0077",
+      "to": "point.object.hssd_object_066.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0078",
+      "to": "point.object.hssd_object_067.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0079",
+      "to": "point.object.hssd_object_068.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0080",
+      "to": "point.object.hssd_object_069.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0081",
+      "to": "point.object.hssd_object_070.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0082",
+      "to": "point.object.hssd_object_071.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0083",
+      "to": "point.object.hssd_object_072.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0084",
+      "to": "point.object.hssd_object_073.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0085",
+      "to": "point.object.hssd_object_074.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0086",
+      "to": "point.object.hssd_object_075.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0087",
+      "to": "point.object.hssd_object_076.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0088",
+      "to": "point.object.hssd_object_077.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0089",
+      "to": "point.object.hssd_object_078.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0090",
+      "to": "point.object.hssd_object_079.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0091",
+      "to": "point.object.hssd_object_080.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0092",
+      "to": "point.object.hssd_object_081.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0093",
+      "to": "point.object.hssd_object_082.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0094",
+      "to": "point.object.hssd_object_083.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0095",
+      "to": "point.object.hssd_object_084.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0096",
+      "to": "point.object.hssd_object_085.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0097",
+      "to": "point.object.hssd_object_086.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0098",
+      "to": "point.object.hssd_object_087.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0099",
+      "to": "point.object.hssd_object_088.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0100",
+      "to": "point.object.hssd_object_089.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0101",
+      "to": "point.object.hssd_object_090.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0102",
+      "to": "point.object.hssd_object_091.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0103",
+      "to": "point.object.hssd_object_092.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0104",
+      "to": "point.object.hssd_object_093.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0105",
+      "to": "point.object.hssd_object_094.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0106",
+      "to": "point.object.hssd_object_095.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0107",
+      "to": "point.object.hssd_object_096.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0108",
+      "to": "point.object.hssd_object_097.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0109",
+      "to": "point.object.hssd_object_098.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0110",
+      "to": "point.object.hssd_object_099.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0111",
+      "to": "point.object.hssd_object_100.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0112",
+      "to": "point.object.hssd_object_101.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0113",
+      "to": "point.object.hssd_object_102.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0114",
+      "to": "point.object.hssd_object_103.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0115",
+      "to": "point.object.hssd_object_104.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0116",
+      "to": "point.object.hssd_object_105.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0117",
+      "to": "point.object.hssd_object_106.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0118",
+      "to": "point.object.hssd_object_107.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0119",
+      "to": "point.object.hssd_object_108.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0120",
+      "to": "point.object.hssd_object_109.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0121",
+      "to": "point.object.hssd_object_110.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0122",
+      "to": "point.object.hssd_object_111.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0123",
+      "to": "point.object.hssd_object_112.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0124",
+      "to": "point.object.hssd_object_113.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0125",
+      "to": "point.object.hssd_object_114.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0126",
+      "to": "point.object.hssd_object_115.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0127",
+      "to": "point.object.hssd_object_116.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0128",
+      "to": "point.object.hssd_object_117.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0129",
+      "to": "point.object.hssd_object_118.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0130",
+      "to": "point.object.hssd_object_119.observation.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0131",
+      "to": "point.object.snack_soda_can_home_04.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0132",
+      "to": "point.room.bathroom.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0133",
+      "to": "point.room.bedroom.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0134",
+      "to": "point.room.kitchen.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0135",
+      "to": "point.room.living_room.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0136",
+      "to": "point.room.office.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0137",
+      "to": "point.zone.home.approach.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0138",
+      "to": "point.home.activity_area"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0139",
+      "to": "point.home.alex_spawn"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0140",
+      "to": "point.home.jordan_spawn"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0142",
+      "to": "point.spawn.anchor.01"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0143",
+      "to": "point.spawn.anchor.02"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0144",
+      "to": "point.spawn.anchor.03"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0145",
+      "to": "point.spawn.anchor.04"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0146",
+      "to": "point.spawn.anchor.05"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0147",
+      "to": "point.spawn.anchor.06"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0148",
+      "to": "point.spawn.anchor.07"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0149",
+      "to": "point.spawn.anchor.08"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0150",
+      "to": "point.spawn.anchor.09"
+    },
+    {
+      "actions": [
+        "move_to"
+      ],
+      "from": "point.home.morgan_spawn",
+      "route_id": "coverage_02_0151",
+      "to": "point.spawn.anchor.10"
+    }
+  ],
+  "scene": "home_06_104348082_171512994_npc.xml",
+  "scene_sha256": "9029952ae6745ba20a648ef787fad0f49d5c5e207a8b1136ee44904e57f0379a",
+  "schema_version": 1
+}

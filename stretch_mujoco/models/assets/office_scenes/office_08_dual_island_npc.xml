@@ -1199,19 +1199,26 @@
     </body>
     <camera name="overview" mode="targetbody" target="scene_center" pos="0 -22.4 19" fovy="48" />
     <camera name="top" mode="targetbody" target="scene_center" pos="0 0 24" fovy="45" />
-    <site name="npc_work_site" pos="0.0500 -1.2500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_meeting_site" pos="-7.7500 3.3500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_lounge_site" pos="0.4500 2.5500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_snack_site" pos="7.0500 3.3500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_spawn_01_site" pos="0.0500 -4.8500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_spawn_02_site" pos="1.2500 1.9500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_spawn_03_site" pos="7.0500 1.5500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_conversation_speaker_site" pos="-7.7500 3.3500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_conversation_listener_site" pos="-8.5500 3.3500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_handover_giver_site" pos="-7.7500 3.3500 0.025" euler="0 0 3.14159265" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_handover_receiver_site" pos="-8.5500 3.3500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_stretch_request_site" pos="-0.5500 -1.2500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_stretch_delivery_site" pos="0.6500 -1.2500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
-    <site name="npc_stretch_rendezvous_site" pos="-7.7500 3.3500 0.025" euler="0 0 0" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_work_site" pos="0.0500 -1.2500 0.025" euler="0 0 -1.04889773" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_meeting_site" pos="-7.7500 3.3500 0.025" euler="0 0 0.973619669" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_lounge_site" pos="0.4500 2.5500 0.025" euler="0 0 3.11886929" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_snack_site" pos="7.0500 3.3500 0.025" euler="0 0 -0.0587558227" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_spawn_01_site" pos="0.0500 -4.8500 0.025" euler="0 0 -2.11703918" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_spawn_02_site" pos="1.2500 1.9500 0.025" euler="0 0 -2.87987915" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_spawn_03_site" pos="7.0500 1.5500 0.025" euler="0 0 -3.08900959" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_conversation_speaker_site" pos="-7.7500 3.3500 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_conversation_listener_site" pos="-8.5500 3.3500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_handover_giver_site" pos="-7.7500 3.3500 0.025" euler="0 0 -1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_handover_receiver_site" pos="-8.5500 3.3500 0.025" euler="0 0 1.57079633" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_stretch_request_site" pos="-0.5500 -1.2500 0.025" euler="0 0 -0.949197841" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_stretch_delivery_site" pos="0.6500 -1.2500 0.025" euler="0 0 -1.1229757" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_stretch_rendezvous_site" pos="-7.7500 3.3500 0.025" euler="0 0 0.973619669" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_meeting_slot_02_site" pos="-7.7500 1.5500 0.025" euler="0 0 2.22066678" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_meeting_slot_03_site" pos="-5.1500 3.3500 0.025" euler="0 0 -1.00887476" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_lounge_slot_02_site" pos="0.8500 1.9500 0.025" euler="0 0 -3.01723766" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_lounge_slot_03_site" pos="0.0500 1.9500 0.025" euler="0 0 2.98224101" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_snack_slot_02_site" pos="7.0500 1.5500 0.025" euler="0 0 -3.08900959" size="0.015" rgba="0 0 0 0" />
+    <site name="npc_snack_slot_03_site" pos="6.2500 3.3500 0.025" euler="0 0 0.722979353" size="0.015" rgba="0 0 0 0" />
+    <camera name="office_overview" mode="targetbody" target="scene_center" pos="0 -22.4 19" fovy="48" />
   </worldbody>
 </mujoco>

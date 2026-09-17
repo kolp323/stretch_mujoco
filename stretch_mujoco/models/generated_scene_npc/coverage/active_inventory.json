@@ -1,0 +1,748 @@
+{
+  "compiled_build_id": "6ecc0ea9c8d86957031ed5ebac761c8d52a31fac9d039d54b48462a6e30896ff",
+  "scene_count": 20,
+  "scenes": [
+    {
+      "coverage": {
+        "counts": {
+          "classified": 38,
+          "discovered": 38,
+          "explicitly_exempt": 0,
+          "registered": 38,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 38
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 38,
+        "scene_id": "office_01_linear_bench",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_01_linear_bench",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 38,
+          "discovered": 38,
+          "explicitly_exempt": 0,
+          "registered": 38,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 4,
+          "pair_count": 0,
+          "targets": 38
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 38,
+        "scene_id": "office_02_cross_axis",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_02_cross_axis",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 38,
+          "discovered": 38,
+          "explicitly_exempt": 0,
+          "registered": 38,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 2,
+          "pair_count": 0,
+          "targets": 38
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 38,
+        "scene_id": "office_03_long_gallery",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_03_long_gallery",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 37,
+          "discovered": 37,
+          "explicitly_exempt": 0,
+          "registered": 37,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 4,
+          "pair_count": 0,
+          "targets": 37
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 37,
+        "scene_id": "office_04_central_meeting",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_04_central_meeting",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 38,
+          "discovered": 38,
+          "explicitly_exempt": 0,
+          "registered": 38,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 38
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 38,
+        "scene_id": "office_05_team_clusters",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_05_team_clusters",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 37,
+          "discovered": 37,
+          "explicitly_exempt": 0,
+          "registered": 37,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 37
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 37,
+        "scene_id": "office_06_diagonal_flow",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_06_diagonal_flow",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 36,
+          "discovered": 36,
+          "explicitly_exempt": 0,
+          "registered": 36,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 36
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 36,
+        "scene_id": "office_07_u_bench",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_07_u_bench",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 38,
+          "discovered": 38,
+          "explicitly_exempt": 0,
+          "registered": 38,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 4,
+          "pair_count": 0,
+          "targets": 38
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 38,
+        "scene_id": "office_08_dual_island",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_08_dual_island",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 40,
+          "discovered": 40,
+          "explicitly_exempt": 0,
+          "registered": 40,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 2,
+          "pair_count": 0,
+          "targets": 40
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 40,
+        "scene_id": "office_09_staggered_rows",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_09_staggered_rows",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 37,
+          "discovered": 37,
+          "explicitly_exempt": 0,
+          "registered": 37,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.06,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.08
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 4,
+          "pair_count": 0,
+          "targets": 37
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 37,
+        "scene_id": "office_10_social_core",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "office_10_social_core",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 62,
+          "discovered": 62,
+          "explicitly_exempt": 0,
+          "registered": 62,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 66
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 66,
+        "scene_id": "home_01_102344115",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_01_102344115",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 96,
+          "discovered": 96,
+          "explicitly_exempt": 0,
+          "registered": 96,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 100
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 100,
+        "scene_id": "home_02_103997919_171031233",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_02_103997919_171031233",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 71,
+          "discovered": 71,
+          "explicitly_exempt": 0,
+          "registered": 71,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 75
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 75,
+        "scene_id": "home_03_107734119_175999932",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_03_107734119_175999932",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 89,
+          "discovered": 89,
+          "explicitly_exempt": 0,
+          "registered": 89,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 93
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 93,
+        "scene_id": "home_04_103997970_171031287",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_04_103997970_171031287",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 107,
+          "discovered": 107,
+          "explicitly_exempt": 0,
+          "registered": 107,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 111
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 111,
+        "scene_id": "home_05_102344094",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_05_102344094",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 138,
+          "discovered": 138,
+          "explicitly_exempt": 0,
+          "registered": 138,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 142
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 142,
+        "scene_id": "home_06_104348082_171512994",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_06_104348082_171512994",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 77,
+          "discovered": 77,
+          "explicitly_exempt": 0,
+          "registered": 77,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 81
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 81,
+        "scene_id": "home_07_104348463_171513588",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_07_104348463_171513588",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 86,
+          "discovered": 86,
+          "explicitly_exempt": 0,
+          "registered": 86,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 90
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 90,
+        "scene_id": "home_08_102344193",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_08_102344193",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 79,
+          "discovered": 79,
+          "explicitly_exempt": 0,
+          "registered": 79,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 83
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 83,
+        "scene_id": "home_09_107734110_175999914",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_09_107734110_175999914",
+      "status": "closed"
+    },
+    {
+      "coverage": {
+        "counts": {
+          "classified": 128,
+          "discovered": 128,
+          "explicitly_exempt": 0,
+          "registered": 128,
+          "unbound": 0,
+          "unresolved": 0
+        },
+        "exemptions": [],
+        "navigation_preflight": "not_run",
+        "planner": {
+          "agent_radius": 0.16,
+          "clearance": 0.0,
+          "name": "collision_geometry_v1",
+          "primary_component_cells": null,
+          "primary_component_id": null,
+          "resolution": 0.06
+        },
+        "reachability": {
+          "all_reachable": false,
+          "origins": 3,
+          "pair_count": 0,
+          "targets": 132
+        },
+        "reachability_matrix_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "reachable_navigation_points": 0,
+        "required_navigation_points": 132,
+        "scene_id": "home_10_104862513_172226580",
+        "schema_version": 1,
+        "strongly_connected": false,
+        "unreachable": []
+      },
+      "scene_id": "home_10_104862513_172226580",
+      "status": "closed"
+    }
+  ],
+  "schema_version": 1,
+  "unresolved_scene_count": 0
+}

@@ -54,6 +54,38 @@ def test_semantic_binding_attributes_override_office_name_constants():
     )
 
 
+def test_location_slot_bindings_preserve_legacy_locations_and_validate_slot_ids():
+    world = SemanticWorld.from_json(MODELS / "office_semantics.json")
+    world.interaction_points.pop("meeting_human_stand")
+    for slot_id, site in (("meeting_01", "meeting_slot_a"), ("meeting_02", "meeting_slot_b")):
+        world.interaction_points[f"portable_{slot_id}"] = InteractionPoint(
+            f"portable_{slot_id}",
+            InteractionRole.MEETING_PLACE,
+            "meeting_table",
+            site,
+            {"binding": "location", "target": "meeting_table", "slot_id": slot_id},
+        )
+
+    driver = create_mujoco_action_driver(_Simulator(), world=world)
+    assert driver.location_sites["snack_counter"] == "snack_human_stand_site"
+    assert driver.location_slots.acquire("meeting_table", "npc_a") == "meeting_slot_a"
+    assert driver.location_slots.acquire("meeting_table", "npc_b") == "meeting_slot_b"
+
+    world.interaction_points["duplicate_slot"] = InteractionPoint(
+        "duplicate_slot",
+        InteractionRole.MEETING_PLACE,
+        "meeting_table",
+        "meeting_slot_c",
+        {"binding": "location", "target": "meeting_table", "slot_id": "meeting_01"},
+    )
+    try:
+        create_mujoco_action_driver(_Simulator(), world=world)
+    except ValueError as error:
+        assert "duplicate slot_id 'meeting_01'" in str(error)
+    else:
+        raise AssertionError("Duplicate location slots were accepted")
+
+
 def test_population_templates_expand_ordered_roster_pairs_and_semantics_override_them():
     population = NpcPopulation.from_json(MODELS / "office_population.json")
     roster = ("npc_a", "npc_b", "npc_c")
