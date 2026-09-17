@@ -6,16 +6,13 @@ import argparse
 import json
 import math
 import subprocess
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import cv2
 import mujoco
 import numpy as np
 
-from aaa_workspace.demo_new.npc_in_scenes.render_active_scene_npc_demo import (
-    _audit_trace_against_profile,
-    _portable_demo_base,
-)
 from stretch_mujoco.agents.actions import (
     ActionCommand,
     ActionExecution,
@@ -27,6 +24,7 @@ from stretch_mujoco.agents.conversation import DialogueAct, DialogueCandidate
 from stretch_mujoco.agents.simulated_robot_executor import SimulatedRobotExecutor
 from stretch_mujoco.agents.runtime import OfficeAgentRuntime
 from stretch_mujoco.agents.simulation_bridge import create_mujoco_action_driver
+from stretch_mujoco.humanoid.navigation import OfficeNavigationMesh
 from stretch_mujoco.npc import CommandStatus, NpcCommand, NpcCommandKind
 from stretch_mujoco.npc.assets import NpcAssetManifest
 from stretch_mujoco.npc.provenance import load_active_catalog, resolve_active_artifact, sha256_file, validate_active_catalog
@@ -78,6 +76,69 @@ def validate_scenario(scenario: dict, profile_path: Path, population_path: Path)
             raise ValueError(f"showcase_phase_kind_invalid:{kind}")
         receipts.append({"phase": index, "kind": kind, "status": "declared", "reason": "awaiting_runtime_execution"})
     return {"profile_id": profile["profile_id"], "phase_receipts": receipts}
+
+
+def _portable_demo_base(source: Path, destination: Path) -> Path:
+    """Copy the active base XML and make its asset/include roots portable."""
+    tree = ET.parse(source)
+    root = tree.getroot()
+    compiler = root.find("compiler")
+    if compiler is not None and compiler.get("assetdir"):
+        raw = Path(str(compiler.get("assetdir")))
+        compiler.set("assetdir", str((source.parent / raw).resolve()))
+    for include in root.findall("include"):
+        raw_file = include.get("file")
+        if raw_file:
+            include.set("file", str((source.parent / raw_file).resolve()))
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    ET.indent(tree, space="  ")
+    tree.write(destination, encoding="unicode", xml_declaration=False)
+    return destination
+
+
+def _audit_trace_against_profile(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    controller,
+    profile: NpcTrajectoryProfile,
+    positions: list[np.ndarray],
+) -> dict:
+    """Prove that each recorded root-path segment stayed on free cells."""
+    root = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, controller.binding.body_id)
+    excluded_values = list(profile.exclude_body_roots)
+    if root is not None:
+        excluded_values.append(root)
+    mesh = OfficeNavigationMesh.from_model(
+        model,
+        data,
+        resolution=profile.resolution,
+        agent_radius=profile.agent_radius + profile.clearance,
+        floor_geom_name=profile.navigation_surface,
+        exclude_body_roots=tuple(dict.fromkeys(excluded_values)),
+        include_mocap_obstacles=False,
+    )
+    samples = 0
+    violations: list[list[float]] = []
+    for source, destination in zip(positions, positions[1:]):
+        distance = float(np.linalg.norm(destination[:2] - source[:2]))
+        ratios = np.linspace(
+            0.0, 1.0, max(2, int(np.ceil(distance / (profile.resolution / 2))))
+        )
+        for ratio in ratios:
+            point = source[:2] + ratio * (destination[:2] - source[:2])
+            samples += 1
+            if not mesh.is_world_free(point, component_id=mesh.primary_component_id):
+                violations.append([round(float(point[0]), 6), round(float(point[1]), 6)])
+    return {
+        "surface": profile.navigation_surface,
+        "agent_radius": profile.agent_radius,
+        "clearance": profile.clearance,
+        "resolution": profile.resolution,
+        "sample_spacing_m": profile.resolution / 2,
+        "sample_count": samples,
+        "violations": violations,
+        "passed": not violations,
+    }
 
 
 def _encode(source: Path, destination: Path) -> None:

@@ -1781,3 +1781,14 @@ the profile, does not change deterministic utility scoring or needs maintenance,
 and does not move provider calls into the physics loop. Focused verification:
 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
 tests/test_low_compute_behavior.py tests/test_llm_provider.py --tb=short`: `23 passed`.
+
+## Tracked showcase dependency closure (2026-09-17)
+
+`tools/render_active_scene_showcase.py` no longer imports helper functions from
+the ignored local `aaa_workspace/demo_new/` tree. Its portable-MJCF and route-audit
+helpers are now owned by the tracked tool, so a fresh Git checkout has the same
+source dependency closure as this primary worktree. The remaining ignored Python
+and shell files under `aaa_workspace/{demo_new,experiments,raw_resources}` are
+local demo, experiment, or intake tooling and are not imported by tracked runtime
+or tools. Verification uses `py_compile`, a tracked-files-only archive import,
+`git diff --check`, and the focused LLM tests recorded above.
