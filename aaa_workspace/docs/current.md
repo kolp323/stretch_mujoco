@@ -1792,3 +1792,26 @@ and shell files under `aaa_workspace/{demo_new,experiments,raw_resources}` are
 local demo, experiment, or intake tooling and are not imported by tracked runtime
 or tools. Verification uses `py_compile`, a tracked-files-only archive import,
 `git diff --check`, and the focused LLM tests recorded above.
+
+## Models resource cleanup (2026-09-17)
+
+The model tree now keeps `stretch_mujoco/models/assets/` as the canonical payload
+root. About 211 MiB of superseded or generated local material was moved, not
+deleted, to the ignored
+`aaa_workspace/archive/20260917_models_cleanup/` directory. The archive contains
+the unreferenced tracked `temp_old_sg3_assets` meshes, two recursive symlinks,
+generated hidden acceptance MJCFs, the unused `models/humanoid/` placeholders,
+legacy root-level resource directory copies, and unreferenced placeholder PNG
+copies. `models/assets/wood.png` remains because `graspgen` references it.
+
+The compatibility projections in `generated_home_npc/` and
+`generated_office_npc/`, the single active content-addressed build, HSSD caches,
+and manifest-backed humanoid assets remain in place. No active configuration or
+catalog path was changed.
+
+After phase 1, the asset, appearance, generated-home, and generated-office suites
+passed (`35 passed in 1013.43s`). After phase 2, MuJoCo loaded `scene.xml`,
+`office_scene.xml`, and all twenty active office/home MJCFs. The separate legacy
+`office_scene2_multi_npc.xml` wrapper still fails on its pre-existing missing
+`assets/office_scenes/stretch/base_link_0.obj` path; no archived path matches or
+previously supplied that location.
