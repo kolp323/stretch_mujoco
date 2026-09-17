@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "manifest": "../assets/humanoid/generated/animations/manifest.json",
+  "catalog": "../assets/humanoid/generated/animations/appearance_catalog.json",
+  "population": "../office_population.production.example.json",
+  "roster": "office_personas_v1.roster.json",
+  "selection_lock": "office_personas_no_hair_v1.lock.json",
+  "source_bundle": "smplx_office_neutral_v1",
+  "target_bundle": "smplx_office_v2_fitted_no_hair_v1",
+  "target_topology_id": "smplx-neutral-v2-fitted-no-hair-v1",
+  "appearance_suffix": "_fitted_no_hair_v1",
+  "frame_output": "v2_fitted_no_hair_v1/frames",
+  "receipt": "v2_fitted_no_hair_v1/build.receipt.json",
+  "hair_none": {
+    "id": "hair_none_v1",
+    "image": "appearance_sources/office_personas_v2_no_hair/hair_none_v1.png"
+  },
+  "garments": [
+    {
+      "name": "top",
+      "z_min": 0.84,
+      "z_max": 1.46,
+      "max_abs_x": 0.19,
+      "high_z_bypass": 1.02,
+      "offset_m": 0.010
+    },
+    {
+      "name": "trousers",
+      "z_min": 0.06,
+      "z_max": 0.95,
+      "max_abs_x": 0.21,
+      "offset_m": 0.009
+    },
+    {
+      "name": "shoes",
+      "z_min": 0.0,
+      "z_max": 0.115,
+      "offset_m": 0.012
+    }
+  ],
+  "sole": {
+    "centre_x": 0.1137,
+    "z": [-0.002, 0.010],
+    "outline": [
+      [-0.137, 0.038],
+      [-0.126, 0.050],
+      [-0.092, 0.055],
+      [-0.035, 0.052],
+      [0.025, 0.047],
+      [0.091, 0.042],
+      [0.112, 0.032]
+    ]
+  }
+}

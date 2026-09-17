@@ -8,6 +8,9 @@ MODELS = Path(__file__).parents[1] / "stretch_mujoco/models"
 PRODUCTION_POPULATION = MODELS / "office_population.production.example.json"
 TEXTILE_SPEC = MODELS / "appearance_recipes/office_personas_v1.textile_layers.json"
 ROSTER = MODELS / "appearance_recipes/office_personas_v1.roster.json"
+V2_RECIPE = MODELS / "appearance_recipes/office_personas_v2_fitted_no_hair.runtime.json"
+V2_BUNDLE = "smplx_office_v2_fitted_no_hair_v1"
+APPEARANCE_CATALOG = MODELS / "assets/humanoid/generated/animations/appearance_catalog.json"
 
 
 def test_production_roster_has_ten_named_npcs_with_explicit_distinct_appearances() -> None:
@@ -27,6 +30,45 @@ def test_production_roster_has_ten_named_npcs_with_explicit_distinct_appearances
         if definition.embodiment.appearance_config is not None
     )
     assert population.trajectory_profile == "../npc/trajectory_profiles/office_v1.json"
+
+
+def test_production_roster_uses_v2_fitted_no_hair_bundle() -> None:
+    population = NpcPopulation.from_json(PRODUCTION_POPULATION)
+    recipe = json.loads(V2_RECIPE.read_text(encoding="utf-8"))
+
+    assert recipe["target_bundle"] == V2_BUNDLE
+    assert all(
+        definition.embodiment.bundle == V2_BUNDLE
+        for definition in population.npcs.values()
+    )
+    assert all(
+        definition.embodiment.appearance.endswith("_fitted_no_hair_v1")
+        for definition in population.npcs.values()
+    )
+    assert all(
+        definition.embodiment.appearance_config.hair == "hair_none_v1"
+        for definition in population.npcs.values()
+        if definition.embodiment.appearance_config is not None
+    )
+    assert all(not definition.embodiment.accessories for definition in population.npcs.values())
+
+
+def test_v2_no_hair_identities_keep_only_the_original_painted_glasses() -> None:
+    population = NpcPopulation.from_json(PRODUCTION_POPULATION)
+    catalog = json.loads(APPEARANCE_CATALOG.read_text(encoding="utf-8"))
+    painted_glasses_npcs = {
+        "npc_alex_chen",
+        "npc_priya_narayanan",
+        "npc_daniel_kim",
+        "npc_lena_fischer",
+    }
+
+    for npc_id, definition in population.npcs.items():
+        identity = catalog["identities"][definition.embodiment.visual_identity]
+        layers = set(identity["layers"])
+        assert "hair_none_v1" in layers
+        assert ("glasses_thin_round_v4" in layers) == (npc_id in painted_glasses_npcs)
+        assert not definition.embodiment.accessories
 
 
 def test_production_roster_assigns_distinct_top_layers_to_npcs() -> None:
