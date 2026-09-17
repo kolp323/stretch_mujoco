@@ -1764,3 +1764,20 @@ The next physical-correction slice is to resolve each reported ingress/seat rout
 move or exclude overlapping dynamic props at spawn, add a force-bearing NPC seat
 proxy if contact-level acceptance is required, then rerun all seat slots rather than
 only the representative slot.
+
+## LLM local-decision profile context (2026-09-17)
+
+`OfficeAgentRuntime.queue_llm_event()` now adds the target NPC's authoritative
+profile to every queued LLM event. In addition to the existing day-start schedule
+context, `new_task`, `dialogue`, `repeated_failure`, `unexpected_change`, and
+`reinterpret_plan` requests therefore receive `profile.role`,
+`profile.department`, `profile.personality`, and `profile.preferences` alongside
+their event-specific context. Values are copied from the runtime-owned
+`EmployeeProfile`; caller-supplied values with the same keys cannot impersonate
+another personality or preference set.
+
+This changes only LLM decision context. It does not allow LLM responses to mutate
+the profile, does not change deterministic utility scoring or needs maintenance,
+and does not move provider calls into the physics loop. Focused verification:
+`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
+tests/test_low_compute_behavior.py tests/test_llm_provider.py --tb=short`: `23 passed`.

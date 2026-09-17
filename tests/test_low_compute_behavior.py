@@ -183,6 +183,43 @@ def test_day_start_llm_request_has_constrained_office_context() -> None:
     assert request.context["existing_schedule"]
 
 
+@pytest.mark.parametrize(
+    "trigger",
+    (
+        LLMTrigger.NEW_TASK,
+        LLMTrigger.DIALOGUE,
+        LLMTrigger.REPEATED_FAILURE,
+        LLMTrigger.UNEXPECTED_CHANGE,
+        LLMTrigger.REINTERPRET_PLAN,
+    ),
+)
+def test_local_llm_requests_include_authoritative_personality_and_preferences(
+    trigger: LLMTrigger,
+) -> None:
+    runtime = load_runtime()
+    runtime.drain_llm_requests()
+    agent = runtime.agents["employee_01"]
+
+    assert runtime.queue_llm_event(
+        trigger,
+        agent.agent_id,
+        {
+            "event_detail": "local",
+            "profile": {
+                "personality": {"impersonated": 1.0},
+                "preferences": {"workstation": "imaginary_workstation"},
+                "event_specific": "preserved",
+            },
+        },
+    )
+    request = runtime.drain_llm_requests()[0]
+
+    assert request.context["event_detail"] == "local"
+    assert request.context["profile"]["personality"] == agent.profile.personality
+    assert request.context["profile"]["preferences"] == agent.profile.preferences
+    assert request.context["profile"]["event_specific"] == "preserved"
+
+
 def test_llm_schedule_response_is_validated_before_application() -> None:
     runtime = load_runtime()
     request = runtime.drain_llm_requests()[0]

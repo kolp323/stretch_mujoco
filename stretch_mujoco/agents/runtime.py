@@ -739,12 +739,24 @@ class OfficeAgentRuntime:
     ) -> bool:
         if agent_id not in self.agents:
             raise KeyError(f"Unknown agent '{agent_id}'")
+        agent = self.agents[agent_id]
+        event_context = dict(context or {})
+        profile_context = dict(event_context.get("profile") or {})
+        profile_context.update(
+            {
+                "role": agent.profile.role,
+                "department": agent.profile.department,
+                "personality": dict(agent.profile.personality),
+                "preferences": dict(agent.profile.preferences),
+            }
+        )
+        event_context["profile"] = profile_context
         queued = self.llm.queue(
             trigger,
             agent_id,
             self.day,
             self.minute_of_day,
-            context,
+            event_context,
         )
         if queued:
             self._emit(
