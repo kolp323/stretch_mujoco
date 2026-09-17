@@ -32,28 +32,28 @@ def test_production_roster_has_ten_named_npcs_with_explicit_distinct_appearances
     assert population.trajectory_profile == "../npc/trajectory_profiles/office_v1.json"
 
 
-def test_production_roster_uses_v2_fitted_no_hair_bundle() -> None:
+def test_v2_fitted_no_hair_recipe_is_preserved_but_not_the_production_default() -> None:
     population = NpcPopulation.from_json(PRODUCTION_POPULATION)
     recipe = json.loads(V2_RECIPE.read_text(encoding="utf-8"))
 
     assert recipe["target_bundle"] == V2_BUNDLE
     assert all(
-        definition.embodiment.bundle == V2_BUNDLE
+        definition.embodiment.bundle == "smplx_office_neutral_v1"
         for definition in population.npcs.values()
     )
     assert all(
-        definition.embodiment.appearance.endswith("_fitted_no_hair_v1")
+        not definition.embodiment.appearance.endswith("_fitted_no_hair_v1")
         for definition in population.npcs.values()
     )
     assert all(
-        definition.embodiment.appearance_config.hair == "hair_none_v1"
+        definition.embodiment.appearance_config.hair != "hair_none_v1"
         for definition in population.npcs.values()
         if definition.embodiment.appearance_config is not None
     )
     assert all(not definition.embodiment.accessories for definition in population.npcs.values())
 
 
-def test_v2_no_hair_identities_keep_only_the_original_painted_glasses() -> None:
+def test_production_identities_keep_the_original_painted_glasses() -> None:
     population = NpcPopulation.from_json(PRODUCTION_POPULATION)
     catalog = json.loads(APPEARANCE_CATALOG.read_text(encoding="utf-8"))
     painted_glasses_npcs = {
@@ -66,7 +66,7 @@ def test_v2_no_hair_identities_keep_only_the_original_painted_glasses() -> None:
     for npc_id, definition in population.npcs.items():
         identity = catalog["identities"][definition.embodiment.visual_identity]
         layers = set(identity["layers"])
-        assert "hair_none_v1" in layers
+        assert "hair_none_v1" not in layers
         assert ("glasses_thin_round_v4" in layers) == (npc_id in painted_glasses_npcs)
         assert not definition.embodiment.accessories
 
